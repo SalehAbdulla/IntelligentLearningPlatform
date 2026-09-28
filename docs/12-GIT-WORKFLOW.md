@@ -60,6 +60,7 @@ release/sprint-3
 
 - **Feature / fix / chore / docs work → branch from `develop`.**
 - **Hotfix to a broken demo → branch from `main`**, then merge back into **both** `main` and `develop`.
+- **Releasing to `main` → open a PR from `develop` into `main`.** Never push or fast-forward `main` directly; §3.1 explains why this is now enforced rather than advisory.
 
 ---
 
@@ -75,6 +76,29 @@ release/sprint-3
 | 6 | **Never commit secrets** — `GoogleService-Info.plist`, keys, `.env` | Already gitignored; verify before every commit |
 | 7 | **`main` must always build and run** | It is the demo line; a red `main` is the day's top priority |
 | 8 | **Delete your branch after merge** | Keeps the branch list readable |
+
+### 3.1 Enforcement — and why rules 1 and 8 needed it
+
+Setting branch protection without `enforce_admins` turned out to be **advisory, not real**: the repository owner could still push straight to `main`, because GitHub lets admins bypass protection by default. The rule existed on paper and was silently bypassable in practice.
+
+**Fixed:** protection on both `main` and `develop` now has **`enforce_admins: true`**, so the golden rules apply to everyone, including whoever owns the repository. Verified by attempting a direct push:
+
+```
+remote: error: GH006: Protected branch update failed for refs/heads/develop.
+remote: - Changes must be made through a pull request.
+ ! [remote rejected] develop -> develop (protected branch hook declined)
+```
+
+| Setting | `main` | `develop` |
+|---|---|---|
+| Pull request required before merging | ✅ | ✅ |
+| Admin enforcement (`enforce_admins`) | ✅ | ✅ |
+| Force-push blocked | ✅ | ✅ |
+| Branch deletion blocked | ✅ | ✅ |
+
+**Emergency procedure** — if a broken `main` must be fixed and no PR is possible, a repository admin may *temporarily* disable admin enforcement in **Settings → Branches**, push the fix, and **re-enable it immediately**. Record what happened in the decision log. This should be rare, and the fact that it requires disabling a guard is the point.
+
+> **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. This is the same reasoning behind `tools/commit.sh` — enforcement beats documentation.
 
 ---
 
@@ -232,6 +256,12 @@ git rebase develop                             # or: git merge develop
 gh pr create --base develop --fill            # open the PR
 gh pr merge --merge --delete-branch          # merge, keep per-file commits, tidy up
 
+# ── release to main (ALSO via PR — main is protected against direct pushes) ──
+gh pr create --base main --head develop \
+  --title "release(sprint-N): merge develop into main" \
+  --body "Sprint N complete. Golden path verified. See research/sprints/sprint-N/."
+gh pr merge --merge
+
 # ── investigate (evidence for sprints and the VIVA) ───────────────────
 git log --oneline --author="Saleh" --since="2 weeks ago"
 git log --follow ios/StudyForge/StudyForge/Features/Flashcards/FlashcardsViewModel.swift
@@ -296,20 +326,24 @@ If the first command returns a thin list, that sprint's individual mark is thin 
 | # | Item | Status |
 |---|---|---|
 | 1 | `develop` branch created from `main` and pushed | ✅ done |
-| 2 | Branch protection on **`main`**: PR required, force-push blocked, deletion blocked | ✅ done |
-| 3 | Branch protection on **`develop`**: PR required, force-push blocked, deletion blocked | ✅ done |
+| 2 | Branch protection on **`main`**: PR required, force-push blocked, deletion blocked, **admin-enforced** | ✅ done |
+| 3 | Branch protection on **`develop`**: PR required, force-push blocked, deletion blocked, **admin-enforced** | ✅ done |
 | 4 | `.github/PULL_REQUEST_TEMPLATE.md` committed | ✅ done |
 | 5 | `tools/commit.sh` + `tools/new-branch.sh` committed, executable and behaviour-tested | ✅ done |
 | 6 | Full cycle demonstrated end to end (branch → per-file commits → PR → merge) | ✅ [PR #1](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/1) |
-| 7 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | ⬜ **each member, S0** |
-| 8 | Every member practises the cycle once on a throwaway branch | ⬜ **each member, S0** |
+| 7 | Direct push to a protected branch **verified to be rejected** | ✅ tested — `GH006: Changes must be made through a pull request` |
+| 8 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | ⬜ **each member, S0** |
+| 9 | Every member practises the cycle once on a throwaway branch | ⬜ **each member, S0** |
 
 ### 11.1 Verify the setup
 
 ```bash
-# Branches are protected (true = a PR is required)
-gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/main/protection    --jq '.required_pull_request_reviews != null'
-gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/develop/protection --jq '.required_pull_request_reviews != null'
+# Both branches are protected AND admin-enforced (both must print true)
+for b in main develop; do
+  printf '%-8s ' "$b"
+  gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/$b/protection \
+    --jq '"pr_required=\(.required_pull_request_reviews != null) enforce_admins=\(.enforce_admins.enabled) force_push=\(.allow_force_pushes.enabled)"'
+done
 
 # Everyone is committing under their own name, not a shared one
 git shortlog -sn --all
