@@ -28,34 +28,36 @@ Feature IDs are **stable** and referenced across every other document (`F03` →
 |---|---|
 | `F01…F14` | Standard feature |
 | `F15` | Approved **advanced** feature (co-owned) |
-| `M1…M5` | Team member handle (see §2) |
+| `M1…M4` | Team member handle (see §2) |
 | `P0 / P1 / P2` | Priority tier — P0 = MVP must ship, P1 = should ship, P2 = stretch |
 
 ---
 
 ## 2. Team roster
 
-> ⚠️ **Group size:** the brief mandates *"each group should consist of 5 members only."* **Four members are confirmed; M5 is an open slot.** Until the 5th member is confirmed with the tutor, M5's features stay unassigned and the contingency plan at the end of this section applies. Everything else in this document is final.
+> ✅ **Group size: 4 members — confirmed by the tutor.** The brief's default is *"each group should consist of 5 members only."* The tutor has confirmed that **4 members is acceptable for this group**, so the plan proceeds with four. M5 has been removed and their three features (F11, F12, F13) redistributed — see §2.1. **Record the tutor's approval here for the audit trail:** `Approved by: ____________ on ____________`.
 
 | Handle | Name | Student ID | Role in team | Features owned | Frame suffix | Count |
 |---|---|---|---|---|---|---|
-| **M1** | **Saleh Abdulla** | `202300540` | Data & Auth lead | F01, F02, F14 | `Saleh_202300540` | 3 |
-| **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML lead | F03, F04, F05, **F15 (co)** | `Mohammed_202401702` | 3 + shared |
-| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Scheduling lead | F06, F07, **F15 (co)** | `Tasbeeh_202300549` | 2 + shared |
-| **M4** | **Shahad Ashoor** | `202305767` | UI/UX & Collaboration lead | F08, F09, F10 | `Shahad_202305767` | 3 |
-| **M5** | **`{{TBC — 5th member}}`** | `{{2022xxxxx}}` | Payments, Tutor & Admin lead | F11, F12, F13 | `{{TBC}}` | 3 |
+| **M1** | **Saleh Abdulla** | `202300540` | Data, Auth & Admin lead | F01, F02, F14 | `Saleh_202300540` | 3 |
+| **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` | 4 + shared |
+| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` | 3 + shared |
+| **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` | 4 |
 
-**How the assignment was made:** the heaviest workstreams (F01/F02 data foundation and the F15 advanced feature) went to the members with the strongest technical fit, and the two members sharing the advanced feature (M2 + M3) each carry the *lowest* standard-feature count so the advanced work never becomes a bottleneck. M4 carries the fewest screens but the most interaction-heavy page (18 collaborative frames with realtime states).
+**How the assignment was made:** the two heaviest workstreams (the F01/F02 data foundation and the F15 advanced feature) were matched to technical fit rather than spread evenly, and the two members sharing F15 (M2 + M3) were deliberately given **disjoint** feature areas so neither can block the other. Every member owns at least three features — comfortably above the rubric's minimum of two — and the four feature areas map cleanly onto the four rubric roles (Student = M1, Tutor = M2, Admin = M1/M4, Study Group Member = M4).
 
-### 2.1 Contingency — if the 5th member is not confirmed
+### 2.1 Redistribution of the former M5 workstream
 
-The brief requires 5 members, so **raising this with the tutor is the first action of the project** (see [doc 09 Q1](09-RISKS-OPEN-QUESTIONS.md)). If a 5th member cannot be found:
+With four members, M5's three features were redistributed on the principle of **adjacency** — each new feature sits next to work the member already owns, so no one has to learn an unrelated domain:
 
-| If M5 is absent | F11 Tutor Content Studio → | F12 Admin Content Management → | F13 Subscription & Payments → |
+| Former M5 feature | New developer | Why it fits | Group's frames |
 |---|---|---|---|
-| **Redistribution** | **M2** (AI content review fits their AI workstream) | **M1** (fits the Auth/roles foundation) | **M3** (fits the architecture/Cloud Functions work) |
+| **F11** Tutor Content Studio | **M2** (Mohammed) | The tutor review queue is an AI-content feature — the same generation pipeline and provenance model M2 already owns in F03–F05 | Group J (10) |
+| **F12** Admin Content Management | **M4** (Shahad) | Admin is moderation, permissions and taxonomy — the same permission and sharing primitives M4 already builds for F08–F09 | Group K (9) |
+| **F13** Subscription & Payments | **M3** (Tasbeeh) | Payments is Cloud Functions, webhooks and server-side verification — the same server-side architecture M3 already owns | Group L (10) |
 
-That yields four members with 4 features each, plus the shared F15. **But it does not satisfy the brief's group-size rule** — obtain written tutor approval before relying on it. Tester duties that were assigned to M5 reassign as follows: F04 → M1, F09 → M2, F10 → M3, F14 → M1.
+**Result:** four members, 4/4/3/3 features, **48/41/25/27 frames**, and the F15 advanced feature still shared by exactly two developers as the rubric permits. Nobody's load is unmanageable, and every feature keeps a named developer **and** a named tester.
+
 
 
 ---
@@ -67,16 +69,23 @@ Counted the way the rubric counts it:
 | Handle | Member | Features as **developer** | Tests (count) | Screens authored | Figma pages | Weighted effort |
 |---|---|---|---|---|---|---|
 | **M1** | Saleh Abdulla | 3 | 4 | 48 | 4 (A, B, C, M) | ~3.2 |
-| **M2** | Mohammed Almadhoon | 3 + F15 (co) | 2 | 25 | 3 (D, E, F) | ~3.0 |
-| **M3** | Tasbeeh Saeed | 2 + F15 (co) | 3 | 21 | 2 (G, H) | ~2.8 |
-| **M4** | Shahad Ashoor | 3 | 3 | 18 | 1 (I) | ~2.9 |
-| **M5** | `{{TBC — 5th member}}` | 3 | 3 | 29 | 3 (J, K, L) | ~3.0 |
+| **M2** | Mohammed Almadhoon | 4 + F15 (co) | 3 | 41 | 4 (D, E, F, J) | ~3.3 |
+| **M3** | Tasbeeh Saeed | 3 + F15 (co) | 4 | 25 | 2 (G, L) | ~3.1 |
+| **M4** | Shahad Ashoor | 4 | 4 | 27 | 2 (I, K) | ~3.0 |
 
-**Balance rationale (state this in the document — markers reward the reasoning):** M2 and M3 carry the lowest screen counts *precisely because* they co-own the advanced feature F15, the highest-risk and highest-effort workstream. M4 carries the fewest frames but the most Figma-complex page (18 collaborative frames with realtime and permission states). M1 carries the highest frame count because the Auth, Library and Settings groups are the most interconnected — but Groups B (13 settings frames) and M (14 state/kit frames) are low-complexity form and component frames, so raw frame count overstates the effort.
+**Balance rationale (state this in the document — markers reward the reasoning):** feature counts run 4/4/3/3 and frame counts 48/41/25/27. The spread is intentional rather than accidental:
 
-**Optional rebalance if the team wants a tighter frame split:** move **Group M (14 cross-cutting state frames)** from M1 to M4, giving M1 = 34 and M4 = 32. This is a clean swap because Group M contains no feature logic — only shared states — and it would also balance the Figma page count. Record the decision in [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) if taken.
+- **M1** carries the most frames (48) because Groups A, B, C and M are the most interconnected — but **13 of those (Group B) are settings forms and 14 (Group M) are shared state/kit frames**, both low-complexity. Excluding them, M1's genuinely bespoke screens number ~21.
+- **M2** carries the most features (4) plus a share of F15, so their frame count (41) is held moderate by keeping their individual feature groups (D, E, F, J) mid-sized — the largest of which is 10 frames.
+- **M3** has the fewest frames (25) but co-owns F15 — the highest-risk workstream — and owns F13, the only feature with an external financial dependency and the only one requiring server-side payment verification.
+- **M4** owns the most interaction-heavy group (I: 18 frames with realtime and permission states) plus the admin moderation surface (K).
 
-**Testing rotation principle:** nobody tests a feature they developed, and every member tests at least two features owned by someone else. See the matrix in §7.
+**The honest statement for the document:** *frame count is not the fairness metric.* Effort is balanced across feature count, frame count, risk ownership (F15, F13) and interaction complexity — and the weighting column above makes that auditable rather than a claim.
+
+**Optional rebalance if the team wants a tighter frame split:** move **Group M (14 cross-cutting state frames)** from M1 to M3, giving M1 = 34 and M3 = 41. Group M contains no feature logic — only shared states — so the swap is clean. Record the decision in [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) if taken.
+
+**Testing rotation principle:** nobody tests a feature they developed, and every member tests at least three features owned by someone else. See the matrix in §7.
+
 
 
 ---
@@ -90,18 +99,18 @@ Counted the way the rubric counts it:
 | **F01** | Authentication & Role-Based Onboarding | All | Get a verified user onto the correct role-specific home screen | Launch → Splash → Onboarding (3) → Sign up email → OTP verify → Role select → Profile wizard → Role home | M1 | M4 |
 | **F02** | Material Upload & Course Library | Student, Tutor | Turn a PDF / photo / scan / link into a searchable, tagged, offline-available library item | Pick source → on-device compress + OCR → upload to Storage → write metadata → item appears in Library → open viewer | M1 | M3 |
 | **F03** | AI Summary & Notes Generation | Student | Produce an accurate, cited summary of a chosen material | Open material → Generate sheet → choose length / style / language → grounded generation → TL;DR + key points + glossary → provenance chips → save to folder | M2 | M1 |
-| **F04** | Flashcard Generation & Spaced Repetition | Student | Convert material into reviewable cards and have them scheduled automatically | Generate config (count / difficulty / card type) → review + edit cards → start session → flip → rate Again/Hard/Good/Easy → SM-2 writes next due date → session summary | M2 | M5 |
+| **F04** | Flashcard Generation & Spaced Repetition | Student | Convert material into reviewable cards and have them scheduled automatically | Generate config (count / difficulty / card type) → review + edit cards → start session → flip → rate Again/Hard/Good/Easy → SM-2 writes next due date → session summary | M2 | M4 |
 | **F05** | Quiz Generation & Attempt Analytics | Student, Tutor | Test recall and expose weak topics | Configure (MCQ / true-false / short answer, count, timer) → generate → answer with immediate feedback → submit → scorecard → review explanations → attempts feed `topicMastery` | M2 | M4 |
 | **F06** | Study Plan Scheduling & Adaptive Re-planning | Student | Get a realistic, exam-aware revision calendar that fixes itself | Wizard (subjects → availability → deadlines → intensity) → AI plan → week/month calendar → session reminders → missed session → offer AI re-plan → accept | M3 | M2 |
 | **F07** | Progress Tracking & Analytics | Student, Tutor | See mastery, streaks and weak areas over time | Activity events recorded → nightly aggregation → dashboard (streak, mastery %, time) → subject breakdown → weakness radar → achievements → export PDF | M3 | M1 |
 | **F08** | Shared Study Folders | Study Group Member | Share resources with a study group, with real permissions | Create folder → invite by code / link / picker → assign view / comment / edit → members add materials and AI artefacts → folder activity feed | M4 | M3 |
 | **F09** | Group Revision Spaces | Study Group Member | Revise together, synchronously, in real time | Join by code → shared board + pinned resources → group chat → launch live group quiz → real-time progress + leaderboard → results summary | M4 | M2 |
-| **F10** | Resource Bookmarking & Collections | Student | Save anything for later and actually revisit it | Bookmark from any screen (long-press or toolbar) → choose / create collection → offline cache → collection view → resume navigation via deep link | M4 | M5 |
-| **F11** | Tutor Content Studio | Tutor | Publish and manage course material for a cohort | Create course → build roster → publish material → AI content review queue → approve / edit / reject → cohort progress view → send announcement → export gradebook | M5 | M1 |
-| **F12** | Admin Content Management & Moderation | Admin | Keep content correct, safe and compliant | Admin home KPIs → user list → user detail (role change / suspend) → moderation queue → flagged reports → taxonomy manage → AI config → audit log | M5 | M3 |
-| **F13** | Subscription & Payments | Student | Buy and manage a premium tier securely | Paywall → plan select → compare → order summary (BHD) → Tap card / BenefitPay → processing → server-side verification → entitlement written → receipt → manage / cancel | M5 | M4 |
-| **F14** | Notifications & Reminders | All | Bring the user back at exactly the right moment | Server event or local schedule → relevance / quiet-hours filter → FCM push or local notification → tap → deep link → inbox → preferences | M1 | M5 |
-| **F15** | **ADVANCED** · AI Study Companion (RAG + Adaptive Coach) | Student | Ask anything grounded in *your own* materials and receive a personalised study path | Ask → on-device embedding search over own library → grounded answer with citation chips → adjust explanation level → get recommended study path → rate the response | **M2 + M3** | M1 + M5 |
+| **F10** | Resource Bookmarking & Collections | Student | Save anything for later and actually revisit it | Bookmark from any screen (long-press or toolbar) → choose / create collection → offline cache → collection view → resume navigation via deep link | M4 | M3 |
+| **F11** | Tutor Content Studio | Tutor | Publish and manage course material for a cohort | Create course → build roster → publish material → AI content review queue → approve / edit / reject → cohort progress view → send announcement → export gradebook | M2 | M4 |
+| **F12** | Admin Content Management & Moderation | Admin | Keep content correct, safe and compliant | Admin home KPIs → user list → user detail (role change / suspend) → moderation queue → flagged reports → taxonomy manage → AI config → audit log | M4 | M2 |
+| **F13** | Subscription & Payments | Student | Buy and manage a premium tier securely | Paywall → plan select → compare → order summary (BHD) → Tap card / BenefitPay → processing → server-side verification → entitlement written → receipt → manage / cancel | M3 | M2 |
+| **F14** | Notifications & Reminders | All | Bring the user back at exactly the right moment | Server event or local schedule → relevance / quiet-hours filter → FCM push or local notification → tap → deep link → inbox → preferences | M1 | M3 |
+| **F15** | **ADVANCED** · AI Study Companion (RAG + Adaptive Coach) | Student | Ask anything grounded in *your own* materials and receive a personalised study path | Ask → on-device embedding search over own library → grounded answer with citation chips → adjust explanation level → get recommended study path → rate the response | **M2 + M3** | M1 + M4 |
 
 ---
 
@@ -180,27 +189,28 @@ The rubric asks for *"Sub-Tasks/Steps: Describe a brief flow or individual steps
 
 | Feature | Developer | Primary tester | Secondary tester (cross-check) |
 |---|---|---|---|
-| F01 Authentication & Onboarding | M1 | **M4** | M2 |
-| F02 Material Upload & Library | M1 | **M3** | M4 |
-| F03 AI Summary & Notes | M2 | **M1** | M5 |
-| F04 Flashcards & Spaced Repetition | M2 | **M5** | M3 |
-| F05 Quiz Generation & Analytics | M2 | **M4** | M1 |
-| F06 Study Plan & Adaptive Re-planning | M3 | **M2** | M5 |
+| F01 Authentication & Onboarding | M1 | **M4** | M3 |
+| F02 Material Upload & Library | M1 | **M3** | M2 |
+| F03 AI Summary & Notes | M2 | **M1** | M4 |
+| F04 Flashcards & Spaced Repetition | M2 | **M4** | M1 |
+| F05 Quiz Generation & Analytics | M2 | **M4** | M3 |
+| F06 Study Plan & Adaptive Re-planning | M3 | **M2** | M1 |
 | F07 Progress Tracking | M3 | **M1** | M2 |
-| F08 Shared Study Folders | M4 | **M3** | M2 |
-| F09 Group Revision Spaces | M4 | **M2** | M5 |
-| F10 Resource Bookmarking | M4 | **M5** | M1 |
-| F11 Tutor Content Studio | M5 | **M1** | M3 |
-| F12 Admin Content Management | M5 | **M3** | M4 |
-| F13 Subscription & Payments | M5 | **M4** | M1 |
-| F14 Notifications & Reminders | M1 | **M5** | M3 |
-| F15 AI Study Companion *(advanced)* | M2 + M3 | **M1** | M5 |
+| F08 Shared Study Folders | M4 | **M3** | M1 |
+| F09 Group Revision Spaces | M4 | **M1** | M2 |
+| F10 Resource Bookmarking | M4 | **M3** | M2 |
+| F11 Tutor Content Studio | M2 | **M4** | M3 |
+| F12 Admin Content Management | M4 | **M2** | M3 |
+| F13 Subscription & Payments | M3 | **M2** | M4 |
+| F14 Notifications & Reminders | M1 | **M3** | M2 |
+| F15 AI Study Companion *(advanced)* | M2 + M3 | **M1** | M4 |
 
-**Coverage check:** **M1 (Saleh) tests 4** · **M2 (Mohammed) tests 2** · **M3 (Tasbeeh) tests 3** · **M4 (Shahad) tests 3** · **M5 (TBC) tests 3** = 15 features covered. **Nobody tests a feature they developed**, and every member tests at least two features owned by someone else.
+**Coverage check:** **M1 (Saleh) tests 4** · **M2 (Mohammed) tests 3** · **M3 (Tasbeeh) tests 4** · **M4 (Shahad) tests 4** = all 15 features covered. **Nobody tests a feature they developed**, and every member tests at least three features owned by someone else.
 
-**Handle → name legend for the matrix above:** M1 = Saleh Abdulla · M2 = Mohammed Almadhoon · M3 = Tasbeeh Saeed · M4 = Shahad Ashoor · M5 = `{{TBC — 5th member}}`.
+**Handle → name legend for the matrix above:** M1 = Saleh Abdulla · M2 = Mohammed Almadhoon · M3 = Tasbeeh Saeed · M4 = Shahad Ashoor.
 
-**If M5 is not confirmed,** reassign their testing duties: F04 → M1, F09 → M2, F10 → M3, F14 → M1 (giving M1 = 6, M2 = 3, M3 = 4, M4 = 3, still nobody testing their own work).
+**Cross-check rule:** for every feature, the primary tester, the secondary tester and the developer are three different people — so each feature is independently read by at least three team members before it counts as done. This is deliberate: the brief requires *"all members of the team must have a strong understanding of the entire application"*, and rotation is how that is actually achieved rather than assumed.
+
 
 
 ---
