@@ -37,7 +37,6 @@ NN_ScreenName_FirstName_StudentID
 | `{M2}` | Mohammed Almadhoon | `Mohammed_202401702` |
 | `{M3}` | Tasbeeh Saeed | `Tasbeeh_202300549` |
 | `{M4}` | Shahad Ashoor | `Shahad_202305767` |
-| `{M5}` | `{{TBC — 5th member}}` | `{{TBC}}_<studentID>` |
 
 **Worked examples using the real roster**
 
@@ -48,7 +47,7 @@ NN_ScreenName_FirstName_StudentID
 47_Flashcard_Review_Back_Rate_Mohammed_202401702
 65_StudyPlan_Calendar_Week_Tasbeeh_202300549
 93_GroupSpace_SharedQuiz_Live_Shahad_202305767
-115_Admin_AIConfig_Settings_<M5FirstName>_<M5StudentID>
+115_Admin_AIConfig_Settings_Shahad_202305767
 ```
 
 Group headings later in this document use the `{M1}` handle for brevity — expand it using the table above before creating the frame in Figma. **Every one of the 141 frames must carry a real name and student ID**, because the brief states: *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."*
@@ -61,13 +60,12 @@ Group headings later in this document use the `{M1}` handle for brevity — expa
 | `0 · Cover & Legend` | M1 | Cover with app name, logo, team table, legend, navigation index |
 | `1 · Design System` | M1 | Colour, type, spacing, components, icons, states |
 | `2 · Flow Overview` | M3 | Full navigation map + per-feature flow diagrams |
-| `3 · M1 — Auth & Library` | M1 | Groups A, C, M |
-| `4 · M2 — AI Content` | M2 | Groups D, E, F |
-| `5 · M3 — Plan & Progress` | M3 | Group G |
+| `3 · M1 — Auth, Library & States` | M1 | Groups A, B, C, M |
+| `4 · M2 — AI Content & Tutor` | M2 | Groups D, E, F, J |
+| `5 · M3 — Plan, Progress & Payments` | M3 | Groups G, L |
 | `6 · M2+M3 — AI Companion` | M2, M3 | Group H (advanced feature) |
-| `7 · M4 — Collaboration` | M4 | Group I |
-| `8 · M5 — Tutor, Admin, Pay` | M5 | Groups J, K, L |
-| `9 · States & Prototype Wiring` | all | Error / empty / loading / success tokens, RTL proof, connection map |
+| `7 · M4 — Collaboration & Admin` | M4 | Groups I, K |
+| `8 · States & Prototype Wiring` | all | Error / empty / loading / success tokens, RTL proof, connection map |
 
 ---
 
@@ -238,49 +236,49 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | I17 | `97_Bookmark_Save_Sheet_{M4}` | F10 | P0 | **Save sheet** from any screen: **collection picker** with checkmarks, **Create new** inline, **also save offline** toggle, **Save** primary. |
 | I18 | `98_Bookmarks_EmptyState_{M4}` | F10 | P1 | **Empty state** explaining what bookmarks do + **Browse library** CTA. Also demonstrates the **offline-first** story. |
 
-### Group J — Tutor / Teacher Content Studio · owner **M5 — TBC** · F11
+### Group J — Tutor / Teacher Content Studio · owner **M2 — Mohammed** · F11
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
-| J01 | `99_Home_Dashboard_Tutor_{M5}` | F11 | P0 | **Cohort KPI row** (students, active this week, avg mastery, at-risk count), **courses list**, **pending AI-review badge**, **Create course** primary. |
-| J02 | `100_Tutor_Course_List_{M5}` | F11 | P1 | Course cards with **code**, **enrolment count**, **term dates**, **published-material count**, **archive** swipe action. |
-| J03 | `101_Tutor_Course_Create_Edit_{M5}` | F11 | P0 | **Course name/code fields**, **term date pickers**, **cover colour picker**, **enrolment mode** (open / code / approval), **Save**. |
-| J04 | `102_Tutor_Course_Roster_{M5}` | F11 | P0 | **Student table** (name, ID, mastery %, last active), **search + filter**, **invite students**, **export CSV**; row taps to progress detail. |
-| J05 | `103_Tutor_Material_Publish_{M5}` | F11 | P0 | **Upload staged as a draft with visibility controls**, **publish date/time picker**, **target cohort selector**, **notify students toggle**, **Publish** primary. |
-| J06 | `104_Tutor_AI_Content_ReviewQueue_{M5}` | F11 | P0 | **Review queue list** of AI-generated items awaiting approval, **pending/source/material** columns, **bulk approve** and **filter by confidence**. |
-| J07 | `105_Tutor_AI_Content_EditApprove_{M5}` | F11 | P0 | Split view: **AI-drafted item on the left editable**, **source snippet on the right**, **confidence badge**, **Approve** / **Edit & approve** / **Reject with reason**. This is the human-in-the-loop ethics control. |
-| J08 | `106_Tutor_StudentProgress_Detail_{M5}` | F11 | P1 | Per-student **mastery radar**, **session history**, **risk flags**, **Send encouragement** action (privacy-respecting: aggregate-first). |
-| J09 | `107_Tutor_Announcement_Compose_{M5}` | F11 | P1 | **Message editor** with templates, **audience selector** (course / group / individual), **schedule send**, **Send now**. |
-| J10 | `108_Tutor_Gradebook_Export_{M5}` | F11 | P1 | **Gradebook table** (quiz scores, card mastery, plan adherence), **column config**, **date range**, **Export CSV / PDF** primaries. |
+| J01 | `99_Home_Dashboard_Tutor__{M2}` | F11 | P0 | **Cohort KPI row** (students, active this week, avg mastery, at-risk count), **courses list**, **pending AI-review badge**, **Create course** primary. |
+| J02 | `100_Tutor_Course_List__{M2}` | F11 | P1 | Course cards with **code**, **enrolment count**, **term dates**, **published-material count**, **archive** swipe action. |
+| J03 | `101_Tutor_Course_Create_Edit__{M2}` | F11 | P0 | **Course name/code fields**, **term date pickers**, **cover colour picker**, **enrolment mode** (open / code / approval), **Save**. |
+| J04 | `102_Tutor_Course_Roster__{M2}` | F11 | P0 | **Student table** (name, ID, mastery %, last active), **search + filter**, **invite students**, **export CSV**; row taps to progress detail. |
+| J05 | `103_Tutor_Material_Publish__{M2}` | F11 | P0 | **Upload staged as a draft with visibility controls**, **publish date/time picker**, **target cohort selector**, **notify students toggle**, **Publish** primary. |
+| J06 | `104_Tutor_AI_Content_ReviewQueue__{M2}` | F11 | P0 | **Review queue list** of AI-generated items awaiting approval, **pending/source/material** columns, **bulk approve** and **filter by confidence**. |
+| J07 | `105_Tutor_AI_Content_EditApprove__{M2}` | F11 | P0 | Split view: **AI-drafted item on the left editable**, **source snippet on the right**, **confidence badge**, **Approve** / **Edit & approve** / **Reject with reason**. This is the human-in-the-loop ethics control. |
+| J08 | `106_Tutor_StudentProgress_Detail__{M2}` | F11 | P1 | Per-student **mastery radar**, **session history**, **risk flags**, **Send encouragement** action (privacy-respecting: aggregate-first). |
+| J09 | `107_Tutor_Announcement_Compose__{M2}` | F11 | P1 | **Message editor** with templates, **audience selector** (course / group / individual), **schedule send**, **Send now**. |
+| J10 | `108_Tutor_Gradebook_Export__{M2}` | F11 | P1 | **Gradebook table** (quiz scores, card mastery, plan adherence), **column config**, **date range**, **Export CSV / PDF** primaries. |
 
-### Group K — Admin Content Management · owner **M5 — TBC** · F12
-
-| ID | Frame | F | Tier | Purpose & key labelled elements |
-|---|---|---|---|---|
-| K01 | `109_Home_Dashboard_Admin_{M5}` | F12 | P0 | **Platform KPI cards** (users, DAU, AI calls today vs free-tier cap, storage used vs quota), **alert banners** (quota approaching, reports open), **quick-nav grid**. |
-| K02 | `110_Admin_Users_List_{M5}` | F12 | P0 | **User table** with search, **role filter chips**, **status badge** (active/suspended), **last login**, **row overflow menu**. |
-| K03 | `111_Admin_User_Detail_{M5}` | F12 | P1 | User profile, **role changer** with confirmation dialog, **suspend / reactivate**, **activity log**, **support actions**. |
-| K04 | `112_Admin_Moderation_Queue_{M5}` | F12 | P0 | **Queue of reported items** with **preview**, **reason chips**, **reporter**, **age**; **Approve / Remove / Escalate** actions. |
-| K05 | `113_Admin_FlaggedReports_{M5}` | F12 | P1 | **Report detail**: reported content, report history, **prior-action list**, **decision panel with mandatory reason**, **audit note**. |
-| K06 | `114_Admin_Taxonomy_Manage_{M5}` | F12 | P1 | **Subject / tag CRUD** list with drag-reorder, **merge duplicates** tool, **usage count** per tag. |
-| K07 | `115_Admin_AIConfig_Settings_{M5}` | F12 | P0 | **Engine routing policy** (on-device-first / cloud-first / offline-only), **prompt-template editor per artefact type**, **per-user daily quota stepper**, **cost-estimate readout**. This screen *is* the cost-governor innovation made operational. |
-| K08 | `116_Admin_AuditLog_{M5}` | F12 | P1 | **Filterable audit trail** (actor, action, target, timestamp), **export**, **redacted-fields indicator** for privacy compliance. |
-| K09 | `117_Admin_Broadcast_Notification_{M5}` | F12 | P1 | **Broadcast composer**: audience segment builder, title/body fields, **preview as push notification**, **schedule**, **Send with confirmation**. |
-
-### Group L — Subscription & Payments (Tap Payments) · owner **M5 — TBC** · F13
+### Group K — Admin Content Management · owner **M4 — Shahad** · F12
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
-| L01 | `118_Paywall_Plans_{M5}` | F13 | P0 | **Three plan cards** (Free / Plus / Pro) with **BHD pricing**, **monthly-annual toggle with save %**, **recommended ribbon**, **Continue** primary, **restore purchases** link. |
-| L02 | `119_Paywall_FeatureCompare_{M5}` | F13 | P1 | **Comparison table** of AI generations, materials, group spaces, offline export per tier, **sticky plan headers**, **Choose plan** buttons. |
-| L03 | `120_Checkout_OrderSummary_BHD_{M5}` | F13 | P0 | **Order summary**: plan, term, **subtotal / VAT 10% / total in BHD**, **promo-code field**, **terms checkbox**, **Proceed to payment**. |
-| L04 | `121_Payment_Method_Select_{M5}` | F13 | P0 | **Payment method cards**: Card · BenefitPay · Apple Pay · KNET, with **supported-network icons** (Visa/Mastercard), **secure-payment trust row**. |
-| L05 | `122_Payment_Card_Entry_{M5}` | F13 | P0 | **Tap Card SDK** secure fields (number/expiry/CVV) — **no card data ever touches our servers**; **save card** toggle, **Pay BHD 4.900** primary, **PCI-DSS note**. |
-| L06 | `123_Payment_BenefitPay_Redirect_{M5}` | F13 | P1 | **Web-redirect handoff** state with a clear explanation ("You'll return to StudyForge automatically"), **cancel** action, **progress indicator**. |
-| L07 | `124_Payment_Processing_{M5}` | F13 | P0 | **Processing overlay** with **never-double-charge** copy and a **Do not close** instruction. |
-| L08 | `125_Payment_Success_Receipt_{M5}` | F13 | P0 | **Success check**, **receipt card** (amount, method, last 4 digits, Tap reference), **unlocked-features list**, **Done**. |
-| L09 | `126_Payment_Failed_Retry_{M5}` | F13 | P0 | **Failure state** with **decline reason** (insufficient funds / 3-D Secure timeout / network), **Retry** and **Try another method** primaries. |
-| L10 | `127_Subscription_Manage_Cancel_{M5}` | F13 | P1 | **Current plan panel**, renewal date, **payment-method list** with default toggle, **Cancel subscription** destructive + **retention dialog**. |
+| K01 | `109_Home_Dashboard_Admin__{M4}` | F12 | P0 | **Platform KPI cards** (users, DAU, AI calls today vs free-tier cap, storage used vs quota), **alert banners** (quota approaching, reports open), **quick-nav grid**. |
+| K02 | `110_Admin_Users_List__{M4}` | F12 | P0 | **User table** with search, **role filter chips**, **status badge** (active/suspended), **last login**, **row overflow menu**. |
+| K03 | `111_Admin_User_Detail__{M4}` | F12 | P1 | User profile, **role changer** with confirmation dialog, **suspend / reactivate**, **activity log**, **support actions**. |
+| K04 | `112_Admin_Moderation_Queue__{M4}` | F12 | P0 | **Queue of reported items** with **preview**, **reason chips**, **reporter**, **age**; **Approve / Remove / Escalate** actions. |
+| K05 | `113_Admin_FlaggedReports__{M4}` | F12 | P1 | **Report detail**: reported content, report history, **prior-action list**, **decision panel with mandatory reason**, **audit note**. |
+| K06 | `114_Admin_Taxonomy_Manage__{M4}` | F12 | P1 | **Subject / tag CRUD** list with drag-reorder, **merge duplicates** tool, **usage count** per tag. |
+| K07 | `115_Admin_AIConfig_Settings__{M4}` | F12 | P0 | **Engine routing policy** (on-device-first / cloud-first / offline-only), **prompt-template editor per artefact type**, **per-user daily quota stepper**, **cost-estimate readout**. This screen *is* the cost-governor innovation made operational. |
+| K08 | `116_Admin_AuditLog__{M4}` | F12 | P1 | **Filterable audit trail** (actor, action, target, timestamp), **export**, **redacted-fields indicator** for privacy compliance. |
+| K09 | `117_Admin_Broadcast_Notification__{M4}` | F12 | P1 | **Broadcast composer**: audience segment builder, title/body fields, **preview as push notification**, **schedule**, **Send with confirmation**. |
+
+### Group L — Subscription & Payments (Tap Payments) · owner **M3 — Tasbeeh** · F13
+
+| ID | Frame | F | Tier | Purpose & key labelled elements |
+|---|---|---|---|---|
+| L01 | `118_Paywall_Plans__{M3}` | F13 | P0 | **Three plan cards** (Free / Plus / Pro) with **BHD pricing**, **monthly-annual toggle with save %**, **recommended ribbon**, **Continue** primary, **restore purchases** link. |
+| L02 | `119_Paywall_FeatureCompare__{M3}` | F13 | P1 | **Comparison table** of AI generations, materials, group spaces, offline export per tier, **sticky plan headers**, **Choose plan** buttons. |
+| L03 | `120_Checkout_OrderSummary_BHD__{M3}` | F13 | P0 | **Order summary**: plan, term, **subtotal / VAT 10% / total in BHD**, **promo-code field**, **terms checkbox**, **Proceed to payment**. |
+| L04 | `121_Payment_Method_Select__{M3}` | F13 | P0 | **Payment method cards**: Card · BenefitPay · Apple Pay · KNET, with **supported-network icons** (Visa/Mastercard), **secure-payment trust row**. |
+| L05 | `122_Payment_Card_Entry__{M3}` | F13 | P0 | **Tap Card SDK** secure fields (number/expiry/CVV) — **no card data ever touches our servers**; **save card** toggle, **Pay BHD 4.900** primary, **PCI-DSS note**. |
+| L06 | `123_Payment_BenefitPay_Redirect__{M3}` | F13 | P1 | **Web-redirect handoff** state with a clear explanation ("You'll return to StudyForge automatically"), **cancel** action, **progress indicator**. |
+| L07 | `124_Payment_Processing__{M3}` | F13 | P0 | **Processing overlay** with **never-double-charge** copy and a **Do not close** instruction. |
+| L08 | `125_Payment_Success_Receipt__{M3}` | F13 | P0 | **Success check**, **receipt card** (amount, method, last 4 digits, Tap reference), **unlocked-features list**, **Done**. |
+| L09 | `126_Payment_Failed_Retry__{M3}` | F13 | P0 | **Failure state** with **decline reason** (insufficient funds / 3-D Secure timeout / network), **Retry** and **Try another method** primaries. |
+| L10 | `127_Subscription_Manage_Cancel__{M3}` | F13 | P1 | **Current plan panel**, renewal date, **payment-method list** with default toggle, **Cancel subscription** destructive + **retention dialog**. |
 
 ### Group M — System, Notifications & Cross-cutting States · owner **M1 — Saleh** · F14
 
@@ -316,14 +314,18 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | G | Study Plan & Progress | M3 | F06, F07 | 13 | 9 | 4 | 0 |
 | H | **AI Study Companion (ADVANCED)** | M2 + M3 | F15 | 8 | 6 | 1 | 1 |
 | I | Collaboration | M4 | F08, F09, F10 | 18 | 11 | 7 | 0 |
-| J | Tutor Content Studio | M5 | F11 | 10 | 6 | 4 | 0 |
-| K | Admin Content Management | M5 | F12 | 9 | 4 | 5 | 0 |
-| L | Subscription & Payments | M5 | F13 | 10 | 7 | 3 | 0 |
+| J | Tutor Content Studio | M2 | F11 | 10 | 6 | 4 | 0 |
+| K | Admin Content Management | M4 | F12 | 9 | 4 | 5 | 0 |
+| L | Subscription & Payments | M3 | F13 | 10 | 7 | 3 | 0 |
 | M | System, Notifications & States | M1 | F14 | 14 | 5 | 9 | 0 |
 | | | | **Total** | **141** | **89** | **51** | **1** |
 
-Per-owner totals: **M1 = 48** · **M2 = 25** · **M3 = 21** · **M4 = 18** · **M5 = 29**.
-Frame count is *not* the fairness metric — see the weighting rationale in [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md). M4's 18 frames are the most interaction-heavy (realtime, permissions, 3 features). M5's 29 are mostly thin form/table screens.
+Per-owner totals (**141** frames across **4** members): **M1 — Saleh = 48** · **M2 — Mohammed = 41** · **M3 — Tasbeeh = 25** · **M4 — Shahad = 27**.
+
+Breakdown: M2's 41 = D(7) + E(9) + F(9) + J(10) + 6 of the 8 advanced-feature frames; M3's 25 = G(13) + L(10) + 2 of the 8 advanced-feature frames (the advanced feature is shared, so its frames split 6/2 to M2/M3).
+
+M5's former groups were distributed as: **J → M2** (fits the AI content-review workstream), **K → M4** (fits the permissions/moderation UI work), **L → M3** (fits the Cloud Functions and architecture work).
+Frame count is *not* the fairness metric — see the weighting rationale in [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md). M2's and M4's frames are the most interaction-heavy (realtime, permissions, admin tables). M1's higher count includes Groups B and M, which are low-complexity settings and shared-state/kit frames.
 
 ---
 
