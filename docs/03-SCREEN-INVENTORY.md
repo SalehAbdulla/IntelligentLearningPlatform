@@ -71,25 +71,28 @@ Group headings later in this document use the `{M1}` handle for brevity — expa
 
 ## 2. Priority tiers and the realistic cut-line
 
-141 frames across 15 features is the full inventory. At ~6 working weeks for 5 people, **89 P0 frames is the committed submission target** — about 18 per person, ~3 per week. The 51 P1 state screens are then swept as a team in the final week (they are mostly single-purpose state screens and component boards, so they are cheap).
+141 frames across 15 features is the full inventory. **At this component's 10% weight, that is far too much to build.** The realistic target is the **coverage floor** below.
 
-| Tier | Frames | Meaning | Commitment |
+| Tier | Frames | Meaning | Commitment at 10% weight |
 |---|---|---|---|
-| **P0 — MVP** | **89** | The happy path of every one of the 15 features, plus the states that prove the loop works. **If this is not done, features are unlinked and marks are lost.** | Non-negotiable |
-| **P1 — Complete** | **51** | Error / empty / loading / success states, permission screens, kit boards, accessibility proof | Full-marks target |
-| **P2 — Stretch** | **1** | Deep secondary variants (voice quiz mode) | Only if time allows |
-| | **141** | **Total inventory** | |
+| **Coverage floor** | **~55** | Every one of the 15 features' happy path — fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
+| **P0 — full happy path** | **89** | The coverage floor plus secondary paths within each feature | **Target** |
+| **P1 — states & kits** | **51** | Error / empty / loading / success states, permission screens, component boards, accessibility proof | Only if the app is on track |
+| **P2 — stretch** | **1** | Voice-quiz variant | Cut |
+| | **141** | Total inventory | Retained for completeness |
 
-**The realistic cut-line:** commit to **P0 (89 frames)** first — that is ~18 frames per person and it guarantees every feature is designed and linked, which is exactly what the prototype rubric tests. Then sweep **P1** as a team in the final week (they are mostly one-screen states and component boards, so they are cheap). P0+P1 = **140 of 141** frames.
+**Weight reality check:** the prototype is **10%** of the course. The working iOS app is **60% and must pass** ([doc 11](11-APP-IMPLEMENTATION-VIVA.md)). Spend Figma time proportionally — the **coverage floor of ~55 fully-linked frames** is worth more than 141 half-linked ones, and every hour saved goes to the app.
 
-> **Rule:** it is far better to submit 89 fully-linked, correctly-named frames than 141 half-linked ones. The prototype rubric rewards *"interactive links between screens"* and *"a clearly structured prototype"* — not raw frame count.
+**Why keep the 141-frame inventory anyway:** it demonstrates the design thinking, and it is the source material for the design document's mockups section — 8 of that document's 20 marks, i.e. **4% of the course**. The inventory is a *plan*, not a commitment to build all of it in high fidelity.
+
+> **Rule:** a linked prototype beats a large one. The rubric rewards *"interactive links between screens"* and *"a clearly structured prototype"* — not frame count. Cut P1 before you cut a single link.
 
 
 ---
 
 ## 3. Screen inventory
 
-**Notation:** in the *Frame* column, `{M1}` expands to `FirstName_StudentID` for member M1 (e.g. `Ahmed_202212345`) — see §1. `F` = feature ID from [doc 02](02-FEATURE-LIST-OWNERSHIP.md). Tier: **P0** MVP · **P1** complete · **P2** stretch.
+**Notation:** in the *Frame* column, `{M1}` expands to `FirstName_StudentID` for member M1 (e.g. `Saleh_202300540`) — see §1. `F` = feature ID from [doc 02](02-FEATURE-LIST-OWNERSHIP.md). Tier: **P0** full happy path · **P1** states/kits · **P2** stretch.
 
 The *Purpose & key labelled elements* column is written to be **copy-pasted directly into the Design Document**, because the rubric requires a written description plus labelled, explained UI elements for every screen. Writing them once here saves the team weeks.
 
