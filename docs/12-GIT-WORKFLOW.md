@@ -262,7 +262,7 @@ git stash && git stash pop                    # park work temporarily
 # Everything I committed this sprint
 git log --oneline --author="<my name>" --since="2 weeks ago"
 
-# My hand-written work (no AI)
+# Changes I made myself (not AI-generated) — see doc 10 §9 rule 4
 git log --oneline --author="<my name>" --grep="hand:"
 
 # My PRs
@@ -293,13 +293,46 @@ If the first command returns a thin list, that sprint's individual mark is thin 
 
 ## 11. Setup checklist (Phase 0)
 
-- [ ] `develop` branch created from `main` and pushed
-- [ ] Branch protection enabled on `main`: require a PR, require status checks, no force-push, no deletion
-- [ ] Branch protection enabled on `develop`: require a PR, no force-push
-- [ ] `.github/PULL_REQUEST_TEMPLATE.md` committed
-- [ ] `tools/commit.sh` and `tools/new-branch.sh` committed and executable
-- [ ] Every member has run `git config --global user.name` / `user.email` correctly, and confirmed with `git shortlog -sn`
-- [ ] Everyone can create a branch, commit per file, push, and open a PR — **practise once in S0 with a throwaway branch**
+| # | Item | Status |
+|---|---|---|
+| 1 | `develop` branch created from `main` and pushed | ✅ done |
+| 2 | Branch protection on **`main`**: PR required, force-push blocked, deletion blocked | ✅ done |
+| 3 | Branch protection on **`develop`**: PR required, force-push blocked, deletion blocked | ✅ done |
+| 4 | `.github/PULL_REQUEST_TEMPLATE.md` committed | ✅ done |
+| 5 | `tools/commit.sh` + `tools/new-branch.sh` committed, executable and behaviour-tested | ✅ done |
+| 6 | Full cycle demonstrated end to end (branch → per-file commits → PR → merge) | ✅ [PR #1](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/1) |
+| 7 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | ⬜ **each member, S0** |
+| 8 | Every member practises the cycle once on a throwaway branch | ⬜ **each member, S0** |
 
-> ⚠️ **Note on this repository's own history:** the initial planning commits were made directly to `main` before this workflow was agreed. That is recorded here for honesty. **All work from Sprint S0 onward follows the branch model above** — see [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) decision D17.
+### 11.1 Verify the setup
+
+```bash
+# Branches are protected (true = a PR is required)
+gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/main/protection    --jq '.required_pull_request_reviews != null'
+gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/develop/protection --jq '.required_pull_request_reviews != null'
+
+# Everyone is committing under their own name, not a shared one
+git shortlog -sn --all
+```
+
+### 11.2 Per-member onboarding (hand this to each teammate)
+
+```bash
+git clone https://github.com/SalehAbdulla/IntelligentLearningPlatform.git
+cd IntelligentLearningPlatform
+
+git config user.name  "Their Full Name"
+git config user.email "2023xxxxx@<their student email>"
+
+git switch develop && git pull
+
+# practise the whole cycle once on a throwaway branch
+bash tools/new-branch.sh chore/practice-<theirname>
+echo "practice" > "practice-<theirname>.txt"
+bash tools/commit.sh --push "practice-<theirname>.txt" "chore: practise the branch and commit workflow"
+gh pr create --base develop --fill
+gh pr merge --merge --delete-branch
+```
+
+> ⚠️ **Note on this repository's own history:** the initial planning commits, made before this workflow was agreed, went directly to `main`. That is recorded here for honesty. **All work from Sprint S0 onward follows the branch model above** — see [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md), decisions D17–D19.
 
