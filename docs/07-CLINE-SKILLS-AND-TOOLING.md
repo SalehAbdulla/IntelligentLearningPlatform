@@ -116,6 +116,17 @@ npx skills update                # pull newer versions
 
 **Onboarding a teammate:** clone the repo, then run `bash tools/install-skills.sh`. That is the whole setup. Committing the lockfile rather than the skill bodies keeps the repository readable for the marker while guaranteeing reproducibility.
 
+> **Benign warning you may see from `npx skills check`:**
+> *"Multiple current paths match these skills from twostraws/swiftui-agent-skill; skipping them rather than deleting or migrating the wrong skill"* — for `swiftui-pro` and `swift-testing-pro`.
+>
+> Cause: those two were installed both as an individual skill (`@skill`) and as part of their whole package, so each now exists in two places (`.agents/skills/swiftui-pro/SKILL.md` and `.agents/skills/swiftui-pro/skills/swiftui-pro/SKILL.md`). **The file contents differ**, so the CLI deliberately refuses to guess which is canonical. This is harmless — the flat path is the one pinned in `skills-lock.json`, the CLI simply skips the ambiguity, and `.agents/` is gitignored so nothing reaches the repository. **Do not hand-delete either copy**; if it must be resolved, remove and re-add the skill cleanly:
+> ```bash
+> npx skills remove swiftui-pro swift-testing-pro
+> npx skills add twostraws/swiftui-agent-skill@swiftui-pro -y
+> npx skills add twostraws/swift-testing-agent-skill@swift-testing-pro -y
+> ```
+
+
 **Optional, if we want Cline to touch the Figma file directly:** wire up the Figma MCP server, after which `figma-use` becomes an active tool rather than reference material. Worth doing if the team wants Cline to generate the Figma component library programmatically — a genuine time-saver across ~141 frames.
 
 
