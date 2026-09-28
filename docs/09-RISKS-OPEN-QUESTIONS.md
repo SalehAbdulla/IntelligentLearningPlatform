@@ -12,9 +12,9 @@ Scored on likelihood (L) and impact (I), 1–5. **Score = L × I.** Anything ≥
 | **R2** | Scope creep — 141 frames is a lot for 5 people in 6 weeks | 4 | 4 | **16** | Hard tiering (P0 = 89) · explicit cut-line protocol ([roadmap §14](01-ROADMAP-PHASES-TODOLIST.md)) · freeze dates | M2 |
 | **R3** | On-device Apple Intelligence is unavailable in the Simulator, so the AI demo fails live | 4 | 4 | **16** | Tier-1 fallback works in the Simulator · `80_Coach_OnDeviceUnavailable_Fallback` designed · **demo on a real device** · recorded backup | M2, M3 |
 | **R4** | Firebase free-tier quota exhaustion mid-demo | 2 | 4 | 8 | Content-hash cache · on-device-first routing · per-user daily budget · emulator for all dev work · seed demo data before the demo | M1 |
-| **R5** | Cloud Functions require the Blaze plan, creating billing risk | 3 | 4 | 12 | Keep the function surface tiny (webhook + nightly aggregation only) · **budget alert + spend cap before first deploy** | M1, M5 |
-| **R6** | Tap Payments **live** onboarding needs a commercial registration and bank account we don't have | 5 | 3 | 15 | **Sandbox only** — this is a stated, deliberate scope boundary; test cards are sufficient to demonstrate the flow | M5 |
-| **R7** | Apple Guideline 3.1.1 conflicts with using a non-Apple gateway for digital goods | 4 | 2 | 8 | `PaymentGateway` protocol with a `StoreKitGateway` implementation · the conflict is *documented as an ethics finding* (turns a risk into a mark) | M5 |
+| **R5** | Cloud Functions require the Blaze plan, creating billing risk | 3 | 4 | 12 | Keep the function surface tiny (webhook + nightly aggregation only) · **budget alert + spend cap before first deploy** | M1, M3 |
+| **R6** | Tap Payments **live** onboarding needs a commercial registration and bank account we don't have | 5 | 3 | 15 | **Sandbox only** — this is a stated, deliberate scope boundary; test cards are sufficient to demonstrate the flow | M3 |
+| **R7** | Apple Guideline 3.1.1 conflicts with using a non-Apple gateway for digital goods | 4 | 2 | 8 | `PaymentGateway` protocol with a `StoreKitGateway` implementation · the conflict is *documented as an ethics finding* (turns a risk into a mark) | M3 |
 | **R8** | AI-generated quiz answers are wrong — an academic-integrity problem | 3 | 4 | 12 | Grounded generation only · provenance on every answer · confidence bands · tutor review queue · "verify against your source" disclaimer · **no auto-grading of assessed work** | M2 |
 | **R9** | A team member becomes unavailable during the critical path | 3 | 4 | 12 | Cross-training matrix ([doc 07 §4](07-CLINE-SKILLS-AND-TOOLING.md)) · pair on critical-path frames · everything in git | M1 |
 | **R10** | Figma and SwiftUI drift apart visually | 3 | 3 | 9 | Single token source · `tools/check-tokens.sh` fails the build on divergence | M3 |
@@ -49,6 +49,7 @@ Recorded as lightweight ADRs so the Design Document can show *why* choices were 
 | D13 | **Low-fi and hi-fi in the same Figma file** | Low-fi → hi-fi becomes an upgrade, never a redraw; halves the work and guarantees they match | Separate lo-fi tool (Draw.io) then redesign in Figma |
 | D14 | **Prompt templates stored in Firestore** | Tune AI output without an app release — and a live demo asset | Hard-coded prompts (need a rebuild to improve quality) |
 | D15 | **Two graded tracks only** (doc + prototype), everything else optional | Protects the critical path; the cut-line protocol removes the app work first | Treating the app as a deliverable (risks both grades) |
+| D16 | **Proceed with 4 members** — remove M5, redistribute F11/F12/F13 | The tutor confirmed 4 is acceptable for this group, overriding the brief's default of 5. Redistribution was done by **adjacency** so each moved feature sits next to a member's existing domain: F11→M2 (AI content review), F12→M4 (permissions/moderation), F13→M3 (Cloud Functions/server-side) | Holding an unfilled 5th slot (blocks the entire feature list, developer and tester columns); distributing randomly (creates avoidable learning curves and uneven loads) |
 
 ---
 
@@ -58,7 +59,7 @@ Each question materially affects the plan. **Every one has a safe default**, so 
 
 | # | Question | Why it matters | Default if unanswered |
 |---|---|---|---|
-| **Q1** | **What are the 5 real team member names and student IDs?** | Figma frame names embed `FirstName_StudentID`, so renaming later means touching every frame. Also needed for the developer/tester columns. | Placeholders `M1–M5` / `{{2022xxxxx}}` stay in place |
+| ~~Q1~~ | ✅ **RESOLVED** — 4 members confirmed by the tutor: **Saleh Abdulla** `202300540` · **Mohammed Almadhoon** `202401702` · **Tasbeeh Saeed** `202300549` · **Shahad Ashoor** `202305767`. M5's F11/F12/F13 redistributed to M2/M4/M3; all 141 frames now name a real developer. | Frame names, developer and tester columns all use real names. | — |
 | **Q2** | **Confirm the payment gateway: "Tap Payments" (`tap.company`, Bahrain-licensed) — or the Taiwanese TapPay (Cherri Tech)?** | Different companies, different SDKs and flows. The brief says "Bahrain-based", which points to Tap Payments. | Build against **Tap Payments** behind a `PaymentGateway` protocol, so swapping later is one file |
 | **Q3** | **Do we have a commercial registration / merchant account, or is sandbox-only correct?** | Live mode requires KYC; sandbox requires nothing and costs nothing. | **Sandbox only**, documented as a deliberate scope boundary |
 | **Q4** | Is the app name **StudyForge** acceptable, or is there a preferred name? | The identity must be consistent across all three phases, so it should be locked in Phase 0. | StudyForge, with the logo concept in [doc 00 §5](00-MASTER-PLAN.md) |
@@ -73,8 +74,8 @@ Each question materially affects the plan. **Every one has a safe default**, so 
 
 Stated explicitly, because an unstated assumption is where a plan breaks.
 
-1. **Group size is exactly 5**, as the brief mandates.
-2. **All 5 members have a Mac capable of running Xcode 27** — or can pair with someone who does.
+1. **Group size is 4 — approved by the tutor.** The brief's default is 5; the tutor confirmed 4 is acceptable for this group, so M5 was removed and their workstream redistributed ([doc 02 §2.1](02-FEATURE-LIST-OWNERSHIP.md)).
+2. **All 4 members have a Mac capable of running Xcode 27** — or can pair with someone who does.
 3. **The tutor will approve the F15 advanced feature.** If not, **F09 (live group revision arena)** is the substitution — it was deliberately designed to be strong enough to promote.
 4. **Firebase Spark remains no-cost for the project's lifetime** — verified against the published limits in [doc 04 §5](04-TECH-ARCHITECTURE-COST.md).
 5. **No App Store submission is required**, so Guideline 3.1.1 becomes a documented ethics discussion rather than a blocker.
@@ -111,7 +112,7 @@ The brief states every member must be able to present and explain *any* part of 
 
 ## 6. What is needed to proceed
 
-**Answer Q1–Q5 in §3** and the plan is fully unblocked. Everything else has a safe default, so work can start immediately — beginning with [roadmap Phase 0](01-ROADMAP-PHASES-TODOLIST.md).
+**Answer Q2–Q5 in §3** and the plan is fully unblocked. Everything else has a safe default, so work can start immediately — beginning with [roadmap Phase 0](01-ROADMAP-PHASES-TODOLIST.md).
 
 
 
