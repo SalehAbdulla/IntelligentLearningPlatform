@@ -1,0 +1,84 @@
+# ── Secrets and environment (NEVER commit these) ────────────────────────────
+GoogleService-Info.plist
+**/GoogleService-Info.plist
+*.xcconfig.local
+Config/*.local.xcconfig
+.env
+.env.*
+!.env.example
+functions/.env
+serviceAccountKey.json
+**/serviceAccountKey.json
+
+# ── Xcode ───────────────────────────────────────────────────────────────────
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xccheckout
+*.xcscmblueprint
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+
+# ── Swift Package Manager / CocoaPods ──────────────────────────────────────
+.build/
+.swiftpm/
+Packages/
+Pods/
+*.xcworkspace/xcshareddata/swiftpm/configuration/registries.json
+
+# ── Agent skills (installed artefacts, NOT source) ─────────────────────────
+# The installed skill bodies (~3.3 MB) are regenerable from skills-lock.json,
+# exactly like node_modules from package-lock.json. Commit the lockfile and the
+# installer; let each machine run `bash tools/install-skills.sh`.
+.agents/
+.claude/
+!.claude/settings.json
+
+# ── Node / Firebase tooling ────────────────────────────────────────────────
+node_modules/
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+.firebase/
+*.log
+.firebase/emulator-data/
+
+# ── Deliverables: large binaries (keep the source, not the exports) ────────
+# The .fig and the final PDF are submitted through the portal, not git.
+deliverables/**/*.fig
+deliverables/**/*.pdf
+deliverables/**/export/
+!deliverables/prototype/figma-link.txt
+!deliverables/design-document/README.md
+!deliverables/prototype/README.md
+
+# ── Research: keep notes, drop bulky raw media ─────────────────────────────
+research/**/*.mp4
+research/**/*.mov
+research/**/*.m4a
+research/**/*.zip
+
+# ── macOS ───────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ── Editors ─────────────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*~
