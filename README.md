@@ -17,14 +17,32 @@
 
 ---
 
-## The two graded deliverables (do not confuse them)
+## Assessment model (this drives every priority in the plan)
 
-| # | Deliverable | Format | Marks | Weight | LOs |
+| # | Component | Weight | Type | Must pass? | Status |
 |---|---|---|---|---|---|
-| 1 | **Design Document** | Single PDF — Background Research (4) · Features List (4) · Mockups (8) · Innovation (2) · Organisation (2) | /20 | 10% | LO1, LO3 |
-| 2 | **Project Prototype** | High-fidelity **interactive Figma** — `.fig` file **AND** shared URL in a text doc | /20 | 10% | LO1, LO2, LO3 |
+| 1 | **Individual App** | 10% | Individual | — | ✅ already completed |
+| 2 | **Design Document** | 10% | Group | — | ⬜ due **22 Oct 2026** |
+| 3 | **Prototype (Figma)** | 10% | Group | — | ⬜ due **12 Nov 2026** |
+| 4 | **Sprints** | **10%** | **Individual** | — | ⬜ continuous during implementation |
+| 5 | **iOS App Implementation & Demonstration** | **60%** | Group | ⛔ **MUST PASS** | ⬜ continuous + in-person VIVA |
 
-> ⚠️ **The working SwiftUI app is NOT itself a graded deliverable.** The brief specifies the prototype as a *Figma* artefact. We build the real app anyway because it (a) de-risks the live demonstration, (b) proves the design is technically feasible, and (c) is a strong Innovation talking point. **Figma is the non-negotiable critical path.**
+**Two pass conditions — both must be met:**
+
+1. An **aggregate mark ≥ 60%**; **and**
+2. The **iOS App Implementation & Demonstration (60%) is passed**.
+
+> ⚠️ **The working iOS app is the most important deliverable — 60% and a hard gate on passing the course.** An earlier draft of this plan wrongly treated the app as optional, because the *Project Design Document brief* describes only two phases (design document + Figma prototype). That brief covers 20% of the course — it is not the whole assessment. **The app is the critical path, not Figma.**
+
+| Priority | Component | Why it ranks here |
+|---|---|---|
+| **1** | **iOS App + VIVA (60%, must pass)** | Failing this fails the course regardless of everything else. Must be complete, working on a real device, and explainable by every member |
+| **2** | **Sprints (10%, individual)** | The only component a teammate cannot carry for you. Needs continuous, per-person, timestamped evidence |
+| **3** | **Design Document (10%)** | Fixed deadline (22 Oct) — front-loaded then closed |
+| **4** | **Prototype (10%)** | Still must cover every feature and be interactive, but is **not** worth over-investing at this weight |
+
+**Effort allocation target:** ~50% app & VIVA · ~20% sprints & contribution evidence · ~15% design document · ~15% Figma prototype.
+
 
 ---
 
@@ -48,16 +66,18 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 
 | Doc | Contents |
 |---|---|
-| [00 — Master Plan](docs/00-MASTER-PLAN.md) | Decoded spec, product identity, personas, competitive edge, strategy |
-| [01 — Roadmap, Phases & Todolist](docs/01-ROADMAP-PHASES-TODOLIST.md) | 11 phases with dated gates + tickable task list — **the guide & roadmap** |
-| [02 — Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 15 features, 5 developers × 3, developer/tester matrix, advanced feature |
-| [03 — Screen Inventory](docs/03-SCREEN-INVENTORY.md) | 141 screens (89 P0 committed), Figma frame naming rule, MVP cut-line |
+| [00 — Master Plan](docs/00-MASTER-PLAN.md) | Decoded spec, assessment-driven priorities, product identity, roles, innovation |
+| [01 — Roadmap, Phases & Todolist](docs/01-ROADMAP-PHASES-TODOLIST.md) | Sprint-structured roadmap with dated gates + tickable task list — **the guide & roadmap** |
+| [02 — Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 15 features, 4 developers, developer/tester matrix, advanced feature |
+| [03 — Screen Inventory](docs/03-SCREEN-INVENTORY.md) | 141 screens, Figma frame naming rule, prototype cut-line |
 | [04 — Tech Architecture & Cost](docs/04-TECH-ARCHITECTURE-COST.md) | SwiftUI + Firebase + Tap Payments + 3-tier AI, $0 cost model |
 | [05 — Data Model & Security](docs/05-DATA-MODEL-SECURITY.md) | Firestore/Storage schema, roles, security-rules strategy |
 | [06 — Design System](docs/06-DESIGN-SYSTEM.md) | Colour, type, spacing, components, UI/UX principle mapping |
-| [07 — Cline Skills & Tooling](docs/07-CLINE-SKILLS-AND-TOOLING.md) | Agent skills to install, team skill matrix, Cline operating model |
-| [08 — Rubric Coverage Matrix](docs/08-RUBRIC-COVERAGE-MATRIX.md) | Bullet-by-bullet evidence map for **full marks** |
+| [07 — Cline Skills & Tooling](docs/07-CLINE-SKILLS-AND-TOOLING.md) | Agent skills, team skill matrix, Cline operating model |
+| [08 — Rubric Coverage Matrix](docs/08-RUBRIC-COVERAGE-MATRIX.md) | Bullet-by-bullet evidence map for **every assessed component** |
 | [09 — Risks & Open Questions](docs/09-RISKS-OPEN-QUESTIONS.md) | Risk register, decision log, questions awaiting answers |
+| [10 — Sprint Plan](docs/10-SPRINT-PLAN.md) | The **individual 10%**: sprint cadence, per-member tasks, contribution evidence |
+| [11 — App Implementation & VIVA](docs/11-APP-IMPLEMENTATION-VIVA.md) | The **60% must-pass**: MVP scope, demo script, VIVA prep, must-pass risk control |
 
 ---
 
@@ -66,23 +86,36 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 ```
 IntelligentLearningPlatform/
 ├── README.md
-├── docs/                        # this planning set
+├── docs/                        # this planning set (00–11)
+├── ios/StudyForge/              # ⭐ THE 60% MUST-PASS DELIVERABLE
+│                                #    Xcode 27 · SwiftUI · Swift 6 · MVVM
+├── firebase/                    # firestore.rules · storage.rules · indexes · functions/
 ├── deliverables/
-│   ├── design-document/         # Phase 1 PDF source + assets
-│   │   └── mockups/             # low-fidelity screens
-│   └── prototype/               # Phase 2 Figma hand-off
-│       ├── StudyForge.fig
-│       └── figma-link.txt
-├── ios/StudyForge/              # Xcode 27 project (SwiftUI, Swift 6)
-├── firebase/                    # firestore.rules, storage.rules, indexes, functions/
-└── research/                    # interview notes, references, competitor teardown
+│   ├── design-document/         # 10% — PDF source + low-fidelity mockups
+│   └── prototype/               # 10% — StudyForge.fig + figma-link.txt
+├── research/
+│   ├── dossier.md               # evidence base for Background Research
+│   ├── sprints/sprint-<N>/      # 10% INDIVIDUAL — goal · board · review · retro
+│   ├── testing/                 # test logs per feature (tester ≠ developer)
+│   ├── reviews/                 # review notes on AI-generated code
+│   ├── cheatsheets/             # one per member — VIVA quick reference
+│   └── demo/                    # golden-path recordings + backup capture
+└── tools/                       # install-skills · verify-docs · check-tokens
 ```
 
 ---
 
 ## Current status
 
-**Phase 0 — Setup & Project Identity** · see [roadmap](docs/01-ROADMAP-PHASES-TODOLIST.md)
+**Sprint S0 — Foundation & requirements.** The **app (60%, must pass)** is the critical path; everything else runs alongside it.
+
+| Component | Weight | Status |
+|---|---|---|
+| Individual App | 10% | ✅ complete |
+| iOS App Implementation & Demonstration | **60% (must pass)** | ⬜ not started |
+| Sprints (individual) | 10% | ⬜ not started |
+| Design Document | 10% | ⬜ not started |
+| Prototype (Figma) | 10% | ⬜ not started |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
