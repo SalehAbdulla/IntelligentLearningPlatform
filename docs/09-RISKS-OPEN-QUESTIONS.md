@@ -23,8 +23,13 @@ Scored on likelihood (L) and impact (I), 1–5. **Score = L × I.** Anything ≥
 | **R13** | Academic-integrity concern about AI-assisted development | 3 | 3 | 9 | **Disclose it explicitly** in the document: name the tools, state what the team designed versus what was generated, and keep the design decisions, feature ownership and testing human | M1 |
 | **R14** | Privacy concerns in usability testing with real students | 2 | 3 | 6 | Written consent · anonymise all data in the report · no personal study content collected | M4 |
 | **R15** | Deadline pressure from other modules in the same weeks | 4 | 4 | **16** | 24-hour submission buffers · freeze dates are absolute · the cut-line protocol removes optional work first | all |
+| **R16** | **Planning for the wrong component** — spending the bulk of the time on Figma (10%) while the app (60%, must pass) is unfinished | 3 | 5 | **15** | This plan is **corrected**: app-first priority, sprint allocation in [doc 10 §4](10-SPRINT-PLAN.md), and a cut-line that sacrifices Figma first ([doc 01 §14](01-ROADMAP-PHASES-TODOLIST.md)) | M1 |
+| **R17** | **A member cannot explain their own feature in the VIVA**, damaging a must-pass group mark | 3 | 5 | **15** | The comprehension contract ([doc 10 §9](10-SPRINT-PLAN.md)): no PR merged for code you cannot explain · weekly "explain it" drill · code walkthrough rehearsal · cheat sheet per member | all |
+| **R18** | **Sprint contribution is real but undocumented**, so the individual 10% is lost | 4 | 3 | 12 | Contribution logs due within 24 h · sprint review demo of your own work · recorded reviews · `hand:` commits · commit timeline visible across the project | all |
+| **R19** | **The live demo fails on the day** — device, network, projector or payment gateway | 3 | 5 | **15** | Recorded backup on the device *and* a USB stick · environment checklist ([doc 11 §6](11-APP-IMPLEMENTATION-VIVA.md)) · golden-path rehearsals including an injected failure · phone hotspot · nothing in the demo that has not been run 3× | M4 |
+| **R20** | **The app is unfinished at the must-pass gate** | 3 | 5 | **15** | Tier A feature freeze (30 Nov) · daily build health check · golden-path regression 3×/week from S3 · cut-line sacrifices Figma before app scope | M3 |
 
-**The two risks that will actually decide the grade: R1/R2 (prototype completeness) and R3 (the live AI demo).** Everything else is manageable.
+**The three risks that will actually decide the outcome: R20 (app unfinished), R17 (someone cannot explain their feature) and R19 (the demo fails live).** All three sit inside the **60% must-pass** component — which is precisely where this plan concentrates its controls.
 
 ---
 
@@ -66,7 +71,8 @@ Each question materially affects the plan. **Every one has a safe default**, so 
 | **Q5** | **Should I install the Cline agent skills now?** ([doc 07 §3](07-CLINE-SKILLS-AND-TOOLING.md)) | They materially improve the quality of generated SwiftUI and Firebase code. | Not installed — waiting for your go-ahead |
 | **Q6** | Is iPad support required, or iPhone-only? | Changes layout work (2-column layouts, max-width rules) across ~141 frames. | **iPhone-first**, with layouts that survive a wider canvas |
 | **Q7** | How far should Arabic/RTL go — full localisation or a proof-of-concept? | Full RTL roughly doubles copy work and adds layout risk on every screen. | **Full RTL on the 12 hero screens** plus a documented plan for the rest |
-| **Q8** | Should the working SwiftUI app be built at all, or should we focus 100% on the graded Figma prototype? | The app is not graded, but it de-risks the demo and backs the Innovation claim. | **Build it** — it costs nothing extra because Cline writes it in parallel |
+| ~~Q8~~ | ✅ **RESOLVED — the app is the 60% must-pass component.** Earlier drafts of this plan wrongly treated it as optional, because the Design Document brief describes only two phases. The full assessment shows *iOS App Implementation & Demonstration = 60%, must pass*. | Priority inverted: app is the critical path; Figma is cut first if time runs short. | — |
+| **Q9** | **What are the official sprint boundaries, and when is the final demonstration / VIVA?** Neither is stated in the Design Document brief. | The proposed 5 × 2-week cadence ([doc 10 §3](10-SPRINT-PLAN.md)), the feature-freeze date, and the entire S5 plan depend on this. | The assumed cadence stands: S0–S5 as documented, feature freeze 30 Nov, VIVA assumed mid-December |
 
 ---
 
@@ -85,7 +91,11 @@ Stated explicitly, because an unstated assumption is where a plan breaks.
 9. **Usability testing uses 5 consenting classmates**, not external participants.
 10. **AI-generated content is a study aid, never assessed coursework** — the academic-integrity position in [doc 05 §8](05-DATA-MODEL-SECURITY.md).
 11. **The 10th of November onward is reserved for QA only** — no new design work after the freeze.
-12. **The tutor accepts a working SwiftUI app as supporting evidence** rather than scope creep (Q9 in the interview bank covers this).
+12. **The tutor accepts a working SwiftUI app as supporting evidence** for the design document's Innovation section (Q9 in the interview bank asks this directly).
+13. **The app is the 60% must-pass component** and is demonstrated **in person**, live, on a device — not by video. This is the single most important assumption in this document.
+14. **Sprints are five two-week sprints plus S0, aligned to the Design Document (22 Oct) and Prototype (12 Nov) deadlines.** The course does not publish sprint boundaries in the Design Document brief, so this is our proposed cadence — **confirm with the tutor (Q9)**.
+15. **Sprints are assessed per individual**, against both contribution and progress, and evidence is expected to be visible continuously rather than in one burst.
+16. **Feature freeze at 30 Nov** is our own risk control, not a course requirement — internal, but treated as binding.
 
 ---
 
