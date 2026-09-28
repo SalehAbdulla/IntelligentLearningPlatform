@@ -160,7 +160,56 @@ Rubric area e.
 
 ---
 
-## 9. Pre-submission audit — run this twice
+## 9. iOS App Implementation & Demonstration (60% — ⛔ MUST PASS)
+
+> Verbatim: *"iOS App Implementation & Demonstration (60%) – Group project implementation assessed through the completed iOS application and an in-person VIVA/demonstration."*
+> *"To pass the course, an aggregate mark of 60% must be achieved, and the iOS App Implementation & Demonstration is a Must Pass component."*
+
+**This is the highest-value section in this document.** Full detail: [doc 11](11-APP-IMPLEMENTATION-VIVA.md).
+
+| # | Requirement | Evidence | Owner | Status |
+|---|---|---|---|---|
+| app1 | All 15 features present and functional in the app | Tier A demo-solid; Tier B functional ([doc 11 §2](11-APP-IMPLEMENTATION-VIVA.md)) | all | ⬜ |
+| app2 | Runs on a **physical device** | Demo device with Apple Intelligence enabled | M1 | ⬜ |
+| app3 | Loading, empty, error and offline states implemented | Screen recordings of each state | all | ⬜ |
+| app4 | Real Firebase backend with server-enforced rules | Emulator rules tests passing, including negative tests | M1 | ⬜ |
+| app5 | AI pipeline works, with graceful degradation | Generation demo + the fallback screen behaviour | M2 | ⬜ |
+| app6 | Payments work in Tap sandbox; entitlement unlocks | Recorded sandbox payment + function logs | M3 | ⬜ |
+| app7 | Feature freeze respected from 30 Nov; no new features after | Commit history | M3 | ⬜ |
+| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script | M4 | ⬜ |
+| demo2 | Backup screen recording on device **and** USB | Recording file | M4 | ⬜ |
+| demo3 | Four demo accounts + demo content seeded and frozen | Verified accounts and data | M1 | ⬜ |
+| demo4 | Environment checklist executed before the demo | [doc 11 §6](11-APP-IMPLEMENTATION-VIVA.md) ticked | M4 | ⬜ |
+| viva1 | Every member can present a feature they did **not** build | Rotated presentations in S3–S5 reviews | all | ⬜ |
+| viva2 | Every member can explain **their own** feature from the code | Code walkthrough rehearsal | all | ⬜ |
+| viva3 | Traceability one-pager per member | `research/cheatsheets/<name>.md` | all | ⬜ |
+| viva4 | An honest answer prepared for *"what doesn't work?"* | [doc 11 §7](11-APP-IMPLEMENTATION-VIVA.md) | all | ⬜ |
+
+---
+
+## 10. Sprints (10% — individual)
+
+> Verbatim: *"Sprints (10%) – Individual assessment of each student's contribution and progress during the implementation of the group project."*
+
+Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks — one per member.** Nobody's score is raised by a strong teammate.
+
+| # | Requirement | Evidence | Location |
+|---|---|---|---|
+| s1 | Contribution in **every** sprint, by **every** member | The [doc 10 §4](10-SPRINT-PLAN.md) allocation fulfilled | `research/sprints/` |
+| s2 | Contribution log written within 24 h, evidence-linked | Per-member logs | `research/sprints/sprint-N/<name>-contribution.md` |
+| s3 | Authored commits and PRs on owned features | `git log --author`, PR list | GitHub |
+| s4 | Sprint review demo of **your own** work | Recorded reviews / screenshots | `research/sprints/` |
+| s5 | Test logs for the features you are the named tester of | Test logs per [doc 02 §7](02-FEATURE-LIST-OWNERSHIP.md) | `research/testing/` |
+| s6 | Review notes on AI-generated code, with your corrections | Review notes + the fixing commit | `research/reviews/` |
+| s7 | Comprehension contract honoured (rules 1–6) | `hand:` commits · walkthrough recordings · cheat sheets | [doc 10 §9](10-SPRINT-PLAN.md) |
+| s8 | Progress visible **across** the project, not one end-of-sprint burst | Commit timeline | GitHub |
+| s9 | Sprint retro recorded with one keep / one change | Retro notes | `research/sprints/sprint-N/retro.md` |
+
+> **The trap to avoid:** with Cline writing code, a member can easily finish a project with real contribution but **no attributable evidence**. Requirements s2, s4 and s7 exist specifically to prevent that — and they must be maintained continuously, because a back-filled log is obvious and reads as fabricated.
+
+---
+
+## 11. Pre-submission audit — run this twice
 
 ### Gate 1 · Design Document (before 21 Oct)
 
@@ -195,9 +244,22 @@ Rubric area e.
 
 ---
 
-## 10. Self-marking projection
+## 12. Self-marking projection
 
-Fill this in honestly at each gate. Any area below its target is where the next hour should go.
+### 12.1 Course level — what actually determines the outcome
+
+| Component | Weight | Target | Must pass | Current |
+|---|---|---|---|---|
+| Individual App | 10% | complete | — | ✅ done |
+| Design Document | 10% | 9.0 | — | |
+| Prototype (Figma) | 10% | 7.0 | — | |
+| Sprints *(individual — score yourself honestly)* | 10% | 8.0 | — | |
+| **iOS App Implementation & Demonstration** | **60%** | **48+ (80%)** | ⛔ **Yes** | |
+| **Aggregate** | **100%** | **≥ 72** | — | |
+
+**Why these targets:** an aggregate of ~72 gives comfortable headroom over the 60% pass bar, and the app target is set at **80%** deliberately — it is both the largest component *and* the gate, so it deserves the highest target rather than an "average" one.
+
+### 12.2 Design Document sub-areas
 
 | Rubric area | Max | Target | Current | Gap |
 |---|---|---|---|---|
@@ -207,7 +269,6 @@ Fill this in honestly at each gate. Any area below its target is where the next 
 | Design Doc · Innovation | 2 | 2 | | |
 | Design Doc · Organisation & Presentation | 2 | 2 | | |
 | **Design Document total** | **20** | **19.5** | | |
-| Project Prototype | 20 | 19 | | |
 
 > **Reality check on the mockup target:** 8/8 is realistic **only if** every screen has a written description with labelled, explained UI elements — that is where most groups lose 2–3 of those 8 marks. The descriptions in [doc 03](03-SCREEN-INVENTORY.md) exist precisely to make that achievable without last-minute writing.
 
