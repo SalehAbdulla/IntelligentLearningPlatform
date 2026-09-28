@@ -34,21 +34,57 @@ The brief contains **four explicit success pillars**. Every feature must serve a
 
 ---
 
-## 3. Grading strategy — the three-track model
+## 3. Grading strategy — corrected priorities
+
+### 3.1 The real assessment model
+
+| # | Component | Weight | Type | Must pass? |
+|---|---|---|---|---|
+| 1 | Individual App | 10% | Individual | — |
+| 2 | Design Document | 10% | Group | — |
+| 3 | Prototype (Figma) | 10% | Group | — |
+| 4 | **Sprints** | **10%** | **Individual** | — |
+| 5 | **iOS App Implementation & Demonstration** | **60%** | Group | ⛔ **MUST PASS** |
+
+**Pass conditions — both required:** aggregate **≥ 60%**, **and** the **60% iOS App Implementation & Demonstration passed**.
+
+### 3.2 Correction: an earlier assumption in this plan was wrong
+
+Earlier drafts treated the working app as optional and made Figma the critical path. That was based on the *Project Design Document brief*, which describes only two phases — design document and Figma prototype. **That brief covers 20% of the course; it is not the whole assessment.**
+
+The corrected position: the working iOS application plus the in-person VIVA is **60% of the course and a hard gate on passing**. Every priority in this plan flows from that.
+
+### 3.3 The four workstreams, ranked
+
+| Rank | Workstream | Weight | Effort share | Strategy |
+|---|---|---|---|---|
+| **1** | **Working iOS app + VIVA** | **60% · must pass** | ~50% | Build a genuinely complete, working app that runs on a real device. Every member must be able to explain and modify any feature. This is not a mockup exercise — it is the course. |
+| **2** | **Sprints (individual)** | 10% | ~20% | Continuous, per-person, timestamped evidence of contribution and progress. The only component a teammate cannot carry for you. |
+| **3** | **Design Document** | 10% | ~15% | Front-load to the 22 Oct deadline, then close it. Four of five rubric areas need only discipline, not design skill. |
+| **4** | **Figma Prototype** | 10% | ~15% | Must cover every feature and be genuinely interactive — but do **not** gold-plate 141 frames for 10%. |
+
+### 3.4 Critical path
 
 ```
-TRACK A  Design Document      (due 22 Oct)  ── hard gate, 10%
-TRACK B  Figma Prototype      (due 12 Nov)  ── hard gate, 10%   ← CRITICAL PATH
-TRACK C  Working SwiftUI app  (continuous)  ── not graded; de-risks demo + backs the Innovation claim
+CRITICAL PATH (must pass)   App implementation → integration → real-device demo → in-person VIVA
+PARALLEL, HARD DEADLINES    Design Document (22 Oct)  ·  Figma Prototype (12 Nov)
+CONTINUOUS, INDIVIDUAL      Sprint contribution evidence
 ```
 
-| Track | Weight | Strategy |
+The design system remains a shared asset: Figma variables and `DesignSystem.swift` come from one token list ([doc 06](06-DESIGN-SYSTEM.md)), so the prototype and the app cannot drift. That is still an Innovation talking point — but it is now a *convenience*, not the critical path.
+
+### 3.5 Effort re-allocation — what changes
+
+| Area | Previous plan | Corrected plan |
 |---|---|---|
-| **A · Design Document** | 10% | Front-load. Four of the five rubric areas (research, feature list, innovation, organisation) need **no design skill** — only discipline. Mockups (8 marks, the largest single block) get the most time. Submit with a 24-hour buffer. |
-| **B · Figma Prototype** | 10% | Follow the **frame-naming rule exactly** (`Login_Ahmed_2022XXXXX`). Build the **89 P0 frames** first, then sweep the 51 P1 state screens. Test with 5 real users. Export the `.fig` **and** the URL. |
-| **C · Working App** | — | Built by Cline in parallel. Feeds the demo viva ("show me it isn't just a mockup") and supplies real screenshots for the document's Innovation section. |
+| Working app | Optional extra | **Primary deliverable.** Every one of the 15 features must actually function, with loading, empty, error and offline states |
+| Figma prototype | 141 frames, 89 "committed" | **Reduced.** Target the 89 P0 frames; a **linked-coverage set of ~55 frames** (all 15 features' happy paths, fully wired) is the acceptable floor at this weight |
+| VIVA preparation | A final phase | **Starts in Sprint 1.** Comprehension is built as features are built, not crammed at the end |
+| Sprints | Not addressed at all | **New workstream** with its own doc, cadence and evidence rules ([doc 10](10-SPRINT-PLAN.md)) |
+| Advanced feature F15 | Headline innovation | **Stays, but strictly de-risked.** Core features must be demo-solid *before* F15 is polished — a broken core with a clever advanced feature fails the must-pass gate |
 
-**Sequencing rule:** Track B's design system is derived from Track C's SwiftUI design tokens (one source of truth, `DesignSystem.swift`), so the Figma file and the app can never drift. This is itself an Innovation talking point.
+> **The single most dangerous failure mode in this project:** spending six weeks on Figma and documentation (20%) while the app (60%, must pass) is unfinished. The cut-line protocol in [doc 01 §14](01-ROADMAP-PHASES-TODOLIST.md) now sacrifices Figma work **first** if time runs short — the opposite of the earlier plan.
+
 
 ## 4. Easy-to-lose marks (found by reading the brief closely)
 
