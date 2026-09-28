@@ -1,46 +1,59 @@
 # 01 — Roadmap, Phases & Todolist
 
 > **StudyForge** · the guide and roadmap for building the whole project.
-> Deadline 1: **Thu 22 Oct 2026, 23:55** — Design Document · Deadline 2: **Thu 12 Nov 2026, 23:55** — Prototype.
+> **Fixed deadlines:** Design Document **Thu 22 Oct 2026, 23:55** · Prototype (`.fig` + link) **Thu 12 Nov 2026, 23:55**.
+> **Must pass:** the iOS App Implementation & Demonstration (**60%**) — see [doc 11](11-APP-IMPLEMENTATION-VIVA.md).
 
 ---
 
 ## 1. The calendar
 
-Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document and **6.5 weeks** to the Prototype. Weeks run Monday → Sunday.
+Today is **Mon 28 Sep 2026**. Work is organised as **five two-week sprints plus S0**. The Design Document deadline falls inside S2; the Prototype deadline falls inside S3 — both are fixed constraints *inside* a sprint, never reasons to pause app work.
 
-| Week | Dates | Primary focus | Gate at end of week |
-|---|---|---|---|
-| **W0** | Mon 28 Sep – Sun 4 Oct | Setup, identity, research start, tutor interview booked | Identity frozen |
-| **W1** | Mon 5 Oct – Sun 11 Oct | Research, feature list, ownership, flows | **Feature list signed off** |
-| **W2** | Mon 12 Oct – Sun 18 Oct | Low-fi mockups (bulk), design system, hi-fi starts | 60% of P0 frames drawn |
-| **W3** | Mon 19 Oct – Sun 25 Oct | Document assembly → **SUBMIT 22 Oct** | 🚩 **Design Document submitted** |
-| **W4** | Mon 26 Oct – Sun 1 Nov | Hi-fi prototype continues, app foundation merged | All P0 frames hi-fi |
-| **W5** | Mon 2 Nov – Sun 8 Nov | Wiring, states, usability test, payments, polish | **Prototype feature-complete** |
-| **W6** | Mon 9 Nov – Sun 15 Nov | QA, `.fig` export → **SUBMIT 12 Nov** | 🚩 **Prototype submitted** |
-| **W7+** | Mon 16 Nov onward | Demo & viva preparation | Demo rehearsed |
+| Sprint | Dates | Theme | Fixed constraint inside | Sprint exit gate (must demo) |
+|---|---|---|---|---|
+| **S0** | Mon 28 Sep – Sun 4 Oct | Foundation & requirements | — | App builds on device · Firebase live · feature table signed off · tokens frozen |
+| **S1** | Mon 5 Oct – Sun 18 Oct | **Core loop MVP** | — | Upload a real PDF → summary → 20 cards → review them, on a real device |
+| **S2** | Mon 19 Oct – Sun 1 Nov | **Assessment engine** | 🚩 **Design Document 22 Oct** | Generate + take a quiz · plan generated · dashboard populated from real data |
+| **S3** | Mon 2 Nov – Sun 15 Nov | **Collaboration & monetisation** | 🚩 **Prototype 12 Nov** | Two accounts share a folder · live group quiz on 2 devices · Tap sandbox payment succeeds |
+| **S4** | Mon 16 Nov – Sun 29 Nov | **Intelligence & polish** | — | Coach answers with citations · offline mode · RTL · accessibility pass |
+| **S5** | Mon 30 Nov – Sun 13 Dec | **Hardening & VIVA** | ⛔ **Feature freeze 30 Nov** | Golden path passes 3× · demo rehearsed · every member presents an unowned feature |
 
-**Weekly rhythm (non-negotiable):** Monday 20-minute stand-up → midweek async check-in → Sunday 45-minute review against the gate. Every meeting minuted in `research/meeting-notes/`.
+> ⚠️ **Sprint boundaries and the final demo/VIVA date are not specified in the Design Document brief.** These are **assumptions to confirm with the tutor in the first interview** ([§4](01-ROADMAP-PHASES-TODOLIST.md)). Adjust this table if the course defines its own sprints.
+
+**Weekly rhythm (non-negotiable):** Monday sprint planning → daily async stand-up → Thursday mid-sprint check → Sunday review & demo (every member demos their **own** work) → retrospective. Minutes in `research/meeting-notes/`; sprint artefacts in `research/sprints/sprint-<N>/`.
 
 ---
 
-## 2. Phase overview
+## 2. Sprint and phase overview
 
-| Phase | Name | Window | Owner | Exit gate |
-|---|---|---|---|---|
-| **0** | Setup & Project Identity | W0 (28 Sep – 4 Oct) | M1 | Name, logo, palette, team roster, tooling frozen |
-| **1** | Research & Discovery | W0–W1 (30 Sep – 8 Oct) | M4 | Evidence dossier + tutor interview complete |
-| **2** | Feature Definition & Ownership | W1 (5 – 9 Oct) | M3 | Master feature table signed off by all 4 |
-| **3** | IA, Flows & Low-Fidelity Mockups | W1–W2 (7 – 16 Oct) | M2 | 89 P0 frames drawn; every flow diagrammed |
-| **4** | Design Document Assembly → **GATE 1** | W2–W3 (14 – 21 Oct) | M1 | 🚩 PDF submitted 22 Oct with 24 h buffer |
-| **5** | Design System & High-Fidelity Prototype | W2–W5 (12 Oct – 8 Nov) | M2 | All P0+P1 frames hi-fi and linked |
-| **6** | iOS App Foundation (SwiftUI) | W2–W4 (12 Oct – 1 Nov) | M3 | App runs, auth + navigation + empty shells of all 15 features |
-| **7** | Firebase Backend, Security & AI Pipeline | W3–W5 (19 Oct – 8 Nov) | M1 | Rules deployed, AI router live on all three tiers |
-| **8** | Payments, Accessibility, Offline & Polish | W5 (2 – 8 Nov) | M3 | Sandbox payment succeeds; RTL + AX3 verified |
-| **9** | Prototype QA, Usability Test → **GATE 2** | W5–W6 (2 – 11 Nov) | M4 | 🚩 `.fig` + URL submitted 12 Nov |
-| **10** | Demo Readiness & Viva Preparation | W6+ (9 – 15 Nov+) | all | Every member can present any feature |
+| Sprint | Dates | Primary workstreams | Leads |
+|---|---|---|---|
+| **S0** | 28 Sep – 4 Oct | Setup & identity · research & discovery · feature definition | M1, M4, M3 |
+| **S1** | 5 – 18 Oct | Low-fi mockups · design system · **app core loop (F01–F04)** | M2 (Figma), M1 + M2 (app) |
+| **S2** | 19 Oct – 1 Nov | Design Document → **SUBMIT 22 Oct** · **assessment engine (F05–F08, F12, F14)** | M1 (doc), M2, M3, M4 |
+| **S3** | 2 – 15 Nov | Hi-fi prototype → **SUBMIT 12 Nov** · **collaboration & payments (F09, F13, F11)** | M4 (Figma), M3 (payments), M2 |
+| **S4** | 16 – 29 Nov | **Advanced feature F15** · offline · RTL · accessibility · dark mode | M2 + M3, M4 |
+| **S5** | 30 Nov – 13 Dec | Hardening · regression · **VIVA preparation** | all |
 
-**Critical path:** Phase 3 (mockups) → Phase 5 (hi-fi) → Phase 9 (wiring/QA) → Gate 2. Phases 6–8 (the working app) are **parallel and non-blocking** — they must never delay the Figma track.
+**Critical path — corrected:**
+
+```
+MUST PASS (60%)   App core loop → assessment engine → collaboration → polish → real-device demo → VIVA
+PARALLEL (10% ea) Design Document (22 Oct)   ·   Figma Prototype (12 Nov)
+CONTINUOUS (10%)  Individual sprint contribution evidence
+```
+
+**The app is the critical path.** Figma and document work run *alongside* it and must never block it. If app work slips, **Figma scope is cut first** — see the cut-line protocol in §14.
+
+**Cross-reference:** the per-sprint, per-member task allocation lives in [doc 10 §4](10-SPRINT-PLAN.md) and the demo/VIVA rules in [doc 11](11-APP-IMPLEMENTATION-VIVA.md). The phase details below remain valid as *workstream* definitions; their timing is now governed by the sprint table above.
+
+---
+
+## 3. Phase details (workstream definitions)
+
+> Sections 3–13 below define **what** each phase must produce. The **when** comes from the sprint table in §1. Read them as workstream specifications, not as a strictly sequential waterfall.
+
 
 ---
 
@@ -304,23 +317,26 @@ Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document an
 
 ---
 
-## 14. If we fall behind — the cut-line protocol
+## 14. If we fall behind — the cut-line protocol (corrected)
 
-Ranked order of sacrifice. Cut from the **bottom** only, and record the decision.
+Ranked order of sacrifice. Cut from the **bottom**, record the decision, and never quietly drop anything.
 
-| Priority | Item | Never cut? |
-|---|---|---|
-| 1 | 89 P0 frames drawn, described and **linked** | ✅ Never |
-| 2 | The Design Document's five rubric areas | ✅ Never |
-| 3 | Frame naming compliance | ✅ Never |
-| 4 | Error / empty / offline / success state screens | Strongly prefer not |
-| 5 | P1 frames | Cut only in the final 48 h |
-| 6 | Working app: payments sandbox | Convert to a documented "designed + partially implemented" |
-| 7 | Working app: live group quiz | Convert to a recorded demo |
-| 8 | Working app: voice quiz mode | Drop; document as roadmap |
-| 9 | F15 advanced feature implementation | Keep the **design**; reduce the implementation |
+| Priority | Item | Component weight | Cut from here |
+|---|---|---|---|
+| 1 | **Tier A app features demo-solid on a real device** | **60% · must pass** | ⛔ **Never** |
+| 2 | **Golden path rehearsed + backup recording** | 60% · must pass | ⛔ **Never** |
+| 3 | **Individual sprint contribution evidence** | 10% · individual | ⛔ **Never** |
+| 4 | **Design Document's five rubric areas** | 10% · fixed deadline | ⛔ **Never** |
+| 5 | All 15 features linked in Figma + naming compliance | 10% | ⛔ Never |
+| 6 | P1 state frames (51 of 141) | 10% | **First** |
+| 7 | Tier B feature polish (function stays, shine goes) | 60% | **Second** |
+| 8 | Figma visual polish, dark-mode variants, hero screens | 10% | **Third** |
+| 9 | Tier C stretch (voice quiz, PencilKit annotation) | — | **Fourth** |
+| 10 | Documentation beyond what the rubric asks for | — | **Fifth** |
 
-> **The one rule:** the Figma prototype and the design document are the only graded artefacts. If time runs short, **Track A and Track B win every argument**.
+> **The one rule:** the app (**60%, must pass**) outranks everything. If a day has to be sacrificed, it is sacrificed from Figma — **never** from the app, the demo rehearsal, or the sprint evidence.
+>
+> This is the **exact opposite** of the earlier draft of this plan, which made Figma the critical path. The correction is deliberate and worth stating to the marker if asked: with the app at 60% and gating the course, optimising for the 10% Figma artefact would have been the wrong call.
 
 ---
 
