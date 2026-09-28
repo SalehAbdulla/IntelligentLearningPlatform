@@ -198,7 +198,7 @@ Ordered to map 1:1 onto the rubric, so a marker can find every mark without hunt
 | 13 | **Innovation** — the 10 items in *Problem → Idea → Feasibility → Evidence* form | 2.5 | **Innovation (2)** | M2 |
 | 14 | **Technical architecture** — stack, AI router, cost model, security, payments | 2.5 | Innovation (2) | M3 |
 | 15 | **Accessibility & inclusiveness statement** | 1 | Innovation (2) + SDG 10 | M4 |
-| 16 | **Professional ethics & compliance** — Apple 3.1.1, GDPR-style privacy, data retention, academic-integrity policy for AI, human-in-the-loop review | 1.5 | Innovation (2) + **LO3** | M5 |
+| 16 | **Professional ethics & compliance** — Apple 3.1.1, GDPR-style privacy, data retention, academic-integrity policy for AI, human-in-the-loop review | 1.5 | Innovation (2) + **LO3** | M3 |
 | 17 | **Testing & validation** — usability test with 5 users, results, changes made | 1.5 | Organisation (2) | M4 |
 | 18 | **References** — Harvard style | 1 | Background Research (4) | M2 |
 | 19 | **Appendix** — Figma link, prototype `.fig` note, feature-to-screen traceability matrix | 1.5 | Organisation (2) | M3 |
