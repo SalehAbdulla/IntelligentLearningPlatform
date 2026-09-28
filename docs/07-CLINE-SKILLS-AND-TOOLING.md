@@ -9,7 +9,7 @@
 | Sense | What it means | Where it is captured |
 |---|---|---|
 | **A · Agent skills** | Capability packs installed into Cline so it can build SwiftUI + Firebase correctly | §2 and §3 below |
-| **B · Human skills** | The competencies the 5 team members must each demonstrate to present any part of the app (brief requirement) | §4 below |
+| **B · Human skills** | The competencies the 4 team members must each demonstrate to present any part of the app (brief requirement) | §4 below |
 
 ---
 
@@ -154,10 +154,10 @@ The brief requires that **every member can present and explain any part of the a
 | **Figma prototyping: links, Smart Animate, overflow** | Gate 2 | M4 | Can wire a flow end to end |
 | **UI/UX principles (Nielsen, WCAG 2.2, Fitts's law)** | LO1 + the document | M4 | Can justify a design decision with a named principle |
 | **Visual design (grid, type scale, colour, contrast maths)** | The whole look | M1 | Can state why white-on-ember fails AA |
-| **Payments (Tap Payments, StoreKit, PCI basics)** | F13 | M5 | Can explain why the webhook is the source of truth |
-| **Cloud Functions** | Webhooks, aggregation | M5 | Can explain what runs server-side and why |
+| **Payments (Tap Payments, StoreKit, PCI basics)** | F13 | M3 | Can explain why the webhook is the source of truth |
+| **Cloud Functions** | Webhooks, aggregation | M3 | Can explain what runs server-side and why |
 | **Testing (Swift Testing, emulator, rules tests)** | Gate 2 QA | M4 | Can write and run a negative security-rules test |
-| **Privacy & professional ethics** | LO3 + the document | M5 | Can explain the Apple 3.1.1 conflict |
+| **Privacy & professional ethics** | LO3 + the document | M3 | Can explain the Apple 3.1.1 conflict |
 | **Technical writing + Harvard referencing** | Both deliverables | M2 | Can write a rubric-aligned section |
 | **Git + PR workflow** | LO3 authorship evidence | M3 | Can open a clean PR with test evidence |
 | **Presentation** | The viva | all | Can present a feature they did **not** build |
