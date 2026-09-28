@@ -1,0 +1,11 @@
+StudyForge — Figma prototype link
+=================================
+
+Shared view link : PASTE-THE-FIGMA-SHARED-URL-HERE
+Link permission  : Anyone with the link -> Can view
+Starting frame   : 01_Splash_Logo_<FirstName>_<StudentID>
+File version     : .fig exported to this folder
+Exported on      : <date>
+
+Verification: open the link in a private browser window and confirm all
+frames and prototype links are visible without signing in.
