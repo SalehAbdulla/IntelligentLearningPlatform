@@ -78,6 +78,7 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 | [09 — Risks & Open Questions](docs/09-RISKS-OPEN-QUESTIONS.md) | Risk register, decision log, questions awaiting answers |
 | [10 — Sprint Plan](docs/10-SPRINT-PLAN.md) | The **individual 10%**: sprint cadence, per-member tasks, contribution evidence |
 | [11 — App Implementation & VIVA](docs/11-APP-IMPLEMENTATION-VIVA.md) | The **60% must-pass**: MVP scope, demo script, VIVA prep, must-pass risk control |
+| [12 — Git Workflow](docs/12-GIT-WORKFLOW.md) | **Branches, per-file commits, PRs** — the tutor's stated requirement, plus `tools/commit.sh` |
 
 ---
 
