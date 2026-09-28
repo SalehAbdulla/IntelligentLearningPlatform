@@ -19,23 +19,24 @@ Read the sentence closely — three words carry the whole design of this documen
 
 ---
 
-## 2. The uncomfortable truth this component creates
+## 2. What counts as your contribution
 
-Cline writes the code. **Sprints assess what *you* did.** If the honest answer is "I prompted an AI," then a 10% component evaporates and — far worse — the 60% must-pass VIVA becomes very hard, because a marker can ask *"show me the code for your feature and explain this line."*
+**The tutor has confirmed that using AI to write code is acceptable.** So the question is no longer *"did you write this by hand?"* — it is *"is there attributable work of yours around it, and can you defend it?"*
 
-So this plan defines contribution as the work that is genuinely the team's:
+What the tutor **does** require: a branch-based workflow with meaningful, well-scoped commits, pushed regularly ([doc 12 — Git Workflow](12-GIT-WORKFLOW.md)).
 
 | Counts as your contribution | Does **not** count |
 |---|---|
 | Writing the specification, flow and acceptance criteria for your feature | Typing a prompt and accepting the output unread |
-| **Reviewing and correcting** AI-generated code, with your corrections documented | Commits that only reformat or rename files |
-| Hand-writing the parts that matter (scheduling maths, SM-2 intervals, security rules, state machines) | A single large commit at the sprint deadline |
+| **Reading, reviewing and correcting** generated code, with your corrections documented | Commits that only reformat or rename files |
+| Writing the parts that matter by hand (scheduling maths, SM-2 intervals, security rules, state machines) | A single large commit at the sprint deadline |
+| A **branch per feature with meaningful per-file commits**, pushed daily | Committing straight to `main`; `git commit -am "updates"` |
 | Being the named **tester** for a feature and producing a real test log | "Attended the meeting" with no artefact |
 | Debugging an integration failure to root cause | Work you cannot explain on demand |
 | Authoring Figma frames named with your own student ID | Duplicated work a teammate already did |
 | Writing documentation, references and test evidence | Anything you could not demo live |
 
-> **The comprehension contract (§9) exists to make this real rather than cosmetic.** It is not busywork — it is the mechanism that turns "Cline wrote it" into "I own it, I can explain it, and I can change it."
+> **The comprehension contract (§9) makes this real rather than cosmetic.** It is not busywork — it is the mechanism that turns "the AI wrote it" into "I own it, I can explain it, and I can change it."
 
 ---
 
@@ -196,20 +197,24 @@ A sprint counts as complete only when **all** of these hold:
 
 ## 9. The comprehension contract
 
-This is the most important rule in the project, because it protects both the individual 10% and the must-pass 60%.
+**Corrected framing — the tutor has confirmed that using AI to write code is acceptable.** So this contract is *not* about proving you hand-wrote anything. It addresses the risk that remains:
 
-**The risk it addresses:** if Cline writes the code and nobody reads it, then come the VIVA a marker can ask *"open your feature's view model and explain what this function does"* — and the answer "the AI wrote it" fails a must-pass component. The comprehension contract prevents that by making understanding a *gate on merging*, not an afterthought.
+> **The risk:** AI writes code fast. If nobody reads it, then in the VIVA a marker can say *"open your feature's view model and explain this function"* — and "the AI wrote it" fails a **must-pass** component. The tutor's permission removes the *authorship* problem. It does **not** remove the *understanding* requirement.
+
+What the tutor **does** require: branches, meaningful commits, and regular pushes ([doc 12 — Git Workflow](12-GIT-WORKFLOW.md)).
 
 | # | Rule | Enforced by |
 |---|---|---|
-| 1 | **No PR is merged for a feature you cannot explain.** Every PR description must contain a 3-sentence plain-English summary of what the code does and why. | PR template |
-| 2 | **Hand-modify your own feature at least once per sprint** without Cline — change a label, fix a bug, adjust a layout, add a validation rule. | Commit labelled `hand:` |
-| 3 | **Weekly "explain it" drill (15 min):** one member opens *another* member's feature and explains it from the code, unprompted. | Rotation, logged |
-| 4 | **Record a 2-minute walkthrough of your own feature each sprint**, narrating what it does and how it works. | `research/sprints/sprint-N/` |
-| 5 | **Maintain a one-page "my feature" cheat sheet:** purpose · key files · data touched · the hard parts · known limitations. | `research/cheatsheets/<name>.md` |
-| 6 | **Be able to name the trade-offs** in your feature — what you chose, what you rejected, and why. | Cheat sheet + rehearsal |
+| 1 | **Disclose AI use on every PR** — which tool, for what. Permitted, but it must be stated. | PR template |
+| 2 | **Read and review every generated line before it is committed.** Record what you corrected. | `research/reviews/` |
+| 3 | **No PR is merged for code you cannot explain.** Every PR body carries a 3-sentence plain-English explanation of what the code does and why. | PR template |
+| 4 | **Change something yourself each sprint** — a label, a bug, a layout, a validation rule. Not because hand-writing is required, but because **making a change is the fastest way to actually understand code**. | commit tagged `hand:` |
+| 5 | **Weekly "explain it" drill (15 min):** one member opens *another* member's feature and explains it from the code, unprompted. | rotation, logged |
+| 6 | **Record a 2-minute walkthrough of your own feature each sprint**, narrating what it does and how. | `research/sprints/sprint-N/` |
+| 7 | **Maintain a one-page cheat sheet:** purpose · key files · data touched · hard parts · limitations. | `research/cheatsheets/<name>.md` |
+| 8 | **Be able to name the trade-offs** — what you chose, what you rejected, and why. | cheat sheet + rehearsal |
 
-**Why rule 5 matters most:** in the VIVA, a marker asking "explain any part of the app" is really testing whether you know *where things live and why*. A cheat sheet per member turns that from a risk into an advantage.
+**Why rules 7 and 8 matter most:** in the VIVA, "explain any part of the app" is really testing whether you know *where things live and why*. A cheat sheet per member turns that from a risk into an advantage.
 
 ---
 
@@ -220,7 +225,9 @@ This is the most important rule in the project, because it protects both the ind
 | One member does most of the work; others have thin evidence | The §4 allocation table guarantees every member owns features in every sprint. The Monday stand-up asks each person for their own tasks |
 | Contribution is real but undocumented | Contribution logs are due within 24 h and are part of the sprint's definition of done |
 | End-of-sprint commit dumps look fabricated | Work in small commits daily; the review requires a live demo of your own work |
-| A member can't explain their feature at review | Rules 1–4 of the comprehension contract catch this from sprint 1, not at the VIVA |
+| A member can't explain their feature at review | Rules 2–6 of the comprehension contract catch this from sprint 1, not at the VIVA |
 | Sprint dates assumed wrongly | Confirm both cadence and the demo date with the tutor in the first interview |
-| Cline does the work, so no one has real contribution | Rules 2 and 3 force genuine engineering activity, and the §2 table defines what legitimately counts |
+| AI writes the code, so contribution feels intangible | §2 defines exactly what legitimately counts, and the branch/commit workflow in [doc 12](12-GIT-WORKFLOW.md) turns it into timestamped, attributable evidence |
+| **Commits go straight to `main`, or carry meaningless messages** — directly missing the tutor's stated requirement | `tools/commit.sh` refuses protected branches and rejects non-conventional messages · [doc 12](12-GIT-WORKFLOW.md) §3 golden rules · sprint review checks the branch list |
+| **One member's branch history shows almost no commits** | Daily-push rule (golden rule 4); the `git log --author` check in [doc 12 §9.1](12-GIT-WORKFLOW.md) surfaces it before the review |
 

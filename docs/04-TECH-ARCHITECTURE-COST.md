@@ -300,13 +300,23 @@ ios/StudyForge/
 
 ### Git conventions
 
+**Full workflow: [doc 12 — Git Workflow](12-GIT-WORKFLOW.md).** Summary — the tutor requires a branch-based workflow with meaningful, well-scoped commits.
+
 | Item | Convention |
 |---|---|
-| Branch | `feat/F03-summary-generation`, `fix/F13-tap-webhook-idempotency` |
-| Commit | Conventional Commits — `feat(F04): SM-2 interval calculation` |
-| PR | Must state: feature ID · screens touched · rubric row affected · test evidence |
-| Tags | `design-doc-v1` (21 Oct), `prototype-v1` (11 Nov), `demo-v1` |
-| Protected | `main` — no direct pushes; every change via PR so authorship is provable for the LO3 documentation |
+| **Branch model** | `main` (stable, protected) ← `develop` (integration, protected) ← `feat/Fxx-slug` · `fix/slug` · `docs/slug` · `chore/slug` |
+| **Never** | Commit directly to `main` or `develop` — always via branch + PR |
+| **Branch naming** | `feat/F04-sm2-scheduling` — feature branches **must** carry the feature ID |
+| **Commit granularity** | **One file per commit** wherever the change is separable |
+| **Commit message** | Conventional Commits — `feat(F04): implement SM-2 interval calculation` |
+| **Push cadence** | At least once a day while working (continuous progress evidence) |
+| **PR** | Base `develop` · uses `.github/PULL_REQUEST_TEMPLATE.md` · reviewed by the feature's named **tester** |
+| **Merge** | Preserve the per-file commits — do **not** squash a feature branch into one commit |
+| **Helper tools** | `tools/commit.sh` (enforces rules 1, 2, 3, 6) · `tools/new-branch.sh` |
+| **Tags** | `design-doc-v1` (21 Oct), `prototype-v1` (11 Nov), `demo-v1` |
+| **Protected** | `main` and `develop` — PR required, no force-push, no deletion |
+
+**Why this is more than tidiness:** git history is the primary evidence for the **Sprints (10%, individual)** component, and it is what makes a feature traceable in the **60% must-pass VIVA**. A marker can run `git log --grep="F04"` or `--author="Saleh"` and see the work — that is worth more than any written claim.
 
 ### Build & run commands
 
