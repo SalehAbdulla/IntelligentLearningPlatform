@@ -30,15 +30,17 @@
 
 ## Team
 
+**4 members — group size approved by the tutor.** (The brief's default is 5; the tutor has confirmed 4 is acceptable for this group.)
+
 | Handle | Name | Student ID | Team role | Features owned | Frame suffix |
 |---|---|---|---|---|---|
-| **M1** | **Saleh Abdulla** | `202300540` | Data & Auth lead | F01, F02, F14 | `Saleh_202300540` |
-| **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML lead | F03, F04, F05, **F15 (co)** | `Mohammed_202401702` |
-| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Scheduling lead | F06, F07, **F15 (co)** | `Tasbeeh_202300549` |
-| **M4** | **Shahad Ashoor** | `202305767` | UI/UX & Collaboration lead | F08, F09, F10 | `Shahad_202305767` |
-| **M5** | `{{TBC — 5th member}}` | `{{2022xxxxx}}` | Payments, Tutor & Admin lead | F11, F12, F13 | `{{TBC}}` |
+| **M1** | **Saleh Abdulla** | `202300540` | Data, Auth & Admin lead | F01, F02, F14 | `Saleh_202300540` |
+| **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` |
+| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` |
+| **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` |
 
-> ⚠️ **The brief requires exactly 5 members.** Four are confirmed; **M5 is an open slot** that must be resolved with the tutor. Contingency and redistribution plan: [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
+All placeholder names have been replaced. The former M5 workstream (F11/F12/F13) was redistributed by adjacency — see [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
+
 
 ---
 
@@ -89,5 +91,5 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 - ✅ Tech stack + $0 cost model researched and confirmed
 - ✅ App name, tagline, logo direction, palette proposed
 - ⬜ App identity frozen
-- ⬜ Team names/IDs inserted (placeholders `M1–M5` currently in use)
+- ✅ Team names/IDs inserted — 4 members, group size approved by the tutor
 - ⬜ Cline agent skills installed
