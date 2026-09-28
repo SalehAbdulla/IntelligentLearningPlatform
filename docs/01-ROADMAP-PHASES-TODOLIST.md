@@ -30,13 +30,13 @@ Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document an
 |---|---|---|---|---|
 | **0** | Setup & Project Identity | W0 (28 Sep – 4 Oct) | M1 | Name, logo, palette, team roster, tooling frozen |
 | **1** | Research & Discovery | W0–W1 (30 Sep – 8 Oct) | M4 | Evidence dossier + tutor interview complete |
-| **2** | Feature Definition & Ownership | W1 (5 – 9 Oct) | M3 | Master feature table signed off by all 5 |
+| **2** | Feature Definition & Ownership | W1 (5 – 9 Oct) | M3 | Master feature table signed off by all 4 |
 | **3** | IA, Flows & Low-Fidelity Mockups | W1–W2 (7 – 16 Oct) | M2 | 89 P0 frames drawn; every flow diagrammed |
 | **4** | Design Document Assembly → **GATE 1** | W2–W3 (14 – 21 Oct) | M1 | 🚩 PDF submitted 22 Oct with 24 h buffer |
 | **5** | Design System & High-Fidelity Prototype | W2–W5 (12 Oct – 8 Nov) | M2 | All P0+P1 frames hi-fi and linked |
 | **6** | iOS App Foundation (SwiftUI) | W2–W4 (12 Oct – 1 Nov) | M3 | App runs, auth + navigation + empty shells of all 15 features |
 | **7** | Firebase Backend, Security & AI Pipeline | W3–W5 (19 Oct – 8 Nov) | M1 | Rules deployed, AI router live on all three tiers |
-| **8** | Payments, Accessibility, Offline & Polish | W5 (2 – 8 Nov) | M5 | Sandbox payment succeeds; RTL + AX3 verified |
+| **8** | Payments, Accessibility, Offline & Polish | W5 (2 – 8 Nov) | M3 | Sandbox payment succeeds; RTL + AX3 verified |
 | **9** | Prototype QA, Usability Test → **GATE 2** | W5–W6 (2 – 11 Nov) | M4 | 🚩 `.fig` + URL submitted 12 Nov |
 | **10** | Demo Readiness & Viva Preparation | W6+ (9 – 15 Nov+) | all | Every member can present any feature |
 
@@ -65,7 +65,7 @@ Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document an
 - [ ] `P0-15` Install the Cline agent skills in [doc 07](07-CLINE-SKILLS-AND-TOOLING.md)
 - [ ] `P0-16` Create the shared drive: `deliverables/`, `research/meeting-notes/`, `research/interviews/`
 - [ ] `P0-17` Register a **Tap Payments sandbox** account and request test keys (`pk_test_…`)
-- [ ] `P0-18` Confirm all 5 members have Xcode installed and can build the empty project
+- [ ] `P0-18` Confirm all 4 members have Xcode installed and can build the empty project
 
 **Exit gate:** identity frozen · roster filled · Firebase project live · Figma file ready · interview booked.
 
@@ -112,11 +112,11 @@ Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document an
 - [ ] `P2-03` Assign developers so **every member owns ≥2 features** and effort is visibly balanced
 - [ ] `P2-04` Assign testers using the rotation rule (nobody tests their own work)
 - [ ] `P2-05` Freeze the F15 advanced-feature spec and the `RetrievalService` / `CoachPlanningService` contracts
-- [ ] `P2-06` **All 5 members review and sign off** the feature table (record sign-off date)
+- [ ] `P2-06` **All 4 members review and sign off** the feature table (record sign-off date)
 - [ ] `P2-07` Map each feature → its screen IDs and its Firestore collections (traceability matrix)
 - [ ] `P2-08` Write 2–3 acceptance criteria per feature (these become the test cases in Phase 9)
 
-**Exit gate:** feature table signed off by all 5 · traceability matrix complete.
+**Exit gate:** feature table signed off by all 4 · traceability matrix complete.
 
 ---
 
@@ -174,7 +174,7 @@ Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document an
 - [ ] `P5-04` Upgrade Group A + B to high fidelity (M1)
 - [ ] `P5-05` Upgrade Group C (M1) and Groups D + E + F (M2)
 - [ ] `P5-06` Upgrade Group G (M3) and Group H, the advanced feature (M2 + M3)
-- [ ] `P5-07` Upgrade Group I (M4) and Groups J + K + L (M5)
+- [ ] `P5-07` Upgrade Groups I + K (M4), Group J (M2) and Group L (M3)
 - [ ] `P5-08` Upgrade Group M, the cross-cutting states (M1) — **these are the states the rubric explicitly asks for**
 - [ ] `P5-09` Build **light and dark** variants of at least the 10 hero screens
 - [ ] `P5-10` Build the **RTL Arabic** and **AX3 large-text** proof frames (`139`, `138`)
@@ -239,7 +239,7 @@ Today is **Mon 28 Sep 2026**. That gives **3.5 weeks** to the Design Document an
 
 ---
 
-## 11. Phase 8 — Payments, Accessibility, Offline & Polish · W5 · owner **M5**
+## 11. Phase 8 — Payments, Accessibility, Offline & Polish · W5 · owner **M3**
 
 **Goal:** the differentiators. These are the items that separate a competent submission from a memorable one — and they are all cheap to do *if* they are planned rather than bolted on.
 
