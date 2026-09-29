@@ -1,0 +1,47 @@
+# ===========================================================================
+#  .mailmap — canonicalise author identities
+# ===========================================================================
+#
+# WHY THIS FILE EXISTS
+#   `git shortlog`, `git log --format='%aN'` and other tooling show one entry
+#   per distinct author *string*. Without this file a single person appears as
+#   several, which splits their commit counts. The individual 10% sprint
+#   component is read off commit history, so identities must be canonical
+#   BEFORE a marker reads them.
+#
+# WHAT IT DOES AND DOES NOT DO
+#   It is a DISPLAY layer only. It does NOT rewrite history — a raw
+#   `git log --format='%ae'` still shows the original address. Use the
+#   mailmap-aware forms (`%aN`, `%aE` — capital letter) to see canonical values.
+#
+# FORMAT
+#   Canonical Name <canonical@email>  Alias Name <alias@email>
+#   Canonical Name <canonical@email>  <alias@email>
+#
+# TO ADD YOURSELF
+#   Add one line per alias you have committed under. Verify with:
+#       git shortlog -sne --all
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+#  M1 — Saleh Abdulla  (202300540)  — active
+# ---------------------------------------------------------------------------
+Saleh Abdulla <salehabdullaict@gmail.com> SalehAbdulla <144586926+SalehAbdulla@users.noreply.github.com>
+Saleh Abdulla <salehabdullaict@gmail.com> <202300540@student.example.edu.bh>
+Saleh Abdulla <salehabdullaict@gmail.com> <saleh@example.com>
+
+# ---------------------------------------------------------------------------
+#  M2 — Mohammed Almadhoon  (202401702)
+#  No commits yet. When he starts, add one line per alias, e.g.:
+#      Mohammed Almadhoon <his@email> <alias@email>
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#  M3 — Tasbeeh Saeed  (202300549)
+#  No commits yet. Same as above.
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#  M4 — Shahad Ashoor  (202305767)
+#  No commits yet. Same as above.
+# ---------------------------------------------------------------------------
