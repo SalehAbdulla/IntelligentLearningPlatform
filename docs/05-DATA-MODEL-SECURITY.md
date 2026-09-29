@@ -210,7 +210,7 @@ Three roles and one plan value are mirrored into the Firebase Auth token as **cu
 
 ## 6. Security rules (pattern reference)
 
-Full rules live in `firebase/firestore.rules`. These are the patterns that matter, and they are worth reproducing in the Design Document because they evidence **server-enforced, deny-by-default security**:
+Full rules live in `backend/firestore.rules`. These are the patterns that matter, and they are worth reproducing in the Design Document because they evidence **server-enforced, deny-by-default security**:
 
 ```javascript
 rules_version = '2';
@@ -292,7 +292,7 @@ service cloud.firestore {
 
 **Storage rules follow the same philosophy:** `users/{uid}/**` is owner-only · `courses/{courseId}/published/**` is readable by enrolled students · `reports/**` is admin-only · everything else is denied.
 
-**Emulator tests are mandatory.** `firebase/firestore.rules.test.js` must contain **negative** tests: a student reading another student's material, a non-tutor writing the review queue, and a client trying to update its own `subscriptions` document. *Proving the rules deny the wrong people is stronger evidence for LO3 than proving they allow the right ones.*
+**Emulator tests are mandatory.** `backend/firestore.rules.test.js` must contain **negative** tests: a student reading another student's material, a non-tutor writing the review queue, and a client trying to update its own `subscriptions` document. *Proving the rules deny the wrong people is stronger evidence for LO3 than proving they allow the right ones.*
 
 ---
 
@@ -311,7 +311,7 @@ service cloud.firestore {
 | `reviewQueue` | `courseId` asc, `status` asc, `createdAt` asc | Tutor queue |
 | `notifications` | `uid` asc, `createdAt` desc | Inbox |
 
-Every index is declared in `firebase/firestore.indexes.json` so the build is reproducible — a missing index is a runtime crash on a cold query, not a compile error.
+Every index is declared in `backend/firestore.indexes.json` so the build is reproducible — a missing index is a runtime crash on a cold query, not a compile error.
 
 ---
 
