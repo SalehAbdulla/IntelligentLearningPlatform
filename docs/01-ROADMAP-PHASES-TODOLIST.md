@@ -61,7 +61,7 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 
 **Goal:** remove every unknown that could block work later. When this phase ends, no one should have to ask "what's the app called?" or "what's the bundle ID?".
 
-- [ ] `P0-01` Create repo structure (`docs/`, `deliverables/`, `ios/`, `firebase/`, `research/`)
+- [ ] `P0-01` Create repo structure (`docs/`, `deliverables/`, `ios/`, `backend/`, `research/`)
 - [ ] `P0-02` Add `.gitignore` excluding `GoogleService-Info.plist`, `*.xcuserdata`, secrets, `.env` — **verify no key is ever committed**
 - [x] `P0-03` Verify toolchain: Xcode 27.0 · iOS 26.5 + 27.0 simulators · Swift 6.4 · Figma.app · Node 24.15 ✅
 - [ ] `P0-04` Create Firebase project `studyforge-it8108` on the **Spark (no-cost)** plan
