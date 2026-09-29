@@ -2,12 +2,25 @@
 //  RootView.swift
 //  StudyForge
 //
-//  The app's routing entry point. Authentication state decides the first branch;
-//  role decides the tab bar within it (docs/03-SCREEN-INVENTORY.md §5).
+//  The app's routing entry point (docs/03 §5).
 //
-//  Sprint S0 scope: route to the design-system gallery so the build is
-//  demonstrable and the tokens are verifiable. S1 adds the auth flow and
-//  `RoleRouter` with the role-specific tab bars.
+//  THREE BRANCHES, AND WHY THE FIRST ONE MATTERS
+//  --------------------------------------------
+//      unknown   -> A01 Splash     (auth has not answered yet)
+//      signedOut -> auth flow      (log in / sign up / reset)
+//      signedIn  -> role home      (currently the capability read-out)
+//
+//  Branch one is the one people skip, and skipping it is a real bug. Firebase resolves a
+//  persisted session asynchronously, so for a moment the app genuinely does not know
+//  whether anyone is signed in. Treating `session == nil` as "signed out" makes a
+//  returning student see the log-in screen flash before being bounced to their home —
+//  the most common launch defect in Firebase apps. `hasResolvedAuth` is what separates
+//  "no" from "not yet", and it is set the first time `AuthState` reports anything other
+//  than `.unknown`.
+//
+//  Sprint S0's development surfaces (design gallery, AI spike) are no longer top-level
+//  tabs; they now live behind the signed-in screen in DEBUG. The product path is the auth
+//  flow, which is what F01 exists for.
 //
 
 import SwiftUI
@@ -16,40 +29,53 @@ struct RootView: View {
 
     let container: AppContainer
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         Group {
-            if container.session != nil {
-                // S1: RoleRouter(session:) — 5-tab student spine,
-                //     4-tab tutor, 4-tab admin. See docs/03 §5.
-                developmentTabs
+            if !container.hasResolvedAuth {
+                SplashView()
+            } else if container.session == nil {
+                AuthFlowView(container: container)
             } else {
-                developmentTabs
+                SignedInHomeView(container: container)
             }
         }
+        // A hard swap between two full-screen branches reads as a glitch, so the change is
+        // cross-faded. Reduce Motion shortens it rather than removing it, keeping the
+        // branch change legible without animating.
+        .animation(Motion.respecting(Motion.quick, reduceMotion: reduceMotion), value: branch)
         .environment(container)
         .tint(ColorTokens.primary)
     }
 
-    /// S0 scaffolding surfaces. Both are development tools rather than product
-    /// screens, but neither is dead code: the gallery verifies a token change at a
-    /// glance, and the AI spike answers "which engine ran this?" when output looks
-    /// wrong. S1 replaces this with `RoleRouter`.
-    private var developmentTabs: some View {
-        TabView {
-            Tab("Design", systemImage: "paintpalette") {
-                DesignSystemGallery()
-            }
-            Tab("AI", systemImage: "sparkles") {
-                AISpikeView()
-            }
-        }
+    /// Which branch should be showing. Derived rather than stored, so there is exactly one
+    /// source of truth for what RootView renders.
+    private var branch: Int {
+        if !container.hasResolvedAuth { return 0 }
+        return container.session == nil ? 1 : 2
     }
 }
 
-#Preview("Root") {
-    RootView(container: .previewing())
+// MARK: - Previews
+
+#Preview("Root — unresolved (splash)") {
+    // `.unknown` never resolves here because nothing calls `start()`, which is exactly the
+    // launch moment this preview documents.
+    RootView(
+        container: AppContainer(
+            environment: .dev,
+            firebaseSource: .localEmulator,
+            auth: MockAuthService(initialState: .unknown, latency: .zero)
+        )
+    )
 }
 
 #Preview("Root — signed out") {
     RootView(container: .previewing(session: nil))
 }
+
+#Preview("Root — signed in") {
+    RootView(container: .previewing())
+}
+
