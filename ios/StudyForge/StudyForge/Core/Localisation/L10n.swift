@@ -73,6 +73,7 @@ enum L10n: String, CaseIterable, Sendable {
     case signUpTerms          = "auth.signUp.terms"
     case signUpTermsJoiner    = "auth.signUp.termsJoiner"
     case signUpPrivacy        = "auth.signUp.privacy"
+    case signUpTermsUnavailable = "auth.signUp.termsUnavailable"
     case signUpErrorTitle     = "auth.signUp.errorTitle"
 
     // MARK: Password strength
@@ -100,6 +101,15 @@ enum L10n: String, CaseIterable, Sendable {
     case sessionSignOut           = "session.signOut"
     case sessionHomeTitle         = "session.homePlaceholder.title"
     case sessionHomeBody          = "session.homePlaceholder.body"
+
+    // MARK: Home placeholder (capability read-out)
+    case homeCapabilitiesHeading = "home.capabilities.heading"
+    case homeRoleLabel           = "home.role.label"
+    case homePlanLabel           = "home.plan.label"
+    case homeTutorStudioLabel    = "home.tutorStudio.label"
+    case homeStudyGroupsLabel    = "home.studyGroups.label"
+    case homeAvailable           = "home.available"
+    case homeUnavailable         = "home.unavailable"
 }
 
 // MARK: - Resolution
