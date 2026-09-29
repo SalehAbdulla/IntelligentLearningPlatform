@@ -86,20 +86,37 @@ enum PasswordEvaluator {
 
     /// The strength band.
     ///
-    /// Length alone decides nothing: a 20-character all-lowercase passphrase is strong,
-    /// and `Password1` satisfies every rule while being one of the first strings an
-    /// attacker tries. Variety is therefore required for `strong`.
+    /// Length dominates, which is the NIST position: a long passphrase is strong even with
+    /// few character classes. An earlier version of this function required a symbol for
+    /// `strong`, which rated `correct horse battery 1` (24 characters) as *fair* while
+    /// rating `StudyForge1!` (12 characters) as *strong* — correct by composition rules and
+    /// backwards in practice. There are two routes to strong for that reason.
     static func strength(of password: String) -> PasswordStrength {
         guard !password.isEmpty else { return .weak }
 
-        let satisfied = rules(for: password).filter(\.isSatisfied).count
+        let minimum = AuthInput.minimumPasswordLength
 
-        // Below the minimum length is weak regardless of variety — an 6-character
-        // password with a symbol is still trivially brute-forced.
-        guard password.count >= AuthInput.minimumPasswordLength else { return .weak }
+        // Below the minimum is weak regardless of variety: a 7-character password with a
+        // symbol is still trivially brute-forced, and variety must not mask that.
+        guard password.count >= minimum else { return .weak }
 
-        return satisfied == PasswordRule.Kind.allCases.count ? .strong : .fair
+        let hasNumber = isSatisfied(.number, by: password)
+        let hasSymbol = isSatisfied(.symbol, by: password)
+
+        // Route 1 — long, with any one variety signal. Favours passphrases.
+        if password.count >= longPasswordLength, hasNumber || hasSymbol { return .strong }
+
+        // Route 2 — the classic composition rule at minimum length.
+        if hasNumber && hasSymbol { return .strong }
+
+        return .fair
     }
+
+    /// Length at which the variety requirement relaxes to a single signal.
+    ///
+    /// 16 is the point where the search space is large enough that a passphrase's length
+    /// outweighs its lack of symbols.
+    static let longPasswordLength = 16
 
     private static func isSatisfied(_ kind: PasswordRule.Kind, by password: String) -> Bool {
         switch kind {
