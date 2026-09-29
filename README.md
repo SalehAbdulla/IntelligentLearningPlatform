@@ -86,23 +86,51 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 
 ```
 IntelligentLearningPlatform/
-├── README.md
-├── docs/                        # this planning set (00–11)
-├── ios/StudyForge/              # ⭐ THE 60% MUST-PASS DELIVERABLE
-│                                #    Xcode 27 · SwiftUI · Swift 6 · MVVM
-├── firebase/                    # firestore.rules · storage.rules · indexes · functions/
+│
+├── ios/StudyForge/              ⭐ THE APP — 60% must-pass deliverable
+│   │                                Xcode 27 · SwiftUI · Swift 6 · MVVM
+│   ├── StudyForge.xcodeproj/
+│   └── StudyForge/
+│       ├── App/                 entry · RootView · AppContainer (DI)
+│       ├── Core/                Auth · State · (AI · Persistence · Payments in S1+)
+│       ├── DesignSystem/        colour · type · spacing tokens
+│       ├── Features/            one folder per feature ID
+│       └── Resources/
+│
+├── backend/                     THE BACKEND — Firebase (config + 2 functions)
+│   ├── firestore.rules              role-based, deny-by-default
+│   ├── storage.rules                owner + shared-folder grants
+│   ├── firestore.indexes.json       composite indexes
+│   └── functions/                   Tap webhook + nightly aggregation ONLY
+│
+├── docs/                        planning set (00–12) — start at README
+│
 ├── deliverables/
-│   ├── design-document/         # 10% — PDF source + low-fidelity mockups
-│   └── prototype/               # 10% — StudyForge.fig + figma-link.txt
-├── research/
-│   ├── dossier.md               # evidence base for Background Research
-│   ├── sprints/sprint-<N>/      # 10% INDIVIDUAL — goal · board · review · retro
-│   ├── testing/                 # test logs per feature (tester ≠ developer)
-│   ├── reviews/                 # review notes on AI-generated code
-│   ├── cheatsheets/             # one per member — VIVA quick reference
-│   └── demo/                    # golden-path recordings + backup capture
-└── tools/                       # install-skills · verify-docs · check-tokens
+│   ├── design-document/         10% — PDF source + low-fidelity mockups
+│   └── prototype/               10% — StudyForge.fig + figma-link.txt
+│
+├── research/                    assessment evidence
+│   ├── dossier.md               evidence base for Background Research
+│   ├── sprints/sprint-<N>/      10% INDIVIDUAL — goal · board · review · retro
+│   ├── testing/                 test logs per feature (tester ≠ developer)
+│   ├── reviews/                 review notes on AI-generated code
+│   ├── cheatsheets/             one per member — VIVA quick reference
+│   └── demo/                    golden-path recordings + backup capture
+│
+└── tools/                       install-skills · commit.sh · new-branch.sh · verify-docs
 ```
+
+### Why two halves, and why they aren't symmetrical
+
+`ios/` and `backend/` are the two deployable halves. Everything else — `docs/`, `research/`,
+`deliverables/`, `tools/` — is project-level and deliberately outside both.
+
+The split is **asymmetric on purpose**: the app is the product (60% must-pass, thousands of lines),
+while `backend/` is ~95% declarative Firebase config plus two small Cloud Functions. The AI router,
+repositories, offline cache and data model all live **inside `ios/`**, because generation is
+on-device-first. So there is no server of ours to run — Firebase enforces authorisation
+declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md](backend/README.md).
+
 
 ---
 

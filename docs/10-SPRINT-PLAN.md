@@ -67,7 +67,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 
 | Member | Owns | Evidence produced |
 |---|---|---|
-| **M1** Saleh | Firebase project + Auth + Firestore/Storage rules skeleton; requirements for F01, F02, F14 | `firebase/` config, rules file, feature specs |
+| **M1** Saleh | Firebase project + Auth + Firestore/Storage rules skeleton; requirements for F01, F02, F14 | `backend/` config, rules file, feature specs |
 | **M2** Mohammed | AI feasibility spike: `FoundationModels` on a real device vs the Simulator, prompt prototype; specs for F03, F04, F05, F11 | Spike report, throwaway demo, prompt drafts |
 | **M3** Tasbeeh | Xcode 27 project scaffold, `AppContainer` DI, `DesignSystem.swift` tokens, navigation shell; specs for F06, F07, F13 | Building app, token file, specs |
 | **M4** Shahad | Figma file + 9 pages + component library + variables; specs for F08, F09, F10, F12 | Figma skeleton, component board |
