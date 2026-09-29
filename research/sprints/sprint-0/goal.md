@@ -58,3 +58,42 @@
 - [ ] `review/` — screenshots or recording of each member demoing their own work
 - [ ] `retro.md` — one thing to keep, one to change
 - [ ] `saleh-contribution.md` · `mohammed-contribution.md` · `tasbeeh-contribution.md` · `shahad-contribution.md`
+
+---
+
+## S0 progress log
+
+**Updated:** after the backend increment.
+
+### ✅ Complete
+
+| Task | Owner | Evidence |
+|---|---|---|
+| Xcode 27 project scaffold + design tokens + gallery | M3 | `ios/StudyForge/`, `xcodebuild` BUILD SUCCEEDED |
+| Backend configuration: rules, indexes, emulator config | M1 | `backend/` — **58 rules tests, 0 failures** |
+| Repo restructured into `ios/` + `backend/` | M1 | PR #7, decision D20/D21 |
+
+### ⛔ Blocked on the human (cannot be automated)
+
+| Task | Why it needs a person | Time |
+|---|---|---|
+| Create Firebase project `studyforge-it8108` | Requires a Google account and the console UI | ~5 min |
+| Storage bucket region **`us-central1`** | ⚠️ A Bahrain-region bucket leaves the no-cost quota and starts billing | ~1 min |
+| Enable Auth (Email/Password + Apple), Firestore, Storage, FCM, Crashlytics | Console-only | ~5 min |
+| Download `GoogleService-Info.plist` → `ios/StudyForge/StudyForge/` | Console-only; already gitignored | ~1 min |
+
+### ⬜ Next (I can do these)
+
+| Task | Owner | Note |
+|---|---|---|
+| Firebase SPM packages wired into the Xcode project | M1 | Needs `GoogleService-Info.plist` to actually initialise |
+| `AuthService` protocol + Firebase impl + mock | M1 | Starts F01 — the first real feature |
+| **AI feasibility spike** (`AIProvider`, on-device availability, fallback) | M2 | **Highest technical risk in the project** — protects the demo money-shot |
+| Figma file: 9 pages + variables + component library | M4 | Needs the design decisions in docs/06, already frozen |
+
+### Sprint exit gate (unchanged)
+
+> App builds on device · Firebase live · feature table signed off · tokens frozen
+
+Three of those four are now true. **"Firebase live" is the only one left, and it is the human step above.**
+

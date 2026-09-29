@@ -97,11 +97,12 @@ IntelligentLearningPlatform/
 │       ├── Features/            one folder per feature ID
 │       └── Resources/
 │
-├── backend/                     THE BACKEND — Firebase (config + 2 functions)
-│   ├── firestore.rules              role-based, deny-by-default
-│   ├── storage.rules                owner + shared-folder grants
-│   ├── firestore.indexes.json       composite indexes
-│   └── functions/                   Tap webhook + nightly aggregation ONLY
+├── backend/                     THE BACKEND — Firebase (config + 3 functions)
+│   ├── firestore.rules              role-based, deny-by-default (40 tests ✅)
+│   ├── storage.rules                owner + shared-folder grants (18 tests ✅)
+│   ├── firestore.indexes.json       10 composite indexes
+│   ├── rules-tests/                 emulator suites, negative tests first
+│   └── functions/                   createCharge · tapWebhook · rollupDailyMetrics
 │
 ├── docs/                        planning set (00–12) — start at README
 │
@@ -126,8 +127,8 @@ IntelligentLearningPlatform/
 `deliverables/`, `tools/` — is project-level and deliberately outside both.
 
 The split is **asymmetric on purpose**: the app is the product (60% must-pass, thousands of lines),
-while `backend/` is ~95% declarative Firebase config plus two small Cloud Functions. The AI router,
-repositories, offline cache and data model all live **inside `ios/`**, because generation is
+while `backend/` is ~95% declarative Firebase config plus **three small Cloud Functions**. The AI
+router, repositories, offline cache and data model all live **inside `ios/`**, because generation is
 on-device-first. So there is no server of ours to run — Firebase enforces authorisation
 declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md](backend/README.md).
 

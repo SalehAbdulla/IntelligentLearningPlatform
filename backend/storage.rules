@@ -1,0 +1,89 @@
+rules_version = '2';
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  StudyForge — Cloud Storage security rules
+//
+//  Same philosophy as firestore.rules: deny by default, deny-by-default, no
+//  catch-all, and the client is never trusted.
+//
+//  Key design note: Storage rules CANNOT read arbitrary Firestore data, but they
+//  CAN call `firestore.get()` / `firestore.exists()`. We use that for shared
+//  folders so permission lives in exactly ONE place (the folder membership
+//  document) instead of being duplicated into the auth token — which would go
+//  stale the moment a member's permission changed.
+//
+//  Layout: docs/05-DATA-MODEL-SECURITY.md §4
+// ═══════════════════════════════════════════════════════════════════════════
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ───────────────────────────── helpers ─────────────────────────────
+
+    function signedIn()  { return request.auth != null; }
+    function uid()       { return request.auth.uid; }
+    function role()      { return request.auth.token.role; }
+    function isAdmin()   { return signedIn() && role() == 'admin'; }
+    function isTutor()   { return signedIn() && (role() == 'tutor' || isAdmin()); }
+    function isSelf(userId) { return signedIn() && uid() == userId; }
+
+    // Upload constraints. `request.resource` only exists on write, so these are
+    // deliberately never referenced from a read rule.
+    function isPdf()          { return request.resource.contentType == 'application/pdf'; }
+    function isImage()        { return request.resource.contentType.matches('image/.*'); }
+    function underMb(limit)   { return request.resource.size < limit * 1024 * 1024; }
+
+    // Folder permission, resolved from Firestore — single source of truth.
+    function isFolderMember(folderId) {
+      return signedIn()
+        && firestore.exists(/databases/(default)/documents/folders/$(folderId)/members/$(uid()));
+    }
+    function canEditFolder(folderId) {
+      return isFolderMember(folderId)
+        && firestore.get(/databases/(default)/documents/folders/$(folderId)/members/$(uid()))
+             .data.permission in ['comment', 'edit'];
+    }
+
+    // ───────────────── personal study material — owner only ────────────
+    // Clients compress before upload (docs/04 §5 guardrail 4), and the 50 MB
+    // cap protects the 5 GB no-cost storage allowance.
+    match /users/{userId}/materials/{fileName} {
+      allow read:   if isAdmin() || isTutor() || isSelf(userId);
+      allow write:  if isSelf(userId) && underMb(50) && (isPdf() || isImage());
+      allow delete: if isAdmin() || isSelf(userId);
+    }
+
+    // Avatars are visible to any signed-in user (they appear on shared folders).
+    match /users/{userId}/avatars/{fileName} {
+      allow read:   if signedIn();
+      allow write:  if isSelf(userId) && isImage() && underMb(5);
+      allow delete: if isAdmin() || isSelf(userId);
+    }
+
+    // ───────────────── published course material — tutor writes ────────
+    match /courses/{courseId}/published/{fileName} {
+      allow read:   if signedIn();
+      allow write:  if isTutor() && underMb(50) && (isPdf() || isImage());
+      allow delete: if isAdmin();
+    }
+
+    // ─────────────── shared folder items — membership governs ──────────
+    match /folders/{folderId}/shared/{fileName} {
+      allow read:   if isAdmin() || isFolderMember(folderId);
+      allow write:  if (isAdmin() || canEditFolder(folderId)) && underMb(50);
+      allow delete: if isAdmin() || canEditFolder(folderId);
+    }
+
+    // ─────────────── moderation evidence — admins only ─────────────────
+    match /reports/{reportId}/evidence.jpg {
+      allow read:  if isAdmin();
+      allow write: if isAdmin() && isImage() && underMb(10);
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    //  Anything not matched above is DENIED. There is deliberately no
+    //  catch-all rule, and rules-tests asserts that an unmatched path
+    //  is unreadable.
+    // ─────────────────────────────────────────────────────────────────
+  }
+}
