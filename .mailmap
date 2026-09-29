@@ -14,34 +14,39 @@
 #   `git log --format='%ae'` still shows the original address. Use the
 #   mailmap-aware forms (`%aN`, `%aE` — capital letter) to see canonical values.
 #
+# TEAM IDENTITY CONVENTION
+#   Every member commits as:   Full Name <studentID@student.polytechnic.bh>
+#   Set it once per clone:
+#       git config user.name  "Your Full Name"
+#       git config user.email "<studentID>@student.polytechnic.bh"
+#   Repo-local, so it does not affect your other repositories.
+#
 # FORMAT
 #   Canonical Name <canonical@email>  Alias Name <alias@email>
 #   Canonical Name <canonical@email>  <alias@email>
-#
-# TO ADD YOURSELF
-#   Add one line per alias you have committed under. Verify with:
-#       git shortlog -sne --all
+#   Canonical Name <canonical@email>           # canonicalises this address alone
 # ===========================================================================
 
 # ---------------------------------------------------------------------------
-#  M1 — Saleh Abdulla  (202300540)  — active
+#  M1 — Saleh Abdulla  (202300540)
+#  Four aliases existed historically; all now display as one identity.
 # ---------------------------------------------------------------------------
-Saleh Abdulla <salehabdullaict@gmail.com> SalehAbdulla <144586926+SalehAbdulla@users.noreply.github.com>
-Saleh Abdulla <salehabdullaict@gmail.com> <202300540@student.example.edu.bh>
-Saleh Abdulla <salehabdullaict@gmail.com> <saleh@example.com>
+Saleh Abdulla <202300540@student.polytechnic.bh> <salehabdullaict@gmail.com>
+Saleh Abdulla <202300540@student.polytechnic.bh> SalehAbdulla <144586926+SalehAbdulla@users.noreply.github.com>
+Saleh Abdulla <202300540@student.polytechnic.bh> <202300540@student.example.edu.bh>
+Saleh Abdulla <202300540@student.polytechnic.bh> <saleh@example.com>
 
 # ---------------------------------------------------------------------------
 #  M2 — Mohammed Almadhoon  (202401702)
-#  No commits yet. When he starts, add one line per alias, e.g.:
-#      Mohammed Almadhoon <his@email> <alias@email>
 # ---------------------------------------------------------------------------
+Mohammed Almadhoon <202401702@student.polytechnic.bh>
 
 # ---------------------------------------------------------------------------
 #  M3 — Tasbeeh Saeed  (202300549)
-#  No commits yet. Same as above.
 # ---------------------------------------------------------------------------
+Tasbeeh Saeed <202300549@student.polytechnic.bh>
 
 # ---------------------------------------------------------------------------
 #  M4 — Shahad Ashoor  (202305767)
-#  No commits yet. Same as above.
 # ---------------------------------------------------------------------------
+Shahad Ashoor <202305767@student.polytechnic.bh>

@@ -332,7 +332,7 @@ If the first command returns a thin list, that sprint's individual mark is thin 
 | 5 | `tools/commit.sh` + `tools/new-branch.sh` committed, executable and behaviour-tested | ✅ done |
 | 6 | Full cycle demonstrated end to end (branch → per-file commits → PR → merge) | ✅ [PR #1](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/1) |
 | 7 | Direct push to a protected branch **verified to be rejected** | ✅ tested — `GH006: Changes must be made through a pull request` |
-| 8 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | ⬜ **each member, S0** |
+| 8 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | 🟨 **M1 ✅ done** (`.mailmap` committed, 4 aliases → 1). **M2, M3, M4 ⬜** — convention in [§12](#12-author-identities) |
 | 9 | Every member practises the cycle once on a throwaway branch | ⬜ **each member, S0** |
 
 ### 11.1 Verify the setup
@@ -369,4 +369,56 @@ gh pr merge --merge --delete-branch
 ```
 
 > ⚠️ **Note on this repository's own history:** the initial planning commits, made before this workflow was agreed, went directly to `main`. That is recorded here for honesty. **All work from Sprint S0 onward follows the branch model above** — see [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md), decisions D17–D19.
+
+
+---
+
+## 12. Author identities
+
+Sprint contribution is read off commit history, so **your commits must be traceable to you**. Git records whatever `user.name` / `user.email` are configured at commit time, and getting this wrong is invisible until a marker tries to count your work.
+
+### The convention
+
+Every member commits as:
+
+```
+Full Name <studentID@student.polytechnic.bh>
+```
+
+Set it **repo-locally** so it does not affect your other projects:
+
+```bash
+git config --local user.name  "Your Full Name"
+git config --local user.email "<studentID>@student.polytechnic.bh"
+```
+
+| Member | Name | Student ID |
+|---|---|---|
+| M1 | Saleh Abdulla | `202300540` |
+| M2 | Mohammed Almadhoon | `202401702` |
+| M3 | Tasbeeh Saeed | `202300549` |
+| M4 | Shahad Ashoor | `202305767` |
+
+### Why a `.mailmap` exists
+
+A person can easily accumulate several identities — a personal email from before the convention, a GitHub `noreply` address from merging a PR in the browser, or a typo. Each one splits your commit count in `shortlog`, so you appear to have contributed less than you did.
+
+`.mailmap` fixes the **display** without rewriting history. Add a line per alias:
+
+```
+Canonical Name <canonical@email>  Alias Name <alias@email>
+Canonical Name <canonical@email>  <alias@email>
+```
+
+> ⚠️ **A mailmap is a display layer only.** It does **not** rewrite commits — a raw `git log --format='%ae'` still shows the original address. To see canonical values you must use the mailmap-aware formats (`%aN`, `%aE` — **capital** letter). `git shortlog` is mailmap-aware by default.
+
+### Verify
+
+```bash
+git shortlog -sne --all          # one line per member, correct emails
+git log --all --format='%aN <%aE>' | sort -u   # canonical  (mailmap-aware)
+git log --all --format='%an <%ae>' | sort -u   # raw        (ignores mailmap)
+```
+
+All three lines above should agree on the *people* involved. If the third one shows more identities than the first two, an alias is missing from `.mailmap` — add it.
 
