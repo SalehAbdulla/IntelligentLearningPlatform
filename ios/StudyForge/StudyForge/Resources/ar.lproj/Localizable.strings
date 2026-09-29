@@ -1,0 +1,89 @@
+/* ===========================================================================
+ *  Localizable.strings — العربية (Arabic)
+ *  StudyForge
+ *
+ *  Keys MUST match en.lproj/Localizable.strings exactly. A missing key silently
+ *  falls back to the key itself, which is how a half-translated app ships.
+ *
+ *  ⚠️  TRANSLATION STATUS: these were produced without a native speaker. They
+ *  are grammatically standard UI Arabic, but a native reviewer must sign them
+ *  off before the VIVA — particularly the legal lines (terms/privacy) and the
+ *  privacy claim in auth.signUp.subtitle, which is a factual promise about where
+ *  data goes and must not be mistranslated.
+ *
+ *  RTL: set the scheme's language to Arabic to test mirroring. Layouts must be
+ *  checked at AX5 in Arabic — mirrored + large type is the combination that
+ *  breaks.
+ * =========================================================================== */
+
+/* ── Common ─────────────────────────────────────────────────────────────── */
+"common.appName"            = "StudyForge";
+"common.continue"           = "متابعة";
+"common.next"               = "التالي";
+"common.skip"               = "تخطي";
+"common.cancel"             = "إلغاء";
+"common.done"               = "تم";
+"common.retry"              = "إعادة المحاولة";
+"common.back"               = "رجوع";
+"common.close"              = "إغلاق";
+"common.loading"            = "جارٍ التحميل…";
+
+/* ── A01 Splash ─────────────────────────────────────────────────────────── */
+"auth.splash.tagline"       = "ادرس بذكاء، لا لفترة أطول";
+"auth.splash.checking"      = "جارٍ التحقق من جلستك…";
+
+/* ── A07 تسجيل الدخول ───────────────────────────────────────────────────── */
+"auth.login.title"          = "مرحبًا بعودتك";
+"auth.login.subtitle"       = "سجّل الدخول لمتابعة ما توقفت عنده.";
+"auth.login.email"          = "البريد الإلكتروني";
+"auth.login.password"       = "كلمة المرور";
+"auth.login.forgotPassword" = "نسيت كلمة المرور؟";
+"auth.login.submit"         = "تسجيل الدخول";
+"auth.login.submitting"     = "جارٍ تسجيل دخولك…";
+"auth.login.noAccount"      = "جديد على StudyForge؟";
+"auth.login.createAccount"  = "إنشاء حساب";
+"auth.login.errorTitle"     = "تعذّر تسجيل دخولك";
+
+/* ── A05 إنشاء حساب ─────────────────────────────────────────────────────── */
+"auth.signUp.title"          = "أنشئ حسابك";
+"auth.signUp.subtitle"       = "تبقى موادك على جهازك. تُزامَن الملخصات فقط.";
+"auth.signUp.name"           = "الاسم الكامل";
+"auth.signUp.nameHint"       = "حتى يتمكن مدرّسك من التعرف عليك.";
+"auth.signUp.email"          = "البريد الإلكتروني";
+"auth.signUp.password"       = "كلمة المرور";
+"auth.signUp.passwordHint"   = "%d أحرف على الأقل.";
+"auth.signUp.submit"         = "إنشاء حساب";
+"auth.signUp.submitting"     = "جارٍ إنشاء حسابك…";
+"auth.signUp.haveAccount"    = "لديك حساب بالفعل؟";
+"auth.signUp.logIn"          = "تسجيل الدخول";
+"auth.signUp.termsPrefix"    = "بالمتابعة، أنت توافق على";
+"auth.signUp.terms"          = "شروط الخدمة";
+"auth.signUp.termsJoiner"    = "و";
+"auth.signUp.privacy"        = "سياسة الخصوصية";
+"auth.signUp.errorTitle"     = "تعذّر إنشاء حسابك";
+
+/* مقياس قوة كلمة المرور */
+"auth.strength.label"        = "قوة كلمة المرور";
+"auth.strength.weak"         = "ضعيفة";
+"auth.strength.fair"         = "متوسطة";
+"auth.strength.strong"       = "قوية";
+"auth.strength.rule.length"  = "%d أحرف على الأقل";
+"auth.strength.rule.number"  = "تحتوي على رقم";
+"auth.strength.rule.symbol"  = "تحتوي على رمز";
+
+/* ── A08 إعادة تعيين كلمة المرور ────────────────────────────────────────── */
+"auth.forgot.title"          = "إعادة تعيين كلمة المرور";
+"auth.forgot.subtitle"       = "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.";
+"auth.forgot.email"          = "البريد الإلكتروني";
+"auth.forgot.submit"         = "إرسال رابط إعادة التعيين";
+"auth.forgot.submitting"     = "جارٍ الإرسال…";
+"auth.forgot.successTitle"   = "تحقق من بريدك";
+"auth.forgot.successBody"    = "إذا كان هناك حساب مرتبط بـ %@، فسيصل رابط إعادة التعيين قريبًا. تنتهي صلاحية الرابط خلال ساعة.";
+"auth.forgot.backToLogin"    = "العودة لتسجيل الدخول";
+"auth.forgot.errorTitle"     = "تعذّر إرسال الرابط";
+
+/* ── الجلسة والتوجيه ────────────────────────────────────────────────────── */
+"session.signedInAs"         = "مسجّل الدخول باسم %@";
+"session.signOut"            = "تسجيل الخروج";
+"session.homePlaceholder.title"  = "تم تسجيل دخولك";
+"session.homePlaceholder.body"   = "تظهر شاشة %@ الرئيسية في السبرنت التالي.";
