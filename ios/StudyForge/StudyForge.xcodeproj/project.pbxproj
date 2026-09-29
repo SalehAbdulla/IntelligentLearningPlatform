@@ -6,6 +6,11 @@
     objectVersion = 77;
     objects = {
 
+/* Begin PBXBuildFile section */
+        AA0000000000000000000023 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000021 /* FirebaseAuth */; };
+        AA0000000000000000000024 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = AA0000000000000000000022 /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
         AA0000000000000000000006 /* StudyForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
         AA0000000000000000000011 /* StudyForgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StudyForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +44,8 @@
             isa = PBXFrameworksBuildPhase;
             buildActionMask = 2147483647;
             files = (
+                AA0000000000000000000023 /* FirebaseAuth in Frameworks */,
+                AA0000000000000000000024 /* FirebaseFirestore in Frameworks */,
             );
             runOnlyForDeploymentPostprocessing = 0;
         };
@@ -90,6 +97,8 @@
             );
             name = StudyForge;
             packageProductDependencies = (
+                AA0000000000000000000021 /* FirebaseAuth */,
+                AA0000000000000000000022 /* FirebaseFirestore */,
             );
             productName = StudyForge;
             productReference = AA0000000000000000000006 /* StudyForge.app */;
@@ -147,6 +156,9 @@
             );
             mainGroup = AA0000000000000000000002;
             minimizedProjectReferenceProxies = 1;
+            packageReferences = (
+                AA0000000000000000000020 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+            );
             preferredProjectObjectVersion = 77;
             productRefGroup = AA0000000000000000000004 /* Products */;
             projectDirPath = "";
@@ -396,6 +408,30 @@
             name = Release;
         };
 /* End XCBuildConfiguration section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+        AA0000000000000000000020 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+            isa = XCRemoteSwiftPackageReference;
+            repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+            requirement = {
+                kind = upToNextMajorVersion;
+                minimumVersion = 12.0.0;
+            };
+        };
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+        AA0000000000000000000021 /* FirebaseAuth */ = {
+            isa = XCSwiftPackageProductDependency;
+            package = AA0000000000000000000020 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+            productName = FirebaseAuth;
+        };
+        AA0000000000000000000022 /* FirebaseFirestore */ = {
+            isa = XCSwiftPackageProductDependency;
+            package = AA0000000000000000000020 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+            productName = FirebaseFirestore;
+        };
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCConfigurationList section */
         AA000000000000000000000A /* Build configuration list for PBXProject "StudyForge" */ = {
