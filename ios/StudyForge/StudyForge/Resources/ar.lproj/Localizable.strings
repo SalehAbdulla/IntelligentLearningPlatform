@@ -62,6 +62,7 @@
 "auth.signUp.terms"          = "شروط الخدمة";
 "auth.signUp.termsJoiner"    = "و";
 "auth.signUp.privacy"        = "سياسة الخصوصية";
+"auth.signUp.termsUnavailable" = "هذه المستندات غير متاحة بعد.";
 "auth.signUp.errorTitle"     = "تعذّر إنشاء حسابك";
 
 /* مقياس قوة كلمة المرور */
@@ -89,3 +90,12 @@
 "session.signOut"            = "تسجيل الخروج";
 "session.homePlaceholder.title"  = "تم تسجيل دخولك";
 "session.homePlaceholder.body"   = "تظهر شاشة %@ الرئيسية في السبرنت التالي.";
+
+/* ── شاشة الانتقال: عرض الصلاحيات ───────────────────────────────────────── */
+"home.capabilities.heading"  = "صلاحياتك";
+"home.role.label"            = "الدور";
+"home.plan.label"            = "الخطة";
+"home.tutorStudio.label"     = "استوديو المدرّس";
+"home.studyGroups.label"     = "مجموعات الدراسة";
+"home.available"             = "متاحة";
+"home.unavailable"           = "غير متاحة";
