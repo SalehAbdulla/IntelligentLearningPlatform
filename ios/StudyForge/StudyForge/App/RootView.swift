@@ -21,13 +21,28 @@ struct RootView: View {
             if container.session != nil {
                 // S1: RoleRouter(session:) — 5-tab student spine,
                 //     4-tab tutor, 4-tab admin. See docs/03 §5.
-                DesignSystemGallery()
+                developmentTabs
             } else {
-                DesignSystemGallery()
+                developmentTabs
             }
         }
         .environment(container)
         .tint(ColorTokens.primary)
+    }
+
+    /// S0 scaffolding surfaces. Both are development tools rather than product
+    /// screens, but neither is dead code: the gallery verifies a token change at a
+    /// glance, and the AI spike answers "which engine ran this?" when output looks
+    /// wrong. S1 replaces this with `RoleRouter`.
+    private var developmentTabs: some View {
+        TabView {
+            Tab("Design", systemImage: "paintpalette") {
+                DesignSystemGallery()
+            }
+            Tab("AI", systemImage: "sparkles") {
+                AISpikeView()
+            }
+        }
     }
 }
 
