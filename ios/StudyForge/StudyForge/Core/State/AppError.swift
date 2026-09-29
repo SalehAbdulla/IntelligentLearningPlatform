@@ -24,6 +24,17 @@ enum AppError: Error, Equatable, Identifiable {
     /// The server returned an error. `reference` is shown so support can trace it.
     case server(reference: String)
 
+    // MARK: - Auth
+
+    /// Sign-in or sign-up input was rejected: a typo, a weak password, or an email
+    /// that already has an account. `reason` is the specific, actionable part.
+    case authInvalidInput(reason: String)
+
+    /// Authentication failed in a way the user can retry — bad credentials, rate
+    /// limiting. Kept separate from `authInvalidInput` because the user's next action
+    /// differs: fix the input, or wait and retry.
+    case authFailed(reason: String)
+
     // MARK: - Domain
 
     /// The user's daily AI generation budget is exhausted.
@@ -54,6 +65,8 @@ enum AppError: Error, Equatable, Identifiable {
         case .offline: "You're offline"
         case .timedOut: "That took too long"
         case .server: "Something went wrong on our side"
+        case .authInvalidInput: "Check your details"
+        case .authFailed: "We couldn't sign you in"
         case .aiQuotaExceeded: "You've reached today's AI limit"
         case .onDeviceAIUnavailable: "On-device AI isn't available"
         case .materialUnreadable: "We couldn't read that file"
@@ -72,6 +85,10 @@ enum AppError: Error, Equatable, Identifiable {
             "The request didn't finish in time. Your work is safe — try again."
         case .server(let reference):
             "We've logged the problem. If it keeps happening, quote reference \(reference)."
+        case .authInvalidInput(let reason):
+            reason
+        case .authFailed(let reason):
+            reason
         case .aiQuotaExceeded(let resetsAt):
             "Your free AI generations reset at \(resetsAt.formatted(date: .omitted, time: .shortened))."
         case .onDeviceAIUnavailable:
@@ -91,6 +108,8 @@ enum AppError: Error, Equatable, Identifiable {
     var recoveryAction: String? {
         switch self {
         case .offline, .timedOut, .server, .unknown: "Try again"
+        case .authInvalidInput: "Edit and try again"
+        case .authFailed: "Try again"
         case .aiQuotaExceeded: "Use on-device instead"
         case .onDeviceAIUnavailable: "Use the cloud model"
         case .materialUnreadable: "Choose another file"
@@ -111,6 +130,10 @@ extension AppError {
         // branch an AI failure would degrade to `.unknown`, losing the one thing the
         // user needs: which engine failed and what to do about it.
         if let aiError = error as? AIError { return aiError.asAppError }
+
+        // Same reasoning for auth: an unmapped AuthError would lose the reason the
+        // sign-in form needs to show.
+        if let authError = error as? AuthError { return authError.asAppError }
 
         if let urlError = error as? URLError {
             switch urlError.code {
