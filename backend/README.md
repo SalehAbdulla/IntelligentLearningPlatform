@@ -19,45 +19,76 @@ declaratively."* See [docs/00 §3](../docs/00-MASTER-PLAN.md) and [docs/04 §4](
 
 ---
 
-## Status
+## Status — Sprint S0 ✅
 
-**Empty except this README.** Created in Sprint S1 (S0 is the app foundation).
-Sprint allocation: [docs/10 §4](../docs/10-SPRINT-PLAN.md).
+The configuration is written and the rules are **verified against the emulator**:
+**58 tests, 0 failures** (40 Firestore + 18 Storage), including the negative tests.
 
-## Planned contents
-
-| Path | What it is | Owner |
+| Path | What it is | Verified |
 |---|---|---|
-| `firebase.json` | Firebase CLI project config (hosting targets, emulator ports) | M1 |
-| `.firebaserc` | Project alias → `studyforge-it8108` | M1 |
-| `firestore.rules` | **Role-based, deny-by-default** security rules | M1 |
-| `firestore.indexes.json` | Composite indexes — reproducible build, no cold-query crashes | M1 |
-| `storage.rules` | Owner-only paths plus explicit shared-folder grants | M1 |
-| `rules-tests/` | Emulator tests, including **negative** tests | M4 |
-| `functions/src/` | **Only two functions:** the Tap Payments webhook, and nightly aggregation | M3 |
-| `functions/.env.example` | Documents required secrets — the real `.env` is gitignored | M3 |
+| `firebase.json` | CLI config: rules/indexes paths, emulator ports, small function surface | ✅ |
+| `.firebaserc` | Project alias → `studyforge-it8108` | ✅ |
+| `firestore.rules` | **Role-based, deny-by-default** rules for all 40 collections | ✅ 40 tests |
+| `firestore.indexes.json` | 10 composite indexes — no cold-query crashes | ✅ |
+| `storage.rules` | Owner-only paths plus shared-folder grants resolved from Firestore | ✅ 18 tests |
+| `rules-tests/` | Emulator suites, **negative tests first** | ✅ |
+| `functions/src/index.ts` | **Three** functions: `createCharge`, `tapWebhook`, `rollupDailyMetrics` | ⚠️ **skeleton — S3/S4** |
+| `functions/.env.example` | Required secrets, documented; the real `.env` is gitignored | ✅ |
 
-Full schema, role model and rule patterns: [docs/05-DATA-MODEL-SECURITY.md](../docs/05-DATA-MODEL-SECURITY.md).
+Full schema, role model and rule rationale: [docs/05-DATA-MODEL-SECURITY.md](../docs/05-DATA-MODEL-SECURITY.md).
+
+### ⚠️ Two honest limitations
+
+1. **The Cloud Functions are typed skeletons, not implementations.** The signatures,
+   the security decisions and the exact write-set are documented in the file, but the
+   Tap integration and the aggregation are Sprint S3/S4 work. Nothing here pretends
+   otherwise.
+2. **The Storage emulator prints a Java warning** on newer JDKs
+   (`sun.misc.Unsafe::arrayBaseOffset` from protobuf). It is a deprecation notice from
+   the emulator's own dependency, not a failure — all 18 Storage tests pass. If a future
+   JDK finally removes the API, pin JDK 21 for emulator work.
 
 ## Commands (run from this directory)
 
 ```bash
 cd backend
+npm install                       # firebase-tools + @firebase/rules-unit-testing
 
-# First-time setup
-npm i -g firebase-tools
-firebase login
-firebase init                    # Firestore, Storage, Functions, Emulators
+# ── run the rules tests (this is the gate before any deploy) ──
+npm test                          # both suites
+npm run test:firestore            # 40 tests
+npm run test:storage              # 18 tests (needs Firestore too — see below)
 
-# Local development — use the emulator for ALL work, it protects production quota
-firebase emulators:start --only auth,firestore,storage,functions
+# ── local development ──
+npm run emulators                 # auth + firestore + storage, with the emulator UI
 
-# Run the rules tests before any deploy
-npm --prefix rules-tests test
-
-# Deploy (never deploy rules without the emulator tests passing first)
-firebase deploy --only firestore:rules,storage:rules
+# ── deploy (never deploy rules without the tests passing first) ──
+npm run deploy:rules
+npm run deploy:indexes
 ```
+
+**Why `test:storage` also starts Firestore:** `storage.rules` calls `firestore.get()`
+to resolve shared-folder permission, so folder permission lives in exactly **one**
+place instead of being duplicated into the auth token. That is a deliberate design
+choice, and the Storage tests prove the cross-service lookup actually enforces.
+
+**Why `--test-concurrency=1` is not optional:** both suites share one emulator, and
+Node runs test *files* concurrently by default. Run together, the Firestore suite's
+`clearFirestore()` wipes the folder membership the Storage suite has just seeded — so
+the Storage tests that *expect success* fail with `storage/unauthorized`, while the
+ones that *expect denial* still pass. That asymmetry makes the bug easy to misread as
+a rules problem when it is a test-harness one. Serialising the files fixes it:
+
+```
+node --test --test-concurrency=1 rules-tests/*.test.mjs     # 58/58 pass
+node --test rules-tests/*.test.mjs                          # 56/58 — cross-talk
+```
+
+**Recommended before every deploy:**
+```bash
+npm test && npm run deploy:rules
+```
+
 
 ---
 
