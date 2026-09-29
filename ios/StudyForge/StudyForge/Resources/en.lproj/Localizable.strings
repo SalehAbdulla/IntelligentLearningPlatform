@@ -61,6 +61,7 @@
 "auth.signUp.terms"          = "Terms of Service";
 "auth.signUp.termsJoiner"    = "and";
 "auth.signUp.privacy"        = "Privacy Policy";
+"auth.signUp.termsUnavailable" = "These documents are not yet available.";
 "auth.signUp.errorTitle"     = "We couldn't create your account";
 
 /* Password strength meter */
@@ -88,3 +89,12 @@
 "session.signOut"            = "Log out";
 "session.homePlaceholder.title"  = "You're signed in";
 "session.homePlaceholder.body"   = "Your %@ home screen arrives with the next sprint.";
+
+/* ── Home placeholder: capability read-out ──────────────────────────────── */
+"home.capabilities.heading"  = "Your access";
+"home.role.label"            = "Role";
+"home.plan.label"            = "Plan";
+"home.tutorStudio.label"     = "Tutor studio";
+"home.studyGroups.label"     = "Study groups";
+"home.available"             = "Available";
+"home.unavailable"           = "Not available";
