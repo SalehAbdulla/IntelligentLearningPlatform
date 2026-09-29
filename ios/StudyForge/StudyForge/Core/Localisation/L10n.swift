@@ -1,0 +1,130 @@
+//
+//  L10n.swift
+//  StudyForge
+//
+//  Typed access to user-facing copy.
+//
+//  WHY TYPES RATHER THAN RAW STRINGS
+//  ----------------------------------
+//  `NSLocalizedString("auth.login.titel", …)` — note the typo — compiles happily and
+//  renders the literal key `auth.login.titel` on screen. Nothing fails; you find out
+//  in a screenshot. Modelling keys as an enum moves that class of bug to the compiler,
+//  and `L10nTests` additionally asserts every case resolves to a real translation, so
+//  a key that exists in code but not in `Localizable.strings` is caught by a test
+//  rather than by a user.
+//
+//  The screen code therefore never contains a localisation key as a bare string, which
+//  is what makes "no hard-coded user-facing strings" (docs/04 §8) checkable rather than
+//  aspirational.
+//
+
+import Foundation
+
+/// Every user-facing string in the app, by key.
+///
+/// Add a case here AND the matching entry in **both** `en.lproj` and `ar.lproj` —
+/// `tools/check-strings.py` fails the build if the two catalogues disagree, and
+/// `L10nTests` fails if this enum and the catalogue disagree.
+enum L10n: String, CaseIterable, Sendable {
+
+    // MARK: Common
+    case appName            = "common.appName"
+    case commonContinue     = "common.continue"
+    case commonNext         = "common.next"
+    case commonSkip         = "common.skip"
+    case commonCancel       = "common.cancel"
+    case commonDone         = "common.done"
+    case commonRetry        = "common.retry"
+    case commonBack         = "common.back"
+    case commonClose        = "common.close"
+    case commonLoading      = "common.loading"
+    case commonShowPassword = "common.showPassword"
+    case commonHidePassword = "common.hidePassword"
+
+    // MARK: A01 Splash
+    case splashTagline      = "auth.splash.tagline"
+    case splashChecking     = "auth.splash.checking"
+
+    // MARK: A07 Log in
+    case loginTitle         = "auth.login.title"
+    case loginSubtitle      = "auth.login.subtitle"
+    case loginEmail         = "auth.login.email"
+    case loginPassword      = "auth.login.password"
+    case loginForgot        = "auth.login.forgotPassword"
+    case loginSubmit        = "auth.login.submit"
+    case loginSubmitting    = "auth.login.submitting"
+    case loginNoAccount     = "auth.login.noAccount"
+    case loginCreateAccount = "auth.login.createAccount"
+    case loginErrorTitle    = "auth.login.errorTitle"
+
+    // MARK: A05 Sign up
+    case signUpTitle          = "auth.signUp.title"
+    case signUpSubtitle       = "auth.signUp.subtitle"
+    case signUpName           = "auth.signUp.name"
+    case signUpNameHint       = "auth.signUp.nameHint"
+    case signUpEmail          = "auth.signUp.email"
+    case signUpPassword       = "auth.signUp.password"
+    case signUpPasswordHint   = "auth.signUp.passwordHint"
+    case signUpSubmit         = "auth.signUp.submit"
+    case signUpSubmitting     = "auth.signUp.submitting"
+    case signUpHaveAccount    = "auth.signUp.haveAccount"
+    case signUpLogIn          = "auth.signUp.logIn"
+    case signUpTermsPrefix    = "auth.signUp.termsPrefix"
+    case signUpTerms          = "auth.signUp.terms"
+    case signUpTermsJoiner    = "auth.signUp.termsJoiner"
+    case signUpPrivacy        = "auth.signUp.privacy"
+    case signUpErrorTitle     = "auth.signUp.errorTitle"
+
+    // MARK: Password strength
+    case strengthLabel        = "auth.strength.label"
+    case strengthWeak         = "auth.strength.weak"
+    case strengthFair         = "auth.strength.fair"
+    case strengthStrong       = "auth.strength.strong"
+    case strengthRuleLength   = "auth.strength.rule.length"
+    case strengthRuleNumber   = "auth.strength.rule.number"
+    case strengthRuleSymbol   = "auth.strength.rule.symbol"
+
+    // MARK: A08 Forgot password
+    case forgotTitle        = "auth.forgot.title"
+    case forgotSubtitle     = "auth.forgot.subtitle"
+    case forgotEmail        = "auth.forgot.email"
+    case forgotSubmit       = "auth.forgot.submit"
+    case forgotSubmitting   = "auth.forgot.submitting"
+    case forgotSuccessTitle = "auth.forgot.successTitle"
+    case forgotSuccessBody  = "auth.forgot.successBody"
+    case forgotBackToLogin  = "auth.forgot.backToLogin"
+    case forgotErrorTitle   = "auth.forgot.errorTitle"
+
+    // MARK: Session
+    case sessionSignedInAs        = "session.signedInAs"
+    case sessionSignOut           = "session.signOut"
+    case sessionHomeTitle         = "session.homePlaceholder.title"
+    case sessionHomeBody          = "session.homePlaceholder.body"
+}
+
+// MARK: - Resolution
+
+extension L10n {
+
+    /// The translated string, resolved from the main bundle.
+    ///
+    /// `NSLocalizedString` rather than `String(localized:)`: the latter depends on
+    /// compile-time string extraction, and this project's catalogue is a plain
+    /// `.strings` file that `tools/check-strings.py` validates. Resolving the same way
+    /// in code and in the gate keeps the two honest about each other.
+    var string: String {
+        NSLocalizedString(rawValue, comment: "")
+    }
+
+    /// The translated string with format arguments applied.
+    ///
+    /// - Warning: `String(format:)` does not type-check its arguments. `%@` given an
+    ///   `Int` is a runtime crash, not a compile error — which is why
+    ///   `tools/check-strings.py` verifies that every language uses the same
+    ///   placeholder types as English. Passing the wrong type still compiles here; the
+    ///   catalogue gate is what catches the language-drift half of that risk.
+    func string(_ arguments: CVarArg...) -> String {
+        String(format: NSLocalizedString(rawValue, comment: ""), arguments: arguments)
+    }
+}
+
