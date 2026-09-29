@@ -277,7 +277,9 @@ ios/StudyForge/
 │   │   │                       OnDeviceProvider.swift · MockProvider.swift · FirebaseAIProvider.swift
 │   │   │                       AIRouter.swift · AICostGovernor.swift · PromptTemplates.swift
 │   │   ├── AI/Retrieval/       Chunker.swift · EmbeddingIndex.swift · Retriever.swift
-│   │   ├── Auth/               AuthService.swift · CustomClaims.swift · RoleGuard.swift
+│   │   ├── Auth/               AuthService.swift · AuthStateStream.swift · CustomClaims.swift
+│   │   │                       FirebaseAuthService.swift · MockAuthService.swift · RoleGuard.swift
+│   │   ├── Config/             FirebaseBootstrap.swift
 │   │   ├── Payments/           PaymentGateway.swift · TapPaymentsGateway.swift · StoreKitGateway.swift
 │   │   ├── Persistence/        SwiftDataModels.swift · LocalCache.swift · SyncQueue.swift
 │   │   ├── Extraction/         MaterialExtractor.swift · VisionOCR.swift · Compressor.swift
@@ -291,8 +293,20 @@ ios/StudyForge/
 └── StudyForgeTests/            (unit-test target — Swift Testing)
     ├── AICostGovernorTests.swift
     ├── AIRouterTests.swift
-    └── AIVocabularyTests.swift
+    ├── AIVocabularyTests.swift
+    ├── AuthErrorMappingTests.swift
+    ├── AuthInputTests.swift
+    ├── AuthServiceTests.swift
+    └── CustomClaimsTests.swift
 ```
+
+**Note on test-target dependencies.** `StudyForgeTests` links **no** Firebase product. The
+test bundle is hosted in the app, which already links Firebase, so the tests reach app
+code through `@testable import StudyForge` and never import a Firebase module. This is
+deliberate, not an oversight: linking `FirebaseFirestore` into the test target drags in
+its gRPC/Abseil C++ chain, which **fails to link** into an XCTest bundle with
+`Undefined symbols … absl::lts_20240722`. It also keeps Firebase initialisation out of
+test runs entirely — see **D23** in [doc 09](09-RISKS-OPEN-QUESTIONS.md).
 
 ### Coding rules
 
@@ -373,7 +387,7 @@ firebase deploy --only firestore:rules,storage:rules
 | Swift 6.4 with strict concurrency | `swift --version` → Apple Swift 6.4 | ✅ verified |
 | Simulator devices for the demo | `simctl list devices` → iPhone 17, iPhone 18 Pro, iPhone Air, iPhone 17e, iPad Pro/Air/mini | ✅ verified |
 | Figma is available for Track B | `Figma.app` present in `/Applications` | ✅ verified |
-| Firebase CLI + emulator workflow is executable | Node 24.15 / npm 11.12 present; `firebase-tools` not yet installed | 🟨 Phase 0 task |
+| Firebase CLI + emulator workflow is executable | Node 24.15 / npm 11.12 present; `firebase-tools` **15.32.0 available via `npx`** (no global install needed) | ✅ verified |
 | Firestore / Storage / Auth free-tier numbers | Read from Firebase's published pricing and quota documentation (Sept 2026) | ✅ verified |
 | Storage no-cost quota is region-restricted | Firebase pricing docs: `us-central1`, `us-west1`, `us-east1` only | ✅ verified |
 | Cloud Functions requires Blaze | Firebase pricing docs; free invocation allowance still applies | ✅ verified |
@@ -382,6 +396,12 @@ firebase deploy --only firestore:rules,storage:rules
 | `FoundationModels` provides guided generation (`@Generable`), tools and streaming on iOS 26+ | **Proven, not assumed:** the S0 probe filled a `@Generable` struct (2 × `String` + parsed `Int`) from real model output in 2.82 s, and the app compiles against the real API with zero warnings | ✅ **verified empirically — [spike report](../research/spikes/foundation-models.md)** |
 | A tier-1 fallback keeps every AI feature usable when tier 0 is unavailable | Router behaviour observed live in the Simulator: tier 0 `simulatorUnsupported` → all five tasks routed to tier 1 | ✅ verified empirically |
 | The router's fallback order, budget accounting and error surface behave as designed | Swift Testing unit tests in the `StudyForgeTests` target: **39 tests in 7 suites, 0 failures**, including mid-call engine failure and quota exhaustion | ✅ **verified by automated tests** |
+| The Firebase iOS SDK resolves, links and is usable from the app target | `xcodebuild -resolvePackageDependencies` → **firebase-ios-sdk 12.19.2** plus 13 pinned transitive packages (`grpc-binary`, `absl`, `nanopb`, `leveldb`, …). The app links `FirebaseAuth` + `FirebaseFirestore` and builds with **0 errors, 0 Swift warnings** under strict concurrency | ✅ **verified empirically** |
+| The app runs with **no Firebase project at all**, against the Emulator Suite | Debug build launched in the Simulator with no `GoogleService-Info.plist` present: `FirebaseBootstrap` synthesises `FirebaseOptions` and points Auth/Firestore at `localhost`, and the app launches and renders normally (screenshot captured) — no crash, no hung launch | ✅ **verified empirically** |
+| A release build can never silently run against a fake project | `FirebaseBootstrap.configure` calls `fatalError` whenever the plist is absent and the environment is not `.dev`; `AppEnvironment.current` is `.dev` only under `#if DEBUG` | ✅ verified by code inspection |
+| Custom-claim parsing **fails closed** | Automated tests: absent, unrecognised, wrongly-cased, whitespace-padded and wrongly-typed claims all yield the least privileged `student`/`free`/no-groups session — never `tutor` | ✅ **verified by automated tests** |
+| Sign-in does not leak whether an account exists | `AuthError.wrongCredentials` deliberately merges "no such user" and "wrong password" on both `FirebaseAuthService` and `MockAuthService`; asserted by an automated test that both inputs produce the *same* error | ✅ **verified by automated tests** |
+| The whole unit suite is **78 tests in 12 suites, 0 failures** | `xcodebuild test` on an iPhone 18 Pro Max Simulator; the suite runs in well under 90 s | ✅ **verified by automated tests** |
 | Tap Payments is Bahrain-licensed with an iOS SDK, Benefit/BenefitPay/Apple Pay support and a sandbox mode | Tap Payments Bahrain product page + developer documentation | ✅ verified |
 | Apple Guideline 3.1.1 conflicts with an external gateway for in-app digital goods | App Store Review Guidelines | ✅ verified |
 
