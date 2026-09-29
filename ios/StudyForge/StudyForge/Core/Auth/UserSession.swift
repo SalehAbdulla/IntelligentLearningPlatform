@@ -37,6 +37,17 @@ enum SubscriptionPlan: String, Codable, Sendable, CaseIterable {
     case plus
     case pro
 
+    /// User-facing label. Part of the localisation debt recorded in
+    /// `Core/Localisation/L10n.swift`: `AppRole.displayName` and this share the same
+    /// problem — centralised but not yet routed through `Localizable.strings`.
+    var displayName: String {
+        switch self {
+        case .free: "Free"
+        case .plus: "Plus"
+        case .pro: "Pro"
+        }
+    }
+
     /// Free cloud AI generations per day. On-device generation is unlimited and free
     /// (docs/04-TECH-ARCHITECTURE-COST.md §4).
     var dailyAIGenerationLimit: Int {
