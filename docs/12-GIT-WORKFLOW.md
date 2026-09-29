@@ -124,7 +124,7 @@ Conventional Commits, with a **scope that names the feature or area**.
 | `style` | Formatting only (rarely justified) | `style: apply swift-format to Features/Auth` |
 | `perf` | Performance | `perf(F15): cache embeddings to avoid re-indexing on launch` |
 
-**Scope values:** `F01`–`F15` for feature work · `docs`, `ci`, `deps`, `release` otherwise.
+**Scope values:** `F01`–`F15` for feature work · area scopes for everything else: `app`, `ios`, `firebase`, `tools`, `docs`, `ci`, `deps`, `release`.
 
 **Subject rules:** imperative mood ("add", not "added") · no trailing full stop · under ~72 characters · says *what changed*, the body says *why*.
 
