@@ -10,6 +10,13 @@ functions/.env
 serviceAccountKey.json
 **/serviceAccountKey.json
 
+# Firebase Admin SDK private keys. The console downloads these as
+# "<projectId>-firebase-adminsdk-<hash>.json", which the pattern above does NOT
+# match — so without this line, following Firebase's own instructions to
+# "Generate new private key" produces a committable private key that grants full
+# admin on the project.
+**/*firebase-adminsdk*.json
+
 # ── Xcode ───────────────────────────────────────────────────────────────────
 build/
 DerivedData/
