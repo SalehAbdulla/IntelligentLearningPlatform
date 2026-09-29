@@ -1,0 +1,423 @@
+rules_version = '2';
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  StudyForge — Cloud Firestore security rules
+//
+//  Design principle: DENY BY DEFAULT. There is no catch-all allow anywhere.
+//  Authorisation is enforced HERE, server-side — the client is never trusted
+//  to decide who can read what.
+//
+//  Roles arrive as Firebase Auth custom claims (`role`, `plan`, `groupIds`),
+//  set by a Cloud Function. Rules can read the token for free, whereas reading
+//  another document inside a rule costs a billed read — so claims are both the
+//  secure and the cheap option.
+//
+//  Schema, role model and rationale: docs/05-DATA-MODEL-SECURITY.md
+//  Tests (including NEGATIVE tests): backend/rules-tests/
+// ═══════════════════════════════════════════════════════════════════════════
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ───────────────────────────── helpers ─────────────────────────────
+
+    function signedIn()  { return request.auth != null; }
+    function uid()       { return request.auth.uid; }
+    function role()      { return request.auth.token.role; }
+    function isAdmin()   { return signedIn() && role() == 'admin'; }
+    function isTutor()   { return signedIn() && (role() == 'tutor' || isAdmin()); }
+    function isSelf(u)   { return signedIn() && uid() == u; }
+
+    // Fields that must never change after creation.
+    function keeps(field) { return request.resource.data[field] == resource.data[field]; }
+
+    // Server-managed fields must match what already exists.
+    function keepsServerFields() {
+      return keeps('createdAt') && keeps('byUid');
+    }
+
+    // True when the caller is the owner of a document whose owner field is `ownerUid`.
+    function isOwner() { return signedIn() && resource.data.ownerUid == uid(); }
+
+    // ─────────────────────────── users & profile ──────────────────────
+
+    // A user may read their own record; tutors and admins may read (cohort views).
+    // A user may NOT promote themselves: `role` and `plan` are server-owned.
+    match /users/{userId} {
+      allow read: if isSelf(userId) || isTutor() || isAdmin();
+
+      allow create: if isSelf(userId)
+                    && request.resource.data.role == 'student'
+                    && request.resource.data.plan == 'free';
+
+      allow update: if isAdmin()
+                    || (isSelf(userId) && keeps('role') && keeps('plan'));
+
+      allow delete: if isAdmin();
+
+      // Notification preferences, AI privacy settings, quiet hours.
+      match /private/{docId} {
+        allow read, write: if isSelf(userId);
+      }
+
+      match /earned/{badgeId} {
+        allow read: if isSelf(userId);
+        allow write: if false;              // written by Cloud Functions
+      }
+    }
+
+    // FCM registration tokens. A user owns theirs and nothing else.
+    match /deviceTokens/{userId}/tokens/{token} {
+      allow read:   if isSelf(userId) || isAdmin();
+      allow create, delete: if isSelf(userId);
+      allow update: if isSelf(userId) || isAdmin();
+    }
+
+    // ─────────────────────── server-owned collections ─────────────────
+    // Clients may read their own; only the Admin SDK (Cloud Functions) writes.
+
+    // Append-only audit trail. Not even admins may rewrite history.
+    match /auditLog/{entryId} {
+      allow read:   if isAdmin();
+      allow create: if false;
+      allow update, delete: if false;
+    }
+
+    // Engine routing policy, prompt templates and per-user AI quotas.
+    match /aiConfig/{docId} {
+      allow read:  if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Response cache keyed by SHA-256 of source text — never client-visible.
+    match /aiCache/{hash} {
+      allow read, write: if false;
+    }
+
+    match /aiUsage/{userId}/days/{day} {
+      allow read:  if isSelf(userId) || isAdmin();
+      allow write: if false;
+    }
+
+    match /topicMastery/{userId}/topics/{topicId} {
+      allow read:  if isSelf(userId) || isTutor();
+      allow write: if false;
+    }
+
+    match /progress/{userId} {
+      allow read:  if isSelf(userId) || isTutor();
+      allow write: if false;
+    }
+
+    match /activityEvents/{eventId} {
+      allow read:  if false;              // aggregated by Cloud Functions only
+      allow write: if false;
+    }
+
+    // Entitlements come from the Tap Payments webhook and nowhere else.
+    match /subscriptions/{userId} {
+      allow read:  if isSelf(userId) || isAdmin();
+      allow write: if false;
+    }
+
+    match /payments/{paymentId} {
+      allow read:  if isAdmin() || (signedIn() && resource.data.uid == uid());
+      allow write: if false;
+    }
+
+    match /promoCodes/{code} {
+      allow read:  if false;              // validated through a callable function
+      allow write: if isAdmin();
+    }
+
+    match /folderInvites/{code} {
+      allow read, write: if false;        // resolved through a callable function
+    }
+
+    // ─────────────────────── academic structure ───────────────────────
+
+    match /courses/{courseId} {
+      allow read:  if isAdmin() || isTutor()
+                   || (signedIn() && resource.data.enrolledUids != null
+                       && uid() in resource.data.enrolledUids);
+      allow create: if isTutor() && request.resource.data.tutorUid == uid();
+      allow update, delete: if isAdmin()
+                            || (isTutor() && resource.data.tutorUid == uid());
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow read:  if isAdmin() || isTutor() || (signedIn() && resource.data.uid == uid());
+      allow write: if isTutor();
+    }
+
+    // A material is visible to its owner, to tutors, and to a cohort when the
+    // tutor has published it. Folder sharing is modelled separately in folders/.
+    match /materials/{materialId} {
+      allow read: if isAdmin()
+                  || isTutor()
+                  || isOwner()
+                  || (signedIn() && resource.data.visibility == 'course');
+
+      // The owner is stamped from the token, never trusted from the payload.
+      allow create: if signedIn()
+                    && request.resource.data.ownerUid == uid()
+                    && request.resource.data.textHash is string;
+
+      allow update: if isAdmin() || (isOwner() && keepsServerFields() && keeps('ownerUid'));
+      allow delete: if isAdmin() || isOwner();
+
+      // Chunks inherit the parent material's visibility. The parent read is a
+      // rule-level get(); the client must scope its query to a single material.
+      match /chunks/{chunkId} {
+        function parent() {
+          return get(/databases/$(database)/documents/materials/$(materialId)).data;
+        }
+        allow read: if isAdmin() || isTutor()
+                    || (signedIn() && (parent().ownerUid == uid()
+                                       || parent().visibility == 'course'));
+        allow write: if isAdmin() || (signedIn() && parent().ownerUid == uid());
+      }
+    }
+
+    // ─────────────────────────── AI artefacts ─────────────────────────
+    // Every generated artefact carries provenance (sourceChunkIds, pageNumbers,
+    // confidence). Ownership is the same shape for all of them, so the rule is
+    // deliberately repetitive rather than clever.
+
+    match /summaries/{summaryId} {
+      allow read:   if isAdmin() || isTutor() || isOwner();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isAdmin() || isOwner();
+    }
+
+    match /decks/{deckId} {
+      allow read:   if isAdmin() || isTutor() || isOwner();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isAdmin() || isOwner();
+
+      // Spaced-repetition state lives on the card, so learners write these often.
+      match /cards/{cardId} {
+        function deck() { return get(/databases/$(database)/documents/decks/$(deckId)).data; }
+        allow read:   if isAdmin() || isTutor() || (signedIn() && deck().ownerUid == uid());
+        allow create, update, delete: if isAdmin()
+                                      || (signedIn() && deck().ownerUid == uid());
+      }
+    }
+
+    match /quizzes/{quizId} {
+      allow read:   if isAdmin() || isTutor() || isOwner();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isAdmin() || isOwner();
+
+      // Questions carry the answer key, so they are NOT readable without the
+      // parent quiz being readable.
+      match /questions/{questionId} {
+        function quiz() { return get(/databases/$(database)/documents/quizzes/$(quizId)).data; }
+        allow read:   if isAdmin() || isTutor() || (signedIn() && quiz().ownerUid == uid());
+        allow write:  if isAdmin() || (signedIn() && quiz().ownerUid == uid());
+      }
+    }
+
+    // Attempts are written by the learner, but the mastery they imply is derived
+    // server-side in topicMastery — a client cannot inflate its own weakness radar.
+    match /quizAttempts/{attemptId} {
+      allow read:   if isAdmin() || isTutor() || (signedIn() && resource.data.uid == uid());
+      allow create: if signedIn() && request.resource.data.uid == uid();
+      allow update, delete: if false;      // attempts are immutable
+    }
+
+    match /coachThreads/{threadId} {
+      allow read:   if isOwner();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isOwner();
+
+      match /messages/{messageId} {
+        function thread() { return get(/databases/$(database)/documents/coachThreads/$(threadId)).data; }
+        allow read:   if signedIn() && thread().ownerUid == uid();
+        allow create: if signedIn() && thread().ownerUid == uid();
+        allow update, delete: if false;
+      }
+    }
+
+    match /aiFeedback/{feedbackId} {
+      allow read:   if isOwner() || isAdmin();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isAdmin();
+    }
+
+    // ──────────────────── planning and examination ────────────────────
+
+    match /studyPlans/{planId} {
+      allow read:   if isAdmin() || isTutor() || isOwner();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isAdmin() || isOwner();
+
+      match /sessions/{sessionId} {
+        function plan() { return get(/databases/$(database)/documents/studyPlans/$(planId)).data; }
+        allow read, write: if isAdmin()
+                            || (signedIn() && plan().ownerUid == uid());
+      }
+    }
+
+    match /deadlines/{deadlineId} {
+      allow read:   if isAdmin() || isTutor() || isOwner()
+                    || (signedIn() && resource.data.visibility == 'course');
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isAdmin() || isOwner();
+    }
+
+    // ───────────────────────── collaboration ──────────────────────────
+    // Group membership is the authorisation primitive for everything below.
+
+    match /groups/{groupId} {
+      function group() {
+        return get(/databases/$(database)/documents/groups/$(groupId)).data;
+      }
+      function isMember() {
+        return signedIn()
+          && exists(/databases/$(database)/documents/groups/$(groupId)/members/$(uid()));
+      }
+
+      allow read:   if isAdmin() || isMember();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update: if isAdmin() || (isMember() && group().ownerUid == uid());
+      allow delete: if isAdmin() || (isMember() && group().ownerUid == uid());
+
+      match /members/{memberUid} {
+        allow read:  if isAdmin() || isMember();
+        allow write: if isAdmin() || group().ownerUid == uid();
+      }
+
+      // Any member may contribute to the group conversation.
+      match /messages/{messageId} {
+        allow read:   if isAdmin() || isMember();
+        allow create: if (isAdmin() || isMember())
+                       && request.resource.data.uid == uid();
+        allow update, delete: if isAdmin() || (isMember() && resource.data.uid == uid());
+      }
+    }
+
+    // A live revision quiz. Only the host advances it; every member may answer.
+    match /liveSessions/{sessionId} {
+      function session() {
+        return get(/databases/$(database)/documents/liveSessions/$(sessionId)).data;
+      }
+      function isHost() {
+        return signedIn() && session().hostUid == uid();
+      }
+      function isParticipant() {
+        return isHost()
+          || (signedIn()
+              && exists(/databases/$(database)/documents/liveSessions/$(sessionId)/answers/$(uid())));
+      }
+
+      allow read:   if isAdmin() || isParticipant();
+      allow create: if signedIn() && request.resource.data.hostUid == uid();
+      allow update, delete: if isAdmin() || isHost();
+
+      // Answer documents are keyed by player uid, which makes a write idempotent.
+      match /answers/{answerId} {
+        allow read:   if isAdmin() || isHost() || answerId == uid();
+        allow create: if signedIn() && answerId == uid();
+        allow update, delete: if false;   // an answer is final
+      }
+    }
+
+    // ───────────────────── shared study folders ───────────────────────
+    // Permission is per-member: view | comment | edit. The owner is implicit.
+
+    match /folders/{folderId} {
+      function folder() {
+        return get(/databases/$(database)/documents/folders/$(folderId)).data;
+      }
+      function isMember() {
+        return signedIn()
+          && exists(/databases/$(database)/documents/folders/$(folderId)/members/$(uid()));
+      }
+      function isOwnerFolder() {
+        return isMember() && folder().ownerUid == uid();
+      }
+      function canEdit() {
+        return isMember()
+          && get(/databases/$(database)/documents/folders/$(folderId)/members/$(uid())).data.permission
+             in ['comment', 'edit'];
+      }
+
+      // Reading a folder you do not belong to is denied, so a leaked id is
+      // useless without a membership document.
+      allow read:   if isAdmin() || isMember();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update: if isAdmin() || isOwnerFolder();
+      allow delete: if isAdmin() || isOwnerFolder();
+
+      match /items/{itemId} {
+        allow read:  if isAdmin() || isMember();
+        allow write: if isAdmin() || canEdit();
+      }
+
+      // Only the owner changes permissions — a member cannot promote themselves.
+      match /members/{memberUid} {
+        allow read:  if isAdmin() || isMember();
+        allow write: if isAdmin() || (isMember() && folder().ownerUid == uid());
+      }
+    }
+
+    // ───────────────────────── bookmarks ──────────────────────────────
+
+    match /collections/{collectionId} {
+      allow read:   if isOwner() || isAdmin();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isOwner() || isAdmin();
+    }
+
+    match /bookmarks/{bookmarkId} {
+      allow read:   if isOwner() || isAdmin();
+      allow create: if signedIn() && request.resource.data.ownerUid == uid();
+      allow update, delete: if isOwner() || isAdmin();
+    }
+
+    // ─────────────────── tutor & admin content control ────────────────
+
+    // The human-in-the-loop gate: only tutors decide whether AI-generated
+    // content reaches students, and a rejection must carry a reason.
+    match /reviewQueue/{itemId} {
+      allow read:   if isTutor();
+      allow create: if isTutor();
+      allow update: if isTutor()
+                    && (!('decision' in request.resource.data)
+                        || request.resource.data.reason is string);
+      allow delete: if isAdmin();
+    }
+
+    match /announcements/{announcementId} {
+      allow read:   if isAdmin() || isTutor()
+                    || (signedIn() && resource.data.visibility == 'course');
+      allow create: if isTutor() && request.resource.data.authorUid == uid();
+      allow update, delete: if isAdmin()
+                            || (isTutor() && resource.data.authorUid == uid());
+    }
+
+    // Any signed-in user may report content; only admins act on reports.
+    match /reports/{reportId} {
+      allow read:   if isAdmin() || (signedIn() && resource.data.reporterUid == uid());
+      allow create: if signedIn() && request.resource.data.reporterUid == uid();
+      allow update, delete: if isAdmin();
+    }
+
+    // The canonical taxonomy is readable by any signed-in user so clients can
+    // render tag pickers; only admins change it.
+    match /tags/{tagId} {
+      allow read:  if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // ═════════════════════════════════════════════════════════════════
+    //  Anything not matched above is DENIED. There is deliberately no
+    //  catch-all `allow read, write: if true` in this file, and
+    //  rules-tests asserts that an unknown collection is unreadable.
+    // ═════════════════════════════════════════════════════════════════
+  }
+}
+
+
+
