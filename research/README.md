@@ -10,6 +10,7 @@ This folder holds the **evidence** for the assessment components. It is not docu
 | **`sprints/sprint-<N>/`** | **Sprints — 10% INDIVIDUAL** | Per sprint: `goal.md` · `board.png` · `review/` · `retro.md` · one contribution log per member |
 | `testing/` | iOS App (60%) · Sprints | Test logs per feature, run by the named tester (never the developer) |
 | `reviews/` | Sprints · LO3 | Review notes on AI-generated code — what was wrong, what changed, why |
+| `spikes/` | iOS App (60%) · Sprint S0 | Time-boxed feasibility spikes. Each answers a question that could force a redesign, and records the **measured** result rather than an assumption |
 | `cheatsheets/` | iOS App VIVA (60%) | One page per member: their features, key files, trade-offs, known limitations |
 | `demo/` | iOS App Demonstration (60%) | Golden-path recordings and the backup capture |
 
