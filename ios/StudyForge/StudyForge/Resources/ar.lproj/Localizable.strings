@@ -27,6 +27,8 @@
 "common.back"               = "رجوع";
 "common.close"              = "إغلاق";
 "common.loading"            = "جارٍ التحميل…";
+"common.showPassword"       = "إظهار كلمة المرور";
+"common.hidePassword"       = "إخفاء كلمة المرور";
 
 /* ── A01 Splash ─────────────────────────────────────────────────────────── */
 "auth.splash.tagline"       = "ادرس بذكاء، لا لفترة أطول";
