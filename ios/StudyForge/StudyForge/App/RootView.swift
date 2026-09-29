@@ -47,5 +47,9 @@ struct RootView: View {
 }
 
 #Preview("Root") {
-    RootView(container: AppContainer(environment: .dev, session: .preview))
+    RootView(container: .previewing())
+}
+
+#Preview("Root — signed out") {
+    RootView(container: .previewing(session: nil))
 }

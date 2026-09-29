@@ -37,7 +37,7 @@
 |---|---|---|
 | On-device Apple Intelligence unavailable on the demo device | Medium | ✅ **Addressed by the S0 spike.** Verified available on Apple Silicon hardware; unavailable in the Simulator *by design*. Tier-1 fallback confirmed working, and `MockProvider` serves tier 1 in the Simulator until S1 |
 | Figma component library becomes a time sink | Medium | Time-box to half a day; it must only cover the components the P0 frames need |
-| Firebase setup blocked on account/billing | Low | Spark only; no billing required. **No Cloud Functions this sprint** |
+| Firebase setup blocked on account/billing | **Realised** | ⚠️ **This risk materialised.** The console failed at *"Billing setup can't be completed [OR_BACR2_59]"* — a **Google Payments** error, not a Firebase one, and one only the account owner can clear. **Mitigated rather than waited on:** (1) Spark needs no billing *at all*, so the project can be created from the CLI via `firebase projects:create`, which never enters the billing flow — runbook in [`backend/README.md`](../../../backend/README.md); and (2) the app no longer depends on a project existing, because `FirebaseBootstrap` runs against the Emulator Suite in Debug. See decision **D22**. **No Cloud Functions this sprint** |
 | Sprint boundaries not yet confirmed with the tutor | Medium | Confirm at the interview (Q9) and adjust |
 
 ## Definition of done
@@ -63,7 +63,12 @@
 
 ## S0 progress log
 
-**Updated:** after the backend increment.
+**Updated:** after the Firebase SDK + `AuthService` increment.
+
+> **S0 exit gate:** App builds on device · Firebase **live** · feature table signed off · tokens frozen.
+> Three of those four are true. "Firebase live" is the last one, and it is the human step
+> above — but it is now **the only thing that needs a person**, and it no longer blocks
+> any development work (D22).
 
 ### ✅ Complete
 
@@ -74,29 +79,39 @@
 | Repo restructured into `ios/` + `backend/` | M1 | PR #7, decision D20/D21 |
 | **AI feasibility spike — on-device tier** | **M2** | `research/spikes/foundation-models.md` + `fm-probe.swift` · **all three AI assumptions verified** · measured 2.8 s for 3 guided cards · Simulator fallback confirmed by screenshot |
 | **First unit-test target + AI layer tests** | **M3** | `StudyForgeTests` target wired into the scheme · `xcodebuild test` → **39 tests in 7 suites, 0 failures** · found and fixed a real `AppError.from` bug |
+| **Firebase SDK wired + `AuthService` (F01 foundation)** | **M1** | `firebase-ios-sdk` **12.19.2** resolved with 13 packages pinned in `Package.resolved` · new `Core/Auth/` (protocol, Firebase impl, mock, claims, state broadcaster) and `Core/Config/` (plist-optional bootstrap) · app **launches and renders with NO Firebase project** in the Simulator · `xcodebuild test` → **78 tests in 12 suites, 0 failures** · build has **0 errors, 0 warnings** · decisions **D22/D23** |
 
 ### ⛔ Blocked on the human (cannot be automated)
 
+> **Status change:** the project is now **optional for development**, not a blocker.
+> `FirebaseBootstrap` runs the app against the Emulator Suite when no
+> `GoogleService-Info.plist` is present (Debug only). What remains below is needed to
+> make the *real* project live — the S0 exit gate — not to make progress.
+
 | Task | Why it needs a person | Time |
 |---|---|---|
-| Create Firebase project `studyforge-it8108` | Requires a Google account and the console UI | ~5 min |
+| ⚠️ **Console billing flow fails with `OR_BACR2_59`** | Google Payments cannot create the billing profile. **Spark needs no billing, so do not fight this flow** — create the project from the CLI instead (runbook in [`backend/README.md`](../../../backend/README.md)). If it persists, the Google account is likely a **university/Workspace** one, where the org blocks billing-profile creation; use a personal Gmail | ~2 min |
+| Create Firebase project `studyforge-it8108` | Requires a Google account; the CLI path above avoids the console UI entirely | ~2 min |
 | Storage bucket region **`us-central1`** | ⚠️ A Bahrain-region bucket leaves the no-cost quota and starts billing | ~1 min |
 | Enable Auth (Email/Password + Apple), Firestore, Storage, FCM, Crashlytics | Console-only | ~5 min |
-| Download `GoogleService-Info.plist` → `ios/StudyForge/StudyForge/` | Console-only; already gitignored | ~1 min |
+| Download `GoogleService-Info.plist` → `ios/StudyForge/StudyForge/` | `npx firebase apps:sdkconfig IOS <appId> -o …` gets it without the console; the file is already gitignored | ~1 min |
 
 ### ⬜ Next (I can do these)
 
 | Task | Owner | Note |
 |---|---|---|
-| Firebase SPM packages wired into the Xcode project | M1 | Needs `GoogleService-Info.plist` to actually initialise |
-| `AuthService` protocol + Firebase impl + mock | M1 | Starts F01 — the first real feature |
+| ~~Firebase SPM packages wired into the Xcode project~~ | M1 | ✅ **Done during S0** — `firebase-ios-sdk` 12.19.2 resolved and linked; `Package.resolved` committed to pin versions |
+| ~~`AuthService` protocol + Firebase impl + mock~~ | M1 | ✅ **Done during S0** — F01 foundation landed, with 39 auth tests. F01 continues in S1 with the sign-in/sign-up **screens** |
+| Tier-1 `FirebaseAIProvider` against the existing `AIProvider` protocol | M2 | The protocol and router already exist and are tested; this is the S1 wiring |
+| Emulator-backed **integration** test for sign-up (writes `users/{uid}`) | M1 | Deliberately kept out of the hermetic unit suite (D23); needs `firebase emulators:exec` running |
 | Figma file: 9 pages + variables + component library | M4 | Needs the design decisions in docs/06, already frozen |
-| ~~AI feasibility spike~~ → done; follow-ups | M2 | Next: tier-1 Firebase AI Logic provider, and confirming tier 0 on the real demo iPhone |
-| ~~Unit-test target + `AIRouter` / `AICostGovernor` tests~~ | M3 | ✅ **Done during S0** — this was a spike-generated follow-up borrowed forward. S1 continues it with F01 `AuthService` and extraction tests |
+| Confirm tier 0 on the real demo iPhone | M2 | Simulator reports `simulatorUnsupported` by design; hardware verified available |
 
 ### Sprint exit gate (unchanged)
 
 > App builds on device · Firebase live · feature table signed off · tokens frozen
 
-Three of those four are now true. **"Firebase live" is the only one left, and it is the human step above.**
+Measured against the gate: the app **builds and launches** (verified in the Simulator),
+the tokens are frozen, and the feature table is signed off. **"Firebase live" is the one
+remaining item** — see the block above for the CLI route around the billing error.
 
