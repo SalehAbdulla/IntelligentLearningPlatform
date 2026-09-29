@@ -94,7 +94,7 @@
 | Auth providers | ✅ **Email/Password enabled** (F01 depends on it). ⚠️ **Google was enabled too** — see the warning below |
 | `GoogleService-Info.plist` | In `ios/StudyForge/StudyForge/`, auto-included by the synchronized folder, gitignored, **App ID matches the registered app exactly** |
 | Rules + indexes | Deployed via the CLI and **verified against the live database** (see the table above) |
-| Storage bucket | ⚠️ **Cannot be created programmatically on Spark.** The official `projects.defaultBucket.create` API **requires the Blaze plan** (Firebase FAQ), and this project has `billingEnabled: false`. Attempted and denied with `403 PERMISSION_DENIED`. **Next action: try the console** (Storage → Get started → **`us-central1`**) — the console uses a different path than the REST API. If the console *also* demands an upgrade, then Storage requires Blaze for new projects and the S2 upload plan needs rethinking (see risk below) |
+| Storage bucket | ✅ **Decision: Storage is bypassed entirely** — see **D24**. `projects.defaultBucket.create` requires **Blaze**, and the project reports `billingEnabled: false`, so it is not obtainable on Spark. Rather than pay for Storage to hold files that on-device AI reads locally anyway, **raw materials stay on the device and only derived data syncs to Firestore** (the same principle as tier-0, one layer down). `storage.rules` stays in the repo and stays emulator-tested (18 tests) — it is simply never deployed |
 
 > ⚠️ **Open item created by enabling Google sign-in.** App Store Guideline 4.8 requires that
 > if a third-party login is offered, **Sign in with Apple must be offered too**.
