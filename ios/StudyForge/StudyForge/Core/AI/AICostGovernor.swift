@@ -36,9 +36,16 @@ final class AICostGovernor {
     /// rather than silently carrying over.
     private var countedDay: Date
 
-    init(plan: SubscriptionPlan = .free, now: Date = Date()) {
+    /// Supplies "now". Injected rather than called directly so the daily reset can be
+    /// tested without waiting until midnight.
+    @ObservationIgnored
+    private let clock: @Sendable () -> Date
+
+    init(plan: SubscriptionPlan = .free,
+         clock: @escaping @Sendable () -> Date = { Date() }) {
         self.plan = plan
-        self.countedDay = Calendar.current.startOfDay(for: now)
+        self.clock = clock
+        self.countedDay = Calendar.current.startOfDay(for: clock())
     }
 
     // MARK: - Budget
@@ -59,7 +66,7 @@ final class AICostGovernor {
     /// When the allowance refreshes. Shown in the quota-exceeded screen so the user
     /// is told when to come back rather than just being refused.
     var resetsAt: Date {
-        Calendar.current.startOfDay(for: Date()).addingTimeInterval(86_400)
+        Calendar.current.startOfDay(for: clock()).addingTimeInterval(86_400)
     }
 
     /// Records one cloud generation. On-device calls are deliberately ignored.
@@ -71,12 +78,12 @@ final class AICostGovernor {
 
     /// Exposed so tests and previews can set up a specific state without generating.
     func seed(usedToday value: Int) {
-        countedDay = Calendar.current.startOfDay(for: Date())
+        countedDay = Calendar.current.startOfDay(for: clock())
         usedToday = value
     }
 
-    private func resetIfNeeded(now: Date = Date()) {
-        let today = Calendar.current.startOfDay(for: now)
+    private func resetIfNeeded() {
+        let today = Calendar.current.startOfDay(for: clock())
         guard today != countedDay else { return }
         countedDay = today
         usedToday = 0
