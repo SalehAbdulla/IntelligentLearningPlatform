@@ -48,9 +48,19 @@ node_modules/
 firebase-debug.log
 firebase-debug.*.log
 ui-debug.log
-.firebase/
 *.log
+.firebase/
 .firebase/emulator-data/
+
+# Cloud Functions build output (TypeScript -> lib/)
+backend/functions/lib/
+functions/lib/
+
+# Firebase emulator export/import artefacts
+firebase-export-*/
+
+# Rules-test reports
+backend/rules-tests/.coverage/
 
 # ── Deliverables: large binaries (keep the source, not the exports) ────────
 # The .fig and the final PDF are submitted through the portal, not git.
