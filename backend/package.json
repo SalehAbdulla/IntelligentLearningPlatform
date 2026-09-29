@@ -1,0 +1,23 @@
+{
+  "name": "studyforge-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Firebase configuration and Cloud Functions for StudyForge. See README.md.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "emulators": "firebase emulators:start --only auth,firestore,storage",
+    "test": "firebase emulators:exec --only firestore,storage --project demo-studyforge \"node --test --test-concurrency=1 rules-tests/*.test.mjs\"",
+    "test:firestore": "firebase emulators:exec --only firestore --project demo-studyforge \"node --test rules-tests/firestore.rules.test.mjs\"",
+    "test:storage": "firebase emulators:exec --only firestore,storage --project demo-studyforge \"node --test rules-tests/storage.rules.test.mjs\"",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
+    "deploy:indexes": "firebase deploy --only firestore:indexes",
+    "deploy:functions": "firebase deploy --only functions"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase-tools": "^15.32.0"
+  }
+}
