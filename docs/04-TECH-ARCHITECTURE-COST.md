@@ -117,6 +117,12 @@
 | Long documents (> context window) | **T2 Cloud Function** | T1 (chunked) | Server-side chunk-and-merge |
 | Community moderation | **T2 Cloud Function** | — | Must be server-side and auditable |
 
+> **S0 note — tier 1 is temporarily the mock.** The Firebase SDK is not wired in yet,
+> so `AIRouter.standard` registers `MockProvider` at tier 1. This is what lets every AI
+> screen be built and demoed in the Simulator, where tier 0 cannot run.
+> `FirebaseAIProvider` replaces it in S1 with no change to the protocol or to any caller.
+> See the [S0 spike report](../research/spikes/foundation-models.md).
+
 ### Why this is defensible engineering, not decoration
 
 1. **It makes the product free.** Tier 0 costs nothing and covers the majority of calls, so the free tier of tier 1 is never exhausted by normal use.
@@ -267,7 +273,8 @@ ios/StudyForge/
 └── StudyForge/
     ├── App/                    StudyForgeApp.swift · AppContainer.swift · RootView.swift · RoleRouter.swift
     ├── Core/
-    │   ├── AI/                 AIProvider.swift · OnDeviceProvider.swift · FirebaseAIProvider.swift
+    │   ├── AI/                 AIProvider.swift · AITier.swift · AIGenerationModels.swift
+    │   │                       OnDeviceProvider.swift · MockProvider.swift · FirebaseAIProvider.swift
     │   │                       AIRouter.swift · AICostGovernor.swift · PromptTemplates.swift
     │   ├── AI/Retrieval/       Chunker.swift · EmbeddingIndex.swift · Retriever.swift
     │   ├── Auth/               AuthService.swift · CustomClaims.swift · RoleGuard.swift
@@ -367,8 +374,9 @@ firebase deploy --only firestore:rules,storage:rules
 | Storage no-cost quota is region-restricted | Firebase pricing docs: `us-central1`, `us-west1`, `us-east1` only | ✅ verified |
 | Cloud Functions requires Blaze | Firebase pricing docs; free invocation allowance still applies | ✅ verified |
 | Firebase AI Logic has a no-cost tier with per-model RPM/RPD/TPM limits | Firebase AI Logic quota docs; requires an API key from AI Studio | ✅ verified |
-| On-device Apple Intelligence needs a real device (not the Simulator) | Apple Foundation Models docs + platform behaviour | ✅ verified |
-| `FoundationModels` provides guided generation (`@Generable`), tools and streaming on iOS 26+ | Apple's Foundation Models framework documentation | ✅ verified |
+| On-device Apple Intelligence needs a real device (not the Simulator) | Apple Foundation Models docs **+ confirmed empirically in the S0 spike**: the app reports `simulatorUnsupported` on an iPhone 18 Pro Max Simulator while the same framework returns `available` on Apple Silicon hardware | ✅ **verified empirically — [spike report](../research/spikes/foundation-models.md)** |
+| `FoundationModels` provides guided generation (`@Generable`), tools and streaming on iOS 26+ | **Proven, not assumed:** the S0 probe filled a `@Generable` struct (2 × `String` + parsed `Int`) from real model output in 2.82 s, and the app compiles against the real API with zero warnings | ✅ **verified empirically — [spike report](../research/spikes/foundation-models.md)** |
+| A tier-1 fallback keeps every AI feature usable when tier 0 is unavailable | Router behaviour observed live in the Simulator: tier 0 `simulatorUnsupported` → all five tasks routed to tier 1 | ✅ verified empirically |
 | Tap Payments is Bahrain-licensed with an iOS SDK, Benefit/BenefitPay/Apple Pay support and a sandbox mode | Tap Payments Bahrain product page + developer documentation | ✅ verified |
 | Apple Guideline 3.1.1 conflicts with an external gateway for in-app digital goods | App Store Review Guidelines | ✅ verified |
 
