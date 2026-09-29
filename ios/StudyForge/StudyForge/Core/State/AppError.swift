@@ -107,6 +107,11 @@ extension AppError {
     static func from(_ error: any Error) -> AppError {
         if let appError = error as? AppError { return appError }
 
+        // The AI layer has its own error type carrying richer reasons. Without this
+        // branch an AI failure would degrade to `.unknown`, losing the one thing the
+        // user needs: which engine failed and what to do about it.
+        if let aiError = error as? AIError { return aiError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:

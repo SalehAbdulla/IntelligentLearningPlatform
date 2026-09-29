@@ -270,24 +270,28 @@ Track C is built by Cline, so the conventions are explicit and enforceable.
 ```
 ios/StudyForge/
 ├── StudyForge.xcodeproj
-└── StudyForge/
-    ├── App/                    StudyForgeApp.swift · AppContainer.swift · RootView.swift · RoleRouter.swift
-    ├── Core/
-    │   ├── AI/                 AIProvider.swift · AITier.swift · AIGenerationModels.swift
-    │   │                       OnDeviceProvider.swift · MockProvider.swift · FirebaseAIProvider.swift
-    │   │                       AIRouter.swift · AICostGovernor.swift · PromptTemplates.swift
-    │   ├── AI/Retrieval/       Chunker.swift · EmbeddingIndex.swift · Retriever.swift
-    │   ├── Auth/               AuthService.swift · CustomClaims.swift · RoleGuard.swift
-    │   ├── Payments/           PaymentGateway.swift · TapPaymentsGateway.swift · StoreKitGateway.swift
-    │   ├── Persistence/        SwiftDataModels.swift · LocalCache.swift · SyncQueue.swift
-    │   ├── Extraction/         MaterialExtractor.swift · VisionOCR.swift · Compressor.swift
-    │   ├── Notifications/      PushService.swift · DeepLinkRouter.swift
-    │   ├── Scheduling/         SpacedRepetition.swift · StudyPlanner.swift
-    │   └── Observability/      Logger.swift · AnalyticsEvents.swift
-    ├── Features/
-    │   └── <FeatureName>/      <Feature>View.swift · <Feature>ViewModel.swift · <Feature>Repository.swift
-    ├── DesignSystem/           ColorTokens.swift · TypeScale.swift · Spacing.swift · Components/
-    └── Resources/              Assets.xcassets · Localizable.strings (en, ar) · SampleMaterials/
+├── StudyForge/                 (app target — synchronised folder)
+│   ├── App/                    StudyForgeApp.swift · AppContainer.swift · RootView.swift · RoleRouter.swift
+│   ├── Core/
+│   │   ├── AI/                 AIProvider.swift · AITier.swift · AIGenerationModels.swift
+│   │   │                       OnDeviceProvider.swift · MockProvider.swift · FirebaseAIProvider.swift
+│   │   │                       AIRouter.swift · AICostGovernor.swift · PromptTemplates.swift
+│   │   ├── AI/Retrieval/       Chunker.swift · EmbeddingIndex.swift · Retriever.swift
+│   │   ├── Auth/               AuthService.swift · CustomClaims.swift · RoleGuard.swift
+│   │   ├── Payments/           PaymentGateway.swift · TapPaymentsGateway.swift · StoreKitGateway.swift
+│   │   ├── Persistence/        SwiftDataModels.swift · LocalCache.swift · SyncQueue.swift
+│   │   ├── Extraction/         MaterialExtractor.swift · VisionOCR.swift · Compressor.swift
+│   │   ├── Notifications/      PushService.swift · DeepLinkRouter.swift
+│   │   ├── Scheduling/         SpacedRepetition.swift · StudyPlanner.swift
+│   │   └── Observability/      Logger.swift · AnalyticsEvents.swift
+│   ├── Features/
+│   │   └── <FeatureName>/      <Feature>View.swift · <Feature>ViewModel.swift · <Feature>Repository.swift
+│   ├── DesignSystem/           ColorTokens.swift · TypeScale.swift · Spacing.swift · Components/
+│   └── Resources/              Assets.xcassets · Localizable.strings (en, ar) · SampleMaterials/
+└── StudyForgeTests/            (unit-test target — Swift Testing)
+    ├── AICostGovernorTests.swift
+    ├── AIRouterTests.swift
+    └── AIVocabularyTests.swift
 ```
 
 ### Coding rules
@@ -335,7 +339,7 @@ xcodebuild -project ios/StudyForge/StudyForge.xcodeproj \
            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
            build
 
-# Unit tests
+# Unit tests (Swift Testing suites live in the StudyForgeTests target)
 xcodebuild test -project ios/StudyForge/StudyForge.xcodeproj \
                 -scheme StudyForge \
                 -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest'
@@ -377,6 +381,7 @@ firebase deploy --only firestore:rules,storage:rules
 | On-device Apple Intelligence needs a real device (not the Simulator) | Apple Foundation Models docs **+ confirmed empirically in the S0 spike**: the app reports `simulatorUnsupported` on an iPhone 18 Pro Max Simulator while the same framework returns `available` on Apple Silicon hardware | ✅ **verified empirically — [spike report](../research/spikes/foundation-models.md)** |
 | `FoundationModels` provides guided generation (`@Generable`), tools and streaming on iOS 26+ | **Proven, not assumed:** the S0 probe filled a `@Generable` struct (2 × `String` + parsed `Int`) from real model output in 2.82 s, and the app compiles against the real API with zero warnings | ✅ **verified empirically — [spike report](../research/spikes/foundation-models.md)** |
 | A tier-1 fallback keeps every AI feature usable when tier 0 is unavailable | Router behaviour observed live in the Simulator: tier 0 `simulatorUnsupported` → all five tasks routed to tier 1 | ✅ verified empirically |
+| The router's fallback order, budget accounting and error surface behave as designed | Swift Testing unit tests in the `StudyForgeTests` target: **39 tests in 7 suites, 0 failures**, including mid-call engine failure and quota exhaustion | ✅ **verified by automated tests** |
 | Tap Payments is Bahrain-licensed with an iOS SDK, Benefit/BenefitPay/Apple Pay support and a sandbox mode | Tap Payments Bahrain product page + developer documentation | ✅ verified |
 | Apple Guideline 3.1.1 conflicts with an external gateway for in-app digital goods | App Store Review Guidelines | ✅ verified |
 
