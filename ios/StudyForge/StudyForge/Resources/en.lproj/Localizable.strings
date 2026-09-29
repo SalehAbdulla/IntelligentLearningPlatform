@@ -1,0 +1,88 @@
+/* ===========================================================================
+ *  Localizable.strings — English
+ *  StudyForge
+ *
+ *  THE source of user-facing copy. No user-facing string may be hard-coded in a
+ *  Swift file (docs/04 §8, coding rules).
+ *
+ *  Key convention:  <area>.<screen>.<element>
+ *  e.g.  auth.login.title
+ *
+ *  ⚠️  KNOWN GAP: `AppError.title` / `.message` / `.recoveryAction` and the
+ *  `AuthError` reasons still hold inline copy in Core/State/AppError.swift and
+ *  Core/Auth/AuthService.swift. They are already CENTRALISED (one place to
+ *  change) but not yet localised. Tracked as localisation debt for S1; the keys
+ *  below cover the screen chrome F01 introduces.
+ * =========================================================================== */
+
+/* ── Common ─────────────────────────────────────────────────────────────── */
+"common.appName"            = "StudyForge";
+"common.continue"           = "Continue";
+"common.next"               = "Next";
+"common.skip"               = "Skip";
+"common.cancel"             = "Cancel";
+"common.done"               = "Done";
+"common.retry"              = "Try again";
+"common.back"               = "Back";
+"common.close"              = "Close";
+"common.loading"            = "Loading…";
+
+/* ── A01 Splash ─────────────────────────────────────────────────────────── */
+"auth.splash.tagline"       = "Study smarter, not longer";
+"auth.splash.checking"      = "Checking your session…";
+
+/* ── A07 Log in ─────────────────────────────────────────────────────────── */
+"auth.login.title"          = "Welcome back";
+"auth.login.subtitle"       = "Sign in to pick up where you left off.";
+"auth.login.email"          = "Email";
+"auth.login.password"       = "Password";
+"auth.login.forgotPassword" = "Forgot password?";
+"auth.login.submit"         = "Log in";
+"auth.login.submitting"     = "Signing you in…";
+"auth.login.noAccount"      = "New to StudyForge?";
+"auth.login.createAccount"  = "Create an account";
+"auth.login.errorTitle"     = "We couldn't sign you in";
+
+/* ── A05 Sign up ────────────────────────────────────────────────────────── */
+"auth.signUp.title"          = "Create your account";
+"auth.signUp.subtitle"       = "Your materials stay on your device. Only summaries sync.";
+"auth.signUp.name"           = "Full name";
+"auth.signUp.nameHint"       = "So your tutor can identify you.";
+"auth.signUp.email"          = "Email";
+"auth.signUp.password"       = "Password";
+"auth.signUp.passwordHint"   = "At least %d characters.";
+"auth.signUp.submit"         = "Create account";
+"auth.signUp.submitting"     = "Creating your account…";
+"auth.signUp.haveAccount"    = "Already have an account?";
+"auth.signUp.logIn"          = "Log in";
+"auth.signUp.termsPrefix"    = "By continuing you agree to our";
+"auth.signUp.terms"          = "Terms of Service";
+"auth.signUp.termsJoiner"    = "and";
+"auth.signUp.privacy"        = "Privacy Policy";
+"auth.signUp.errorTitle"     = "We couldn't create your account";
+
+/* Password strength meter */
+"auth.strength.label"        = "Password strength";
+"auth.strength.weak"         = "Weak";
+"auth.strength.fair"         = "Fair";
+"auth.strength.strong"       = "Strong";
+"auth.strength.rule.length"  = "At least %d characters";
+"auth.strength.rule.number"  = "Contains a number";
+"auth.strength.rule.symbol"  = "Contains a symbol";
+
+/* ── A08 Forgot password ────────────────────────────────────────────────── */
+"auth.forgot.title"          = "Reset your password";
+"auth.forgot.subtitle"       = "Enter your email and we'll send you a reset link.";
+"auth.forgot.email"          = "Email";
+"auth.forgot.submit"         = "Send reset link";
+"auth.forgot.submitting"     = "Sending…";
+"auth.forgot.successTitle"   = "Check your inbox";
+"auth.forgot.successBody"    = "If an account exists for %@, a reset link is on its way. The link expires in one hour.";
+"auth.forgot.backToLogin"    = "Back to log in";
+"auth.forgot.errorTitle"     = "We couldn't send the link";
+
+/* ── Session / router ───────────────────────────────────────────────────── */
+"session.signedInAs"         = "Signed in as %@";
+"session.signOut"            = "Log out";
+"session.homePlaceholder.title"  = "You're signed in";
+"session.homePlaceholder.body"   = "Your %@ home screen arrives with the next sprint.";
