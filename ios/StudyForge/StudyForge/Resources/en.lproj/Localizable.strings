@@ -26,6 +26,8 @@
 "common.back"               = "Back";
 "common.close"              = "Close";
 "common.loading"            = "Loading…";
+"common.showPassword"       = "Show password";
+"common.hidePassword"       = "Hide password";
 
 /* ── A01 Splash ─────────────────────────────────────────────────────────── */
 "auth.splash.tagline"       = "Study smarter, not longer";
