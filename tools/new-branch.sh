@@ -28,17 +28,23 @@ die() { printf '\033[31m✗ %s\033[0m\n' "$1" >&2; exit 1; }
 ok()  { printf '\033[32m✓ %s\033[0m\n' "$1"; }
 
 # ── naming rule ─────────────────────────────────────────────────────────
-if ! [[ "$NAME" =~ ^(feat|fix|docs|chore|release|hotfix)/[a-z0-9._-]+$ ]]; then
-  die "invalid branch name '$NAME'.
-    Must be lowercase with hyphens and a valid prefix:
-      feat|fix|docs|chore|release|hotfix / <slug>
-    Example: feat/F04-sm2-scheduling"
-fi
-
-# feat/ branches must carry the feature ID — it is what makes sprint evidence searchable
-if [[ "$NAME" == feat/* ]] && ! [[ "$NAME" =~ ^feat/F[0-9]{2}- ]]; then
-  die "feature branches must include the feature ID, e.g. feat/F04-sm2-scheduling
-    (doc 02 §4 defines F01–F15)"
+# Feature branches MUST carry the feature ID as `Fxx` (uppercase F, two digits),
+# exactly as documented in docs/12-GIT-WORKFLOW.md §2.1 — e.g. feat/F04-sm2-scheduling.
+# Non-feature branches use an all-lowercase slug.
+if [[ "$NAME" == feat/* ]]; then
+  if ! [[ "$NAME" =~ ^feat/F[0-9]{2}-[a-z0-9._-]+$ ]]; then
+    die "invalid feature branch name '$NAME'.
+    Feature branches must be:  feat/F<xx>-<lowercase-slug>
+    Example:                   feat/F04-sm2-scheduling
+    (doc 02 §4 defines F01-F15)"
+  fi
+else
+  if ! [[ "$NAME" =~ ^(fix|docs|chore|release|hotfix)/[a-z0-9._-]+$ ]]; then
+    die "invalid branch name '$NAME'.
+    Must be:  <type>/<lowercase-slug>
+    Types:    fix | docs | chore | release | hotfix   (or feat/Fxx-slug)
+    Example:  chore/firebase-emulator-config"
+  fi
 fi
 
 # ── working tree must be clean ──────────────────────────────────────────
