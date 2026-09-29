@@ -63,8 +63,9 @@ npm run test:storage              # 18 tests (needs Firestore too — see below)
 npm run emulators                 # auth + firestore + storage, with the emulator UI
 
 # ── deploy (never deploy rules without the tests passing first) ──
-npm run deploy:rules
+npm run deploy:rules            # Firestore rules — the ones that matter
 npm run deploy:indexes
+# npm run deploy:rules:storage  # requires Blaze; Storage is bypassed — see D24 below
 ```
 
 **Why `test:storage` also starts Firestore:** `storage.rules` calls `firestore.get()`
