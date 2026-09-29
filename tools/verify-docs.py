@@ -7,8 +7,22 @@ os.chdir(BASE)
 FAIL = []
 
 # ─────────────────────────────────────────────────────────── 1. internal links
+# Only scan OUR markdown. Walking into node_modules or build output produces
+# hundreds of false positives from third-party READMEs.
+SKIP_DIRS = {".git", "node_modules", ".agents", ".claude", ".build",
+             "DerivedData", "xcuserdata", ".firebase", "lib", "Pods"}
+
+
+def our_markdown():
+    for root, dirs, files in os.walk(BASE):
+        dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+        for name in files:
+            if name.endswith(".md"):
+                yield os.path.join(root, name)
+
+
 bad = []
-for f in glob.glob(BASE + "/**/*.md", recursive=True):
+for f in our_markdown():
     d = os.path.dirname(f)
     for m in re.finditer(r"\]\(([^)]+)\)", open(f, encoding="utf-8").read()):
         link = m.group(1).split("#")[0]
