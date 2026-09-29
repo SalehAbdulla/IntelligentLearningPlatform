@@ -415,10 +415,15 @@ Canonical Name <canonical@email>  <alias@email>
 ### Verify
 
 ```bash
-git shortlog -sne --all          # one line per member, correct emails
-git log --all --format='%aN <%aE>' | sort -u   # canonical  (mailmap-aware)
-git log --all --format='%an <%ae>' | sort -u   # raw        (ignores mailmap)
+git shortlog -sne main                          # one line per member, correct emails
+git log main --format='%aN <%aE>' | sort -u     # canonical  (mailmap-aware)
+git log main --format='%an <%ae>' | sort -u     # raw        (ignores mailmap)
 ```
+
+> ⚠️ Use **`main`**, not `--all`. `--all` includes every local ref, and tooling can
+> leave extra ones behind — Cline checkpoints (`refs/cline/checkpoints/…`), for
+> instance, showed **188** commits where `main` has **184**. Those refs are local and
+> never pushed, but they inflate the count a marker would read.
 
 All three lines above should agree on the *people* involved. If the third one shows more identities than the first two, an alias is missing from `.mailmap` — add it.
 
