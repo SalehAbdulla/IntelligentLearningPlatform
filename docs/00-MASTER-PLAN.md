@@ -205,7 +205,7 @@ A feature is **Done** only when **all eight** are true. This is the standard Cli
 | 3 | A written screen description + labelled UI elements exists for every screen | This repo, [doc 03](03-SCREEN-INVENTORY.md) |
 | 4 | Happy path implemented in the working SwiftUI app | Demo on device/simulator |
 | 5 | Loading, empty, error and offline states implemented | Screen recordings |
-| 6 | Firestore/Storage security rules cover the feature's collections | `firebase/firestore.rules` diff |
+| 6 | Firestore/Storage security rules cover the feature's collections | `backend/firestore.rules` diff |
 | 7 | Tested by the assigned **tester** (not the developer) with results recorded | Test log in [doc 05] / QA sheet |
 | 8 | Zero AI features exceed the free-tier budget in normal use | Admin AI config dashboard |
 

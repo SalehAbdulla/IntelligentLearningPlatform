@@ -336,7 +336,10 @@ xcodebuild test -project ios/StudyForge/StudyForge.xcodeproj \
 # List destinations when a device is missing
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge -showdestinations
 
-# Firebase emulators (use this for all local work — protects production quota)
+# Backend — the Firebase CLI runs from the backend/ directory
+cd backend
+
+# Firebase emulators (use this for ALL local work — protects production quota)
 firebase emulators:start --only auth,firestore,storage,functions
 
 # Deploy rules only (never deploy rules without emulator tests passing)
