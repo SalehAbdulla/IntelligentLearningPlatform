@@ -89,6 +89,53 @@ node --test rules-tests/*.test.mjs                          # 56/58 — cross-ta
 npm test && npm run deploy:rules
 ```
 
+---
+
+## Creating the Firebase project — and how to proceed if the console blocks you
+
+### The CLI path (preferred)
+
+The console's project-creation flow can fail with **`OR_BACR2_59`** ("Billing setup can't
+be completed"). **Spark needs no billing account**, so that error means the flow routed
+you toward a Blaze upgrade you never asked for — it does not mean a card is required.
+
+Creating the project from the CLI sidesteps that flow entirely:
+
+```bash
+cd backend
+npx firebase login
+npx firebase projects:create studyforge-it8108 -n "StudyForge"
+npx firebase apps:create IOS StudyForge -b com.studyforge.app    # prints an App ID
+npx firebase apps:sdkconfig IOS <APP_ID> -o ../ios/StudyForge/StudyForge/GoogleService-Info.plist
+```
+
+`apps:sdkconfig` writes `GoogleService-Info.plist` **without the console**, so the entire
+setup can be completed from a terminal.
+
+If `OR_BACR2_59` persists, the likeliest cause is that the Google account is a
+**university/Workspace account**, where creating a billing profile is blocked at the
+organisation level. The usual support response is a dead end ("you are not an
+administrator on any Billing Account" — true, but circular, since you have never had
+one). Use a **personal Gmail** instead.
+
+### You do not have to wait for this
+
+The iOS app runs with **no Firebase project at all**. In Debug, when
+`GoogleService-Info.plist` is absent, `Core/Config/FirebaseBootstrap.swift` synthesises
+options against the demo project and points Auth + Firestore at the local emulators — so
+every Firebase-backed screen is developable and testable today.
+
+```bash
+cd backend && npm run emulators     # terminal 1: auth :9099, firestore :8080, storage :9199
+# terminal 2: run the app from Xcode — it will use the emulators automatically
+```
+
+Release builds still require the plist: `FirebaseBootstrap` calls `fatalError` rather than
+allow a production build to run against a fake project. See **D22** in
+[docs/09](../docs/09-RISKS-OPEN-QUESTIONS.md).
+
+> On a **physical device** the emulators are not reachable at `127.0.0.1`. Set
+> `STUDYFORGE_EMULATOR_HOST` to the Mac's LAN IP in the scheme's environment variables.
 
 ---
 
