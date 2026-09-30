@@ -54,6 +54,24 @@ service cloud.firestore {
     // else on `users/{uid}` is server-owned: `role` and `plan` by the Cloud Function,
     // and gamification values (`streak`, `badges`, mastery) because the UI displays
     // them as evidence of work done.
+    //
+    // Two families live here, and both are written by the profile wizard, so every
+    // step of that flow can complete without a mid-wizard denial:
+    //   · academic            — `university`, `major`, `year`, `courseIds`  (B01)
+    //   · learning preferences — `learningStyle` (B02), `weeklyStudyGoalHours` (B03)
+    //
+    // WHY THE PREFERENCES ARE NAMED HERE RATHER THAN PUT UNDER `users/{uid}/private`
+    // The obvious alternative — the `private` subcollection, which is already
+    // self-read/self-write — has NO field guard at all. A field added there is
+    // client-writable the moment it exists, which is precisely the fail-open hole this
+    // allowlist was introduced to close (D25, docs/09). Routing the wizard's own output
+    // into it would have reopened that hole under a different path.
+    //
+    // Naming them is a deliberate act, not a formality: the rule still denies a field
+    // nobody has considered, so `streak` and any future schema growth stay unwritable
+    // until someone writes the field down here and justifies it. These two are safe to
+    // name because they are SELF-DECLARED preferences — a student setting their own
+    // study goal is not falsifying an achievement the way a client-set `streak` would.
     function editableProfileFields() {
       return [
         'displayName',
@@ -61,6 +79,8 @@ service cloud.firestore {
         'major',
         'year',
         'courseIds',
+        'learningStyle',
+        'weeklyStudyGoalHours',
         'avatarUrl',
         'updatedAt',
       ];
