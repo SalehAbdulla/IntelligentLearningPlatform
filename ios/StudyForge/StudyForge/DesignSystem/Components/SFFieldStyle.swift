@@ -49,3 +49,41 @@ extension View {
         modifier(SFFieldBackground(hasError: hasError))
     }
 }
+
+/// The feedback line that sits under a form field.
+///
+/// Extracted into this file for the same reason `SFFieldBackground` is here: B01 adds a
+/// quoted picker and a segmented control, and three controls that each invent their own
+/// error line is exactly the drift this file exists to prevent. Exactly one of error /
+/// hint is ever shown, so a field cannot contradict itself.
+struct SFFieldFeedback: View {
+
+    /// Validation message. Non-nil means the control is in an error state.
+    let error: String?
+
+    /// Guidance shown when there is no error.
+    let hint: String?
+
+    var body: some View {
+        if let error {
+            Label {
+                Text(error).font(.sfFootnote)
+            } icon: {
+                Image(systemName: "exclamationmark.circle.fill")
+            }
+            .foregroundStyle(ColorTokens.error)
+            // Colour is not the only signal — the icon and the text carry the meaning,
+            // which matters at WCAG 1.4.1 for anyone with a colour-vision deficiency.
+            //
+            // Hidden from VoiceOver because the message is already spoken as part of the
+            // control's own accessibility label; announcing it twice is noise.
+            .accessibilityHidden(true)
+        } else if let hint {
+            Text(hint)
+                .font(.sfFootnote)
+                .foregroundStyle(ColorTokens.textSecondary)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
