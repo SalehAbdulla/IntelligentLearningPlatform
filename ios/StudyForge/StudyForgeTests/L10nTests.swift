@@ -94,7 +94,11 @@ struct L10nTests {
         // segments with a known area, which is what makes the catalogue greppable and
         // catches the real mistakes: a doubled dot, a trailing dot, a stray space, or a
         // key filed under the wrong area.
-        let knownAreas: Set<String> = ["common", "auth", "session", "home", "onboarding"]
+        // `profile` joined this list with B01, the same way `onboarding` did when the
+        // pager landed. Growing it is a deliberate edit here rather than an implicit
+        // consequence of adding a key, so one typo in an area name cannot slip into the
+        // catalogue unnoticed.
+        let knownAreas: Set<String> = ["common", "auth", "session", "home", "onboarding", "profile"]
 
         for key in L10n.allCases {
             let segments = key.rawValue.split(separator: ".", omittingEmptySubsequences: false)
