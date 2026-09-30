@@ -76,7 +76,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 
 | Member | Owns | Evidence produced |
 |---|---|---|
-| **M1** Saleh | **F01** auth end-to-end (sign-up, OTP, role routing) + **F02** upload → compress → Vision OCR → Storage | Two features merged, test logs from M4/M3 |
+| **M1** Saleh | **F01** auth end-to-end (sign-up, email verification, role routing) + **F02** upload → compress → Vision OCR → Storage | Two features merged, test logs from M4/M3 |
 | **M2** Mohammed | **F03** summary generation (tier 0 + tier 1) + **F04** flashcard generation with `@Generable` | Two features merged, prompt-eval notes |
 | **M3** Tasbeeh | **F06** plan-wizard skeleton + **F07** activity-event writes; app-wide `LoadState` handling | Two skeletons, loading/empty/error states |
 | **M4** Shahad | Figma P0 frames for groups A, C, D, E; **F10** bookmarking | Frames named per the rule, one merged feature |

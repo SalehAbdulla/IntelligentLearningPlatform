@@ -66,7 +66,7 @@
 | Frontend | **SwiftUI + Swift 6**, iOS 26.0+ | Brief mandates iOS + Xcode 26.6/27. Declarative UI matches the UI/UX rubric. | $0 |
 | State | **MVVM + `@Observable` + async/await** | Testable, concurrency-safe, no third-party dependency | $0 |
 | Local data | **SwiftData** (cache + RAG vectors) · Keychain (tokens) | Offline-first; entirely first-party | $0 |
-| Auth | **Firebase Authentication** | Email/password, Sign in with Apple, OTP, **custom claims** for roles | $0 (50K MAU) |
+| Auth | **Firebase Authentication** | Email/password, Sign in with Apple, email-verification + password-reset links, **custom claims** for roles | $0 (50K MAU) |
 | Database | **Cloud Firestore** | Realtime listeners (free) power the live group quiz; built-in offline persistence | $0 within 50K reads / 20K writes per day |
 | Files | **Cloud Storage for Firebase** | Material PDFs and images | $0 within 5 GB — **bucket must be `us-central1` / `us-west1` / `us-east1` to qualify for the no-cost quota** |
 | Push | **Firebase Cloud Messaging** | Free at any volume | $0 |
@@ -248,7 +248,7 @@ All prices are shown VAT-inclusive with the breakdown rendered on `120_Checkout_
 
 | Layer | Control | Where enforced |
 |---|---|---|
-| Identity | Firebase Auth (email/password, Sign in with Apple, OTP) | Firebase |
+| Identity | Firebase Auth (email/password, Sign in with Apple, verification links) | Firebase |
 | Authorisation | Role + plan + groupIds as **Auth custom claims** | Auth token |
 | Data access | `firestore.rules` — row-level, role-aware, denies by default | **Server** |
 | File access | `storage.rules` — owner + explicit folder grants only | **Server** |
