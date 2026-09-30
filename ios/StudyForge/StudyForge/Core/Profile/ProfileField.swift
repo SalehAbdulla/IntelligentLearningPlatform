@@ -36,9 +36,10 @@ enum ProfileField {
     /// B02 — learning style.
     static let learningStyle = "learningStyle"
 
-    /// B03 — study goals. Already named in the allowlist, so the step can land without a
-    /// rules change; the value itself is written by that step when it is built.
+    /// B03 — study goals. Both are written in one update, because they are answers to the
+    /// same question and neither is meaningful without the other.
     static let weeklyStudyGoalHours = "weeklyStudyGoalHours"
+    static let targetGrade = "targetGrade"
 
     // ── Set elsewhere, same allowlist ───────────────────────────────────────
 
