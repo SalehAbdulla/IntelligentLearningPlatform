@@ -20,7 +20,8 @@
 //
 //  WHY THE FORM IS THE SOURCE OF THE WRITE
 //  --------------------------------------
-//  The profile built here contains exactly the fields in `AcademicProfile.Field`. That is
+//  The profile built here contains exactly the fields in `ProfileField` — see that file for
+//  why the names live in one shared list rather than next to this screen. That is
 //  not tidiness: the server's allowlist rejects the WHOLE update if it carries anything
 //  else, so a field added "for later" would break saving entirely rather than be ignored.
 //
