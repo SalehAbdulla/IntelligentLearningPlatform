@@ -82,20 +82,7 @@ struct SFTextField: View {
 
             // Feedback line: exactly one of error / hint, never both, so the field
             // cannot contradict itself.
-            if hasError, let error {
-                Label {
-                    Text(error).font(.sfFootnote)
-                } icon: {
-                    Image(systemName: "exclamationmark.circle.fill")
-                }
-                .foregroundStyle(ColorTokens.error)
-                .accessibilityHidden(true) // already spoken via accessibilityLabel
-            } else if let hint {
-                Text(hint)
-                    .font(.sfFootnote)
-                    .foregroundStyle(ColorTokens.textSecondary)
-                    .accessibilityHidden(true)
-            }
+            SFFieldFeedback(error: error, hint: hint)
         }
     }
 }
