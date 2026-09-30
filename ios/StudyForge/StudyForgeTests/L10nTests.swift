@@ -94,7 +94,7 @@ struct L10nTests {
         // segments with a known area, which is what makes the catalogue greppable and
         // catches the real mistakes: a doubled dot, a trailing dot, a stray space, or a
         // key filed under the wrong area.
-        let knownAreas: Set<String> = ["common", "auth", "session", "home"]
+        let knownAreas: Set<String> = ["common", "auth", "session", "home", "onboarding"]
 
         for key in L10n.allCases {
             let segments = key.rawValue.split(separator: ".", omittingEmptySubsequences: false)
