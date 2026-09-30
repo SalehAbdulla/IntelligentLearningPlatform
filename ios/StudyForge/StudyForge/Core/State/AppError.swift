@@ -135,6 +135,11 @@ extension AppError {
         // sign-in form needs to show.
         if let authError = error as? AuthError { return authError.asAppError }
 
+        // And for the profile write: `writeRejected` in particular must not decay to
+        // `.unknown`, because it is the one failure that means the field allowlist and
+        // the app disagree — a bug worth naming rather than a generic apology.
+        if let profileError = error as? ProfileError { return profileError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
