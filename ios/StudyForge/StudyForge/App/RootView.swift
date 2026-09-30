@@ -79,12 +79,15 @@ struct RootView: View {
                     // `-seedUnverifiedSession`, and compiled out of Release for the same
                     // reason.
                     if showsProfileSetup {
-                        ProfileSetupAcademicView(profile: container.profile) { _ in
-                            // Continue has nothing to advance TO yet: B02 and B03 are not
-                            // built, so there is no step two. For the demo it returns to
+                        ProfileSetupFlowView(
+                            profile: container.profile,
+                            startingAt: debugProfileSetupStep ?? .first
+                        ) {
+                            // The wizard has nothing to advance TO past B02 yet: B03 is not
+                            // built, so there is no step three. For the demo it returns to
                             // the home screen, and the flag is deliberately NOT persisted —
                             // it is a viewing affordance, not a claim that the wizard
-                            // finished. The real gate lands with B02/B03, when "profile
+                            // finished. The real gate lands with B03/B04, when "profile
                             // complete" means all three steps.
                             hasCompletedProfileSetup = true
                         }
@@ -126,6 +129,29 @@ struct RootView: View {
         if !container.hasResolvedAuth { return 0 }
         if let session = container.session { return session.isEmailVerified ? 3 : 1 }
         return hasCompletedOnboarding ? 2 : 4
+    }
+
+    /// DEBUG-only: which step `-seedProfileSetup` should open on.
+    ///
+    ///     xcrun simctl launch <device> com.studyforge.app -seedProfileSetup -profileSetupStep 2
+    ///
+    /// 1-based, for the same reason `-onboardingPage` is: whoever types it is reading step
+    /// numbers off a design. It exists because there is no tap automation in this
+    /// environment, so reaching step 2 by hand would mean filling in step 1 and tapping
+    /// Continue first — which is exactly the thing that cannot be scripted. Compiled out of
+    /// Release, like the other two hatches, and it cannot skip the wizard: it only chooses
+    /// which step is shown first.
+    private var debugProfileSetupStep: ProfileSetupStep? {
+        #if DEBUG
+        let arguments = ProcessInfo.processInfo.arguments
+        if let flag = arguments.firstIndex(of: "-profileSetupStep"),
+           arguments.index(after: flag) < arguments.endIndex,
+           let humanNumber = Int(arguments[arguments.index(after: flag)]),
+           let step = ProfileSetupStep(rawValue: humanNumber - 1) {
+            return step
+        }
+        #endif
+        return nil
     }
 
     /// DEBUG-only: opens the onboarding pager on a given slide.
