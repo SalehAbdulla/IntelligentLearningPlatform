@@ -173,6 +173,7 @@ test('users: a user may write every field the client names (the whole allowlist)
       courseIds: ['IT8108'],
       learningStyle: 'readwrite',
       weeklyStudyGoalHours: 9,
+      targetGrade: 'B',
       avatarUrl: 'users/student_1/avatar.png',
       updatedAt: '2026-09-30T09:00:00Z',
     }),
@@ -190,12 +191,19 @@ test('users: a user may record a learning style (B02)', async () => {
   await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { learningStyle: 'visual' }));
 });
 
-test('users: a user may set a weekly study goal (B03)', async () => {
+test('users: a user may set their study goals (B03)', async () => {
+  // B03 writes BOTH of these in one update: the weekly hours and the target grade are
+  // answers to the same question and are saved together, so they are asserted together.
   await seed(async (db) => {
     await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
   });
   const db = as.student().firestore();
-  await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { weeklyStudyGoalHours: 12 }));
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_1'), {
+      weeklyStudyGoalHours: 12,
+      targetGrade: 'B',
+    }),
+  );
 });
 
 test('users: the wizard completes end to end — B01, then B02, then B03', async () => {
@@ -213,22 +221,27 @@ test('users: the wizard completes end to end — B01, then B02, then B03', async
   // Step B01 — academic.
   await assertSucceeds(updateDoc(profile, {
     university: 'Bahrain Polytechnic',
-    major: 'Software Engineering',
-    year: 2,
-    courseIds: ['c_101', 'c_104'],
+    major: 'Programming',
+    year: 3,
+    courseIds: ['IT8108'],
   }));
 
   // Step B02 — learning style.
   await assertSucceeds(updateDoc(profile, { learningStyle: 'kinesthetic' }));
 
-  // Step B03 — study goals.
-  await assertSucceeds(updateDoc(profile, { weeklyStudyGoalHours: 9 }));
+  // Step B03 — study goals. Both fields, in the one write the step performs.
+  await assertSucceeds(updateDoc(profile, {
+    weeklyStudyGoalHours: 9,
+    targetGrade: 'A',
+  }));
 });
 
 test('users: DENY a learning preference smuggled alongside a forged streak', async () => {
-  // Adding two names to the allowlist must not make the guard any easier to defeat:
-  // bundling a now-permitted field with a forbidden one still fails, so the new entries
-  // widen the allowlist without widening the hole.
+  // Widening the allowlist must not make the guard any easier to defeat: bundling a
+  // now-permitted field with a forbidden one still fails, so the new entries widen the
+  // allowlist without widening the hole. Every family is in the bundle, so this is the
+  // test that fails if any single name were implemented as "allow if anything changed"
+  // rather than "allow only these keys".
   await seed(async (db) => {
     await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
   });
@@ -237,6 +250,7 @@ test('users: DENY a learning preference smuggled alongside a forged streak', asy
     updateDoc(doc(db, 'users/student_1'), {
       learningStyle: 'visual',
       weeklyStudyGoalHours: 40,
+      targetGrade: 'A',
       streak: 999,
     }),
   );
