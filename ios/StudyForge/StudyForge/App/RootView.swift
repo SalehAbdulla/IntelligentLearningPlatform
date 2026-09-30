@@ -72,12 +72,13 @@ struct RootView: View {
                 // stated goal is to get a VERIFIED user onto a role home — so an
                 // unverified session has not finished the feature, it has skipped a step.
                 if session.isEmailVerified {
-                    // `-seedProfileSetup` (DEBUG only) opens B01 instead. Reaching the
-                    // wizard honestly means creating an account, verifying it and filling
-                    // the form — none of which is scriptable here, because there is no tap
-                    // automation installed. The same kind of escape hatch as
-                    // `-seedUnverifiedSession`, and compiled out of Release for the same
-                    // reason.
+                    // `-seedProfileSetup` (DEBUG only) opens the wizard instead. Reaching it
+                    // honestly means creating an account, verifying it and filling the form
+                    // — none of which is scriptable here, because there is no tap automation
+                    // installed. `-profileSetupStep` picks which step it opens on, so B02 can
+                    // be reviewed without B01 being filled in first. The same kind of escape
+                    // hatch as `-seedUnverifiedSession`, and compiled out of Release for the
+                    // same reason.
                     if showsProfileSetup {
                         ProfileSetupFlowView(
                             profile: container.profile,
