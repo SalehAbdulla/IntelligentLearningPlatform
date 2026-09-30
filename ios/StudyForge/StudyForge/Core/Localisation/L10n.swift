@@ -96,6 +96,34 @@ enum L10n: String, CaseIterable, Sendable {
     case forgotBackToLogin  = "auth.forgot.backToLogin"
     case forgotErrorTitle   = "auth.forgot.errorTitle"
 
+    // MARK: A02–A04 Onboarding
+    case onboardingSkip        = "onboarding.skip"
+    case onboardingSkipHint    = "onboarding.skip.hint"
+    case onboardingNext        = "onboarding.next"
+    case onboardingGetStarted  = "onboarding.getStarted"
+    case onboardingPageIndicator = "onboarding.pageIndicator"
+    case onboardingStepIndicator = "onboarding.stepIndicator"
+
+    case onboardingValuePropTitle = "onboarding.valueProp.title"
+    case onboardingValuePropBody  = "onboarding.valueProp.body"
+
+    case onboardingHowItWorksTitle = "onboarding.howItWorks.title"
+    case onboardingHowItWorksBody  = "onboarding.howItWorks.body"
+    case onboardingStepUploadTitle   = "onboarding.step.upload.title"
+    case onboardingStepUploadBody    = "onboarding.step.upload.body"
+    case onboardingStepGenerateTitle = "onboarding.step.generate.title"
+    case onboardingStepGenerateBody  = "onboarding.step.generate.body"
+    case onboardingStepPlanTitle     = "onboarding.step.plan.title"
+    case onboardingStepPlanBody      = "onboarding.step.plan.body"
+    case onboardingStepPractiseTitle = "onboarding.step.practise.title"
+    case onboardingStepPractiseBody  = "onboarding.step.practise.body"
+
+    case onboardingPrivacyTitle    = "onboarding.privacy.title"
+    case onboardingPrivacyBody     = "onboarding.privacy.body"
+    case onboardingPrivacyOnDevice = "onboarding.privacy.onDevice"
+    case onboardingPrivacyCloud    = "onboarding.privacy.cloud"
+    case onboardingPrivacyTraining = "onboarding.privacy.training"
+
     // MARK: Session
     case sessionSignedInAs        = "session.signedInAs"
     case sessionSignOut           = "session.signOut"
