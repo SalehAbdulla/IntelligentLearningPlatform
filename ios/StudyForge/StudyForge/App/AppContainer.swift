@@ -63,6 +63,10 @@ final class AppContainer {
     /// from the view layer.
     let onboarding: any OnboardingStore
 
+    /// Profile writes for the signed-in student (B01). Protocol-backed for the same reason
+    /// as `auth`: the wizard is previewable and testable with no Firebase project.
+    let profile: any ProfileService
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -83,11 +87,13 @@ final class AppContainer {
         environment: AppEnvironment,
         firebaseSource: FirebaseConfigurationSource,
         auth: any AuthService,
+        profile: any ProfileService,
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
         self.firebaseSource = firebaseSource
         self.auth = auth
+        self.profile = profile
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -133,8 +139,33 @@ extension AppContainer {
         let auth: any AuthService = source == .skippedForTests
             ? MockAuthService(latency: .zero)
             : FirebaseAuthService()
+        // Same rule as auth: with no project configured there is nothing to write to, so
+        // the mock keeps the app runnable rather than failing at the first save.
+        let profile: any ProfileService = source == .skippedForTests
+            ? MockProfileService(latency: .zero)
+            : FirebaseProfileService()
 
         #if DEBUG
+        // `-seedProfileSetup` opens B01 (the profile wizard's academic step).
+        //
+        // B01 is arguably the hardest screen in F01 to reach by hand: it sits BEHIND a
+        // verified account, so getting there honestly means creating an account against a
+        // live project and then opening a real verification email. It also seeds a
+        // VERIFIED session, which is what `.preview` is for — hence a separate flag from
+        // `-seedUnverifiedSession`, whose whole point is the unverified state.
+        //
+        // Both use the mock service, so nothing is written to any project, and both are
+        // compiled out of Release: a shipping build must never fabricate a session for a
+        // screen that writes to `users/{uid}`.
+        if ProcessInfo.processInfo.arguments.contains("-seedProfileSetup") {
+            return AppContainer(
+                environment: environment,
+                firebaseSource: source,
+                auth: MockAuthService(initialState: .signedIn(.preview), latency: .zero),
+                profile: MockProfileService(latency: .zero)
+            )
+        }
+
         // `-seedUnverifiedSession` opens the app directly on A06.
         //
         // A06 is otherwise the hardest screen in F01 to look at: reaching it honestly means
@@ -152,12 +183,18 @@ extension AppContainer {
                 auth: MockAuthService(
                     initialState: .signedIn(unverifiedPreviewSession),
                     latency: .zero
-                )
+                ),
+                profile: MockProfileService(latency: .zero)
             )
         }
         #endif
 
-        return AppContainer(environment: environment, firebaseSource: source, auth: auth)
+        return AppContainer(
+            environment: environment,
+            firebaseSource: source,
+            auth: auth,
+            profile: profile
+        )
     }
 
     #if DEBUG
@@ -198,6 +235,9 @@ extension AppContainer {
             environment: .dev,
             firebaseSource: .localEmulator,
             auth: auth,
+            // No latency and no failure: a preview should show its final state, not a
+            // spinner it has to be waited out.
+            profile: MockProfileService(latency: .zero),
             // In-memory, never UserDefaults: a preview must not mutate the developer's
             // real onboarding flag.
             onboarding: InMemoryOnboardingStore(hasCompletedOnboarding: hasCompletedOnboarding)

@@ -37,9 +37,30 @@ struct RootView: View {
     /// moment the value changes.
     @State private var hasCompletedOnboarding: Bool
 
+    /// DEBUG-only, and deliberately not persisted: set when `-seedProfileSetup` has served
+    /// its purpose, so Continue can return to the home screen. See `showsProfileSetup`.
+    @State private var hasCompletedProfileSetup = false
+
     init(container: AppContainer) {
         self.container = container
         _hasCompletedOnboarding = State(initialValue: container.onboarding.hasCompletedOnboarding)
+    }
+
+    /// DEBUG-only: whether B01 should be shown in place of the home screen.
+    ///
+    ///     xcrun simctl launch <device> com.studyforge.app -seedProfileSetup
+    ///
+    /// There is no tap automation in this environment, so this is the only way to
+    /// screenshot the wizard, check its Arabic layout, or demonstrate it in a viva.
+    /// Release builds are compiled without it, so a shipping app can never fabricate a
+    /// profile-setup state — which matters, because the screen writes to `users/{uid}`.
+    private var showsProfileSetup: Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.arguments.contains("-seedProfileSetup")
+            && !hasCompletedProfileSetup
+        #else
+        return false
+        #endif
     }
 
     var body: some View {
@@ -51,7 +72,25 @@ struct RootView: View {
                 // stated goal is to get a VERIFIED user onto a role home — so an
                 // unverified session has not finished the feature, it has skipped a step.
                 if session.isEmailVerified {
-                    SignedInHomeView(container: container)
+                    // `-seedProfileSetup` (DEBUG only) opens B01 instead. Reaching the
+                    // wizard honestly means creating an account, verifying it and filling
+                    // the form — none of which is scriptable here, because there is no tap
+                    // automation installed. The same kind of escape hatch as
+                    // `-seedUnverifiedSession`, and compiled out of Release for the same
+                    // reason.
+                    if showsProfileSetup {
+                        ProfileSetupAcademicView(profile: container.profile) { _ in
+                            // Continue has nothing to advance TO yet: B02 and B03 are not
+                            // built, so there is no step two. For the demo it returns to
+                            // the home screen, and the flag is deliberately NOT persisted —
+                            // it is a viewing affordance, not a claim that the wizard
+                            // finished. The real gate lands with B02/B03, when "profile
+                            // complete" means all three steps.
+                            hasCompletedProfileSetup = true
+                        }
+                    } else {
+                        SignedInHomeView(container: container)
+                    }
                 } else {
                     // `session.email`, NOT `displayName` — this is the address the link was
                     // sent to, and showing a name here both reads wrong and hides the
@@ -122,6 +161,7 @@ struct RootView: View {
             environment: .dev,
             firebaseSource: .localEmulator,
             auth: MockAuthService(initialState: .unknown, latency: .zero),
+            profile: MockProfileService(latency: .zero),
             onboarding: InMemoryOnboardingStore()
         )
     )
