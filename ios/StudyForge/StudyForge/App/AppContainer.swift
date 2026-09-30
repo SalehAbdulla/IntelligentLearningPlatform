@@ -58,6 +58,11 @@ final class AppContainer {
     /// `MockAuthService` and no Firebase project at all.
     let auth: any AuthService
 
+    /// Remembers whether the user has finished onboarding (A02–A04). Protocol-backed so a
+    /// test can put it in a known state, and so `UserDefaults.standard` is never touched
+    /// from the view layer.
+    let onboarding: any OnboardingStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -77,11 +82,13 @@ final class AppContainer {
     init(
         environment: AppEnvironment,
         firebaseSource: FirebaseConfigurationSource,
-        auth: any AuthService
+        auth: any AuthService,
+        onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
         self.firebaseSource = firebaseSource
         self.auth = auth
+        self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
     }
@@ -136,7 +143,14 @@ extension AppContainer {
     /// This is the ONLY way a preview should obtain a container. Reaching for
     /// `FirebaseAuthService()` inside a `#Preview` would make previews depend on a
     /// Firebase project — precisely the coupling the protocol exists to prevent.
-    static func previewing(session: UserSession? = .preview) -> AppContainer {
+    ///
+    /// - Parameter hasCompletedOnboarding: defaults to `true`, so a preview of a
+    ///   post-onboarding screen does not suddenly show the pager. Pass `false` to preview
+    ///   the onboarding flow itself.
+    static func previewing(
+        session: UserSession? = .preview,
+        hasCompletedOnboarding: Bool = true
+    ) -> AppContainer {
         let auth = MockAuthService(
             initialState: session.map { AuthState.signedIn($0) } ?? .signedOut,
             latency: .zero
@@ -144,7 +158,10 @@ extension AppContainer {
         let container = AppContainer(
             environment: .dev,
             firebaseSource: .localEmulator,
-            auth: auth
+            auth: auth,
+            // In-memory, never UserDefaults: a preview must not mutate the developer's
+            // real onboarding flag.
+            onboarding: InMemoryOnboardingStore(hasCompletedOnboarding: hasCompletedOnboarding)
         )
         // Set directly rather than by calling `start()`: a preview should render its
         // resolved state immediately, not flash a loading state first.
