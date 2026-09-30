@@ -39,12 +39,9 @@ final class ProfileSetupAcademicViewModel {
         case courses
     }
 
-    /// B01 is step one of three: academic (B01) → learning style (B02) → study goals
-    /// (B03). B04 is the completion screen, not a step. Kept here so reordering the
-    /// wizard is one change rather than a hunt through the view.
-    private static let stepNumber = 1
-    private static let stepCount = 3
-
+    /// B01 is step one of three: academic (B01) → learning style (B02) → study goals (B03).
+    /// B04 is the completion screen, not a step. The numbering itself lives in
+    /// `ProfileSetupStep`, so every step reports its position from one place.
     // MARK: Bound state
 
     /// `nil` means "nothing chosen yet", which is a different state from any real choice.
@@ -91,9 +88,10 @@ final class ProfileSetupAcademicViewModel {
     var yearError: String? { fieldErrors[.year] }
     var coursesError: String? { fieldErrors[.courses] }
 
-    var stepLabel: String {
-        L10n.profileAcademicStep.string(Self.stepNumber, Self.stepCount)
-    }
+    /// The wizard position. The numbering lives in `ProfileSetupStep`, shared with B02 —
+    /// see that file for why the total is the design's 3 rather than the number of steps
+    /// built so far.
+    var stepLabel: String { ProfileSetupStep.academic.label }
 
     /// Selected courses in CATALOGUE order, not selection order.
     ///
