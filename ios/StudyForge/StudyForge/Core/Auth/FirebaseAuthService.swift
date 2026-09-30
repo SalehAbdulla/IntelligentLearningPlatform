@@ -106,7 +106,11 @@ final class FirebaseAuthService: AuthService, @unchecked Sendable {
 
     func currentSession() -> UserSession? {
         guard let user = Auth.auth().currentUser else { return nil }
-        return claimsBox.claims.session(uid: user.uid, displayName: Self.displayName(for: user))
+        return claimsBox.claims.session(
+            uid: user.uid,
+            displayName: Self.displayName(for: user),
+            email: user.email ?? ""
+        )
     }
 
     @discardableResult
@@ -166,6 +170,49 @@ final class FirebaseAuthService: AuthService, @unchecked Sendable {
             throw Self.map(error)
         }
     }
+
+    func sendEmailVerification() async throws {
+        guard let user = Auth.auth().currentUser else {
+            // No signed-in user means no address to verify. Surfaced rather than ignored,
+            // so a screen can never report "sent" when nothing was.
+            throw AuthError.wrongCredentials
+        }
+        do {
+            try await user.sendEmailVerification()
+        } catch {
+            throw Self.map(error)
+        }
+    }
+
+    @discardableResult
+    func refreshSession() async throws -> UserSession? {
+        guard let user = Auth.auth().currentUser else {
+            // Nobody signed in. Not an error: the app is already on the signed-out branch
+            // and the observer will have said so.
+            return nil
+        }
+
+        do {
+            // BOTH steps are required, and omitting the second is the bug that makes this
+            // screen feel broken:
+            //
+            //  · `reload()` refreshes the user PROFILE, which is where `isEmailVerified`
+            //    lives.
+            //  · forcing the ID token re-issues the TOKEN, which is where the
+            //    `email_verified` CLAIM is read from. A cached token still says
+            //    `false` — so without this, a user who has just clicked the link in their
+            //    inbox would be shown A06 again, and would conclude the app is broken.
+            try await user.reload()
+            try await Self.forceTokenRefresh(for: user)
+        } catch {
+            throw Self.map(error)
+        }
+
+        // `activate` re-reads claims (now fresh), caches them, and re-emits onto
+        // `stateChanges()` — which is how `RootView` routes onward without this method
+        // having to navigate.
+        return await activate(user)
+    }
 }
 
 // MARK: - State resolution
@@ -177,11 +224,18 @@ extension FirebaseAuthService {
     /// Called after an explicit sign-in so the CALLER receives the real role straight
     /// away. Returning the cached least-privilege session here would briefly show a
     /// returning tutor the student interface.
-    private func activate(_ user: FirebaseAuth.User) async -> UserSession {
-        let claims = await Self.resolveClaims()
+    private func activate(
+        _ user: FirebaseAuth.User,
+        forcingRefresh: Bool = false
+    ) async -> UserSession {
+        let claims = await Self.resolveClaims(forcingRefresh: forcingRefresh)
         claimsBox.claims = claims
 
-        let session = claims.session(uid: user.uid, displayName: Self.displayName(for: user))
+        let session = claims.session(
+            uid: user.uid,
+            displayName: Self.displayName(for: user),
+            email: user.email ?? ""
+        )
         broadcaster.send(.signedIn(session))
         return session
     }
@@ -211,7 +265,11 @@ extension FirebaseAuthService {
         box.claims = resolved
         broadcaster.send(
             .signedIn(
-                resolved.session(uid: uid, displayName: name(from: displayName, email: email))
+                resolved.session(
+                    uid: uid,
+                    displayName: name(from: displayName, email: email),
+                    email: email ?? ""
+                )
             )
         )
     }
@@ -225,13 +283,38 @@ extension FirebaseAuthService {
     ///
     /// A failure yields `leastPrivilege` rather than throwing: a token we cannot read is
     /// a reason to grant LESS, never to lock the user out of the app entirely.
-    fileprivate static func resolveClaims() async -> CustomClaims {
+    ///
+    /// - Parameter forcingRefresh: re-issues the ID token instead of serving the cached
+    ///   one. Required after email verification — see `refreshSession()`.
+    fileprivate static func resolveClaims(forcingRefresh: Bool = false) async -> CustomClaims {
         guard let user = Auth.auth().currentUser else { return .leastPrivilege }
         do {
-            let result = try await user.getIDTokenResult(forcingRefresh: false)
+            let result = try await user.getIDTokenResult(forcingRefresh: forcingRefresh)
             return CustomClaims.parse(from: result.claims)
         } catch {
             return .leastPrivilege
+        }
+    }
+
+    /// Forces an ID-token refresh, bridging the SDK's completion-handler API.
+    ///
+    /// Written by hand rather than using an SDK async overload, because there is not one
+    /// for this method: calling `try await user.getIDTokenForcingRefresh(true)` fails to
+    /// compile with *"missing argument for parameter 'completion'"*. The continuation form
+    /// is explicit about that and does not depend on which overloads a given SDK build
+    /// happens to generate.
+    ///
+    /// - Note: the return value is discarded deliberately. What matters is the side effect
+    ///   — the token, and therefore the `email_verified` claim, is re-issued.
+    private static func forceTokenRefresh(for user: FirebaseAuth.User) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            user.getIDTokenForcingRefresh(true) { _, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
         }
     }
 

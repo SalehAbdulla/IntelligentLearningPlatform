@@ -112,6 +112,19 @@
 "onboarding.privacy.cloud"       = "Cloud, only when your device cannot";
 "onboarding.privacy.training"    = "Never used to train AI models";
 
+/* ── A06 Email verification (replaces the designed OTP step) ────────────── */
+"auth.verify.title"          = "Check your inbox";
+"auth.verify.body"           = "We sent a verification link to %@. Open it to confirm your email address, then come back here.";
+"auth.verify.resend"         = "Resend email";
+"auth.verify.resendIn"       = "You can resend in %d seconds";
+"auth.verify.resendSent"     = "Sent. Check your inbox.";
+"auth.verify.checkNow"       = "I've verified — continue";
+"auth.verify.checking"       = "Checking…";
+"auth.verify.spamHint"       = "Not seeing it? Check your spam or junk folder.";
+"auth.verify.wrongAddress"   = "Wrong address? Sign out";
+"auth.verify.notYetTitle"    = "Not verified yet";
+"auth.verify.notYetBody"     = "We couldn't confirm that link yet. Open the link in your email, then try again.";
+
 /* ── Session / router ───────────────────────────────────────────────────── */
 "session.signedInAs"         = "Signed in as %@";
 "session.signOut"            = "Log out";

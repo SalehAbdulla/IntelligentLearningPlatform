@@ -114,6 +114,29 @@ protocol AuthService: Sendable {
     /// Sends a reset email. Deliberately does NOT report whether the address exists —
     /// see `AuthError.wrongCredentials`.
     func sendPasswordReset(to email: String) async throws
+
+    /// Sends the email-verification message to the currently signed-in user.
+    ///
+    /// - Throws: `AuthError.tooManyRequests` if Firebase's rate limiter rejects it. A
+    ///   caller MUST surface that distinctly rather than retrying, because the limiter
+    ///   makes repeated attempts worse, not better.
+    /// - Throws: `AuthError.wrongCredentials` if nobody is signed in — there is no
+    ///   address to send to.
+    func sendEmailVerification() async throws
+
+    /// Reloads the user from the provider and re-emits auth state.
+    ///
+    /// WHY THIS EXISTS
+    /// `emailVerified` flips **server-side**, when the user clicks a link in their inbox —
+    /// something this process cannot observe. Without an explicit reload the app would
+    /// keep showing A06 to a user who has already verified, until the token happened to
+    /// refresh on its own.
+    ///
+    /// - Returns: the refreshed session, or `nil` if reloading found nobody signed in.
+    /// - Note: the resulting state is also emitted on `stateChanges()`, so `RootView`
+    ///   routes onward without the caller having to pass the result anywhere.
+    @discardableResult
+    func refreshSession() async throws -> UserSession?
 }
 
 // MARK: - Shared input validation

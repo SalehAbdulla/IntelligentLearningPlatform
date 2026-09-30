@@ -124,6 +124,19 @@ enum L10n: String, CaseIterable, Sendable {
     case onboardingPrivacyCloud    = "onboarding.privacy.cloud"
     case onboardingPrivacyTraining = "onboarding.privacy.training"
 
+    // MARK: A06 Email verification
+    case verifyTitle        = "auth.verify.title"
+    case verifyBody         = "auth.verify.body"
+    case verifyResend       = "auth.verify.resend"
+    case verifyResendIn     = "auth.verify.resendIn"
+    case verifyResendSent   = "auth.verify.resendSent"
+    case verifyCheckNow     = "auth.verify.checkNow"
+    case verifyChecking     = "auth.verify.checking"
+    case verifySpamHint     = "auth.verify.spamHint"
+    case verifyWrongAddress = "auth.verify.wrongAddress"
+    case verifyNotYetTitle  = "auth.verify.notYetTitle"
+    case verifyNotYetBody   = "auth.verify.notYetBody"
+
     // MARK: Session
     case sessionSignedInAs        = "session.signedInAs"
     case sessionSignOut           = "session.signOut"

@@ -46,8 +46,20 @@ struct RootView: View {
         Group {
             if !container.hasResolvedAuth {
                 SplashView()
-            } else if container.session != nil {
-                SignedInHomeView(container: container)
+            } else if let session = container.session {
+                // Signed in. Verification is checked BEFORE the home screen, because F01's
+                // stated goal is to get a VERIFIED user onto a role home — so an
+                // unverified session has not finished the feature, it has skipped a step.
+                if session.isEmailVerified {
+                    SignedInHomeView(container: container)
+                } else {
+                    // `session.email`, NOT `displayName` — this is the address the link was
+                    // sent to, and showing a name here both reads wrong and hides the
+                    // mistyped address that is the most common reason the email never
+                    // arrives. A screenshot caught this; the unit tests could not, because
+                    // they build the view model directly and never exercise this line.
+                    EmailVerificationView(auth: container.auth, email: session.email)
+                }
             } else if !hasCompletedOnboarding {
                 // Onboarding sits BEFORE sign-in on purpose. It has to explain what the
                 // app is and what happens to your files before asking for an email
@@ -73,8 +85,8 @@ struct RootView: View {
     /// source of truth for what RootView renders.
     private var branch: Int {
         if !container.hasResolvedAuth { return 0 }
-        if container.session != nil { return 3 }
-        return hasCompletedOnboarding ? 2 : 1
+        if let session = container.session { return session.isEmailVerified ? 3 : 1 }
+        return hasCompletedOnboarding ? 2 : 4
     }
 
     /// DEBUG-only: opens the onboarding pager on a given slide.
@@ -123,7 +135,28 @@ struct RootView: View {
     RootView(container: .previewing(session: nil, hasCompletedOnboarding: true))
 }
 
-#Preview("Root — signed in") {
+#Preview("Root — signed in, verified") {
+    // `.preview` carries `isEmailVerified: true`, so this lands on the home screen. The
+    // unverified counterpart is below.
     RootView(container: .previewing())
+}
+
+#Preview("Root — signed in, NOT verified (A06)") {
+    // The branch that enforces F01's goal: a signed-in but unverified user must not reach
+    // the home screen. Without a preview for it the routing rule is invisible in the
+    // canvas, and a regression that let them through would look like nothing had changed.
+    RootView(
+        container: .previewing(
+            session: UserSession(
+                id: "uid_new",
+                displayName: "New Student",
+                role: .student,
+                plan: .free,
+                groupIds: [],
+                email: "new@studyforge.test",
+                isEmailVerified: false
+            )
+        )
+    )
 }
 

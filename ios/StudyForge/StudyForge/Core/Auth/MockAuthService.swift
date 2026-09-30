@@ -35,6 +35,13 @@ final class MockAuthService: AuthService {
     private let latency: Duration
     private let outcome: Mutex<Outcome>
 
+    /// Whether the current mock user's email is verified.
+    ///
+    /// Defaults to `false`, so a sign-up in a test or preview lands on A06 — which is what
+    /// actually happens. `simulateVerification()` stands in for the user clicking the link
+    /// in their inbox: the one event the app cannot observe and has to poll for.
+    private let emailVerified = Mutex(false)
+
     init(initialState: AuthState = .signedOut,
          latency: Duration = .milliseconds(250),
          outcome: Outcome = .succeed,
@@ -43,6 +50,9 @@ final class MockAuthService: AuthService {
         self.latency = latency
         self.outcome = Mutex(outcome)
         self.knownAccounts = knownAccounts
+        // A session supplied through `initialState` is taken as already verified, so
+        // previews of the signed-in screens do not all open on A06.
+        self.emailVerified.withLock { $0 = initialState.session?.isEmailVerified ?? false }
     }
 
     // MARK: - AuthService
@@ -65,11 +75,14 @@ final class MockAuthService: AuthService {
         try await simulateWork()
         try throwIfForced()
 
-        // A mock account is created the way the real one would be: least privilege,
-        // with no claims yet — the `onUserCreate` Cloud Function grants anything more.
+        // A mock account is created the way the real one would be: least privilege, with
+        // no claims yet — and UNVERIFIED, so the flow proceeds to A06 exactly as it does
+        // against Firebase.
+        emailVerified.withLock { $0 = false }
         let session = CustomClaims.leastPrivilege.session(
             uid: Self.uid(for: email),
-            displayName: name
+            displayName: name,
+            email: Self.normalise(email)
         )
         broadcaster.send(.signedIn(session))
         return session
@@ -92,9 +105,18 @@ final class MockAuthService: AuthService {
             }
         }
 
-        let session = CustomClaims.leastPrivilege.session(
-            uid: Self.uid(for: normalised),
-            displayName: Self.displayName(from: normalised)
+        // A returning account is treated as verified: you can only have credentials to
+        // sign in with because you signed up previously, and the flow would have required
+        // verification before letting you reach a role home.
+        emailVerified.withLock { $0 = true }
+        let session = UserSession(
+            id: Self.uid(for: normalised),
+            displayName: Self.displayName(from: normalised),
+            role: CustomClaims.leastPrivilege.role,
+            plan: CustomClaims.leastPrivilege.plan,
+            groupIds: [],
+            email: normalised,
+            isEmailVerified: true
         )
         broadcaster.send(.signedIn(session))
         return session
@@ -115,12 +137,52 @@ final class MockAuthService: AuthService {
         try throwIfForced()
     }
 
+    func sendEmailVerification() async throws {
+        // Mirrors the real service: there is no address to send to when nobody is signed
+        // in, so this fails rather than silently succeeding.
+        guard currentSession() != nil else { throw AuthError.wrongCredentials }
+
+        try await simulateWork()
+        try throwIfForced()
+    }
+
+    @discardableResult
+    func refreshSession() async throws -> UserSession? {
+        try await simulateWork()
+        try throwIfForced()
+
+        guard let existing = currentSession() else { return nil }
+
+        // Re-emits with the CURRENT flag, so a test can call `simulateVerification()` and
+        // then observe the app routing onward — the same sequence the real click-through
+        // produces.
+        let refreshed = UserSession(
+            id: existing.id,
+            displayName: existing.displayName,
+            role: existing.role,
+            plan: existing.plan,
+            groupIds: existing.groupIds,
+            email: existing.email,
+            isEmailVerified: emailVerified.withLock { $0 }
+        )
+        broadcaster.send(.signedIn(refreshed))
+        return refreshed
+    }
+
     // MARK: - Test and preview controls
 
     /// Forces the next call to fail with `error`. Lets a test exercise the error path
     /// of a screen without inventing a broken account.
     func forceFailure(_ error: AuthError?) {
         outcome.withLock { $0 = error.map(Outcome.fail) ?? .succeed }
+    }
+
+    /// Stands in for the user clicking the verification link in their inbox.
+    ///
+    /// The real app cannot observe that click, which is the entire reason A06 has a
+    /// refresh button — so tests and previews need a way to produce the transition.
+    func simulateVerification() {
+        emailVerified.withLock { $0 = true }
     }
 
     /// Moves straight to a signed-in state, for previews of authenticated screens.

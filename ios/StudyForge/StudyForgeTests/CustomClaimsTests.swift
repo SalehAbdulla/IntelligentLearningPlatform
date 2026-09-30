@@ -80,12 +80,79 @@ struct CustomClaimsTests {
         #expect(claims.plan == .free)
     }
 
+    // MARK: - Email verification (a standard token claim, not a custom one)
+
+    @Test("A verified account is read from the standard email_verified claim")
+    func verifiedClaimIsRead() {
+        let claims = CustomClaims.parse(from: ["email_verified": true])
+        #expect(claims.isEmailVerified)
+    }
+
+    @Test("An absent email_verified claim means UNVERIFIED, not verified")
+    func absentClaimFailsClosed() {
+        // The direction that matters. Defaulting to verified would let an account that
+        // never confirmed its address straight past the one check F01 exists to enforce.
+        let claims = CustomClaims.parse(from: ["role": "student"])
+        #expect(claims.isEmailVerified == false)
+    }
+
+    @Test("A non-boolean email_verified is treated as absent rather than coerced")
+    func nonBooleanClaimFailsClosed() {
+        // `"true"` is truthy in many languages. Here it is not a boolean, so it is treated
+        // as absent — a token shape we do not recognise must not become a permission.
+        for value in ["true", "TRUE", [true], [:]] as [Any] {
+            let claims = CustomClaims.parse(from: ["email_verified": value])
+            #expect(
+                claims.isEmailVerified == false,
+                "email_verified of \(type(of: value)) must not be coerced to true"
+            )
+        }
+    }
+
+    @Test("A numeric boolean is accepted, because JSON tokens can encode it that way")
+    func numericBooleanIsAccepted() {
+        // Some token encodings deliver a boolean as a number, and treating that as absent
+        // would strand verified users on A06.
+        #expect(CustomClaims.parse(from: ["email_verified": NSNumber(value: true)]).isEmailVerified)
+        #expect(CustomClaims.parse(from: ["email_verified": NSNumber(value: false)]).isEmailVerified == false)
+    }
+
+    @Test("An integer 1 does NOT read as verified — only real booleans do")
+    func integerOneFailsClosed() {
+        // Worth pinning down, because the bridging rules here are genuinely subtle:
+        //
+        //   · `NSNumber(value: true)`  → `as? Bool` succeeds  (see the test above)
+        //   · `Int(1)` boxed in `Any`  → `as? Bool` FAILS, because Swift does not
+        //                                 auto-bridge a boxed `Int` to `Bool`
+        //
+        // So the loose token shape that would be most tempting to accept is exactly the
+        // one that is rejected. That is the fail-closed direction, so it is asserted rather
+        // than left to chance — an earlier draft of this file claimed `1` WAS accepted and
+        // a test proved the opposite.
+        #expect(CustomClaims.parse(from: ["email_verified": 1]).isEmailVerified == false)
+        #expect(CustomClaims.parse(from: ["email_verified": 0]).isEmailVerified == false)
+    }
+
+    @Test("Verification travels into the session, alongside the email")
+    func verificationReachesTheSession() {
+        let session = CustomClaims(
+            role: .student,
+            plan: .free,
+            groupIds: [],
+            isEmailVerified: true
+        )
+        .session(uid: "uid_1", displayName: "Sara", email: "sara@studyforge.test")
+
+        #expect(session.isEmailVerified)
+        #expect(session.email == "sara@studyforge.test")
+    }
+
     // MARK: - Session construction
 
     @Test("A session carries the claims through to the user's capabilities")
     func sessionReflectsClaims() {
         let session = CustomClaims(role: .tutor, plan: .plus, groupIds: ["g_1"])
-            .session(uid: "uid_123", displayName: "Dr Ali")
+            .session(uid: "uid_123", displayName: "Dr Ali", email: "ali@studyforge.test")
 
         #expect(session.id == "uid_123")
         #expect(session.displayName == "Dr Ali")
@@ -95,14 +162,19 @@ struct CustomClaimsTests {
         #expect(session.isStudyGroupMember)
     }
 
-    @Test("Least privilege means a student, on free, in no groups")
+    @Test("Least privilege means a student, on free, in no groups, unverified")
     func leastPrivilegeIsEmptyOnEveryAxis() {
-        let session = CustomClaims.leastPrivilege.session(uid: "u", displayName: "New Student")
+        let session = CustomClaims.leastPrivilege.session(
+            uid: "u",
+            displayName: "New Student",
+            email: "new@studyforge.test"
+        )
 
         #expect(session.role == .student)
         #expect(session.plan == .free)
         #expect(session.groupIds.isEmpty)
         #expect(session.isTutor == false, "a new account must never reach the tutor studio")
         #expect(session.isStudyGroupMember == false)
+        #expect(session.isEmailVerified == false, "a new account starts unverified")
     }
 }

@@ -134,8 +134,47 @@ extension AppContainer {
             ? MockAuthService(latency: .zero)
             : FirebaseAuthService()
 
+        #if DEBUG
+        // `-seedUnverifiedSession` opens the app directly on A06.
+        //
+        // A06 is otherwise the hardest screen in F01 to look at: reaching it honestly means
+        // completing sign-up against a live project and then finding a real verification
+        // email. This is the same kind of escape hatch as `-onboardingPage`, and it is
+        // compiled out of Release for the same reason — it FABRICATES a session, and a
+        // shipping build must never do that.
+        //
+        // It swaps in the mock rather than mutating a Firebase session, so no account is
+        // created and nothing is written to the project.
+        if ProcessInfo.processInfo.arguments.contains("-seedUnverifiedSession") {
+            return AppContainer(
+                environment: environment,
+                firebaseSource: source,
+                auth: MockAuthService(
+                    initialState: .signedIn(unverifiedPreviewSession),
+                    latency: .zero
+                )
+            )
+        }
+        #endif
+
         return AppContainer(environment: environment, firebaseSource: source, auth: auth)
     }
+
+    #if DEBUG
+    /// A signed-in session whose email is NOT verified — the state A06 exists to render.
+    ///
+    /// Uses `example.test` rather than a real domain so a screenshot of this screen cannot
+    /// be mistaken for a real student's address.
+    static let unverifiedPreviewSession = UserSession(
+        id: "uid_unverified_preview",
+        displayName: "New Student",
+        role: .student,
+        plan: .free,
+        groupIds: [],
+        email: "new.student@example.test",
+        isEmailVerified: false
+    )
+    #endif
 
     /// A container backed entirely by mocks, for previews and for tests that need a
     /// session but no backend.
