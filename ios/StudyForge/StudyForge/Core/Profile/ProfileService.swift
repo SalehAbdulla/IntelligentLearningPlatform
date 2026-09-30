@@ -42,4 +42,18 @@ protocol ProfileService: Sendable {
     ///   differ for `readWrite`, and the wire format is the documented one.
     /// - Throws: `ProfileError` for every failure.
     func saveLearningStyle(_ style: LearningStyle) async throws
+
+    /// Saves the student's study goals (B03).
+    ///
+    /// Both fields in one update, because they answer one question. Written and read
+    /// together, they can disagree only if a student abandons the step half-way — and a
+    /// half-written pair is exactly what a planner would act on. `merge: true` still leaves
+    /// the fields the earlier steps wrote untouched.
+    ///
+    /// Nothing consumes these yet: F06's planner is where they earn their keep, and
+    /// capturing them now is what lets the wizard stop being the thing that blocks it.
+    ///
+    /// - Parameter goals: the weekly hours and the target grade.
+    /// - Throws: `ProfileError` for every failure.
+    func saveStudyGoals(_ goals: StudyGoals) async throws
 }
