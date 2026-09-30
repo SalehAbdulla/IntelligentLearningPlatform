@@ -84,12 +84,14 @@ struct RootView: View {
                             profile: container.profile,
                             startingAt: debugProfileSetupStep ?? .first
                         ) {
-                            // The wizard has nothing to advance TO past B02 yet: B03 is not
-                            // built, so there is no step three. For the demo it returns to
-                            // the home screen, and the flag is deliberately NOT persisted —
-                            // it is a viewing affordance, not a claim that the wizard
-                            // finished. The real gate lands with B03/B04, when "profile
-                            // complete" means all three steps.
+                            // All three steps exist now, so this is the wizard finishing
+                            // rather than running out of steps. The flag is still
+                            // deliberately NOT persisted and still does not gate the app: a
+                            // real gate has to survive a reinstall and a second device,
+                            // which means asking the SERVER whether this student has a
+                            // profile, not UserDefaults. That lands with B04 (the
+                            // confirmation screen), together with the profile read that
+                            // makes the question answerable.
                             hasCompletedProfileSetup = true
                         }
                     } else {
