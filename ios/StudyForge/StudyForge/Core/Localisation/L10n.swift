@@ -153,7 +153,6 @@ enum L10n: String, CaseIterable, Sendable {
     case homeUnavailable         = "home.unavailable"
 
     // MARK: B01 Profile setup — academic
-    case profileAcademicStep                  = "profile.academic.step"
     case profileAcademicTitle                 = "profile.academic.title"
     case profileAcademicSubtitle              = "profile.academic.subtitle"
     case profileAcademicUniversity            = "profile.academic.university"
@@ -168,6 +167,27 @@ enum L10n: String, CaseIterable, Sendable {
     case profileAcademicErrorMajor            = "profile.academic.error.major"
     case profileAcademicErrorYear             = "profile.academic.error.year"
     case profileAcademicErrorCourses          = "profile.academic.error.courses"
+
+    // MARK: Profile wizard (shared across steps)
+
+    /// "Step %d of %d" — one key for the whole wizard. Per-step copies would be the same
+    /// sentence three times, and the first one edited would be the only one that changed.
+    case profileStep = "profile.step"
+
+    // MARK: B02 Profile setup — learning style
+    case profileLearningStyleTitle           = "profile.learningStyle.title"
+    case profileLearningStyleSubtitle        = "profile.learningStyle.subtitle"
+    case profileLearningStyleSubmitting      = "profile.learningStyle.submitting"
+    case profileLearningStyleError           = "profile.learningStyle.error"
+
+    case profileStyleVisualTitle             = "profile.learningStyle.visual.title"
+    case profileStyleVisualPreview           = "profile.learningStyle.visual.preview"
+    case profileStyleVerbalTitle             = "profile.learningStyle.verbal.title"
+    case profileStyleVerbalPreview           = "profile.learningStyle.verbal.preview"
+    case profileStyleReadWriteTitle          = "profile.learningStyle.readWrite.title"
+    case profileStyleReadWritePreview        = "profile.learningStyle.readWrite.preview"
+    case profileStyleKinestheticTitle        = "profile.learningStyle.kinesthetic.title"
+    case profileStyleKinestheticPreview      = "profile.learningStyle.kinesthetic.preview"
 }
 
 // MARK: - Resolution

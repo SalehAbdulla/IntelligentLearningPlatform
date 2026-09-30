@@ -141,7 +141,6 @@
 "home.unavailable"           = "Not available";
 
 /* ── B01 Profile setup — academic (docs/03 §B, step 1 of 3) ─────────────── */
-"profile.academic.step"                  = "Step %d of %d";
 "profile.academic.title"                 = "Your studies";
 "profile.academic.subtitle"              = "This is how we file your material and shape your study plan. You can change it later.";
 "profile.academic.university"            = "University";
@@ -156,3 +155,21 @@
 "profile.academic.error.major"           = "Enter your major or programme.";
 "profile.academic.error.year"            = "Choose your year of study.";
 "profile.academic.error.courses"         = "Choose at least one course.";
+
+/* ── Profile wizard — shared across steps ──────────────────────────────── */
+"profile.step"                           = "Step %d of %d";
+
+/* ── B02 Profile setup — learning style (docs/03 §B, step 2 of 3) ──────── */
+"profile.learningStyle.title"            = "How you learn best";
+"profile.learningStyle.subtitle"         = "Every summary, flashcard and explanation is shaped around this. You can change it later.";
+"profile.learningStyle.submitting"       = "Saving…";
+"profile.learningStyle.error"            = "Choose the style that suits you.";
+
+"profile.learningStyle.visual.title"      = "Visual";
+"profile.learningStyle.visual.preview"    = "Grouped points, comparisons and diagrams — structure you can picture.";
+"profile.learningStyle.verbal.title"      = "Verbal";
+"profile.learningStyle.verbal.preview"    = "Explanations that read as if a classmate were talking you through it.";
+"profile.learningStyle.readWrite.title"   = "Read / write";
+"profile.learningStyle.readWrite.preview" = "Ordered written summaries with precise definitions and the source's own terms.";
+"profile.learningStyle.kinesthetic.title" = "Kinesthetic";
+"profile.learningStyle.kinesthetic.preview" = "Worked examples and 'what if' questions, rather than abstract statements.";

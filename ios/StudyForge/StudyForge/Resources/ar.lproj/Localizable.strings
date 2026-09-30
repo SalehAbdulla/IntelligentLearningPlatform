@@ -142,7 +142,6 @@
 "home.unavailable"           = "غير متاحة";
 
 /* ── B01 إعداد الملف — البيانات الأكاديمية (docs/03 §B، الخطوة 1 من 3) ──── */
-"profile.academic.step"                  = "الخطوة %d من %d";
 "profile.academic.title"                 = "دراستك";
 "profile.academic.subtitle"              = "بهذه البيانات نُصنّف موادك ونبني خطتك الدراسية. يمكنك تغييرها لاحقًا.";
 "profile.academic.university"            = "الجامعة";
@@ -157,3 +156,21 @@
 "profile.academic.error.major"           = "أدخل تخصصك أو برنامجك.";
 "profile.academic.error.year"            = "اختر سنتك الدراسية.";
 "profile.academic.error.courses"         = "اختر مقررًا واحدًا على الأقل.";
+
+/* ── معالج إعداد الملف — مشترك بين الخطوات ──────────────────────────────── */
+"profile.step"                           = "الخطوة %d من %d";
+
+/* ── B02 إعداد الملف — أسلوب التعلّم (docs/03 §B، الخطوة 2 من 3) ────────── */
+"profile.learningStyle.title"            = "كيف تتعلّم أفضل";
+"profile.learningStyle.subtitle"         = "يُصمَّم كل ملخّص وبطاقة وشرح بناءً على هذا الاختيار. يمكنك تغييره لاحقًا.";
+"profile.learningStyle.submitting"       = "جارٍ الحفظ…";
+"profile.learningStyle.error"            = "اختر الأسلوب الذي يناسبك.";
+
+"profile.learningStyle.visual.title"      = "بصري";
+"profile.learningStyle.visual.preview"    = "نقاط مجمّعة ومقارنات ورسوم — بنية يمكنك تصوّرها.";
+"profile.learningStyle.verbal.title"      = "لفظي";
+"profile.learningStyle.verbal.preview"    = "شروح تُقرأ كأن زميلًا يشرح لك بصوته.";
+"profile.learningStyle.readWrite.title"   = "قراءة وكتابة";
+"profile.learningStyle.readWrite.preview" = "ملخّصات مكتوبة منظّمة مع تعريفات دقيقة ومصطلحات المصدر نفسه.";
+"profile.learningStyle.kinesthetic.title" = "حركي";
+"profile.learningStyle.kinesthetic.preview" = "أمثلة محلولة وأسئلة «ماذا لو» بدل العبارات المجرّدة.";
