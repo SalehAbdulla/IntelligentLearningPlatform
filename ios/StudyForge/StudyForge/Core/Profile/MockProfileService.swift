@@ -28,8 +28,10 @@ final class MockProfileService: ProfileService {
     private let latency: Duration
     private let saveCount = Mutex(0)
     private let styleSaveCount = Mutex(0)
+    private let goalsSaveCount = Mutex(0)
     private let last = Mutex<AcademicProfile?>(nil)
     private let lastStyle = Mutex<LearningStyle?>(nil)
+    private let lastGoals = Mutex<StudyGoals?>(nil)
 
     init(latency: Duration = .milliseconds(150), outcome: Outcome = .succeed) {
         self.latency = latency
@@ -57,6 +59,14 @@ final class MockProfileService: ProfileService {
         styleSaveCount.withLock { $0 += 1 }
     }
 
+    func saveStudyGoals(_ goals: StudyGoals) async throws {
+        try await simulateWork()
+        try throwIfForced()
+
+        lastGoals.withLock { $0 = goals }
+        goalsSaveCount.withLock { $0 += 1 }
+    }
+
     // MARK: - Test and preview controls
 
     /// The most recent profile written, or `nil` if none was.
@@ -71,6 +81,12 @@ final class MockProfileService: ProfileService {
 
     /// How many times a style write succeeded.
     var styleSavedCount: Int { styleSaveCount.withLock { $0 } }
+
+    /// The most recent study goals written, or `nil` if none were.
+    var lastSavedGoals: StudyGoals? { lastGoals.withLock { $0 } }
+
+    /// How many times a study-goals write succeeded.
+    var goalsSavedCount: Int { goalsSaveCount.withLock { $0 } }
 
     /// Forces the next calls to fail with `error`.
     func forceFailure(_ error: ProfileError?) {
