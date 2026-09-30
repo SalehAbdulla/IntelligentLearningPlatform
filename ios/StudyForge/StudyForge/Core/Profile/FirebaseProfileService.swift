@@ -29,26 +29,46 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
     }
 
     func saveAcademicProfile(_ profile: AcademicProfile) async throws {
+        try await write([
+            ProfileField.university: profile.university,
+            ProfileField.major: profile.major,
+            ProfileField.year: profile.year,
+            ProfileField.courseIds: profile.courseIds,
+        ])
+    }
+
+    func saveLearningStyle(_ style: LearningStyle) async throws {
+        // `storageValue`, not `rawValue`: the two differ for `readWrite` and the stored one
+        // is the documented vocabulary (docs/05 §3).
+        try await write([ProfileField.learningStyle: style.storageValue])
+    }
+
+    /// The single write path, so every step of the wizard goes through the same guards.
+    ///
+    /// Duplicating this per step would mean duplicating the identity check, the server
+    /// timestamp, `merge: true` and the error mapping — four chances to get one of them
+    /// subtly different in the one copy nobody re-reads.
+    ///
+    /// - Parameter fields: field name → value. Names come from `ProfileField`, so this
+    ///   write and the rules allowlist cannot drift apart.
+    private func write(_ fields: [String: Any]) async throws {
         guard let uid = Auth.auth().currentUser?.uid else {
             throw ProfileError.notSignedIn
         }
 
-        // Field names come from `AcademicProfile.Field` so this write and the rules
-        // allowlist cannot drift apart. `updatedAt` is a SERVER timestamp: the field is
-        // writable but must not be forgeable, and a client clock is trivially backdated.
-        let fields: [String: Any] = [
-            AcademicProfile.Field.university: profile.university,
-            AcademicProfile.Field.major: profile.major,
-            AcademicProfile.Field.year: profile.year,
-            AcademicProfile.Field.courseIds: profile.courseIds,
-            "updatedAt": FieldValue.serverTimestamp(),
-        ]
+        // Stamped here rather than by each caller: `updatedAt` is writable but must not be
+        // forgeable, and a client clock is trivially backdated.
+        var body = fields
+        body[ProfileField.updatedAt] = FieldValue.serverTimestamp()
 
         do {
+            // `merge: true` — an update must not become a replace, or the `plan`, `streak`
+            // and `badges` a Cloud Function owns would vanish the moment a student corrects
+            // their major.
             try await firestore
                 .collection(FirebaseAuthService.usersCollection)
                 .document(uid)
-                .setData(fields, merge: true)
+                .setData(body, merge: true)
         } catch {
             throw Self.map(error)
         }
