@@ -57,7 +57,7 @@ struct ProfileSetupAcademicTests {
     func initialState() {
         let viewModel = model()
 
-        #expect(viewModel.stepLabel == L10n.profileAcademicStep.string(1, 3))
+        #expect(viewModel.stepLabel == L10n.profileStep.string(1, 3))
         #expect(viewModel.university == nil)
         #expect(viewModel.year == nil)
         #expect(viewModel.selectedCourses.isEmpty)
