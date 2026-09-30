@@ -48,17 +48,7 @@ struct AcademicProfile: Sendable, Equatable {
     var courseIds: [String]
 }
 
-extension AcademicProfile {
-
-    /// The Firestore field names, declared once.
-    ///
-    /// These are the literal strings the rules allowlist compares against, and they are
-    /// shared with the service that performs the write, so the two cannot drift apart in
-    /// a way that only shows up as a permission failure on a device.
-    enum Field {
-        static let university = "university"
-        static let major = "major"
-        static let year = "year"
-        static let courseIds = "courseIds"
-    }
-}
+// The Firestore key names are NOT declared here. They live in `ProfileField`, in one list
+// shared by every write, because the server's allowlist is one list too — see that file.
+// They used to sit under this type, which was fine while the wizard had a single step and
+// became a second, silently diverging copy the moment B02 added its own write.
