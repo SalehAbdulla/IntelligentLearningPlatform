@@ -42,13 +42,27 @@ struct ProfileSetupStepTests {
     func labelsComeFromTheStep() {
         #expect(ProfileSetupStep.academic.label == L10n.profileStep.string(1, 3))
         #expect(ProfileSetupStep.learningStyle.label == L10n.profileStep.string(2, 3))
+        #expect(ProfileSetupStep.studyGoals.label == L10n.profileStep.string(3, 3))
     }
 
-    @Test("B01 advances to B02, and B02 ends the flow while B03 is unbuilt")
-    func nextStepEndsTheFlowAtTheLastBuiltStep() {
+    @Test("Every step advances, and the last one ends the flow")
+    func nextStepWalksTheWholeSequence() {
+        // With all three steps built, the number of steps that report an empty `next` is
+        // exactly one — the last. Deriving anything from `allCases.count` here would have
+        // hidden the day B03 was missing.
         #expect(ProfileSetupStep.academic.next == .learningStyle)
-        // `nil` is what ends the wizard. This assertion flips the moment B03 is added,
-        // which is the point: the flow's end is a decision, not an accident.
-        #expect(ProfileSetupStep.learningStyle.next == nil)
+        #expect(ProfileSetupStep.learningStyle.next == .studyGoals)
+        #expect(ProfileSetupStep.studyGoals.next == nil)
+
+        #expect(ProfileSetupStep.allCases.filter { $0.next == nil }.count == 1)
+    }
+
+    @Test("The design count is reached, not exceeded")
+    func allDesignedStepsExist() {
+        // The counterpart to `totalIsTheDesignsCount`: the wizard now has all three of the
+        // design's steps, so the figure a student sees ("Step 3 of 3") matches the steps
+        // that exist. A fourth case would be a design change, and this fails until the
+        // count is raised deliberately.
+        #expect(ProfileSetupStep.allCases.count == ProfileSetupStep.designedCount)
     }
 }
