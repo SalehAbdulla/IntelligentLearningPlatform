@@ -43,6 +43,15 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
         try await write([ProfileField.learningStyle: style.storageValue])
     }
 
+    func saveStudyGoals(_ goals: StudyGoals) async throws {
+        // One write for both, so a rejection cannot leave the pair disagreeing — a study
+        // time from this attempt and a target grade from the last one.
+        try await write([
+            ProfileField.weeklyStudyGoalHours: goals.weeklyStudyGoalHours,
+            ProfileField.targetGrade: goals.targetGrade.storageValue,
+        ])
+    }
+
     /// The single write path, so every step of the wizard goes through the same guards.
     ///
     /// Duplicating this per step would mean duplicating the identity check, the server
