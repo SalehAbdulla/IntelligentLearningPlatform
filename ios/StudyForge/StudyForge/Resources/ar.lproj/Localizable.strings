@@ -85,6 +85,34 @@
 "auth.forgot.backToLogin"    = "العودة لتسجيل الدخول";
 "auth.forgot.errorTitle"     = "تعذّر إرسال الرابط";
 
+/* ── A02–A04 شاشات التعريف ──────────────────────────────────────────────── */
+"onboarding.skip"                = "تخطي";
+"onboarding.skip.hint"           = "ينهي المقدمة وينتقل إلى تسجيل الدخول.";
+"onboarding.next"                = "التالي";
+"onboarding.getStarted"          = "ابدأ الآن";
+"onboarding.pageIndicator"       = "الصفحة %d من %d";
+"onboarding.stepIndicator"       = "الخطوة %d من %d";
+
+"onboarding.valueProp.title"     = "ارفع أي شيء.";
+"onboarding.valueProp.body"      = "شرائح المحاضرات، وفصول الكتب، وملاحظاتك المكتوبة بخط اليد. أضفها وسيحوّلها StudyForge إلى مادة يمكنك المراجعة منها فعلاً.";
+
+"onboarding.howItWorks.title"    = "كيف تعمل";
+"onboarding.howItWorks.body"     = "أربع خطوات، في كل مرة تضيف شيئًا جديدًا.";
+"onboarding.step.upload.title"   = "ارفع";
+"onboarding.step.upload.body"    = "شرائح أو ملفات PDF أو صور أو ملاحظات.";
+"onboarding.step.generate.title" = "أنشئ";
+"onboarding.step.generate.body"  = "ملخصات وبطاقات تعليمية واختبارات.";
+"onboarding.step.plan.title"     = "خطّط";
+"onboarding.step.plan.body"      = "جدول يوزّع مراجعتك على فترات.";
+"onboarding.step.practise.title" = "تدرّب";
+"onboarding.step.practise.body"  = "اختبر نفسك واعرف ما رسخ في ذاكرتك.";
+
+"onboarding.privacy.title"       = "موادك تبقى ملكك";
+"onboarding.privacy.body"        = "تُنشأ الملخصات والاختبارات على جهازك قدر الإمكان، فلا تُرفع ملفاتك للمعالجة. تُزامَن النتائج التي تحتفظ بها فقط، ولهذا تعمل ملاحظاتك دون اتصال. ولا يُستخدم أي شيء ترفعه لتدريب أي ذكاء اصطناعي.";
+"onboarding.privacy.onDevice"    = "تعمل على جهازك";
+"onboarding.privacy.cloud"       = "السحابة، فقط عندما يتعذّر على جهازك";
+"onboarding.privacy.training"    = "لا تُستخدم أبدًا لتدريب نماذج الذكاء الاصطناعي";
+
 /* ── الجلسة والتوجيه ────────────────────────────────────────────────────── */
 "session.signedInAs"         = "مسجّل الدخول باسم %@";
 "session.signOut"            = "تسجيل الخروج";
