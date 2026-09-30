@@ -140,10 +140,41 @@ test('users: a user may complete their academic profile (the profile wizard)', a
   const db = as.student().firestore();
   await assertSucceeds(
     updateDoc(doc(db, 'users/student_1'), {
+      // The confirmed sample profile (docs/09 §3, Q10): "Programming" is the MAJOR and
+      // IT8108 is the course id. These values are irrelevant to the rule, but using the
+      // real ones keeps the app, the fixtures and the documentation telling one story.
       university: 'Bahrain Polytechnic',
-      major: 'Software Engineering',
-      year: 2,
-      courseIds: ['c_101', 'c_104'],
+      major: 'Programming',
+      year: 3,
+      courseIds: ['IT8108'],
+    }),
+  );
+});
+
+test('users: a user may write every field the client names (the whole allowlist)', async () => {
+  // The Swift side keeps the same list, in `ProfileField`. This is the other half of that
+  // agreement, and it is the half that catches drift: a field the APP can send but the rule
+  // does not name fails here, at test time, instead of on a student's device where it
+  // surfaces as a permission error on a form that looks complete.
+  //
+  // `avatarUrl` and `updatedAt` are covered here and nowhere else — they belong to screens
+  // that are not built yet, and an allowlist nobody exercises is an allowlist that quietly
+  // stops matching.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_1'), {
+      displayName: 'Sara Ali',
+      university: 'Bahrain Polytechnic',
+      major: 'Programming',
+      year: 3,
+      courseIds: ['IT8108'],
+      learningStyle: 'readwrite',
+      weeklyStudyGoalHours: 9,
+      avatarUrl: 'users/student_1/avatar.png',
+      updatedAt: '2026-09-30T09:00:00Z',
     }),
   );
 });
