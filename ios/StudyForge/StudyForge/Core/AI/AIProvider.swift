@@ -22,42 +22,10 @@ enum OutputLanguage: String, Sendable, CaseIterable {
     case arabic
 }
 
-/// The learning-style profile that changes the SHAPE of generated content, not
-/// just its wording — the concrete answer to the brief's "support different
-/// learning styles" question (docs/00 §2).
-///
-/// This belongs with the user profile long-term; it lives here for now because it
-/// is expressed through prompt templates.
-enum LearningStyle: String, Sendable, CaseIterable {
-    case visual
-    case verbal
-    case readWrite
-    case kinesthetic
-
-    var displayName: String {
-        switch self {
-        case .visual: "Visual"
-        case .verbal: "Verbal"
-        case .readWrite: "Read / write"
-        case .kinesthetic: "Hands-on"
-        }
-    }
-
-    /// How this style changes the generated output. Injected into every prompt.
-    var promptDirective: String {
-        switch self {
-        case .visual:
-            "Favour structure the reader can picture: grouped lists, comparisons, and spatial relationships. Where a process is described, present it as ordered steps."
-        case .verbal:
-            "Favour explanations that read as natural speech, as if explaining aloud to a classmate. Avoid dense notation."
-        case .readWrite:
-            "Favour well-organised written prose and precise definitions. Include the source's own terminology."
-        case .kinesthetic:
-            "Favour concrete examples, worked scenarios and 'what would happen if' applications rather than abstract statements."
-        }
-    }
-}
-
+// NOTE: `LearningStyle` lives in `Core/Profile/LearningStyle.swift`. It moved there when
+// B02 made it something the student chooses and the app stores — that file explains why the
+// profile owns it and this layer reads it. It is NOT defined here any more, so a prompt
+// change that needs the style should import it from Core/Profile.
 enum SummaryLength: String, Sendable, CaseIterable {
     case short, standard, examReady
 }
