@@ -12,6 +12,7 @@
     "test": "firebase emulators:exec --only firestore,storage --project demo-studyforge \"node --test --test-concurrency=1 rules-tests/*.test.mjs\"",
     "test:firestore": "firebase emulators:exec --only firestore --project demo-studyforge \"node --test rules-tests/firestore.rules.test.mjs\"",
     "test:storage": "firebase emulators:exec --only firestore,storage --project demo-studyforge \"node --test rules-tests/storage.rules.test.mjs\"",
+    "test:rules:live": "python3 rules-tests/live-rules-probe.py",
     "deploy:rules": "firebase deploy --only firestore:rules",
     "deploy:rules:storage": "firebase deploy --only storage:rules",
     "deploy:indexes": "firebase deploy --only firestore:indexes",
