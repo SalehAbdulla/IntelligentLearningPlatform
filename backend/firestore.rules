@@ -55,10 +55,11 @@ service cloud.firestore {
     // and gamification values (`streak`, `badges`, mastery) because the UI displays
     // them as evidence of work done.
     //
-    // Two families live here, and both are written by the profile wizard, so every
-    // step of that flow can complete without a mid-wizard denial:
-    //   · academic            — `university`, `major`, `year`, `courseIds`  (B01)
-    //   · learning preferences — `learningStyle` (B02), `weeklyStudyGoalHours` (B03)
+    // Three families live here, and all are written by the profile wizard, so every step
+    // of that flow can complete without a mid-wizard denial:
+    //   · academic             — `university`, `major`, `year`, `courseIds`  (B01)
+    //   · learning preferences — `learningStyle`                             (B02)
+    //   · study goals          — `weeklyStudyGoalHours`, `targetGrade`       (B03)
     //
     // WHY THE PREFERENCES ARE NAMED HERE RATHER THAN PUT UNDER `users/{uid}/private`
     // The obvious alternative — the `private` subcollection, which is already
@@ -69,9 +70,15 @@ service cloud.firestore {
     //
     // Naming them is a deliberate act, not a formality: the rule still denies a field
     // nobody has considered, so `streak` and any future schema growth stay unwritable
-    // until someone writes the field down here and justifies it. These two are safe to
-    // name because they are SELF-DECLARED preferences — a student setting their own
-    // study goal is not falsifying an achievement the way a client-set `streak` would.
+    // until someone writes the field down here and justifies it. These are safe to name
+    // because they are SELF-DECLARED goals and preferences — a student setting their own
+    // study goal or target grade is not falsifying an achievement the way a client-set
+    // `streak` would.
+    //
+    // `targetGrade` was NOT added until B03 needed it, even though the design named the
+    // control (`13_ProfileSetup_StudyGoals`). An allowlist that pre-authorises a field for
+    // a screen that does not exist yet is not an allowlist; it is a rubber stamp, and the
+    // cost of adding the name in the same change as the write is one line (docs/09 Q11).
     function editableProfileFields() {
       return [
         'displayName',
@@ -81,6 +88,7 @@ service cloud.firestore {
         'courseIds',
         'learningStyle',
         'weeklyStudyGoalHours',
+        'targetGrade',
         'avatarUrl',
         'updatedAt',
       ];
