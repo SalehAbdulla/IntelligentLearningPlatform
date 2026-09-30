@@ -148,6 +148,85 @@ test('users: a user may complete their academic profile (the profile wizard)', a
   );
 });
 
+test('users: a user may record a learning style (B02)', async () => {
+  // Named in the allowlist rather than routed to `users/{uid}/private`, because that
+  // subcollection has no field guard at all and would be client-writable by default.
+  // See the WHY block above `editableProfileFields()` in firestore.rules.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { learningStyle: 'visual' }));
+});
+
+test('users: a user may set a weekly study goal (B03)', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { weeklyStudyGoalHours: 12 }));
+});
+
+test('users: the wizard completes end to end — B01, then B02, then B03', async () => {
+  // The failure this guards against is ordering, not authorisation. The wizard writes
+  // the profile in THREE steps; if B02's or B03's field is missing from the allowlist,
+  // step 1 succeeds and the flow then dies half-built against deployed rules — the
+  // worst place to discover it, because the screen looks finished. Sequential updates
+  // here, each asserted, reproduce that sequence rather than testing one fat write.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  const profile = doc(db, 'users/student_1');
+
+  // Step B01 — academic.
+  await assertSucceeds(updateDoc(profile, {
+    university: 'Bahrain Polytechnic',
+    major: 'Software Engineering',
+    year: 2,
+    courseIds: ['c_101', 'c_104'],
+  }));
+
+  // Step B02 — learning style.
+  await assertSucceeds(updateDoc(profile, { learningStyle: 'kinesthetic' }));
+
+  // Step B03 — study goals.
+  await assertSucceeds(updateDoc(profile, { weeklyStudyGoalHours: 9 }));
+});
+
+test('users: DENY a learning preference smuggled alongside a forged streak', async () => {
+  // Adding two names to the allowlist must not make the guard any easier to defeat:
+  // bundling a now-permitted field with a forbidden one still fails, so the new entries
+  // widen the allowlist without widening the hole.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), {
+      learningStyle: 'visual',
+      weeklyStudyGoalHours: 40,
+      streak: 999,
+    }),
+  );
+});
+
+test('users: DENY another student completing YOUR profile', async () => {
+  // `isSelf` is the third guard on the update rule. Every field written here IS in the
+  // allowlist, so this test isolates the identity check: a wider allowlist must not
+  // mean one student can fill in another student's academic record.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.otherStudent().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), {
+      university: 'Bahrain Polytechnic',
+      learningStyle: 'visual',
+    }),
+  );
+});
+
 test('users: DENY forging your own streak', async () => {
   // `streak` does not exist on the document yet, and that is precisely the point: an
   // allowlist denies fields the rules have never heard of. The profile screen (B06)
