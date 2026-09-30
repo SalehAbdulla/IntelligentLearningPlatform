@@ -139,3 +139,20 @@
 "home.studyGroups.label"     = "Study groups";
 "home.available"             = "Available";
 "home.unavailable"           = "Not available";
+
+/* ── B01 Profile setup — academic (docs/03 §B, step 1 of 3) ─────────────── */
+"profile.academic.step"                  = "Step %d of %d";
+"profile.academic.title"                 = "Your studies";
+"profile.academic.subtitle"              = "This is how we file your material and shape your study plan. You can change it later.";
+"profile.academic.university"            = "University";
+"profile.academic.universityPlaceholder" = "Choose your university";
+"profile.academic.major"                 = "Major or programme";
+"profile.academic.majorHint"             = "The programme you are enrolled in";
+"profile.academic.year"                  = "Year of study";
+"profile.academic.courses"               = "Enrolled courses";
+"profile.academic.coursesEmpty"          = "Your course list isn't available yet. You can add your courses later.";
+"profile.academic.submitting"            = "Saving…";
+"profile.academic.error.university"      = "Choose your university.";
+"profile.academic.error.major"           = "Enter your major or programme.";
+"profile.academic.error.year"            = "Choose your year of study.";
+"profile.academic.error.courses"         = "Choose at least one course.";

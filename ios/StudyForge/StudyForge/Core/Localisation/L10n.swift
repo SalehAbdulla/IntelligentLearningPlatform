@@ -151,6 +151,23 @@ enum L10n: String, CaseIterable, Sendable {
     case homeStudyGroupsLabel    = "home.studyGroups.label"
     case homeAvailable           = "home.available"
     case homeUnavailable         = "home.unavailable"
+
+    // MARK: B01 Profile setup — academic
+    case profileAcademicStep                  = "profile.academic.step"
+    case profileAcademicTitle                 = "profile.academic.title"
+    case profileAcademicSubtitle              = "profile.academic.subtitle"
+    case profileAcademicUniversity            = "profile.academic.university"
+    case profileAcademicUniversityPlaceholder = "profile.academic.universityPlaceholder"
+    case profileAcademicMajor                 = "profile.academic.major"
+    case profileAcademicMajorHint             = "profile.academic.majorHint"
+    case profileAcademicYear                  = "profile.academic.year"
+    case profileAcademicCourses               = "profile.academic.courses"
+    case profileAcademicCoursesEmpty          = "profile.academic.coursesEmpty"
+    case profileAcademicSubmitting            = "profile.academic.submitting"
+    case profileAcademicErrorUniversity       = "profile.academic.error.university"
+    case profileAcademicErrorMajor            = "profile.academic.error.major"
+    case profileAcademicErrorYear             = "profile.academic.error.year"
+    case profileAcademicErrorCourses          = "profile.academic.error.courses"
 }
 
 // MARK: - Resolution
