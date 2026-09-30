@@ -31,6 +31,41 @@ service cloud.firestore {
     // Fields that must never change after creation.
     function keeps(field) { return request.resource.data[field] == resource.data[field]; }
 
+    // ── Allowlist guard for updates ──────────────────────────────────────
+    //
+    // True only when an update touches fields within `allowed` and nothing else.
+    // `diff().affectedKeys()` is the set of fields that differ between the stored
+    // document and the incoming one, which means it also catches fields the client
+    // simply OMITS: removing a field counts as affecting it.
+    //
+    // This exists because pinning individual fields is not enough. A rule that only
+    // says `keeps('role') && keeps('plan')` still permits a client to write ANY other
+    // field — so a student could set their own `streak` to 999 or award themselves
+    // `badges`. Those fields do not exist yet, which is exactly the danger: the rule
+    // silently grants write access to whatever the schema grows next.
+    //
+    // An allowlist inverts the default. A field added in a later sprint is NOT
+    // writable by clients until someone names it here, deliberately.
+    function onlyChanges(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
+
+    // The profile fields a student is allowed to edit about themselves. Everything
+    // else on `users/{uid}` is server-owned: `role` and `plan` by the Cloud Function,
+    // and gamification values (`streak`, `badges`, mastery) because the UI displays
+    // them as evidence of work done.
+    function editableProfileFields() {
+      return [
+        'displayName',
+        'university',
+        'major',
+        'year',
+        'courseIds',
+        'avatarUrl',
+        'updatedAt',
+      ];
+    }
+
     // Server-managed fields must match what already exists.
     function keepsServerFields() {
       return keeps('createdAt') && keeps('byUid');
@@ -50,8 +85,21 @@ service cloud.firestore {
                     && request.resource.data.role == 'student'
                     && request.resource.data.plan == 'free';
 
+      // A user may edit their own PROFILE, and nothing else.
+      //
+      // Three guards, deliberately overlapping:
+      //   · `keeps('role') && keeps('plan')` — explicit, so the failure is obvious
+      //   · `onlyChanges(editableProfileFields())` — the real protection, denying any
+      //     field not named in the allowlist, including ones added later
+      //   · `isSelf(userId)` — you can only do this to yourself
+      //
+      // Note the allowlist also covers `createdAt` / `byUid` / `ownerUid` by omission:
+      // a field absent from the list cannot appear in `affectedKeys()`.
       allow update: if isAdmin()
-                    || (isSelf(userId) && keeps('role') && keeps('plan'));
+                    || (isSelf(userId)
+                        && keeps('role')
+                        && keeps('plan')
+                        && onlyChanges(editableProfileFields()));
 
       allow delete: if isAdmin();
 
