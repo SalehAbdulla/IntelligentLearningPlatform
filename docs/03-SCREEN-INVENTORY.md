@@ -115,7 +115,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
-| B01 | `11_ProfileSetup_Academic_{M1}` | F01 | P0 | **University picker**, **major field**, **year segmented control**, **enrolled-courses chips** with add button, **Continue**. |
+| B01 | `11_ProfileSetup_Academic_{M1}` | F01 | P0 | **University picker**, **major field**, **year segmented control**, **enrolled-courses chips** with add button, **Continue**. **Built with the chips as the picker, and no add/search flow yet.** A course list is readable only by an *enrolled* student (`courses/{courseId}`), and a student filling in this screen is enrolled in nothing — so there is no catalogue to search at the moment the picker needs one. Every known course is therefore shown as a tap-to-toggle chip, and the add/search sheet arrives with C01 (F02), when there is a real list behind it. Free-text course codes are **deliberately refused** rather than added as a stopgap: a typed code would store an id that no `courses/{id}` document backs, which surfaces much later as material filed under a course that does not exist. |
 | B02 | `12_ProfileSetup_LearningStyle_{M1}` | F03 | P0 | **Four selectable cards** (Visual / Verbal / Read-Write / Kinesthetic). Each shows a *sample output preview* so the choice is meaningful, not abstract. **Continue**. |
 | B03 | `13_ProfileSetup_StudyGoals_{M1}` | F06 | P0 | **Weekly-hours slider**, **target-grade selector**, **exam-date date pickers**, **Finish setup**. |
 | B04 | `14_ProfileSetup_Complete_{M1}` | F01 | P1 | Success celebration, **choice summary list**, **Go to dashboard** primary. |
