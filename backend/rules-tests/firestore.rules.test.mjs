@@ -126,6 +126,95 @@ test('users: a user may update their own display name', async () => {
   await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { displayName: 'Sara A.' }));
 });
 
+// ── The allowlist on `users/{uid}` updates ──────────────────────────────
+//
+// Before this guard existed, the rule pinned only `role` and `plan`, which left every
+// OTHER field implicitly writable. These tests exist because that is the failure mode
+// that appears when the schema grows: a new field is client-writable by default unless
+// something says otherwise.
+
+test('users: a user may complete their academic profile (the profile wizard)', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_1'), {
+      university: 'Bahrain Polytechnic',
+      major: 'Software Engineering',
+      year: 2,
+      courseIds: ['c_101', 'c_104'],
+    }),
+  );
+});
+
+test('users: DENY forging your own streak', async () => {
+  // `streak` does not exist on the document yet, and that is precisely the point: an
+  // allowlist denies fields the rules have never heard of. The profile screen (B06)
+  // SHOWS the streak, so a client-writable value is a falsified achievement.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(updateDoc(doc(db, 'users/student_1'), { streak: 999 }));
+});
+
+test('users: DENY awarding yourself a badge', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), { badges: ['night_owl', 'first_steps'] }),
+  );
+});
+
+test('users: DENY writing a field the rules do not name (the general case)', async () => {
+  // The catch-all that the old rule allowed. Any field not in the allowlist is denied,
+  // so a future sprint cannot accidentally open a client-writable hole.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(updateDoc(doc(db, 'users/student_1'), { somethingInventedLater: true }));
+});
+
+test('users: DENY tampering with a server-owned field', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), {
+      displayName: 'Sara', role: 'student', plan: 'free', createdAt: '2026-01-01T00:00:00Z',
+    });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), { createdAt: '2030-01-01T00:00:00Z' }),
+  );
+});
+
+test('users: DENY smuggling a forbidden field alongside a permitted one', async () => {
+  // A partial allowlist must not be defeatable by bundling: mixing an allowed field with
+  // a forbidden one has to fail, or the guard is worthless.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), { displayName: 'Sara A.', streak: 999 }),
+  );
+});
+
+test('users: an admin may update any user field', async () => {
+  // The allowlist constrains SELF-service edits only. Server-side admin tooling is
+  // unaffected, otherwise the escape hatch for correcting bad data would be gone.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_2'), { displayName: 'Omar', role: 'student', plan: 'free' });
+  });
+  const db = as.admin().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_2'), { displayName: 'Omar K.', plan: 'plus' }),
+  );
+});
+
 test('users: an admin may read any user', async () => {
   await seed(async (db) => {
     await setDoc(doc(db, 'users/student_2'), { displayName: 'Omar', role: 'student', plan: 'free' });
