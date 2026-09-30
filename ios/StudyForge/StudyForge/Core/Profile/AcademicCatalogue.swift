@@ -71,6 +71,13 @@ struct AcademicCatalogue: Sendable, Equatable {
     var courses: [CourseOption]
 
     /// The placeholder catalogue. See the note above: this is F01 scaffolding, not data.
+    ///
+    /// `IT8108` is the one real course id here. It was confirmed rather than invented:
+    /// the student is enrolled in IT8108, and "Programming" is their MAJOR — so the course
+    /// is offered by its code, because nobody has supplied its title. Showing the code is
+    /// honest and is what a timetable shows; inventing a title would put a made-up course
+    /// name in front of a marker as though it were real. C01 replaces this list with the
+    /// catalogue, titles included (docs/09 §3, Q10).
     static let placeholder = AcademicCatalogue(
         universities: [
             "Bahrain Polytechnic",
@@ -78,6 +85,7 @@ struct AcademicCatalogue: Sendable, Equatable {
         ],
         years: [1, 2, 3, 4],
         courses: [
+            CourseOption(id: "IT8108", name: "IT8108"),
             CourseOption(id: "c_101", name: "Introduction to Programming"),
             CourseOption(id: "c_104", name: "Data Structures"),
             CourseOption(id: "cs201", name: "Databases"),
