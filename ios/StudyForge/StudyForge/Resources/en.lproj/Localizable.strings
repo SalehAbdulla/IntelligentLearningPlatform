@@ -84,6 +84,34 @@
 "auth.forgot.backToLogin"    = "Back to log in";
 "auth.forgot.errorTitle"     = "We couldn't send the link";
 
+/* ── A02–A04 Onboarding ─────────────────────────────────────────────────── */
+"onboarding.skip"                = "Skip";
+"onboarding.skip.hint"           = "Finishes the introduction and continues to sign in.";
+"onboarding.next"                = "Next";
+"onboarding.getStarted"          = "Get started";
+"onboarding.pageIndicator"       = "Page %d of %d";
+"onboarding.stepIndicator"       = "Step %d of %d";
+
+"onboarding.valueProp.title"     = "Upload anything.";
+"onboarding.valueProp.body"      = "Lecture slides, textbook chapters, your own scrawled notes. Drop them in and StudyForge turns them into material you can actually revise from.";
+
+"onboarding.howItWorks.title"    = "How it works";
+"onboarding.howItWorks.body"     = "Four steps, every time you add something new.";
+"onboarding.step.upload.title"   = "Upload";
+"onboarding.step.upload.body"    = "Slides, PDFs, photos or notes.";
+"onboarding.step.generate.title" = "Generate";
+"onboarding.step.generate.body"  = "Summaries, flashcards and quizzes.";
+"onboarding.step.plan.title"     = "Plan";
+"onboarding.step.plan.body"      = "A schedule that spaces your revision.";
+"onboarding.step.practise.title" = "Practise";
+"onboarding.step.practise.body"  = "Quiz yourself and see what sticks.";
+
+"onboarding.privacy.title"       = "Your material stays yours";
+"onboarding.privacy.body"        = "Summaries and quizzes are generated on your device wherever possible, so your files are never uploaded to be processed. Only the results you keep are synced, which is also why your notes keep working offline. Nothing you upload is used to train anyone's AI.";
+"onboarding.privacy.onDevice"    = "Runs on your device";
+"onboarding.privacy.cloud"       = "Cloud, only when your device cannot";
+"onboarding.privacy.training"    = "Never used to train AI models";
+
 /* ── Session / router ───────────────────────────────────────────────────── */
 "session.signedInAs"         = "Signed in as %@";
 "session.signOut"            = "Log out";
