@@ -27,9 +27,12 @@ enum ProfileSetupStep: Int, CaseIterable, Sendable {
     /// B02 — `12_ProfileSetup_LearningStyle_{M1}`.
     case learningStyle
 
-    // B03 — `13_ProfileSetup_StudyGoals_{M1}` belongs here. Nothing else changes when it
-    // lands: `designedCount` is already 3, and `ProfileSetupFlowView` advances by asking
-    // for the next case.
+    /// B03 — `13_ProfileSetup_StudyGoals_{M1}`. The last step, which is why its button says
+    /// Finish rather than Continue.
+    case studyGoals
+
+    // B04 (`14_ProfileSetup_Complete_{M1}`) is the confirmation screen, not a step: it has
+    // no answer to collect, so it does not belong in this sequence.
 
     /// How many steps the wizard has in the design, including the ones still to be built.
     static let designedCount = 3
@@ -45,7 +48,9 @@ enum ProfileSetupStep: Int, CaseIterable, Sendable {
 
     /// The step after this one, or `nil` when this is the last one BUILT.
     ///
-    /// `nil` is what ends the flow, so the wizard finishes at B02 today and continues to B03
-    /// the moment that case exists — this file does not need to change.
+    /// `nil` is what ends the flow. With all three steps present, that now coincides with
+    /// the design: the wizard finishes because it is finished, not because something is
+    /// missing. B04 (the confirmation screen) has no answer to collect, so it is not a step
+    /// and does not appear here — it lands as something the flow shows AFTER this returns.
     var next: ProfileSetupStep? { ProfileSetupStep(rawValue: rawValue + 1) }
 }
