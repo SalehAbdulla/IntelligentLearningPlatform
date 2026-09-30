@@ -31,14 +31,34 @@ struct RootView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Mirrors the persisted onboarding flag into view state, so finishing the pager
+    /// re-renders immediately. The store is not observable (it is a plain protocol), and
+    /// it does not need to be: onboarding happens once, and `onFinish` is the single
+    /// moment the value changes.
+    @State private var hasCompletedOnboarding: Bool
+
+    init(container: AppContainer) {
+        self.container = container
+        _hasCompletedOnboarding = State(initialValue: container.onboarding.hasCompletedOnboarding)
+    }
+
     var body: some View {
         Group {
             if !container.hasResolvedAuth {
                 SplashView()
-            } else if container.session == nil {
-                AuthFlowView(container: container)
-            } else {
+            } else if container.session != nil {
                 SignedInHomeView(container: container)
+            } else if !hasCompletedOnboarding {
+                // Onboarding sits BEFORE sign-in on purpose. It has to explain what the
+                // app is and what happens to your files before asking for an email
+                // address, otherwise the privacy claim arrives after the commitment.
+                OnboardingView(
+                    store: container.onboarding,
+                    startingPage: debugStartingPage,
+                    onFinish: { hasCompletedOnboarding = true }
+                )
+            } else {
+                AuthFlowView(container: container)
             }
         }
         // A hard swap between two full-screen branches reads as a glitch, so the change is
@@ -53,7 +73,30 @@ struct RootView: View {
     /// source of truth for what RootView renders.
     private var branch: Int {
         if !container.hasResolvedAuth { return 0 }
-        return container.session == nil ? 1 : 2
+        if container.session != nil { return 3 }
+        return hasCompletedOnboarding ? 2 : 1
+    }
+
+    /// DEBUG-only: opens the onboarding pager on a given slide.
+    ///
+    ///     xcrun simctl launch <device> com.studyforge.app -onboardingPage 2
+    ///
+    /// Exists so a slide can be demonstrated or screenshotted without swiping — useful for
+    /// a viva, and for checking a specific slide in Arabic or at AX5 without walking the
+    /// whole flow. Compiled out of Release entirely, and it cannot skip onboarding: it only
+    /// chooses which slide is shown first.
+    private var debugStartingPage: OnboardingPage {
+        #if DEBUG
+        let arguments = ProcessInfo.processInfo.arguments
+        if let flag = arguments.firstIndex(of: "-onboardingPage"),
+           arguments.index(after: flag) < arguments.endIndex,
+           let humanNumber = Int(arguments[arguments.index(after: flag)]),
+           // 1-based, because the person typing it is reading slide numbers off a design.
+           let page = OnboardingPage(rawValue: humanNumber - 1) {
+            return page
+        }
+        #endif
+        return .valueProp
     }
 }
 
@@ -66,13 +109,18 @@ struct RootView: View {
         container: AppContainer(
             environment: .dev,
             firebaseSource: .localEmulator,
-            auth: MockAuthService(initialState: .unknown, latency: .zero)
+            auth: MockAuthService(initialState: .unknown, latency: .zero),
+            onboarding: InMemoryOnboardingStore()
         )
     )
 }
 
-#Preview("Root — signed out") {
-    RootView(container: .previewing(session: nil))
+#Preview("Root — signed out, onboarding first") {
+    RootView(container: .previewing(session: nil, hasCompletedOnboarding: false))
+}
+
+#Preview("Root — signed out, onboarding done") {
+    RootView(container: .previewing(session: nil, hasCompletedOnboarding: true))
 }
 
 #Preview("Root — signed in") {
