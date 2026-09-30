@@ -174,3 +174,19 @@
 "profile.learningStyle.readWrite.preview" = "ملخّصات مكتوبة منظّمة مع تعريفات دقيقة ومصطلحات المصدر نفسه.";
 "profile.learningStyle.kinesthetic.title" = "حركي";
 "profile.learningStyle.kinesthetic.preview" = "أمثلة محلولة وأسئلة «ماذا لو» بدل العبارات المجرّدة.";
+
+/* ── B03 إعداد الملف — الأهداف الدراسية (docs/03 §B، الخطوة 3 من 3) ────── */
+"profile.studyGoals.title"               = "أهدافك الدراسية";
+"profile.studyGoals.subtitle"            = "على هذا الأساس نحدّد مقدار المادة التي نخطّطها لك كل أسبوع.";
+"profile.studyGoals.submitting"          = "جارٍ الحفظ…";
+"profile.studyGoals.finish"              = "إنهاء الإعداد";
+"profile.studyGoals.hoursLabel"          = "وقت الدراسة الأسبوعي";
+"profile.studyGoals.gradeLabel"          = "الدرجة المستهدفة";
+"profile.studyGoals.gradeError"          = "اختر الدرجة التي تسعى إليها.";
+
+/* صيغ العدد في قراءة الساعات. العربية تميّز أربع فئات (المفرد والمثنى والجمع والقليل)،
+   و«واحدة» و«ساعتان» عبارتان ثابتتان لا يُكتب فيهما الرقم — انظر WeekHoursReadout. */
+"profile.studyGoals.hours.one"           = "ساعة واحدة أسبوعيًا";
+"profile.studyGoals.hours.two"           = "ساعتان أسبوعيًا";
+"profile.studyGoals.hours.few"           = "%d ساعات أسبوعيًا";
+"profile.studyGoals.hours.many"          = "%d ساعة أسبوعيًا";

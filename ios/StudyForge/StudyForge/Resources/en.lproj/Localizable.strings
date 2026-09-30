@@ -173,3 +173,19 @@
 "profile.learningStyle.readWrite.preview" = "Ordered written summaries with precise definitions and the source's own terms.";
 "profile.learningStyle.kinesthetic.title" = "Kinesthetic";
 "profile.learningStyle.kinesthetic.preview" = "Worked examples and 'what if' questions, rather than abstract statements.";
+
+/* ── B03 Profile setup — study goals (docs/03 §B, step 3 of 3) ─────────── */
+"profile.studyGoals.title"               = "Your study goals";
+"profile.studyGoals.subtitle"            = "This is how we decide how much material to plan for you each week.";
+"profile.studyGoals.submitting"          = "Saving…";
+"profile.studyGoals.finish"              = "Finish setup";
+"profile.studyGoals.hoursLabel"          = "Weekly study time";
+"profile.studyGoals.gradeLabel"          = "Target grade";
+"profile.studyGoals.gradeError"          = "Choose the grade you are aiming for.";
+
+/* Plural forms of the hours readout. English distinguishes two of the four categories; the
+   other two are defined so the catalogue stays symmetric with Arabic, which needs all four. */
+"profile.studyGoals.hours.one"           = "1 hour a week";
+"profile.studyGoals.hours.two"           = "2 hours a week";
+"profile.studyGoals.hours.few"           = "%d hours a week";
+"profile.studyGoals.hours.many"          = "%d hours a week";

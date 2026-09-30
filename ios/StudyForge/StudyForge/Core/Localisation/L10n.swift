@@ -188,6 +188,22 @@ enum L10n: String, CaseIterable, Sendable {
     case profileStyleReadWritePreview        = "profile.learningStyle.readWrite.preview"
     case profileStyleKinestheticTitle        = "profile.learningStyle.kinesthetic.title"
     case profileStyleKinestheticPreview      = "profile.learningStyle.kinesthetic.preview"
+
+    // MARK: B03 Profile setup — study goals
+    case profileStudyGoalsTitle              = "profile.studyGoals.title"
+    case profileStudyGoalsSubtitle           = "profile.studyGoals.subtitle"
+    case profileStudyGoalsSubmitting         = "profile.studyGoals.submitting"
+    case profileStudyGoalsFinish             = "profile.studyGoals.finish"
+    case profileStudyGoalsHoursLabel         = "profile.studyGoals.hoursLabel"
+    case profileStudyGoalsGradeLabel         = "profile.studyGoals.gradeLabel"
+    case profileStudyGoalsGradeError         = "profile.studyGoals.gradeError"
+
+    /// The four plural categories of the hours readout — see `WeekHoursReadout` for why a
+    /// count needs four keys in Arabic and two in English.
+    case profileStudyGoalsHoursOne           = "profile.studyGoals.hours.one"
+    case profileStudyGoalsHoursTwo           = "profile.studyGoals.hours.two"
+    case profileStudyGoalsHoursFew           = "profile.studyGoals.hours.few"
+    case profileStudyGoalsHoursMany          = "profile.studyGoals.hours.many"
 }
 
 // MARK: - Resolution
