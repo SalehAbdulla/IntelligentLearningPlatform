@@ -47,6 +47,8 @@ struct ProfileSetupFlowView: View {
                 ProfileSetupAcademicView(profile: profile) { _ in advance() }
             case .learningStyle:
                 ProfileSetupLearningStyleView(profile: profile) { _ in advance() }
+            case .studyGoals:
+                ProfileSetupStudyGoalsView(profile: profile) { _ in advance() }
             }
         }
         // A hard swap between steps reads as a glitch, for the same reason `RootView`
@@ -57,10 +59,11 @@ struct ProfileSetupFlowView: View {
 
     /// Advances to the next step, or ends the flow when there is none.
     ///
-    /// Ending early is correct today: B03 does not exist, so B02 is the last step there is.
-    /// `ProfileSetupStep.next` becomes non-nil for B02 the moment B03's case is added, and
-    /// this method needs no change — which is why the "what if B03 is missing" question is
-    /// answered in one place instead of at every call site.
+    /// This method has not changed since the flow had two steps, which was the point of
+    /// putting the sequence in `ProfileSetupStep` rather than here: B03 joined by being
+    /// added to the enum and given a branch above, and the end of the wizard moved from
+    /// "step 2 is the last one built" to "step 3 is the design's last step" without this
+    /// code noticing the difference.
     private func advance() {
         if let next = step.next {
             step = next
