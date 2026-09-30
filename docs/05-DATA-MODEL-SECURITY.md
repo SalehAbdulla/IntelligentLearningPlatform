@@ -109,7 +109,8 @@
   "year": 3,
   "learningStyle": "visual",      // visual | verbal | readwrite | kinesthetic
   "accessibility": { "dyslexiaFont": false, "textScale": 1.0, "reduceMotion": false },
-  "weeklyStudyGoalHours": 12,
+  "weeklyStudyGoalHours": 12,     // study goal, B03
+  "targetGrade": "B",             // A | B | C | D  — placeholder scale, see docs/09 Q12
   "createdAt": "<timestamp>", "updatedAt": "<timestamp>", "byUid": "<uid>"
 }
 ```
@@ -232,8 +233,8 @@ service cloud.firestore {
     //    Pinning only `role` and `plan` (the original rule) left every OTHER field
     //    writable, including fields the schema had not grown yet. See decision D25.
     function editableProfileFields() {
-      return ['displayName', 'university', 'major', 'year', 'courseIds',
-              'learningStyle', 'weeklyStudyGoalHours', 'avatarUrl', 'updatedAt'];
+      return ['displayName', 'university', 'major', 'year', 'courseIds', 'learningStyle',
+              'weeklyStudyGoalHours', 'targetGrade', 'avatarUrl', 'updatedAt'];
     }
     function onlyChanges(allowed) {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
@@ -300,7 +301,7 @@ service cloud.firestore {
 }
 ```
 
-**The allowlist is the point, not the field list.** `onlyChanges(editableProfileFields())` denies every key it has not been told about, so a field added in a later sprint is **not** client-writable until somebody names it here and justifies it. Two families are named today, both written by the profile wizard: the academic fields (B01) and the learning preferences `learningStyle` (B02) and `weeklyStudyGoalHours` (B03). The preferences are named in the allowlist rather than stored under `users/{uid}/private` — which is already self-read/self-write — because that subcollection has **no field guard at all**, so anything placed there is client-writable the moment it exists. That is the fail-open hole this allowlist was introduced to close (D25); routing the wizard's output into it would have reopened the same hole under a different path. Verified both ways: the emulator tests assert the wizard's fields succeed *and* that `streak`, `badges` and any unnamed field still fail.
+**The allowlist is the point, not the field list.** `onlyChanges(editableProfileFields())` denies every key it has not been told about, so a field added in a later sprint is **not** client-writable until somebody names it here and justifies it. Three families are named today, all written by the profile wizard: the academic fields (B01), the learning preference `learningStyle` (B02), and the study goals `weeklyStudyGoalHours` + `targetGrade` (B03). The preferences are named in the allowlist rather than stored under `users/{uid}/private` — which is already self-read/self-write — because that subcollection has **no field guard at all**, so anything placed there is client-writable the moment it exists. That is the fail-open hole this allowlist was introduced to close (D25); routing the wizard's output into it would have reopened the same hole under a different path. Verified both ways: the emulator tests assert the wizard's fields succeed *and* that `streak`, `badges` and any unnamed field still fail. One name was deliberately **not** added even though the design named the control: B03's *exam dates*, which are per-course and per-term and therefore belong to the study plan (F06) rather than to a profile document — see docs/09 Q11.
 
 **Storage rules follow the same philosophy:** `users/{uid}/**` is owner-only · `courses/{courseId}/published/**` is readable by enrolled students · `reports/**` is admin-only · everything else is denied.
 
