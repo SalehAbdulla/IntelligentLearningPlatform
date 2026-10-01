@@ -98,7 +98,13 @@ struct L10nTests {
         // pager landed. Growing it is a deliberate edit here rather than an implicit
         // consequence of adding a key, so one typo in an area name cannot slip into the
         // catalogue unnoticed.
-        let knownAreas: Set<String> = ["common", "auth", "session", "home", "onboarding", "profile"]
+        // `library` and `material` joined with F02, the same way `profile` joined with B01 and
+        // `onboarding` did when the pager landed. Growing this is a deliberate edit rather than
+        // an implicit consequence of adding a key, so one typo in an area name cannot slip into
+        // the catalogue unnoticed.
+        let knownAreas: Set<String> = [
+            "common", "auth", "session", "home", "onboarding", "profile", "library", "material",
+        ]
 
         for key in L10n.allCases {
             let segments = key.rawValue.split(separator: ".", omittingEmptySubsequences: false)
