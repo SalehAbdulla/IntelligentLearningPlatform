@@ -90,9 +90,15 @@ struct RootView: View {
                         // tap automation installed — so `-seedProfileSetup` opens it directly
                         // and `-profileSetupStep` chooses which step, letting B02 or B03 be
                         // reviewed without the steps before them.
+                        //
+                        // Otherwise the wizard RESUMES: it opens at the first step the stored
+                        // profile has not answered, and is seeded with what HAS been answered
+                        // so B04 summarises the whole profile rather than this session alone.
                         ProfileSetupFlowView(
                             profile: container.profile,
-                            startingAt: debugProfileSetupStep ?? .first
+                            startingAt: debugProfileSetupStep
+                                ?? ProfileSetupStep.resumePoint(for: container.storedProfile),
+                            answers: ProfileSetupAnswers(stored: container.storedProfile)
                         ) {
                             // B04 (the confirmation screen) is what calls this, so the wizard
                             // ends when the STUDENT dismisses the summary rather than the
