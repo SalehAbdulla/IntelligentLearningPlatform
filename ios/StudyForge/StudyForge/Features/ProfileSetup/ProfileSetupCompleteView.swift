@@ -104,34 +104,13 @@ struct ProfileSetupCompleteView: View {
 
             VStack(alignment: .leading, spacing: Spacing.s3) {
                 ForEach(viewModel.rows) { row in
-                    summaryRow(row)
+                    SFDetailRow(row: row)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(Spacing.s4)
             .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.l))
         }
-    }
-
-    private func summaryRow(_ row: ProfileSetupCompleteViewModel.Row) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(row.label)
-                .font(.sfCallout)
-                .foregroundStyle(ColorTokens.textSecondary)
-
-            Spacer(minLength: Spacing.s3)
-
-            Text(row.value)
-                .font(.sfBodyEmph)
-                .foregroundStyle(ColorTokens.textPrimary)
-                .multilineTextAlignment(.trailing)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        // One element per line, so VoiceOver reads "University, Bahrain Polytechnic" rather
-        // than the label and the value as two unrelated fragments.
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(row.label)
-        .accessibilityValue(row.value)
     }
 }
 
