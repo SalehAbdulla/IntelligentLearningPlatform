@@ -8,9 +8,10 @@
 //  -------------------------------------------------
 //  Each card needs a localised title AND a sample output preview, and `LearningStyle`
 //  carries neither — its `displayName` is English and unlocalised, and its
-//  `promptDirective` is written for a model, not a student. Pairing the enum with its copy
-//  in one place keeps the view a layout, and the switch below is exhaustive, so adding a
-//  learning style is a compile error here rather than a card that silently never appears.
+//  `promptDirective` is written for a model, not a student. So the card pairs the enum with
+//  its copy and the view stays a layout. The copy itself lives in `LearningStyleName`, which
+//  is also what B04's summary reads: one place defines what a style is CALLED, so the card a
+//  student chooses from and the line they read back cannot describe it differently.
 //
 //  WHY NOTHING IS PRESELECTED
 //  -------------------------
@@ -104,34 +105,14 @@ final class ProfileSetupLearningStyleViewModel {
 
     // MARK: Card copy
 
-    /// The exhaustive switch is deliberate: a fifth learning style must be given copy
-    /// before it can ship, so it cannot reach a student as a blank card.
+    /// The copy comes from `LearningStyleName`, whose switches are exhaustive: a fifth
+    /// learning style must be given a name and a preview before it can ship, so it cannot
+    /// reach a student as a blank card.
     private static func option(for style: LearningStyle) -> Option {
-        switch style {
-        case .visual:
-            Option(
-                style: style,
-                title: L10n.profileStyleVisualTitle.string,
-                preview: L10n.profileStyleVisualPreview.string
-            )
-        case .verbal:
-            Option(
-                style: style,
-                title: L10n.profileStyleVerbalTitle.string,
-                preview: L10n.profileStyleVerbalPreview.string
-            )
-        case .readWrite:
-            Option(
-                style: style,
-                title: L10n.profileStyleReadWriteTitle.string,
-                preview: L10n.profileStyleReadWritePreview.string
-            )
-        case .kinesthetic:
-            Option(
-                style: style,
-                title: L10n.profileStyleKinestheticTitle.string,
-                preview: L10n.profileStyleKinestheticPreview.string
-            )
-        }
+        Option(
+            style: style,
+            title: LearningStyleName.string(for: style),
+            preview: LearningStyleName.preview(for: style)
+        )
     }
 }
