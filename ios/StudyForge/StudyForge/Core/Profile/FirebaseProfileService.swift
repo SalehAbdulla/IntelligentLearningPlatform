@@ -52,6 +52,29 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
         ])
     }
 
+    func fetchProfile() async throws -> StoredProfile? {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            throw ProfileError.notSignedIn
+        }
+
+        do {
+            let snapshot = try await firestore
+                .collection(FirebaseAuthService.usersCollection)
+                .document(uid)
+                .getDocument()
+
+            // No document is a state, not a failure: a new account's `createdAt` write may
+            // not have landed yet, and the gate treats it as "no profile yet".
+            guard let document = snapshot.data() else { return nil }
+            return StoredProfile(document: document)
+        } catch {
+            // A denied READ is a different defect from a denied write — it means the app
+            // asked for a document it is not entitled to see, rather than naming a field the
+            // allowlist does not — so it is reported as such.
+            throw Self.map(error, onPermissionDenied: .readRejected(reference: "profile-read-denied"))
+        }
+    }
+
     /// The single write path, so every step of the wizard goes through the same guards.
     ///
     /// Duplicating this per step would mean duplicating the identity check, the server
@@ -85,7 +108,15 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
 
     /// Translates a Firestore failure into the app's vocabulary, so no screen has to know
     /// about `FirestoreErrorCode`.
-    static func map(_ error: any Error) -> ProfileError {
+    ///
+    /// - Parameter rejection: what a `permissionDenied` means for the CALLER. The same
+    ///   Firestore code stands for two different bugs — a write naming a field the allowlist
+    ///   does not, or a read of a document the rules do not expose — so the caller names
+    ///   which one it is rather than this function guessing.
+    static func map(
+        _ error: any Error,
+        onPermissionDenied rejection: ProfileError = .writeRejected(reference: "profile-write-denied")
+    ) -> ProfileError {
         let nsError = error as NSError
 
         // Connectivity surfaces as `URLError`, not as a Firestore error, so it is checked
@@ -105,10 +136,11 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
 
         switch code {
         case .permissionDenied:
-            // The interesting one. It means the client asked to write a field the
-            // allowlist does not name — our bug, not the student's mistake — so it is
-            // reported with a traceable reference rather than as an access problem.
-            return .writeRejected(reference: "profile-write-denied")
+            // The interesting one, and the reason this function takes a parameter: a denial
+            // means something different for a read than for a write, so the CALLER says
+            // which it was. Either way it is our defect rather than the student's mistake,
+            // so it is reported with a traceable reference, not as an access problem.
+            return rejection
         case .unavailable, .deadlineExceeded:
             return .offline
         case .unauthenticated:
