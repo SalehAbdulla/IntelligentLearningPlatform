@@ -80,7 +80,7 @@
 "auth.forgot.submit"         = "Send reset link";
 "auth.forgot.submitting"     = "Sending…";
 "auth.forgot.successTitle"   = "Check your inbox";
-"auth.forgot.successBody"    = "If an account exists for %@, a reset link is on its way. The link expires in one hour.";
+"auth.forgot.successBody"    = "If an account exists for %@, a reset link is on its way. Open it to choose a new password — it expires in one hour.";
 "auth.forgot.backToLogin"    = "Back to log in";
 "auth.forgot.errorTitle"     = "We couldn't send the link";
 
