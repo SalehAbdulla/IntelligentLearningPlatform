@@ -7,11 +7,11 @@
 //  WHY THE COUNT IS A CONSTANT AND NOT `allCases.count`
 //  ---------------------------------------------------
 //  The order and the total come from the DESIGN (docs/03 §B: B01 academic → B02 learning
-//  style → B03 study goals, with B04 as the completion screen). B03 has not been built yet,
-//  and deriving the total from the cases that happen to exist would make B01 and B02 claim
-//  "Step 1 of 2" / "Step 2 of 2" and then silently renumber themselves to "of 3" the day
-//  B03 lands. A student mid-wizard would see the flow get longer behind them, and nobody
-//  would notice, because the change looks like progress rather than a bug.
+//  style → B03 study goals, with B04 as the confirmation screen). Deriving the total from
+//  the cases that happen to exist would have made B01 and B02 claim "Step 1 of 2" /
+//  "Step 2 of 2" and then silently renumber themselves to "of 3" the day B03 landed — a
+//  student mid-wizard would see the flow get longer behind them, and nobody would notice,
+//  because the change looks like progress rather than a bug.
 //
 //  `designedCount` is therefore the design's three, and it does not change as steps land.
 //
@@ -46,11 +46,11 @@ enum ProfileSetupStep: Int, CaseIterable, Sendable {
     /// The localised position label, e.g. "Step 2 of 3".
     var label: String { L10n.profileStep.string(number, Self.designedCount) }
 
-    /// The step after this one, or `nil` when this is the last one BUILT.
+    /// The step after this one, or `nil` when this is the last one.
     ///
-    /// `nil` is what ends the flow. With all three steps present, that now coincides with
-    /// the design: the wizard finishes because it is finished, not because something is
-    /// missing. B04 (the confirmation screen) has no answer to collect, so it is not a step
-    /// and does not appear here — it lands as something the flow shows AFTER this returns.
+    /// `nil` is what moves the flow to its confirmation screen (B04). With all three steps
+    /// present, the wizard finishes because it is finished, not because something is missing.
+    /// B04 collects no answer of its own, so it is not a step and does not appear here — the
+    /// flow shows it once this returns `nil`, and the student dismisses it.
     var next: ProfileSetupStep? { ProfileSetupStep(rawValue: rawValue + 1) }
 }
