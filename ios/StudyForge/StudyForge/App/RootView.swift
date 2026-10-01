@@ -37,8 +37,12 @@ struct RootView: View {
     /// moment the value changes.
     @State private var hasCompletedOnboarding: Bool
 
-    /// DEBUG-only, and deliberately not persisted: set when `-seedProfileSetup` has served
-    /// its purpose, so Continue can return to the home screen. See `showsProfileSetup`.
+    /// Set once the student has left the wizard's confirmation screen in this session.
+    ///
+    /// A session latch, not a persisted flag, and it does two jobs: it stops the wizard
+    /// re-opening if the server's answer is momentarily stale right after the student
+    /// finishes, and it is what lets the DEBUG `-seedProfileSetup` hatch — which fabricates an
+    /// account with no profile — return to the home screen instead of looping.
     @State private var hasCompletedProfileSetup = false
 
     init(container: AppContainer) {
@@ -46,21 +50,29 @@ struct RootView: View {
         _hasCompletedOnboarding = State(initialValue: container.onboarding.hasCompletedOnboarding)
     }
 
-    /// DEBUG-only: whether B01 should be shown in place of the home screen.
+    /// Whether the profile wizard should be showing in place of the home screen.
     ///
-    ///     xcrun simctl launch <device> com.studyforge.app -seedProfileSetup
+    /// This is the gate, and it asks the SERVER (`container.profileStatus`), because a flag on
+    /// the device cannot survive a reinstall or a second device — the two moments a
+    /// locally-remembered answer is wrong. Two things override it:
     ///
-    /// There is no tap automation in this environment, so this is the only way to
-    /// screenshot the wizard, check its Arabic layout, or demonstrate it in a viva.
-    /// Release builds are compiled without it, so a shipping app can never fabricate a
-    /// profile-setup state — which matters, because the screen writes to `users/{uid}`.
+    ///  · a DEBUG launch argument, so the wizard can be opened for a screenshot or a viva
+    ///    without first registering and verifying an empty account:
+    ///
+    ///        xcrun simctl launch <device> com.studyforge.app -seedProfileSetup
+    ///
+    ///    with `-profileSetupStep N` to open on a later step. Compiled out of Release, so a
+    ///    shipping build can never fabricate a profile-setup state — which matters here,
+    ///    because the screen writes to `users/{uid}`.
+    ///  · `hasCompletedProfileSetup`, so finishing the wizard stays finished for the session.
     private var showsProfileSetup: Bool {
+        if hasCompletedProfileSetup { return false }
+
         #if DEBUG
-        return ProcessInfo.processInfo.arguments.contains("-seedProfileSetup")
-            && !hasCompletedProfileSetup
-        #else
-        return false
+        if ProcessInfo.processInfo.arguments.contains("-seedProfileSetup") { return true }
         #endif
+
+        return container.profileStatus == .incomplete
     }
 
     var body: some View {
@@ -72,29 +84,31 @@ struct RootView: View {
                 // stated goal is to get a VERIFIED user onto a role home — so an
                 // unverified session has not finished the feature, it has skipped a step.
                 if session.isEmailVerified {
-                    // `-seedProfileSetup` (DEBUG only) opens the wizard instead. Reaching it
-                    // honestly means creating an account, verifying it and filling the form
-                    // — none of which is scriptable here, because there is no tap automation
-                    // installed. `-profileSetupStep` picks which step it opens on, so B02 can
-                    // be reviewed without B01 being filled in first. The same kind of escape
-                    // hatch as `-seedUnverifiedSession`, and compiled out of Release for the
-                    // same reason.
                     if showsProfileSetup {
+                        // Reaching the wizard honestly means registering, verifying and
+                        // filling the form — none of it scriptable here, because there is no
+                        // tap automation installed — so `-seedProfileSetup` opens it directly
+                        // and `-profileSetupStep` chooses which step, letting B02 or B03 be
+                        // reviewed without the steps before them.
                         ProfileSetupFlowView(
                             profile: container.profile,
                             startingAt: debugProfileSetupStep ?? .first
                         ) {
-                            // B04 (the confirmation screen) is what calls this now, so the
-                            // wizard ends when the STUDENT dismisses the summary rather than
-                            // the instant the last field saves. The flag is still
-                            // deliberately NOT persisted and still does not gate the app: a
-                            // real gate has to survive a reinstall and a second device,
-                            // which means asking the SERVER whether this student has a
-                            // profile, not UserDefaults. That profile read is still to come.
+                            // B04 (the confirmation screen) is what calls this, so the wizard
+                            // ends when the STUDENT dismisses the summary rather than the
+                            // instant the last field saves. Latch it for this session AND ask
+                            // the server again, so the NEXT launch knows without being told.
                             hasCompletedProfileSetup = true
+                            Task { await container.resolveProfile() }
                         }
-                    } else {
+                    } else if container.profileStatus.isResolved || hasCompletedProfileSetup {
                         SignedInHomeView(container: container)
+                    } else {
+                        // Signed in and verified, but the profile read has not answered yet.
+                        // The home screen would flash at a student who is about to be asked to
+                        // build a profile, and the wizard would do the reverse; the splash is
+                        // the honest wait, exactly as it is while auth resolves.
+                        SplashView()
                     }
                 } else {
                     // `session.email`, NOT `displayName` — this is the address the link was
@@ -127,10 +141,18 @@ struct RootView: View {
 
     /// Which branch should be showing. Derived rather than stored, so there is exactly one
     /// source of truth for what RootView renders.
+    ///
+    /// The numbers are animation identities, not the render order: the cross-fade below fires
+    /// only when this changes, so every distinct screen needs its own value. The profile gate
+    /// adds two — the wizard, and the splash shown while the profile read is in flight.
     private var branch: Int {
         if !container.hasResolvedAuth { return 0 }
-        if let session = container.session { return session.isEmailVerified ? 3 : 1 }
-        return hasCompletedOnboarding ? 2 : 4
+        guard let session = container.session else {
+            return hasCompletedOnboarding ? 2 : 4
+        }
+        if !session.isEmailVerified { return 1 }
+        if showsProfileSetup { return 5 }
+        return (container.profileStatus.isResolved || hasCompletedProfileSetup) ? 3 : 6
     }
 
     /// DEBUG-only: which step `-seedProfileSetup` should open on.
@@ -204,9 +226,16 @@ struct RootView: View {
 }
 
 #Preview("Root — signed in, verified") {
-    // `.preview` carries `isEmailVerified: true`, so this lands on the home screen. The
-    // unverified counterpart is below.
+    // `.preview` carries `isEmailVerified: true` and the preview container seeds a COMPLETE
+    // profile, so this lands on the home screen after passing the gate.
     RootView(container: .previewing())
+}
+
+#Preview("Root — signed in, profile incomplete (B01)") {
+    // The gate: a verified student with no complete profile is sent to the wizard rather than
+    // the home screen. Only a preview can reach this by asking, which is the point — the
+    // honest route is to register and verify a real account.
+    RootView(container: .previewing(profileStatus: .incomplete))
 }
 
 #Preview("Root — signed in, NOT verified (A06)") {
