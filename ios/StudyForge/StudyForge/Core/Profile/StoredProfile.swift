@@ -83,6 +83,37 @@ struct StoredProfile: Sendable, Equatable {
         )
     }
 
+    // MARK: Reading the write types back
+
+    /// The academic fields, as B01 collects them — or `nil` when any is missing.
+    ///
+    /// All-or-nothing because the WRITE was: B01 saves its four fields in one update, so a
+    /// document either has them all or has none of them. That makes this the honest answer to
+    /// "has the academic step been answered?", and the single place that decides it.
+    var academicProfile: AcademicProfile? {
+        guard let university, !university.isEmpty,
+              let major, !major.isEmpty,
+              let year,
+              let courseIds, !courseIds.isEmpty
+        else { return nil }
+
+        return AcademicProfile(
+            university: university,
+            major: major,
+            year: year,
+            courseIds: courseIds
+        )
+    }
+
+    /// The study goals, as B03 collects them — or `nil` when either half is missing.
+    ///
+    /// Both or neither, for the same reason as the academic fields: B03 writes the pair in one
+    /// update, because a study time with no target says nothing about how hard to push.
+    var studyGoals: StudyGoals? {
+        guard let weeklyStudyGoalHours, let targetGrade else { return nil }
+        return StudyGoals(weeklyStudyGoalHours: weeklyStudyGoalHours, targetGrade: targetGrade)
+    }
+
     // MARK: Completeness
 
     /// Whether the student has finished the profile wizard.
@@ -96,17 +127,10 @@ struct StoredProfile: Sendable, Equatable {
     /// collect keeps the answer in one place and impossible to disagree with the data.
     ///
     /// All THREE steps must have produced their fields. A part-way profile is deliberately
-    /// incomplete, so the wizard re-opens — the honest outcome for a student who started and
-    /// stopped, since resuming mid-wizard would need each step to be able to load its own
-    /// prior answer, which none of them can yet.
+    /// incomplete, so the wizard re-opens — at the step the student left, not at the start:
+    /// see `ProfileSetupStep.resumePoint(for:)`.
     var isComplete: Bool {
-        !(university ?? "").isEmpty
-            && !(major ?? "").isEmpty
-            && year != nil
-            && !(courseIds ?? []).isEmpty
-            && learningStyle != nil
-            && weeklyStudyGoalHours != nil
-            && targetGrade != nil
+        academicProfile != nil && learningStyle != nil && studyGoals != nil
     }
 
     /// A complete example — a profile all three wizard steps have filled in.
