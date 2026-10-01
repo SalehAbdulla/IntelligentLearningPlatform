@@ -117,6 +117,13 @@ final class AppContainer {
     /// `hasResolvedAuth` is, and because the DEBUG launch arguments need to.
     var profileStatus: ProfileStatus = .unknown
 
+    /// The document the last `resolveProfile()` read, kept for the wizard.
+    ///
+    /// Two things need it and neither can ask for it again without a second round trip: the
+    /// wizard opens at the first step this profile has NOT answered, and the confirmation
+    /// screen summarises the steps it HAS.
+    private(set) var storedProfile: StoredProfile?
+
     /// The auth-state observation task.
     ///
     /// Held behind a `Mutex` and marked `nonisolated` so `deinit` — which is not
@@ -173,10 +180,12 @@ final class AppContainer {
         profileStatus = .loading
         do {
             let stored = try await profile.fetchProfile()
+            storedProfile = stored
             profileStatus = (stored?.isComplete == true) ? .complete : .incomplete
         } catch {
             // "We could not ask" is an answer, not a reason to wait forever. The gate
             // deliberately does not block on it — see `ProfileStatus.failed`.
+            storedProfile = nil
             profileStatus = .failed
         }
     }
@@ -189,6 +198,9 @@ final class AppContainer {
     private func refreshProfileStatus(for session: UserSession?) async {
         guard let session, session.isEmailVerified else {
             profileStatus = .unknown
+            // The document goes with it: the next person to sign in must not inherit the
+            // previous student's answers as the starting point of their wizard.
+            storedProfile = nil
             return
         }
         await resolveProfile()
