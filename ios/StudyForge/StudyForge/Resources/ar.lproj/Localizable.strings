@@ -190,3 +190,17 @@
 "profile.studyGoals.hours.two"           = "ساعتان أسبوعيًا";
 "profile.studyGoals.hours.few"           = "%d ساعات أسبوعيًا";
 "profile.studyGoals.hours.many"          = "%d ساعة أسبوعيًا";
+
+/* ── B04 إعداد الملف الشخصي — الاكتمال (docs/03 §B) ──
+   تُعيد تسميات الملخّص قراءةَ ما جمعه المعالج. */
+"profile.complete.title"                  = "كل شيء جاهز";
+"profile.complete.subtitle"               = "إليك ما سنبني عليه خطتك الدراسية. يمكنك تغيير أي شيء لاحقًا.";
+"profile.complete.summaryHeading"         = "ما أخبرتنا به";
+"profile.complete.goToDashboard"          = "الانتقال إلى لوحة التحكم";
+"profile.complete.university"             = "الجامعة";
+"profile.complete.major"                  = "التخصص أو البرنامج";
+"profile.complete.year"                   = "السنة الدراسية";
+"profile.complete.courses"                = "المقررات المسجّلة";
+"profile.complete.learningStyle"          = "كيف تتعلّم أفضل";
+"profile.complete.hours"                  = "وقت الدراسة الأسبوعي";
+"profile.complete.grade"                  = "الدرجة المستهدفة";
