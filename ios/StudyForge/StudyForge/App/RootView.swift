@@ -84,14 +84,13 @@ struct RootView: View {
                             profile: container.profile,
                             startingAt: debugProfileSetupStep ?? .first
                         ) {
-                            // All three steps exist now, so this is the wizard finishing
-                            // rather than running out of steps. The flag is still
+                            // B04 (the confirmation screen) is what calls this now, so the
+                            // wizard ends when the STUDENT dismisses the summary rather than
+                            // the instant the last field saves. The flag is still
                             // deliberately NOT persisted and still does not gate the app: a
                             // real gate has to survive a reinstall and a second device,
                             // which means asking the SERVER whether this student has a
-                            // profile, not UserDefaults. That lands with B04 (the
-                            // confirmation screen), together with the profile read that
-                            // makes the question answerable.
+                            // profile, not UserDefaults. That profile read is still to come.
                             hasCompletedProfileSetup = true
                         }
                     } else {
