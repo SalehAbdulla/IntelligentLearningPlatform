@@ -65,4 +65,54 @@ struct ProfileSetupStepTests {
         // count is raised deliberately.
         #expect(ProfileSetupStep.allCases.count == ProfileSetupStep.designedCount)
     }
+
+    // MARK: Resuming
+
+    @Test("A brand-new student starts at the first step")
+    func resumeStartsAtTheBeginningWhenNothingIsStored() {
+        #expect(ProfileSetupStep.resumePoint(for: nil) == .first)
+        #expect(ProfileSetupStep.resumePoint(for: StoredProfile()) == .first)
+    }
+
+    @Test("Resuming opens at the first step the student has NOT answered")
+    func resumeSkipsAnsweredSteps() {
+        // Answered B01 only -> resume at B02.
+        #expect(ProfileSetupStep.resumePoint(for: StoredProfile(
+            university: "Bahrain Polytechnic",
+            major: "Programming",
+            year: 2,
+            courseIds: ["IT8108"]
+        )) == .learningStyle)
+
+        // Answered B01 and B02 -> resume at B03.
+        #expect(ProfileSetupStep.resumePoint(for: StoredProfile(
+            university: "Bahrain Polytechnic",
+            major: "Programming",
+            year: 2,
+            courseIds: ["IT8108"],
+            learningStyle: .visual
+        )) == .studyGoals)
+    }
+
+    @Test("A half-answered step counts as unanswered")
+    func aHalfAnsweredStepIsRedone() {
+        // Each step writes its fields in ONE update, so this state should not occur — but if
+        // it ever did, the step must be re-asked rather than skipped over a half-built answer.
+        #expect(ProfileSetupStep.resumePoint(for: StoredProfile(
+            university: "Bahrain Polytechnic",
+            major: "Programming",
+            year: 2
+            // no courseIds
+        )) == .academic)
+
+        #expect(ProfileSetupStep.resumePoint(for: StoredProfile(
+            university: "Bahrain Polytechnic",
+            major: "Programming",
+            year: 2,
+            courseIds: ["IT8108"],
+            learningStyle: .visual,
+            weeklyStudyGoalHours: 12
+            // no targetGrade
+        )) == .studyGoals)
+    }
 }
