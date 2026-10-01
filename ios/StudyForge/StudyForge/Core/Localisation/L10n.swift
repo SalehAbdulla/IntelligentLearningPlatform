@@ -232,6 +232,13 @@ enum L10n: String, CaseIterable, Sendable {
     case profileEditDiscardMessage = "profile.edit.discardMessage"
     case profileEditDiscard        = "profile.edit.discard"
     case profileEditKeepEditing    = "profile.edit.keepEditing"
+
+    // MARK: B06 Profile view
+    case profileViewTitle           = "profile.view.title"
+    case profileViewStudiesHeading  = "profile.view.studiesHeading"
+    case profileViewPlanHeading     = "profile.view.planHeading"
+    case profileViewProgressTitle   = "profile.view.progressTitle"
+    case profileViewProgressBody    = "profile.view.progressBody"
 }
 
 // MARK: - Resolution
