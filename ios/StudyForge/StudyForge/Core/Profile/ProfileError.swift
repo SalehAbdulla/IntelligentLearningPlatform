@@ -19,6 +19,15 @@ enum ProfileError: Error, Equatable {
     /// distinction decides both the copy and who is expected to act on it.
     case writeRejected(reference: String)
 
+    /// The server refused to let the app READ the document.
+    ///
+    /// Separate from `writeRejected` because it is a different defect with a different fix:
+    /// a read is not gated by the field allowlist but by the document-level `read` rule, so
+    /// this means the app asked for a document it is not entitled to see. On `users/{uid}`
+    /// that should be unreachable — the rule permits `isSelf` — which is exactly why it is
+    /// worth naming rather than folding into `unknown` if it ever appears.
+    case readRejected(reference: String)
+
     /// No signed-in user, so there is no `users/{uid}` document to write to.
     ///
     /// Unreachable from the wizard, which sits behind authentication — but it is the
@@ -32,7 +41,7 @@ enum ProfileError: Error, Equatable {
     /// Maps to the app's single user-facing error type.
     var asAppError: AppError {
         switch self {
-        case .writeRejected(let reference):
+        case .writeRejected(let reference), .readRejected(let reference):
             // NOT `.notPermitted`: telling a student "you don't have access to this"
             // about their own profile would be both wrong and unactionable. A server
             // error carries a reference and a retry, which is the honest description.
