@@ -219,6 +219,19 @@ enum L10n: String, CaseIterable, Sendable {
     case profileCompleteLearningStyle        = "profile.complete.learningStyle"
     case profileCompleteHours                = "profile.complete.hours"
     case profileCompleteGrade                = "profile.complete.grade"
+
+    // MARK: B07 Profile edit
+    case profileEditTitle          = "profile.edit.title"
+    case profileEditName           = "profile.edit.name"
+    case profileEditNameHint       = "profile.edit.nameHint"
+    case profileEditNameError      = "profile.edit.nameError"
+    case profileEditSave           = "profile.edit.save"
+    case profileEditSaving         = "profile.edit.saving"
+    case profileEditAvatarNote     = "profile.edit.avatarNote"
+    case profileEditDiscardTitle   = "profile.edit.discardTitle"
+    case profileEditDiscardMessage = "profile.edit.discardMessage"
+    case profileEditDiscard        = "profile.edit.discard"
+    case profileEditKeepEditing    = "profile.edit.keepEditing"
 }
 
 // MARK: - Resolution
