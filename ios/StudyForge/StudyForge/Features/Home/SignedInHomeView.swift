@@ -39,6 +39,7 @@ struct SignedInHomeView: View {
                         capabilitiesCard(for: session)
                     }
 
+                    libraryLink
                     profileLink
 
                     #if DEBUG
@@ -104,6 +105,24 @@ struct SignedInHomeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.s4)
         .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.l))
+    }
+
+    // MARK: Library
+
+    /// The way into the library (C08).
+    ///
+    /// The designed routes are the student home's quick-action tiles and tab bar (B05, F07),
+    /// neither of which exists yet, so the placeholder home carries the link for now — the same
+    /// reason it carries the profile link.
+    private var libraryLink: some View {
+        NavigationLink {
+            MaterialLibraryView(store: container.materials)
+        } label: {
+            Label(L10n.libraryTitle.string, systemImage: "books.vertical")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
     }
 
     // MARK: Profile
