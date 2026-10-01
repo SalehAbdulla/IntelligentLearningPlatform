@@ -217,3 +217,10 @@
 "profile.edit.discardMessage" = "لدى ملفك تغييرات غير محفوظة.";
 "profile.edit.discard"        = "تجاهل";
 "profile.edit.keepEditing"    = "متابعة التعديل";
+
+/* ── B06 عرض الملف الشخصي (docs/03 §B) ────────────────────────────────── */
+"profile.view.title"           = "ملفك الشخصي";
+"profile.view.studiesHeading"  = "دراستك";
+"profile.view.planHeading"     = "خطتك الدراسية";
+"profile.view.progressTitle"   = "التقدّم والشارات";
+"profile.view.progressBody"    = "سيظهر الإتقان والسلاسل والشارات عند تفعيل تتبّع التقدّم.";
