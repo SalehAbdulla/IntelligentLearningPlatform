@@ -56,4 +56,22 @@ protocol ProfileService: Sendable {
     /// - Parameter goals: the weekly hours and the target grade.
     /// - Throws: `ProfileError` for every failure.
     func saveStudyGoals(_ goals: StudyGoals) async throws
+
+    /// Reads the signed-in student's stored profile, or `nil` when no document exists yet.
+    ///
+    /// This is the READ half of the wizard's story, and it exists for one question: has this
+    /// student finished setting up? The app answers it by asking the SERVER, because the
+    /// alternative — remembering it locally — cannot survive a reinstall or a second device,
+    /// which is exactly when the wizard would wrongly re-open (or wrongly never appear).
+    ///
+    /// Reads the caller's OWN document. The rule is `isSelf(userId) || isTutor() || isAdmin()`
+    /// (`backend/firestore.rules`), so this is a read the app is entitled to make, and it is
+    /// the one thing the client is trusted to do about itself: nothing here grants a
+    /// capability, it only decides which screen to show.
+    ///
+    /// - Returns: the stored profile, or `nil` when there is no document — a real state, not
+    ///   an error. A brand-new account's `createdAt` write may not have landed yet, and the
+    ///   wizard treats "no document" the same as "no profile yet".
+    /// - Throws: `ProfileError` for every failure.
+    func fetchProfile() async throws -> StoredProfile?
 }
