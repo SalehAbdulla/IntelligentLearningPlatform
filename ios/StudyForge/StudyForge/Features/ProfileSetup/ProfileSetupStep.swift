@@ -53,4 +53,32 @@ enum ProfileSetupStep: Int, CaseIterable, Sendable {
     /// B04 collects no answer of its own, so it is not a step and does not appear here — the
     /// flow shows it once this returns `nil`, and the student dismisses it.
     var next: ProfileSetupStep? { ProfileSetupStep(rawValue: rawValue + 1) }
+
+    /// Whether this step's answer is present in a stored profile.
+    ///
+    /// All-or-nothing per step, because each step saves its fields in ONE update — there is no
+    /// such thing as a half-answered step, so this is a check rather than a set of
+    /// required-field rules.
+    func hasAnswer(in stored: StoredProfile) -> Bool {
+        switch self {
+        case .academic: stored.academicProfile != nil
+        case .learningStyle: stored.learningStyle != nil
+        case .studyGoals: stored.studyGoals != nil
+        }
+    }
+
+    /// Where a wizard should open for a student whose stored profile is `stored`.
+    ///
+    /// The FIRST step they have not answered, so a student who stopped after B02 resumes at
+    /// B03 instead of redoing two screens they had already completed and saved. `nil` — a new
+    /// account, or one with no document — means nothing has been answered, which is the same
+    /// as starting at B01.
+    ///
+    /// Only reached for an INCOMPLETE profile: the gate keeps a completed one out of the
+    /// wizard entirely. The fallback below is therefore the defensive answer rather than the
+    /// interesting one.
+    static func resumePoint(for stored: StoredProfile?) -> ProfileSetupStep {
+        guard let stored else { return .first }
+        return allCases.first { !$0.hasAnswer(in: stored) } ?? .first
+    }
 }
