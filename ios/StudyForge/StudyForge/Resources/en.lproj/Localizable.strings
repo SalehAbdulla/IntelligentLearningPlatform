@@ -216,3 +216,10 @@
 "profile.edit.discardMessage" = "Your profile has unsaved changes.";
 "profile.edit.discard"        = "Discard";
 "profile.edit.keepEditing"    = "Keep editing";
+
+/* ── B06 Profile view (docs/03 §B) ─────────────────────────────────────── */
+"profile.view.title"           = "Your profile";
+"profile.view.studiesHeading"  = "Your studies";
+"profile.view.planHeading"     = "Your study plan";
+"profile.view.progressTitle"   = "Progress and badges";
+"profile.view.progressBody"    = "Mastery, streaks and badges arrive with progress tracking.";
