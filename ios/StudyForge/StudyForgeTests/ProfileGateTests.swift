@@ -104,4 +104,30 @@ struct ProfileGateTests {
         #expect(ProfileStatus.complete.isResolved)
         #expect(ProfileStatus.failed.isResolved)
     }
+
+    @Test("The container keeps the document it read, so the wizard can resume")
+    func keepsTheDocumentItRead() async {
+        let profile = MockProfileService(latency: .zero)
+        profile.seed(.preview)
+        let container = container(profile: profile)
+
+        await container.resolveProfile()
+
+        #expect(container.storedProfile == StoredProfile.preview)
+    }
+
+    @Test("A failed read clears the kept document, so a stale one is never resumed from")
+    func failureClearsTheKeptDocument() async {
+        let profile = MockProfileService(latency: .zero)
+        profile.seed(.preview)
+        let container = container(profile: profile)
+
+        await container.resolveProfile()
+        #expect(container.storedProfile != nil)
+
+        profile.forceFailure(.offline)
+        await container.resolveProfile()
+
+        #expect(container.storedProfile == nil)
+    }
 }
