@@ -56,6 +56,21 @@ enum LearningStyle: String, Sendable, CaseIterable, Identifiable {
         }
     }
 
+    /// Reads the STORED vocabulary back into a case, or `nil` for a value this build does
+    /// not know.
+    ///
+    /// The counterpart to `storageValue`, and needed for the same reason it exists: the
+    /// stored string is the wire format, so decoding must not go through `rawValue` (which
+    /// spells `readWrite` differently and would fail on every document already holding
+    /// `readwrite`). `nil` rather than a default, because a style this build does not
+    /// understand must not be presented to a student as the one they chose.
+    init?(storageValue: String) {
+        guard let match = Self.allCases.first(where: { $0.storageValue == storageValue }) else {
+            return nil
+        }
+        self = match
+    }
+
     /// The non-localised name, for diagnostics and logs.
     ///
     /// B02 shows a LOCALISED name instead — an Arabic student must not be offered "Read /
