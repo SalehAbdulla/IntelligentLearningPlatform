@@ -108,16 +108,17 @@ struct SignedInHomeView: View {
 
     // MARK: Profile
 
-    /// The way into B07 (profile edit).
+    /// The way into the profile.
     ///
-    /// The designed routes in are B06 (profile view) and B08 (settings), neither of which
-    /// exists yet, so the signed-in home carries the link for now — the honest place for it
-    /// until a profile section does.
+    /// The home screen is a placeholder (B05 belongs to F07) and the designed way into B06 is a
+    /// tab or a settings row that does not exist yet, so it carries the link for now. The link
+    /// goes to B06, whose shortcut list opens B07 — the designed home → profile → edit chain
+    /// rather than a direct jump to the editor.
     private var profileLink: some View {
         NavigationLink {
-            ProfileEditView(container: container)
+            ProfileView(container: container)
         } label: {
-            Label(L10n.profileEditTitle.string, systemImage: "person.crop.circle")
+            Label(L10n.profileViewTitle.string, systemImage: "person.crop.circle")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
