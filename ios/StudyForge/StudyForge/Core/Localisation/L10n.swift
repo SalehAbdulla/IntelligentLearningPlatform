@@ -204,6 +204,21 @@ enum L10n: String, CaseIterable, Sendable {
     case profileStudyGoalsHoursTwo           = "profile.studyGoals.hours.two"
     case profileStudyGoalsHoursFew           = "profile.studyGoals.hours.few"
     case profileStudyGoalsHoursMany          = "profile.studyGoals.hours.many"
+
+    // MARK: B04 Profile setup — complete
+    case profileCompleteTitle                = "profile.complete.title"
+    case profileCompleteSubtitle             = "profile.complete.subtitle"
+    case profileCompleteSummaryHeading       = "profile.complete.summaryHeading"
+    case profileCompleteGoToDashboard        = "profile.complete.goToDashboard"
+
+    /// The summary-row labels, one per field the wizard may have collected.
+    case profileCompleteUniversity           = "profile.complete.university"
+    case profileCompleteMajor                = "profile.complete.major"
+    case profileCompleteYear                 = "profile.complete.year"
+    case profileCompleteCourses              = "profile.complete.courses"
+    case profileCompleteLearningStyle        = "profile.complete.learningStyle"
+    case profileCompleteHours                = "profile.complete.hours"
+    case profileCompleteGrade                = "profile.complete.grade"
 }
 
 // MARK: - Resolution
