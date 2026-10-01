@@ -95,4 +95,14 @@ struct AcademicCatalogue: Sendable, Equatable {
     func course(for id: String) -> CourseOption? {
         courses.first { $0.id == id }
     }
+
+    /// Display names for stored course ids, comma-separated, in the order given.
+    ///
+    /// An id the catalogue does not know is shown AS THE ID. A code is honest and a guessed
+    /// name is not — the same convention docs/03 §B already uses where a course has no known
+    /// title yet. Kept here rather than on each summary screen, so B04's confirmation and B06's
+    /// profile view cannot resolve the same ids two different ways.
+    func courseNames(for ids: [String]) -> String {
+        ids.map { course(for: $0)?.name ?? $0 }.joined(separator: ", ")
+    }
 }
