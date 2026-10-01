@@ -96,17 +96,6 @@ final class ProfileEditViewModel {
     var yearError: String? { fieldErrors[.year] }
     var coursesError: String? { fieldErrors[.courses] }
 
-    /// The monogram for the avatar. Two letters at most — three stops reading as initials and
-    /// starts reading as a word.
-    var initials: String {
-        let letters = trimmedName
-            .split(whereSeparator: { $0 == " " || $0 == "-" })
-            .prefix(2)
-            .compactMap(\.first)
-            .map(String.init)
-        return letters.isEmpty ? "?" : letters.joined().uppercased()
-    }
-
     /// Institutions to offer: the catalogue, plus the stored one when the catalogue does not
     /// carry it. Without that, a student whose institution is not in the placeholder list
     /// would find it missing from the menu — and saving would silently replace it.
