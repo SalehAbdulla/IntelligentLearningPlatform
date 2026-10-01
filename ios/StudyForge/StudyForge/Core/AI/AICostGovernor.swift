@@ -21,7 +21,6 @@
 //
 
 import Foundation
-import CryptoKit
 
 @MainActor
 @Observable
@@ -107,8 +106,7 @@ final class AICostGovernor {
     ) -> String {
         let material = [text, language.rawValue, learningStyle.rawValue, variant]
             .joined(separator: "\u{1F}")
-        let digest = SHA256.hash(data: Data(material.utf8))
-        return digest.map { String(format: "%02x", $0) }.joined()
+        return ContentHash.sha256Hex(of: material)
     }
 
     /// Number of cloud generations a document would cost if not cached.
