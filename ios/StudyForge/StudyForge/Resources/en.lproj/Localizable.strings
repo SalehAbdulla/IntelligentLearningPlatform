@@ -28,6 +28,7 @@
 "common.loading"            = "Loading…";
 "common.showPassword"       = "Show password";
 "common.hidePassword"       = "Hide password";
+"common.delete"             = "Delete";
 
 /* ── A01 Splash ─────────────────────────────────────────────────────────── */
 "auth.splash.tagline"       = "Study smarter, not longer";
@@ -223,3 +224,18 @@
 "profile.view.planHeading"     = "Your study plan";
 "profile.view.progressTitle"   = "Progress and badges";
 "profile.view.progressBody"    = "Mastery, streaks and badges arrive with progress tracking.";
+
+/* ── F02 Material library (docs/03 §C) ─────────────────────────────────── */
+"library.title"             = "Library";
+"library.searchPlaceholder" = "Search your materials";
+"library.emptyTitle"        = "Nothing here yet";
+"library.emptyBody"         = "Import a PDF, a photo, a scan or a link and it will live here — on your device, and available offline.";
+"library.noMatchesTitle"    = "No matches";
+"library.noMatchesBody"     = "Try a different word or tag.";
+
+/* Where a material came from — one name per source. */
+"material.source.pdf"    = "PDF";
+"material.source.image"  = "Photo";
+"material.source.scan"   = "Scan";
+"material.source.link"   = "Link";
+"material.source.text"   = "Pasted text";
