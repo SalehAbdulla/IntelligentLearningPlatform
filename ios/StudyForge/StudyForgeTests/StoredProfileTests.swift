@@ -105,4 +105,18 @@ struct StoredProfileTests {
         #expect(profile.major == "Physics")
         #expect(!profile.isComplete)
     }
+
+    @Test("A step reads back as its write type, or not at all")
+    func stepsReadBackAllOrNothing() {
+        #expect(StoredProfile.preview.academicProfile != nil)
+        #expect(StoredProfile.preview.studyGoals != nil)
+
+        // Each step saves in one update, so a half-filled one is not "answered" — and the
+        // wizard's resume point depends on that being true.
+        let halfAcademic = StoredProfile(university: "Bahrain Polytechnic", major: "Programming", year: 2)
+        #expect(halfAcademic.academicProfile == nil)
+
+        let halfGoals = StoredProfile(weeklyStudyGoalHours: 12)
+        #expect(halfGoals.studyGoals == nil)
+    }
 }
