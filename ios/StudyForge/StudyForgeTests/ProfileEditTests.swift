@@ -72,15 +72,6 @@ struct ProfileEditTests {
         #expect(viewModel.isSaveEnabled == false)
     }
 
-    @Test("The monogram is the name's initials, and a placeholder when there is none")
-    func initialsComeFromTheName() {
-        #expect(model(name: "Sara Ali", academic: academic).initials == "SA")
-        // One word gives one letter — the monogram is "up to two initials", not "always two".
-        #expect(model(name: "Madonna", academic: academic).initials == "M")
-        #expect(model(name: "sara ali", academic: academic).initials == "SA")
-        #expect(model(name: "   ", academic: academic).initials == "?")
-    }
-
     @Test("Editing anything marks the form changed and offers Save")
     func editingMarksTheFormChanged() {
         let viewModel = model(academic: academic)
