@@ -39,6 +39,8 @@ struct SignedInHomeView: View {
                         capabilitiesCard(for: session)
                     }
 
+                    profileLink
+
                     #if DEBUG
                     developmentCard
                     #endif
@@ -102,6 +104,24 @@ struct SignedInHomeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.s4)
         .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.l))
+    }
+
+    // MARK: Profile
+
+    /// The way into B07 (profile edit).
+    ///
+    /// The designed routes in are B06 (profile view) and B08 (settings), neither of which
+    /// exists yet, so the signed-in home carries the link for now — the honest place for it
+    /// until a profile section does.
+    private var profileLink: some View {
+        NavigationLink {
+            ProfileEditView(container: container)
+        } label: {
+            Label(L10n.profileEditTitle.string, systemImage: "person.crop.circle")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
     }
 
     private func capabilityRow(_ label: String, _ value: String) -> some View {
