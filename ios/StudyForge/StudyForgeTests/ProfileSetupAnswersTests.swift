@@ -41,4 +41,29 @@ struct ProfileSetupAnswersTests {
         #expect(ProfileSetupAnswers(studyGoals: goals) == ProfileSetupAnswers(studyGoals: goals))
         #expect(ProfileSetupAnswers(studyGoals: goals) != ProfileSetupAnswers(learningStyle: .visual))
     }
+
+    @Test("Answers can be seeded from a stored profile, so a resumed wizard can summarise it")
+    func seedingFromAStoredProfile() {
+        let answers = ProfileSetupAnswers(stored: .preview)
+
+        #expect(answers.academic == StoredProfile.preview.academicProfile)
+        #expect(answers.learningStyle == .visual)
+        #expect(answers.studyGoals == StoredProfile.preview.studyGoals)
+    }
+
+    @Test("Seeding takes only what is there, and invents nothing")
+    func seedingOnlyTakesWhatExists() {
+        #expect(ProfileSetupAnswers(stored: nil) == .empty)
+
+        let partial = ProfileSetupAnswers(stored: StoredProfile(
+            university: "Bahrain Polytechnic",
+            major: "Programming",
+            year: 2,
+            courseIds: ["IT8108"]
+        ))
+
+        #expect(partial.academic != nil)
+        #expect(partial.learningStyle == nil)
+        #expect(partial.studyGoals == nil)
+    }
 }
