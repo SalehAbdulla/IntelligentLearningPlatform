@@ -40,6 +40,40 @@ enum AppEnvironment: String, Sendable, CaseIterable {
     }
 }
 
+/// Where a signed-in student is in the profile wizard, as far as the SERVER knows.
+///
+/// Modelled on `hasResolvedAuth` for the same reason: the app must be able to tell "we have
+/// not asked yet" apart from "they have no profile". Collapsing the two is what makes an app
+/// flash the wrong screen at launch — here, either the wizard at a student who finished it
+/// months ago, or the home screen at one who has never seen it.
+enum ProfileStatus: Sendable, Equatable {
+
+    /// Not asked yet — a fresh container, or a user has just signed out.
+    case unknown
+
+    /// A read is in flight.
+    case loading
+
+    /// The account has no COMPLETE profile: the wizard should run.
+    case incomplete
+
+    /// The profile is complete: the student belongs on their home screen.
+    case complete
+
+    /// The read failed.
+    ///
+    /// Deliberately distinct from `.incomplete`, because the two call for opposite behaviour:
+    /// a failed read must NOT send a student into a wizard that will try to write over a
+    /// profile the app could not read. `RootView` treats this like `.complete` and lets the
+    /// student through — being unable to confirm the profile must not lock anybody out of
+    /// their own account.
+    case failed
+
+    /// True once an answer exists, including a failed one. The gate waits only while this is
+    /// false.
+    var isResolved: Bool { self == .complete || self == .incomplete || self == .failed }
+}
+
 /// Root dependency container.
 ///
 /// Services are added here as they are built (AuthService, AIRouter, PaymentGateway, …).
@@ -75,6 +109,13 @@ final class AppContainer {
     /// from "we don't know yet" — the difference between a correct launch and a
     /// sign-in screen that flashes and disappears.
     var hasResolvedAuth: Bool
+
+    /// Where the signed-in student is in the profile wizard, according to the server.
+    /// Drives `RootView`'s choice between the wizard and the home screen.
+    ///
+    /// Settable so a preview or a test can put the app in a known state, exactly as
+    /// `hasResolvedAuth` is, and because the DEBUG launch arguments need to.
+    var profileStatus: ProfileStatus = .unknown
 
     /// The auth-state observation task.
     ///
@@ -112,9 +153,45 @@ final class AppContainer {
                 guard let self else { return }
                 self.session = state.session
                 if state.isResolved { self.hasResolvedAuth = true }
+                // Re-checked on every auth event, not just the first: a sign-out has to
+                // clear the answer, and signing in as somebody else has to re-ask.
+                await self.refreshProfileStatus(for: state.session)
             }
         }
         authObservation.withLock { $0 = task }
+    }
+
+    /// Asks the server whether the signed-in student has a profile, and records the answer.
+    ///
+    /// Called when a verified session appears and again when the student leaves the wizard's
+    /// confirmation screen, so the next launch knows without being told. A call while a read
+    /// is already in flight is ignored, so the two callers cannot produce two reads of the
+    /// same document.
+    func resolveProfile() async {
+        guard profileStatus != .loading else { return }
+
+        profileStatus = .loading
+        do {
+            let stored = try await profile.fetchProfile()
+            profileStatus = (stored?.isComplete == true) ? .complete : .incomplete
+        } catch {
+            // "We could not ask" is an answer, not a reason to wait forever. The gate
+            // deliberately does not block on it — see `ProfileStatus.failed`.
+            profileStatus = .failed
+        }
+    }
+
+    /// Keeps `profileStatus` honest as the session changes.
+    ///
+    /// The reset to `.unknown` when there is no verified user is load-bearing: leaving the
+    /// previous answer in place would let the next person to sign in on this device launch
+    /// straight past the wizard on the strength of somebody else's profile.
+    private func refreshProfileStatus(for session: UserSession?) async {
+        guard let session, session.isEmailVerified else {
+            profileStatus = .unknown
+            return
+        }
+        await resolveProfile()
     }
 
     deinit {
@@ -225,19 +302,26 @@ extension AppContainer {
     ///   the onboarding flow itself.
     static func previewing(
         session: UserSession? = .preview,
-        hasCompletedOnboarding: Bool = true
+        hasCompletedOnboarding: Bool = true,
+        profileStatus: ProfileStatus = .complete
     ) -> AppContainer {
         let auth = MockAuthService(
             initialState: session.map { AuthState.signedIn($0) } ?? .signedOut,
             latency: .zero
         )
+        // No latency and no failure: a preview should show its final state, not a spinner it
+        // has to be waited out.
+        let profile = MockProfileService(latency: .zero)
+        // The gate reads the profile service, so a preview that claims `.complete` must have a
+        // document behind it. Otherwise the preview would render one screen while the gate
+        // logic saw another — a preview that lies about the state it is demonstrating.
+        if profileStatus == .complete { profile.seed(.preview) }
+
         let container = AppContainer(
             environment: .dev,
             firebaseSource: .localEmulator,
             auth: auth,
-            // No latency and no failure: a preview should show its final state, not a
-            // spinner it has to be waited out.
-            profile: MockProfileService(latency: .zero),
+            profile: profile,
             // In-memory, never UserDefaults: a preview must not mutate the developer's
             // real onboarding flag.
             onboarding: InMemoryOnboardingStore(hasCompletedOnboarding: hasCompletedOnboarding)
@@ -245,6 +329,7 @@ extension AppContainer {
         // Set directly rather than by calling `start()`: a preview should render its
         // resolved state immediately, not flash a loading state first.
         container.hasResolvedAuth = true
+        container.profileStatus = profileStatus
         return container
     }
 }
