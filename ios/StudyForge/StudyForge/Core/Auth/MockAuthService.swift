@@ -127,6 +127,30 @@ final class MockAuthService: AuthService {
         broadcaster.send(.signedOut)
     }
 
+    func updateDisplayName(_ displayName: String) async throws {
+        let name = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { throw AuthError.missingDisplayName }
+
+        // Mirrors the real service: there is no record to rename when nobody is signed in.
+        guard let existing = currentSession() else { throw AuthError.wrongCredentials }
+
+        try await simulateWork()
+        try throwIfForced()
+
+        // Re-emitted rather than mutated in place, so a subscriber sees the change through
+        // the same path a real rename takes — the auth-state stream.
+        let renamed = UserSession(
+            id: existing.id,
+            displayName: name,
+            role: existing.role,
+            plan: existing.plan,
+            groupIds: existing.groupIds,
+            email: existing.email,
+            isEmailVerified: emailVerified.withLock { $0 }
+        )
+        broadcaster.send(.signedIn(renamed))
+    }
+
     func sendPasswordReset(to email: String) async throws {
         // Validates the address but never reveals whether an account exists — the same
         // property the real implementation preserves.
