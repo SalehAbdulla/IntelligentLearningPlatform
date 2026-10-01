@@ -37,3 +37,28 @@ struct ProfileSetupAnswers: Sendable, Equatable {
     /// anything".
     static let empty = ProfileSetupAnswers()
 }
+
+extension ProfileSetupAnswers {
+
+    /// The answers a stored profile already holds.
+    ///
+    /// Used to SEED the wizard when a student resumes. Without it, a resumed student's
+    /// confirmation screen would summarise only the steps answered in this session and read
+    /// back a half-built profile — the same dishonesty as a confirmation that invents values,
+    /// just in the other direction.
+    ///
+    /// A step whose fields are absent contributes nothing, which is exactly right: the parts
+    /// the student has not answered should be missing from the summary, not guessed at.
+    init(stored: StoredProfile?) {
+        guard let stored else {
+            self = .empty
+            return
+        }
+
+        self.init(
+            academic: stored.academicProfile,
+            learningStyle: stored.learningStyle,
+            studyGoals: stored.studyGoals
+        )
+    }
+}
