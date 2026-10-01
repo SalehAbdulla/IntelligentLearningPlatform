@@ -160,6 +160,39 @@ final class FirebaseAuthService: AuthService, @unchecked Sendable {
         }
     }
 
+    func updateDisplayName(_ displayName: String) async throws {
+        let name = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { throw AuthError.missingDisplayName }
+        guard let user = Auth.auth().currentUser else { throw AuthError.wrongCredentials }
+
+        do {
+            // The Auth record first: it is what `UserSession.displayName` is read from, so
+            // this is the half that makes the app show the new name.
+            let change = user.createProfileChangeRequest()
+            change.displayName = name
+            try await change.commitChanges()
+
+            // Then the document, so a tutor roster (and anything else reading `users/{uid}`)
+            // does not keep the old name. Only these two fields, deliberately: re-sending
+            // `role` or `plan` would be rejected by `keeps()` for anyone who is not a free
+            // student, and this is not the sign-up path.
+            try await firestore
+                .collection(Self.usersCollection)
+                .document(user.uid)
+                .setData(
+                    ["displayName": name, "updatedAt": FieldValue.serverTimestamp()],
+                    merge: true
+                )
+        } catch {
+            throw Self.map(error)
+        }
+
+        // Re-emit, so the caller and every observer see the new name immediately rather than
+        // at the next token refresh. `activate` re-reads the claims — unchanged by a rename,
+        // but re-reading them is what publishes the state.
+        _ = await activate(user)
+    }
+
     func sendPasswordReset(to email: String) async throws {
         guard AuthInput.isPlausibleEmail(email.trimmingCharacters(in: .whitespacesAndNewlines)) else {
             throw AuthError.invalidEmail
