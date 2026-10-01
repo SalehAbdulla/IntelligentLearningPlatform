@@ -140,6 +140,10 @@ extension AppError {
         // the app disagree — a bug worth naming rather than a generic apology.
         if let profileError = error as? ProfileError { return profileError.asAppError }
 
+        // Same reasoning again for the material store: failing to read the student's OWN library
+        // is our defect, so it carries a reference and a retry rather than a generic apology.
+        if let materialError = error as? MaterialError { return materialError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
