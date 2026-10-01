@@ -189,3 +189,17 @@
 "profile.studyGoals.hours.two"           = "2 hours a week";
 "profile.studyGoals.hours.few"           = "%d hours a week";
 "profile.studyGoals.hours.many"          = "%d hours a week";
+
+/* ── B04 Profile setup — complete (docs/03 §B, the confirmation screen) ──
+   The summary labels read back the answers the wizard collected. */
+"profile.complete.title"                  = "You're all set";
+"profile.complete.subtitle"               = "Here's what we'll shape your study plan around. You can change any of it later.";
+"profile.complete.summaryHeading"         = "What you told us";
+"profile.complete.goToDashboard"          = "Go to dashboard";
+"profile.complete.university"             = "University";
+"profile.complete.major"                  = "Programme";
+"profile.complete.year"                   = "Year of study";
+"profile.complete.courses"                = "Enrolled courses";
+"profile.complete.learningStyle"          = "How you learn best";
+"profile.complete.hours"                  = "Weekly study time";
+"profile.complete.grade"                  = "Target grade";
