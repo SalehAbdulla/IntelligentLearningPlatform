@@ -33,6 +33,15 @@ final class MockProfileService: ProfileService {
     private let lastStyle = Mutex<LearningStyle?>(nil)
     private let lastGoals = Mutex<StudyGoals?>(nil)
 
+    /// The document the mock is holding, as a read would see it.
+    ///
+    /// Kept as a whole `StoredProfile` and updated by each save, rather than derived from the
+    /// `last*` values on demand, so the mock behaves like the server in the one way the gate
+    /// depends on: a read after a PARTIAL wizard returns a partial document, and a read after
+    /// all three steps returns a complete one. A mock that always answered "complete" would
+    /// make the gate untestable.
+    private let stored = Mutex<StoredProfile?>(nil)
+
     init(latency: Duration = .milliseconds(150), outcome: Outcome = .succeed) {
         self.latency = latency
         self.outcome = Mutex(outcome)
@@ -46,6 +55,15 @@ final class MockProfileService: ProfileService {
 
         last.withLock { $0 = profile }
         saveCount.withLock { $0 += 1 }
+
+        stored.withLock {
+            var document = $0 ?? StoredProfile()
+            document.university = profile.university
+            document.major = profile.major
+            document.year = profile.year
+            document.courseIds = profile.courseIds
+            $0 = document
+        }
     }
 
     func saveLearningStyle(_ style: LearningStyle) async throws {
@@ -57,6 +75,12 @@ final class MockProfileService: ProfileService {
         // touched again by a screen that never asked about them.
         lastStyle.withLock { $0 = style }
         styleSaveCount.withLock { $0 += 1 }
+
+        stored.withLock {
+            var document = $0 ?? StoredProfile()
+            document.learningStyle = style
+            $0 = document
+        }
     }
 
     func saveStudyGoals(_ goals: StudyGoals) async throws {
@@ -65,6 +89,20 @@ final class MockProfileService: ProfileService {
 
         lastGoals.withLock { $0 = goals }
         goalsSaveCount.withLock { $0 += 1 }
+
+        stored.withLock {
+            var document = $0 ?? StoredProfile()
+            document.weeklyStudyGoalHours = goals.weeklyStudyGoalHours
+            document.targetGrade = goals.targetGrade
+            $0 = document
+        }
+    }
+
+    func fetchProfile() async throws -> StoredProfile? {
+        try await simulateWork()
+        try throwIfForced()
+
+        return stored.withLock { $0 }
     }
 
     // MARK: - Test and preview controls
@@ -91,6 +129,13 @@ final class MockProfileService: ProfileService {
     /// Forces the next calls to fail with `error`.
     func forceFailure(_ error: ProfileError?) {
         outcome.withLock { $0 = error.map(Outcome.fail) ?? .succeed }
+    }
+
+    /// Puts the mock in a known state, so a test or a preview can start from an EXISTING
+    /// profile without driving the whole wizard. Passing `nil` returns the account to "no
+    /// document", which is what a just-registered student has.
+    func seed(_ profile: StoredProfile?) {
+        stored.withLock { $0 = profile }
     }
 
     // MARK: - Helpers
