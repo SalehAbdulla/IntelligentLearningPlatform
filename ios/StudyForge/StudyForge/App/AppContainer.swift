@@ -101,6 +101,12 @@ final class AppContainer {
     /// as `auth`: the wizard is previewable and testable with no Firebase project.
     let profile: any ProfileService
 
+    /// The student's materials (F02). LOCAL-FIRST, and the store owns where they live (D24): the
+    /// app never uploads a source file, because the model that reads it runs here too.
+    /// Protocol-backed so a screen can be previewed and tested with `InMemoryMaterialStore` and
+    /// touch no disk at all.
+    let materials: any MaterialStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -136,12 +142,15 @@ final class AppContainer {
         firebaseSource: FirebaseConfigurationSource,
         auth: any AuthService,
         profile: any ProfileService,
+        // Defaulted so a container built for a preview or a test needs no disk: see `materials`.
+        materials: any MaterialStore = InMemoryMaterialStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
         self.firebaseSource = firebaseSource
         self.auth = auth
         self.profile = profile
+        self.materials = materials
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -234,6 +243,19 @@ extension AppContainer {
             ? MockProfileService(latency: .zero)
             : FirebaseProfileService()
 
+        // The library is local either way — there is no project to configure for it, because
+        // D24 keeps materials on the device. `-seedLibrary` fills it with sample materials so the
+        // screen can be shown without importing anything by hand (DEBUG only, like the other
+        // hatches: a shipping build must never fabricate content).
+        let materials: any MaterialStore = {
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-seedLibrary") {
+                return InMemoryMaterialStore(seededWith: Material.samples)
+            }
+            #endif
+            return FileMaterialStore()
+        }()
+
         #if DEBUG
         // `-seedProfileSetup` opens B01 (the profile wizard's academic step).
         //
@@ -282,7 +304,8 @@ extension AppContainer {
             environment: environment,
             firebaseSource: source,
             auth: auth,
-            profile: profile
+            profile: profile,
+            materials: materials
         )
     }
 
