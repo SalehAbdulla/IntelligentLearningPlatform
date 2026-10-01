@@ -2,19 +2,21 @@
 //  ProfileSetupFlowView.swift
 //  StudyForge
 //
-//  The wizard's container: it holds which step is showing and advances when a step says it
-//  saved.
+//  The wizard's container: it shows the current step, collects each step's answer, and
+//  finishes on its confirmation screen (B04).
 //
 //  WHY A CONTAINER RATHER THAN NAVIGATION INSIDE THE STEPS
 //  ------------------------------------------------------
 //  Each step's view model deliberately refuses to decide its own successor — on success it
 //  calls back and stops, because a screen that both saves and chooses what comes next is
 //  the reason flows become untestable. Something has to own the sequence; this is that
-//  something, and it owns exactly one piece of state.
+//  something. The sequence itself lives in `ProfileSetupFlowModel`, so it can be tested;
+//  this view is the wiring and nothing more.
 //
 //  It knows nothing about what the wizard is FOR. B03 joins by being added to
-//  `ProfileSetupStep`; whether a signed-in student sees this flow at all stays a routing
-//  decision in `RootView`, which is where the "profile complete" question belongs.
+//  `ProfileSetupStep`, and B04 by answering "is the flow complete?"; whether a signed-in
+//  student sees this flow at all stays a routing decision in `RootView`, which is where the
+//  "profile complete" question belongs.
 //
 
 import SwiftUI
@@ -23,53 +25,59 @@ struct ProfileSetupFlowView: View {
 
     let profile: any ProfileService
 
-    /// Called once the last BUILT step is saved. The caller decides what that means.
+    /// What B01's pickers choose from, shared with B04 so the confirmation can resolve the
+    /// course ids it stored back to names. One catalogue, one call site.
+    let catalogue: AcademicCatalogue
+
+    /// Called once the student leaves the confirmation screen (B04). The caller decides what
+    /// that means.
     let onFinish: () -> Void
 
-    @State private var step: ProfileSetupStep
+    @State private var model: ProfileSetupFlowModel
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     init(
         profile: any ProfileService,
+        catalogue: AcademicCatalogue = .placeholder,
         startingAt step: ProfileSetupStep = .first,
         onFinish: @escaping () -> Void
     ) {
         self.profile = profile
+        self.catalogue = catalogue
         self.onFinish = onFinish
-        _step = State(initialValue: step)
+        _model = State(initialValue: ProfileSetupFlowModel(startingAt: step))
     }
 
     var body: some View {
         Group {
-            switch step {
-            case .academic:
-                ProfileSetupAcademicView(profile: profile) { _ in advance() }
-            case .learningStyle:
-                ProfileSetupLearningStyleView(profile: profile) { _ in advance() }
-            case .studyGoals:
-                ProfileSetupStudyGoalsView(profile: profile) { _ in advance() }
+            if model.isComplete {
+                // The flow ends here, but the WIZARD does not: the student reads back what
+                // they chose and dismisses it themselves on `onGoToDashboard`.
+                ProfileSetupCompleteView(
+                    answers: model.answers,
+                    catalogue: catalogue,
+                    onGoToDashboard: onFinish
+                )
+            } else {
+                switch model.step {
+                case .academic:
+                    ProfileSetupAcademicView(profile: profile, catalogue: catalogue) {
+                        model.record($0)
+                    }
+                case .learningStyle:
+                    ProfileSetupLearningStyleView(profile: profile) { model.record($0) }
+                case .studyGoals:
+                    ProfileSetupStudyGoalsView(profile: profile) { model.record($0) }
+                }
             }
         }
         // A hard swap between steps reads as a glitch, for the same reason `RootView`
         // cross-fades its branches. Reduce Motion shortens it rather than removing it, so
-        // the step change stays legible.
-        .animation(Motion.respecting(Motion.quick, reduceMotion: reduceMotion), value: step)
-    }
-
-    /// Advances to the next step, or ends the flow when there is none.
-    ///
-    /// This method has not changed since the flow had two steps, which was the point of
-    /// putting the sequence in `ProfileSetupStep` rather than here: B03 joined by being
-    /// added to the enum and given a branch above, and the end of the wizard moved from
-    /// "step 2 is the last one built" to "step 3 is the design's last step" without this
-    /// code noticing the difference.
-    private func advance() {
-        if let next = step.next {
-            step = next
-        } else {
-            onFinish()
-        }
+        // the step change stays legible. Animated on both the step and the completion flag,
+        // because the last transition is step -> confirmation rather than step -> step.
+        .animation(Motion.respecting(Motion.quick, reduceMotion: reduceMotion), value: model.step)
+        .animation(Motion.respecting(Motion.quick, reduceMotion: reduceMotion), value: model.isComplete)
     }
 }
 
@@ -83,5 +91,14 @@ struct ProfileSetupFlowView: View {
     ProfileSetupFlowView(
         profile: MockProfileService(latency: .zero),
         startingAt: .learningStyle
+    ) {}
+}
+
+#Preview("Profile wizard — one step from the confirmation") {
+    // Finishing B03 lands on B04, which is the part of the flow a screenshot cannot reach by
+    // waiting: it is shown once the step saves.
+    ProfileSetupFlowView(
+        profile: MockProfileService(latency: .zero),
+        startingAt: .studyGoals
     ) {}
 }
