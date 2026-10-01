@@ -342,6 +342,9 @@ extension AppContainer {
         // resolved state immediately, not flash a loading state first.
         container.hasResolvedAuth = true
         container.profileStatus = profileStatus
+        // The document goes with the status: a preview of a screen that READS the profile —
+        // B07's editor — would otherwise open empty while the gate claimed it was complete.
+        if profileStatus == .complete { container.storedProfile = .preview }
         return container
     }
 }
