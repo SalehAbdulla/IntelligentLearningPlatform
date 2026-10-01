@@ -40,6 +40,7 @@ enum L10n: String, CaseIterable, Sendable {
     case commonLoading      = "common.loading"
     case commonShowPassword = "common.showPassword"
     case commonHidePassword = "common.hidePassword"
+    case commonDelete       = "common.delete"
 
     // MARK: A01 Splash
     case splashTagline      = "auth.splash.tagline"
@@ -239,6 +240,21 @@ enum L10n: String, CaseIterable, Sendable {
     case profileViewPlanHeading     = "profile.view.planHeading"
     case profileViewProgressTitle   = "profile.view.progressTitle"
     case profileViewProgressBody    = "profile.view.progressBody"
+
+    // MARK: F02 Material library
+    case libraryTitle             = "library.title"
+    case librarySearchPlaceholder = "library.searchPlaceholder"
+    case libraryEmptyTitle        = "library.emptyTitle"
+    case libraryEmptyBody         = "library.emptyBody"
+    case libraryNoMatchesTitle    = "library.noMatchesTitle"
+    case libraryNoMatchesBody     = "library.noMatchesBody"
+
+    /// Where a material came from — one name per `MaterialSource`.
+    case materialSourcePdf        = "material.source.pdf"
+    case materialSourceImage      = "material.source.image"
+    case materialSourceScan       = "material.source.scan"
+    case materialSourceLink       = "material.source.link"
+    case materialSourceText       = "material.source.text"
 }
 
 // MARK: - Resolution
