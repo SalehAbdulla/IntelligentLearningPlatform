@@ -52,6 +52,19 @@ enum TargetGrade: String, Sendable, CaseIterable, Identifiable {
         }
     }
 
+    /// Reads the STORED vocabulary back into a case, or `nil` for a value this build does
+    /// not know.
+    ///
+    /// The counterpart to `storageValue`. A grade this build does not recognise decodes to
+    /// `nil` rather than to a wrong letter, so a scale change cannot silently mislabel
+    /// somebody's target.
+    init?(storageValue: String) {
+        guard let match = Self.allCases.first(where: { $0.storageValue == storageValue }) else {
+            return nil
+        }
+        self = match
+    }
+
     /// The non-localised name, used as the selector's segment title. See the note above on
     /// why a grade letter is not translated.
     var displayName: String { storageValue }
