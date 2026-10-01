@@ -81,7 +81,7 @@
 "auth.forgot.submit"         = "إرسال رابط إعادة التعيين";
 "auth.forgot.submitting"     = "جارٍ الإرسال…";
 "auth.forgot.successTitle"   = "تحقق من بريدك";
-"auth.forgot.successBody"    = "إذا كان هناك حساب مرتبط بـ %@، فسيصل رابط إعادة التعيين قريبًا. تنتهي صلاحية الرابط خلال ساعة.";
+"auth.forgot.successBody"    = "إذا كان هناك حساب مرتبط بـ %@، فسيصل رابط إعادة التعيين قريبًا. افتحه لاختيار كلمة مرور جديدة — تنتهي صلاحيته خلال ساعة.";
 "auth.forgot.backToLogin"    = "العودة لتسجيل الدخول";
 "auth.forgot.errorTitle"     = "تعذّر إرسال الرابط";
 
