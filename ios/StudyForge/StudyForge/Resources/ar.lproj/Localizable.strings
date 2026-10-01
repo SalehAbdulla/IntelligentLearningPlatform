@@ -29,6 +29,7 @@
 "common.loading"            = "جارٍ التحميل…";
 "common.showPassword"       = "إظهار كلمة المرور";
 "common.hidePassword"       = "إخفاء كلمة المرور";
+"common.delete"             = "حذف";
 
 /* ── A01 Splash ─────────────────────────────────────────────────────────── */
 "auth.splash.tagline"       = "ادرس بذكاء، لا لفترة أطول";
@@ -224,3 +225,18 @@
 "profile.view.planHeading"     = "خطتك الدراسية";
 "profile.view.progressTitle"   = "التقدّم والشارات";
 "profile.view.progressBody"    = "سيظهر الإتقان والسلاسل والشارات عند تفعيل تتبّع التقدّم.";
+
+/* ── F02 مكتبة المواد (docs/03 §C) ─────────────────────────────────────── */
+"library.title"             = "المكتبة";
+"library.searchPlaceholder" = "ابحث في موادك";
+"library.emptyTitle"        = "لا يوجد شيء بعد";
+"library.emptyBody"         = "أضف ملف PDF أو صورة أو مسحًا ضوئيًا أو رابطًا وسيبقى هنا — على جهازك ومتاحًا دون اتصال.";
+"library.noMatchesTitle"    = "لا نتائج مطابقة";
+"library.noMatchesBody"     = "جرّب كلمة أو وسمًا آخر.";
+
+/* مصدر المادة — اسم واحد لكل مصدر. */
+"material.source.pdf"    = "PDF";
+"material.source.image"  = "صورة";
+"material.source.scan"   = "مسح ضوئي";
+"material.source.link"   = "رابط";
+"material.source.text"   = "نص ملصوق";
