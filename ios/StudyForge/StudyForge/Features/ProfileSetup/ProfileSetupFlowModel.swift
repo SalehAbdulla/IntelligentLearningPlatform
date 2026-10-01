@@ -31,16 +31,22 @@ final class ProfileSetupFlowModel {
     private(set) var step: ProfileSetupStep
 
     /// What the steps have collected so far.
-    private(set) var answers = ProfileSetupAnswers.empty
+    private(set) var answers: ProfileSetupAnswers
 
     /// Set once the last step has saved, at which point the flow shows its confirmation
     /// screen. Only the student's dismissal of that screen ends the wizard.
     private(set) var isComplete = false
 
-    /// - Parameter step: where the wizard opens. Overridden in DEBUG by
-    ///   `-profileSetupStep` so a step can be shown without walking the ones before it.
-    init(startingAt step: ProfileSetupStep = .first) {
+    /// - Parameters:
+    ///   - step: where the wizard opens. In DEBUG this is overridden by `-profileSetupStep`,
+    ///     so a step can be shown without walking the ones before it; otherwise it is
+    ///     `ProfileSetupStep.resumePoint(for:)`, so a part-way student resumes where they left.
+    ///   - answers: what the student answered on an EARLIER visit. Seeded from the stored
+    ///     profile so the confirmation screen summarises the whole profile rather than only
+    ///     this session's steps.
+    init(startingAt step: ProfileSetupStep = .first, answers: ProfileSetupAnswers = .empty) {
         self.step = step
+        self.answers = answers
     }
 
     // MARK: Recording each step's answer
