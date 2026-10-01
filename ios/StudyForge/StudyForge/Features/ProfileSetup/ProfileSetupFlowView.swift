@@ -37,16 +37,23 @@ struct ProfileSetupFlowView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// - Parameters:
+    ///   - startingAt: where the wizard opens. A part-way student resumes at the first step
+    ///     they have not answered (`ProfileSetupStep.resumePoint(for:)`); the DEBUG
+    ///     `-profileSetupStep` hatch overrides it.
+    ///   - answers: what the student answered on an EARLIER visit, so the confirmation screen
+    ///     summarises the whole profile rather than only this session's steps.
     init(
         profile: any ProfileService,
         catalogue: AcademicCatalogue = .placeholder,
         startingAt step: ProfileSetupStep = .first,
+        answers: ProfileSetupAnswers = .empty,
         onFinish: @escaping () -> Void
     ) {
         self.profile = profile
         self.catalogue = catalogue
         self.onFinish = onFinish
-        _model = State(initialValue: ProfileSetupFlowModel(startingAt: step))
+        _model = State(initialValue: ProfileSetupFlowModel(startingAt: step, answers: answers))
     }
 
     var body: some View {
