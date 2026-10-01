@@ -108,14 +108,7 @@ struct ProfileEditView: View {
     private var avatar: some View {
         HStack(spacing: Spacing.s4) {
 
-            // Sized by its own padding rather than a fixed frame, so it grows with Dynamic Type
-            // instead of clipping the letters at AX5.
-            Text(viewModel.initials)
-                .font(.sfTitleM)
-                .foregroundStyle(ColorTokens.onPrimaryContainer)
-                .padding(Spacing.s4)
-                .background(ColorTokens.primaryContainer, in: .circle)
-                .accessibilityHidden(true)
+            SFMonogram(name: viewModel.name)
 
             Text(L10n.profileEditAvatarNote.string)
                 .font(.sfFootnote)
