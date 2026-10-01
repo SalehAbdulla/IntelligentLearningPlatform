@@ -203,3 +203,16 @@
 "profile.complete.learningStyle"          = "How you learn best";
 "profile.complete.hours"                  = "Weekly study time";
 "profile.complete.grade"                  = "Target grade";
+
+/* ── B07 Profile edit (docs/03 §B) ─────────────────────────────────────── */
+"profile.edit.title"          = "Edit profile";
+"profile.edit.name"           = "Full name";
+"profile.edit.nameHint"       = "Shown on your profile and to your tutor.";
+"profile.edit.nameError"      = "Enter your name.";
+"profile.edit.save"           = "Save";
+"profile.edit.saving"         = "Saving…";
+"profile.edit.avatarNote"     = "Adding a photo arrives with cloud storage.";
+"profile.edit.discardTitle"   = "Discard your changes?";
+"profile.edit.discardMessage" = "Your profile has unsaved changes.";
+"profile.edit.discard"        = "Discard";
+"profile.edit.keepEditing"    = "Keep editing";
