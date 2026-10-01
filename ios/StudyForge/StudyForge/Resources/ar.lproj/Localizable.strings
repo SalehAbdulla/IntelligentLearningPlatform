@@ -204,3 +204,16 @@
 "profile.complete.learningStyle"          = "كيف تتعلّم أفضل";
 "profile.complete.hours"                  = "وقت الدراسة الأسبوعي";
 "profile.complete.grade"                  = "الدرجة المستهدفة";
+
+/* ── B07 تعديل الملف الشخصي (docs/03 §B) ──────────────────────────────── */
+"profile.edit.title"          = "تعديل الملف الشخصي";
+"profile.edit.name"           = "الاسم الكامل";
+"profile.edit.nameHint"       = "يظهر في ملفك الشخصي ولمدرّسك.";
+"profile.edit.nameError"      = "أدخل اسمك.";
+"profile.edit.save"           = "حفظ";
+"profile.edit.saving"         = "جارٍ الحفظ…";
+"profile.edit.avatarNote"     = "إضافة صورة ستتوفر عند تفعيل التخزين السحابي.";
+"profile.edit.discardTitle"   = "هل تريد تجاهل تغييراتك؟";
+"profile.edit.discardMessage" = "لدى ملفك تغييرات غير محفوظة.";
+"profile.edit.discard"        = "تجاهل";
+"profile.edit.keepEditing"    = "متابعة التعديل";
