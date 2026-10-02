@@ -255,6 +255,25 @@ enum L10n: String, CaseIterable, Sendable {
     case materialSourceScan       = "material.source.scan"
     case materialSourceLink       = "material.source.link"
     case materialSourceText       = "material.source.text"
+
+    // MARK: F02 Import
+    case importTitle              = "import.title"
+    case importSourceTextTitle    = "import.sourceText.title"
+    case importSourceTextDetail   = "import.sourceText.detail"
+    case importSourcePdfTitle     = "import.sourcePdf.title"
+    case importSourcePdfDetail    = "import.sourcePdf.detail"
+    case importNameLabel          = "import.nameLabel"
+    case importNamePlaceholder    = "import.namePlaceholder"
+    case importTextLabel          = "import.textLabel"
+    case importTextHint           = "import.textHint"
+    case importTagsLabel          = "import.tagsLabel"
+    case importTagsHint           = "import.tagsHint"
+    case importSubmit             = "import.submit"
+    case importSubmitting         = "import.submitting"
+    case importErrorName          = "import.error.name"
+    case importErrorText          = "import.error.text"
+    case importErrorUnreadable    = "import.error.unreadable"
+    case importErrorNoText        = "import.error.noText"
 }
 
 // MARK: - Resolution
