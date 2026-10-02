@@ -161,6 +161,10 @@ extension AppError {
         // our defect, so it carries a reference and a retry rather than a generic apology.
         if let planError = error as? StudyPlanError { return planError.asAppError }
 
+        // Same reasoning again for the folder store: a failure to read the student's OWN folders is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let folderError = error as? FolderError { return folderError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
