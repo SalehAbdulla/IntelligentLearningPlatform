@@ -68,19 +68,32 @@ struct StudySession: Identifiable, Equatable, Sendable, Codable {
     var scheduledAt: Date
     var status: StudySessionStatus
 
+    /// When the student began the session, or `nil` while it has not been started.
+    ///
+    /// Separate from `status` on purpose: "started" and "finished" are different facts, and a
+    /// session the student began but has not yet marked done is exactly what G08's "Start now"
+    /// creates. A reschedule clears it, because a session moved to another day has not been started
+    /// on the new one.
+    var startedAt: Date?
+
     init(
         id: String = UUID().uuidString,
         subject: String,
         estimatedMinutes: Int,
         scheduledAt: Date,
-        status: StudySessionStatus = .pending
+        status: StudySessionStatus = .pending,
+        startedAt: Date? = nil
     ) {
         self.id = id
         self.subject = subject
         self.estimatedMinutes = estimatedMinutes
         self.scheduledAt = scheduledAt
         self.status = status
+        self.startedAt = startedAt
     }
+
+    /// Started but not yet finished — what the week view marks and the detail sheet headlines.
+    var isInProgress: Bool { status == .pending && startedAt != nil }
 }
 
 /// A generated plan.
