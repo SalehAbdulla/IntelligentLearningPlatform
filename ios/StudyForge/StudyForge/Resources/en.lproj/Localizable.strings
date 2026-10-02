@@ -454,3 +454,34 @@
 "folder.itemCount"        = "%d items";
 "folder.memberCount"      = "%d members";
 "folder.memberExists"     = "They're already in this folder.";
+
+/* ── F10 Resource bookmarks (docs/03 §I, I15–I18) ──────────────────────── */
+"bookmark.title"            = "Collections";
+"bookmark.newCollection"    = "New collection";
+"bookmark.emptyTitle"       = "No collections yet";
+"bookmark.emptyBody"        = "Create a collection to keep the resources you want to find again.";
+"bookmark.offlineNote"      = "Collections saved offline stay available with no connection.";
+"bookmark.browseLibrary"    = "Browse your library";
+"bookmark.nameLabel"        = "Collection name";
+"bookmark.namePlaceholder"  = "Exam revision";
+"bookmark.create"           = "Create collection";
+"bookmark.creating"         = "Creating…";
+"bookmark.itemCount"        = "%d items";
+"bookmark.offlineCount"     = "%d offline";
+"bookmark.offlineBadge"     = "Offline";
+"bookmark.noItems"          = "Nothing saved here yet.";
+"bookmark.savedOn"          = "Saved %@";
+"bookmark.remove"           = "Remove";
+"bookmark.move"             = "Move";
+"bookmark.moveTitle"        = "Move to collection";
+"bookmark.share"            = "Share";
+"bookmark.select"           = "Select";
+"bookmark.saveSheetTitle"   = "Save to collection";
+"bookmark.saveTo"           = "Choose a collection";
+"bookmark.createNew"        = "Create new";
+"bookmark.saveOffline"      = "Also save offline";
+"bookmark.saveOfflineHint"  = "Keeps a copy on this device so it opens without a connection.";
+"bookmark.save"             = "Save";
+"bookmark.saving"           = "Saving…";
+"bookmark.exists"           = "Already saved to this collection.";
+"bookmark.noCollections"    = "Create a collection to save into.";
