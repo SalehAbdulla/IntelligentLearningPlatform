@@ -123,6 +123,11 @@ final class AppContainer {
     /// `InMemoryDeckStore`.
     let decks: any DeckStore
 
+    /// The student's quizzes (F05). LOCAL-FIRST, like the other AI artefacts, so a quiz can be
+    /// taken offline. Protocol-backed so screens can be previewed and tested with
+    /// `InMemoryQuizStore`.
+    let quizzes: any QuizStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -163,6 +168,7 @@ final class AppContainer {
         summaries: any SummaryStore = InMemorySummaryStore(),
         ai: AIRouter = AIRouter.standard(governor: AICostGovernor()),
         decks: any DeckStore = InMemoryDeckStore(),
+        quizzes: any QuizStore = InMemoryQuizStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -173,6 +179,7 @@ final class AppContainer {
         self.summaries = summaries
         self.ai = ai
         self.decks = decks
+        self.quizzes = quizzes
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -329,7 +336,8 @@ extension AppContainer {
             profile: profile,
             materials: materials,
             summaries: FileSummaryStore(),
-            decks: FileDeckStore()
+            decks: FileDeckStore(),
+            quizzes: FileQuizStore()
         )
     }
 
