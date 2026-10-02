@@ -258,3 +258,37 @@
 "import.error.text"         = "Paste the material in first.";
 "import.error.unreadable"   = "That file couldn't be opened.";
 "import.error.noText"       = "We couldn't find any text in it.";
+
+/* ── F03 AI Summary (docs/03 §D, D01–D07) ─────────────────────────────── */
+"summary.title"              = "Summarise material";
+"summary.lengthLabel"        = "Length";
+"summary.length.short"       = "Short";
+"summary.length.standard"    = "Standard";
+"summary.length.examReady"   = "Exam-ready";
+"summary.styleLabel"         = "Style";
+"summary.style.bullets"      = "Bullet points";
+"summary.style.narrative"    = "Narrative";
+"summary.style.cornell"      = "Cornell notes";
+"summary.languageLabel"      = "Language";
+"summary.language.english"   = "English";
+"summary.language.arabic"    = "العربية";
+"summary.generate"           = "Generate summary";
+"summary.generating.title"   = "Writing your summary…";
+"summary.generating.body"    = "Reading the material and pulling out what matters.";
+"summary.tldrHeading"        = "In a nutshell";
+"summary.keyPointsHeading"   = "Key points";
+"summary.glossaryHeading"    = "Glossary";
+"summary.save"               = "Save summary";
+"summary.saving"             = "Saving…";
+"summary.savedTitle"         = "Summary saved";
+"summary.savedBody"          = "It's kept on your device.";
+"summary.source"             = "Source";
+"summary.confidence.high"    = "High confidence";
+"summary.confidence.medium"  = "Medium confidence";
+"summary.confidence.low"     = "Low confidence — review";
+"summary.engine.onDevice"    = "On-device · private";
+"summary.engine.firebaseAI"  = "Cloud (Firebase AI)";
+"summary.engine.cloudFunction" = "Cloud (server)";
+
+/* Library: per-material generate affordance. */
+"library.summarise"          = "Summarise";
