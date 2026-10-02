@@ -95,6 +95,31 @@ struct QuizGenerateViewModelTests {
         #expect(try await store.all().first?.title == source.title)
     }
 
+    @Test("The timer toggle is recorded on the saved quiz")
+    func timerConfigIsRecorded() async throws {
+        let store = InMemoryQuizStore()
+        let viewModel = model(material: material(), quizStore: store)
+
+        await viewModel.generate()
+        viewModel.timerEnabled = true
+        viewModel.timerMinutes = 15
+        await viewModel.saveQuiz()
+
+        #expect(try await store.all().first?.timerMinutes == 15)
+        #expect(try await store.all().first?.isTimed == true)
+    }
+
+    @Test("A quiz is untimed unless the student asks for a clock")
+    func untimedByDefault() async throws {
+        let store = InMemoryQuizStore()
+        let viewModel = model(material: material(), quizStore: store)
+
+        await viewModel.generate()
+        await viewModel.saveQuiz()
+
+        #expect(try await store.all().first?.timerMinutes == nil)
+    }
+
     @Test("Every string comes from the catalogue")
     func copyIsLocalised() {
         let viewModel = model(material: material())
@@ -105,5 +130,7 @@ struct QuizGenerateViewModelTests {
         #expect(viewModel.generateTitle == L10n.quizGenerate.string)
         #expect(viewModel.saveTitle == L10n.quizSave.string)
         #expect(viewModel.savedTitle == L10n.quizSavedTitle.string)
+        #expect(viewModel.timerToggleTitle == L10n.quizTimerToggle.string)
+        #expect(viewModel.minutesTitle(15) == L10n.quizMinutes.string(15))
     }
 }
