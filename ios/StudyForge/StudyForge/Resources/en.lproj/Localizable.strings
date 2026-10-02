@@ -381,3 +381,27 @@
 "quiz.reviewAnswers"   = "Review answers";
 "quiz.yourAnswer"      = "Your answer";
 "quiz.correctAnswer"   = "Correct answer";
+
+/* ── F06 Study plan (docs/03 §G) ──────────────────────────────────────── */
+"plan.title"           = "Study plan";
+"plan.newPlan"         = "Create plan";
+"plan.emptyTitle"      = "No plan yet";
+"plan.emptyBody"       = "Build a weekly plan around your subjects and deadlines.";
+"plan.stepIndicator"   = "Step %d of %d";
+"plan.subjectsHeading" = "What are you studying?";
+"plan.subjectPlaceholder" = "Add a subject";
+"plan.addSubject"      = "Add";
+"plan.availabilityHeading" = "How many hours a week?";
+"plan.deadlineHeading" = "When's your next exam?";
+"plan.noDeadline"      = "No deadline";
+"plan.intensityHeading" = "How intensely?";
+"plan.intensity.light" = "Light";
+"plan.intensity.balanced" = "Balanced";
+"plan.intensity.intensive" = "Intensive";
+"plan.generate"        = "Generate plan";
+"plan.replan"          = "Re-plan";
+"plan.markDone"        = "Mark done";
+"plan.skip"            = "Skip";
+"plan.weekHeading"     = "This week";
+"plan.noSessions"      = "No sessions scheduled";
+"plan.minutes"         = "%d min";
