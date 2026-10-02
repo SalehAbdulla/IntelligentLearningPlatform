@@ -308,6 +308,58 @@ enum L10n: String, CaseIterable, Sendable {
 
     /// The library's per-material "generate a summary" affordance.
     case librarySummarise        = "library.summarise"
+
+    /// The library's per-material "make flashcards" affordance.
+    case libraryMakeCards        = "library.makeCards"
+
+    // MARK: F04 Decks
+    case deckTitle           = "deck.title"
+    case deckNewDeck         = "deck.newDeck"
+    case deckEmptyTitle      = "deck.emptyTitle"
+    case deckEmptyBody       = "deck.emptyBody"
+    case deckStudyNow        = "deck.studyNow"
+    case deckCardsHeading    = "deck.cardsHeading"
+    case deckDueLabel        = "deck.dueLabel"
+    case deckNewLabel        = "deck.newLabel"
+    case deckLearningLabel   = "deck.learningLabel"
+    case deckMasteredLabel   = "deck.masteredLabel"
+
+    // MARK: F04 Flashcards
+    case flashcardGenerateTitle             = "flashcard.generateTitle"
+    case flashcardSourceLabel               = "flashcard.sourceLabel"
+    case flashcardSourcePrompt              = "flashcard.sourcePrompt"
+    case flashcardCountLabel                = "flashcard.countLabel"
+    case flashcardDifficultyLabel           = "flashcard.difficultyLabel"
+    case flashcardDifficultyRecall          = "flashcard.difficulty.recall"
+    case flashcardDifficultyUnderstanding   = "flashcard.difficulty.understanding"
+    case flashcardDifficultyMixed           = "flashcard.difficulty.mixed"
+    case flashcardGenerate                  = "flashcard.generate"
+    case flashcardGeneratingTitle           = "flashcard.generating.title"
+    case flashcardGeneratingBody            = "flashcard.generating.body"
+    case flashcardReviewHeading             = "flashcard.reviewHeading"
+    case flashcardDeckNameLabel             = "flashcard.deckNameLabel"
+    case flashcardSaveDeck                  = "flashcard.saveDeck"
+    case flashcardSavingDeck                = "flashcard.savingDeck"
+    case flashcardSavedTitle                = "flashcard.savedTitle"
+    case flashcardSavedBody                 = "flashcard.savedBody"
+    case flashcardSource                    = "flashcard.source"
+    case flashcardReviewTitle               = "flashcard.reviewTitle"
+    case flashcardProgress                  = "flashcard.progress"
+    case flashcardTapToReveal               = "flashcard.tapToReveal"
+    case flashcardRatingAgain               = "flashcard.rating.again"
+    case flashcardRatingHard                = "flashcard.rating.hard"
+    case flashcardRatingGood                = "flashcard.rating.good"
+    case flashcardRatingEasy                = "flashcard.rating.easy"
+    case flashcardIntervalAgain             = "flashcard.interval.again"
+    case flashcardIntervalDays              = "flashcard.interval.days"
+    case flashcardIntervalMonths            = "flashcard.interval.months"
+    case flashcardSessionTitle              = "flashcard.sessionTitle"
+    case flashcardSessionReviewed           = "flashcard.sessionReviewed"
+    case flashcardSessionAccuracy           = "flashcard.sessionAccuracy"
+    case flashcardSessionDone               = "flashcard.sessionDone"
+    case flashcardSessionKeepGoing          = "flashcard.sessionKeepGoing"
+    case flashcardEmptyTitle                = "flashcard.emptyTitle"
+    case flashcardEmptyBody                 = "flashcard.emptyBody"
 }
 
 // MARK: - Resolution
