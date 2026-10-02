@@ -292,3 +292,55 @@
 
 /* Library: per-material generate affordance. */
 "library.summarise"          = "Summarise";
+"library.makeCards"          = "Make flashcards";
+
+/* ── F04 Decks (docs/03 §E, E01/E04) ─────────────────────────────────── */
+"deck.title"          = "Flashcards";
+"deck.newDeck"        = "New deck";
+"deck.emptyTitle"     = "No decks yet";
+"deck.emptyBody"      = "Turn a material into cards and they'll live here, scheduled for review.";
+"deck.studyNow"       = "Study now";
+"deck.cardsHeading"   = "Cards";
+"deck.dueLabel"       = "Due";
+"deck.newLabel"       = "New";
+"deck.learningLabel"  = "Learning";
+"deck.masteredLabel"  = "Mastered";
+
+/* ── F04 Flashcard generation (docs/03 §E, E02–E03) ──────────────────── */
+"flashcard.generateTitle"         = "Make flashcards";
+"flashcard.sourceLabel"           = "Material";
+"flashcard.sourcePrompt"          = "Choose a material";
+"flashcard.countLabel"            = "Number of cards";
+"flashcard.difficultyLabel"       = "Difficulty";
+"flashcard.difficulty.recall"     = "Recall";
+"flashcard.difficulty.understanding" = "Understanding";
+"flashcard.difficulty.mixed"      = "Mixed";
+"flashcard.generate"              = "Generate cards";
+"flashcard.generating.title"      = "Writing your cards…";
+"flashcard.generating.body"       = "Turning the material into questions and answers.";
+"flashcard.reviewHeading"         = "Review your cards";
+"flashcard.deckNameLabel"         = "Deck name";
+"flashcard.saveDeck"              = "Save deck";
+"flashcard.savingDeck"            = "Saving…";
+"flashcard.savedTitle"            = "Deck saved";
+"flashcard.savedBody"             = "Your cards are ready to study.";
+"flashcard.source"                = "Source";
+
+/* ── F04 Review (docs/03 §E, E05–E07) ────────────────────────────────── */
+"flashcard.reviewTitle"          = "Study";
+"flashcard.progress"             = "%d of %d";
+"flashcard.tapToReveal"          = "Tap to reveal the answer";
+"flashcard.rating.again"         = "Again";
+"flashcard.rating.hard"          = "Hard";
+"flashcard.rating.good"          = "Good";
+"flashcard.rating.easy"          = "Easy";
+"flashcard.interval.again"       = "<1m";
+"flashcard.interval.days"        = "%d d";
+"flashcard.interval.months"      = "%d mo";
+"flashcard.sessionTitle"         = "Session complete";
+"flashcard.sessionReviewed"      = "Cards reviewed";
+"flashcard.sessionAccuracy"      = "Accuracy";
+"flashcard.sessionDone"          = "Done";
+"flashcard.sessionKeepGoing"     = "Keep going";
+"flashcard.emptyTitle"           = "Nothing due right now";
+"flashcard.emptyBody"            = "You're all caught up. You can still study the whole deck.";
