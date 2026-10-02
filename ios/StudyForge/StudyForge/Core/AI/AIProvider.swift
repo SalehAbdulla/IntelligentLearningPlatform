@@ -17,7 +17,7 @@ import Foundation
 // MARK: - Output shaping
 
 /// Output language. Arabic is first-class, not an afterthought (SDG 10).
-enum OutputLanguage: String, Sendable, CaseIterable {
+enum OutputLanguage: String, Sendable, CaseIterable, Codable {
     case english
     case arabic
 }
@@ -26,11 +26,11 @@ enum OutputLanguage: String, Sendable, CaseIterable {
 // B02 made it something the student chooses and the app stores — that file explains why the
 // profile owns it and this layer reads it. It is NOT defined here any more, so a prompt
 // change that needs the style should import it from Core/Profile.
-enum SummaryLength: String, Sendable, CaseIterable {
+enum SummaryLength: String, Sendable, CaseIterable, Codable {
     case short, standard, examReady
 }
 
-enum SummaryStyle: String, Sendable, CaseIterable {
+enum SummaryStyle: String, Sendable, CaseIterable, Codable {
     case bullets, narrative, cornell
 }
 
