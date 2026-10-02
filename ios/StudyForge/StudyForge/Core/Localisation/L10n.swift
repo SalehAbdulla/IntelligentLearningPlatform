@@ -288,6 +288,8 @@ enum L10n: String, CaseIterable, Sendable {
     case summaryLanguageLabel    = "summary.languageLabel"
     case summaryLanguageEnglish  = "summary.language.english"
     case summaryLanguageArabic   = "summary.language.arabic"
+    case summaryFocusLabel       = "summary.focusLabel"
+    case summaryFocusPlaceholder = "summary.focusPlaceholder"
     case summaryGenerate         = "summary.generate"
     case summaryGeneratingTitle  = "summary.generating.title"
     case summaryGeneratingBody   = "summary.generating.body"
