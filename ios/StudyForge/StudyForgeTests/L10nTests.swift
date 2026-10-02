@@ -104,7 +104,7 @@ struct L10nTests {
         // the catalogue unnoticed.
         let knownAreas: Set<String> = [
             "common", "auth", "session", "home", "onboarding", "profile", "library", "material",
-            "import", "summary",
+            "import", "summary", "deck", "flashcard",
         ]
 
         for key in L10n.allCases {
