@@ -38,7 +38,7 @@ enum FlashcardDifficulty: String, Sendable, CaseIterable {
     case recall, understanding, mixed
 }
 
-enum QuizQuestionType: String, Sendable, CaseIterable {
+enum QuizQuestionType: String, Sendable, CaseIterable, Codable {
     case multipleChoice, trueFalse, shortAnswer, mixed
 }
 
