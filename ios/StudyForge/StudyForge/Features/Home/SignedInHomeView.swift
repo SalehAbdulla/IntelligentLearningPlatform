@@ -41,6 +41,7 @@ struct SignedInHomeView: View {
 
                     libraryLink
                     flashcardsLink
+                    quizzesLink
                     profileLink
 
                     #if DEBUG
@@ -143,6 +144,24 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.deckTitle.string, systemImage: "rectangle.stack")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Quizzes
+
+    /// The way into the quiz history (F01).
+    private var quizzesLink: some View {
+        NavigationLink {
+            QuizListView(
+                materialStore: container.materials,
+                quizStore: container.quizzes,
+                router: container.ai
+            )
+        } label: {
+            Label(L10n.quizTitle.string, systemImage: "checklist")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
