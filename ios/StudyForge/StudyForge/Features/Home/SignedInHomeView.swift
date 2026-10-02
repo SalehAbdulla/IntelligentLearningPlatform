@@ -43,6 +43,7 @@ struct SignedInHomeView: View {
                     flashcardsLink
                     quizzesLink
                     studyPlanLink
+                    progressLink
                     profileLink
 
                     #if DEBUG
@@ -177,6 +178,26 @@ struct SignedInHomeView: View {
             StudyPlanView(store: container.studyPlans)
         } label: {
             Label(L10n.planTitle.string, systemImage: "calendar")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Progress
+
+    /// The way into the progress dashboard (G10/G11).
+    private var progressLink: some View {
+        NavigationLink {
+            ProgressDashboardView(
+                materials: container.materials,
+                decks: container.decks,
+                quizzes: container.quizzes,
+                studyPlans: container.studyPlans,
+                profile: container.profile
+            )
+        } label: {
+            Label(L10n.progressTitle.string, systemImage: "chart.bar")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
