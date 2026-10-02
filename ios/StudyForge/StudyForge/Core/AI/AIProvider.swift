@@ -68,6 +68,13 @@ struct SummaryRequest: Sendable {
     let context: AIGenerationContext
     let length: SummaryLength
     let style: SummaryStyle
+
+    /// D01's focus-topics field: what the student wants the summary to dwell on.
+    ///
+    /// Empty by default, which means "cover the material evenly" — so a request that omits it keeps
+    /// the behaviour the app shipped with. `var` rather than `let` for the reason `FlashcardRequest`
+    /// documents: a `let` with a default is dropped from the memberwise initialiser.
+    var focusTopics: String = ""
 }
 
 struct FlashcardRequest: Sendable {
