@@ -405,3 +405,26 @@
 "plan.weekHeading"     = "This week";
 "plan.noSessions"      = "No sessions scheduled";
 "plan.minutes"         = "%d min";
+
+/* ── F07 Progress (docs/03 §G, G10–G11) ───────────────────────────────── */
+"progress.title"          = "Progress";
+"progress.emptyTitle"     = "Nothing to show yet";
+"progress.emptyBody"      = "Import a material, take a quiz or complete a study session and your progress will appear here.";
+"progress.mastery"        = "Mastery";
+"progress.streak"         = "Day streak";
+"progress.hoursThisWeek"  = "This week";
+"progress.hoursValue"     = "%d h";
+"progress.weeklyHeading"  = "This week's activity";
+"progress.goalHeading"    = "Weekly goal";
+"progress.goalCaption"    = "%d of %d hours";
+"progress.subjectsHeading" = "Subjects in progress";
+"progress.noSubjects"     = "Create a study plan to track subjects here.";
+"progress.radarTitle"     = "Topic strength";
+"progress.radarEmpty"     = "Take a quiz to build your topic map.";
+"progress.weakTopicsHeading" = "Focus on these";
+"progress.noWeakTopics"   = "No weak topics yet — take a quiz to find them.";
+"progress.masteryValue"   = "%d%%";
+"progress.streakValue"    = "%d";
+"progress.quizzesTaken"   = "Quizzes taken";
+"progress.cardsMastered"  = "Cards mastered";
+"progress.cardsValue"     = "%d of %d";
