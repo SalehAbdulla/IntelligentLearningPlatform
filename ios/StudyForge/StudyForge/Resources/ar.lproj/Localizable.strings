@@ -453,3 +453,34 @@
 "folder.itemCount"        = "%d عناصر";
 "folder.memberCount"      = "%d أعضاء";
 "folder.memberExists"     = "هذا الشخص موجود بالفعل في هذا المجلد.";
+
+/* ── F10 Resource bookmarks (docs/03 §I, I15–I18) ──────────────────────── */
+"bookmark.title"            = "المجموعات";
+"bookmark.newCollection"    = "مجموعة جديدة";
+"bookmark.emptyTitle"       = "لا توجد مجموعات بعد";
+"bookmark.emptyBody"        = "أنشئ مجموعة لحفظ الموارد التي تريد العودة إليها.";
+"bookmark.offlineNote"      = "المجموعات المحفوظة دون اتصال تبقى متاحة بلا إنترنت.";
+"bookmark.browseLibrary"    = "تصفّح مكتبتك";
+"bookmark.nameLabel"        = "اسم المجموعة";
+"bookmark.namePlaceholder"  = "مراجعة الاختبار";
+"bookmark.create"           = "إنشاء المجموعة";
+"bookmark.creating"         = "جارٍ الإنشاء…";
+"bookmark.itemCount"        = "%d عناصر";
+"bookmark.offlineCount"     = "%d دون اتصال";
+"bookmark.offlineBadge"     = "دون اتصال";
+"bookmark.noItems"          = "لم يُحفظ شيء هنا بعد.";
+"bookmark.savedOn"          = "حُفظ في %@";
+"bookmark.remove"           = "إزالة";
+"bookmark.move"             = "نقل";
+"bookmark.moveTitle"        = "النقل إلى مجموعة";
+"bookmark.share"            = "مشاركة";
+"bookmark.select"           = "تحديد";
+"bookmark.saveSheetTitle"   = "حفظ في مجموعة";
+"bookmark.saveTo"           = "اختر مجموعة";
+"bookmark.createNew"        = "إنشاء جديدة";
+"bookmark.saveOffline"      = "حفظها دون اتصال أيضًا";
+"bookmark.saveOfflineHint"  = "يحتفظ بنسخة على هذا الجهاز لتُفتح دون اتصال.";
+"bookmark.save"             = "حفظ";
+"bookmark.saving"           = "جارٍ الحفظ…";
+"bookmark.exists"           = "محفوظ بالفعل في هذه المجموعة.";
+"bookmark.noCollections"    = "أنشئ مجموعة لتُحفظ فيها.";
