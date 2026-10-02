@@ -315,6 +315,11 @@
 "flashcard.difficulty.recall"     = "استرجاع";
 "flashcard.difficulty.understanding" = "فهم";
 "flashcard.difficulty.mixed"      = "مختلط";
+"flashcard.typeLabel"             = "نوع البطاقة";
+"flashcard.type.qa"               = "سؤال وجواب";
+"flashcard.type.cloze"            = "حجب الكلمات";
+"flashcard.type.imageOcclusion"   = "حجب الصورة";
+"flashcard.type.reversible"       = "قابلة للعكس";
 "flashcard.generate"              = "إنشاء البطاقات";
 "flashcard.generating.title"      = "جارٍ كتابة بطاقاتك…";
 "flashcard.generating.body"       = "جارٍ تحويل المادة إلى أسئلة وأجوبة.";
