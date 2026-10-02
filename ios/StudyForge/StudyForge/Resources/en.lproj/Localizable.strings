@@ -239,3 +239,22 @@
 "material.source.scan"   = "Scan";
 "material.source.link"   = "Link";
 "material.source.text"   = "Pasted text";
+
+/* ── F02 Import (docs/03 §C, C03–C07) ─────────────────────────────────── */
+"import.title"              = "Add material";
+"import.sourceText.title"   = "Paste text";
+"import.sourceText.detail"  = "Type or paste the material in directly.";
+"import.sourcePdf.title"    = "Choose a PDF";
+"import.sourcePdf.detail"   = "Its text is read on your device.";
+"import.nameLabel"          = "Title";
+"import.namePlaceholder"    = "Lecture 4 — Normalisation";
+"import.textLabel"          = "The material";
+"import.textHint"           = "Everything stays on your device. Only what the AI generates is saved.";
+"import.tagsLabel"          = "Tags";
+"import.tagsHint"           = "Separate with commas.";
+"import.submit"             = "Add to library";
+"import.submitting"         = "Adding…";
+"import.error.name"         = "Give it a title.";
+"import.error.text"         = "Paste the material in first.";
+"import.error.unreadable"   = "That file couldn't be opened.";
+"import.error.noText"       = "We couldn't find any text in it.";
