@@ -272,6 +272,8 @@
 "summary.languageLabel"      = "Language";
 "summary.language.english"   = "English";
 "summary.language.arabic"    = "العربية";
+"summary.focusLabel"         = "Focus topics";
+"summary.focusPlaceholder"   = "e.g. normalisation, indexes";
 "summary.generate"           = "Generate summary";
 "summary.generating.title"   = "Writing your summary…";
 "summary.generating.body"    = "Reading the material and pulling out what matters.";
