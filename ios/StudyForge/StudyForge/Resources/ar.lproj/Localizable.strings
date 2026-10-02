@@ -240,3 +240,22 @@
 "material.source.scan"   = "مسح ضوئي";
 "material.source.link"   = "رابط";
 "material.source.text"   = "نص ملصوق";
+
+/* ── F02 الاستيراد (docs/03 §C) ────────────────────────────────────────── */
+"import.title"              = "إضافة مادة";
+"import.sourceText.title"   = "لصق نص";
+"import.sourceText.detail"  = "اكتب المادة أو الصقها مباشرة.";
+"import.sourcePdf.title"    = "اختيار ملف PDF";
+"import.sourcePdf.detail"   = "يُقرأ نصّه على جهازك.";
+"import.nameLabel"          = "العنوان";
+"import.namePlaceholder"    = "المحاضرة 4 — التطبيع";
+"import.textLabel"          = "المادة";
+"import.textHint"           = "يبقى كل شيء على جهازك. ولا يُحفظ إلا ما يولّده الذكاء الاصطناعي.";
+"import.tagsLabel"          = "الوسوم";
+"import.tagsHint"           = "افصل بينها بفواصل.";
+"import.submit"             = "إضافة إلى المكتبة";
+"import.submitting"         = "جارٍ الإضافة…";
+"import.error.name"         = "أعطِ المادة عنوانًا.";
+"import.error.text"         = "الصق المادة أولًا.";
+"import.error.unreadable"   = "تعذّر فتح ذلك الملف.";
+"import.error.noText"       = "لم نعثر على أي نص فيه.";
