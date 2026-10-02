@@ -138,6 +138,11 @@ final class AppContainer {
     /// previewed and tested with `InMemoryFolderStore`.
     let folders: any FolderStore
 
+    /// The student's bookmark collections (F10). LOCAL-FIRST, like the other derived artefacts, so a
+    /// collection is usable with no connection at all — which is the offline-first story I18 tells.
+    /// Protocol-backed so screens can be previewed and tested with `InMemoryBookmarkStore`.
+    let bookmarks: any BookmarkStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -181,6 +186,7 @@ final class AppContainer {
         quizzes: any QuizStore = InMemoryQuizStore(),
         studyPlans: any StudyPlanStore = InMemoryStudyPlanStore(),
         folders: any FolderStore = InMemoryFolderStore(),
+        bookmarks: any BookmarkStore = InMemoryBookmarkStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -194,6 +200,7 @@ final class AppContainer {
         self.quizzes = quizzes
         self.studyPlans = studyPlans
         self.folders = folders
+        self.bookmarks = bookmarks
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -353,7 +360,8 @@ extension AppContainer {
             decks: FileDeckStore(),
             quizzes: FileQuizStore(),
             studyPlans: FileStudyPlanStore(),
-            folders: FileFolderStore()
+            folders: FileFolderStore(),
+            bookmarks: FileBookmarkStore()
         )
     }
 
