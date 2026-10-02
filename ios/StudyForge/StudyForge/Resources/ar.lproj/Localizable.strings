@@ -413,6 +413,17 @@
 "plan.weekHeading"     = "هذا الأسبوع";
 "plan.noSessions"      = "لا توجد جلسات مجدولة";
 "plan.minutes"         = "%d دقيقة";
+"plan.sessionDetail"   = "جلسة";
+"plan.duration"        = "المدة";
+"plan.scheduledFor"    = "الموعد";
+"plan.statusLabel"     = "الحالة";
+"plan.status.pending"   = "لم تبدأ";
+"plan.status.completed" = "مكتملة";
+"plan.status.skipped"   = "متجاوَزة";
+"plan.started"         = "بدأت";
+"plan.inProgress"      = "قيد التقدّم";
+"plan.startNow"        = "ابدأ الآن";
+"plan.reschedule"      = "إعادة الجدولة";
 
 /* ── F07 التقدّم (docs/03 §G) ─────────────────────────────────────────── */
 "progress.title"          = "التقدّم";
