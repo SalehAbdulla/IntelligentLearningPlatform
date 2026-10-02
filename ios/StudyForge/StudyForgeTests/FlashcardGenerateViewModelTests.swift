@@ -94,6 +94,28 @@ struct FlashcardGenerateViewModelTests {
         #expect(try await store.all().first?.title == source.title)
     }
 
+    @Test("The chosen card type shapes the generated cards")
+    func cardTypeIsApplied() async {
+        let viewModel = model(material: material())
+        viewModel.cardType = .cloze
+
+        await viewModel.generate()
+
+        #expect(viewModel.cards.allSatisfy { $0.cardType == .cloze })
+        // The mock blanks a word for a cloze card, so the front is a sentence with a gap rather than
+        // a question — proof the selector actually reached the generator.
+        #expect(viewModel.cards.contains { $0.front.contains("_____") })
+    }
+
+    @Test("Cards default to question-and-answer when no type is chosen")
+    func defaultsToQa() async {
+        let viewModel = model(material: material())
+
+        await viewModel.generate()
+
+        #expect(viewModel.cards.allSatisfy { $0.cardType == .qa })
+    }
+
     @Test("Every string comes from the catalogue")
     func copyIsLocalised() {
         let viewModel = model(material: material())
@@ -101,8 +123,10 @@ struct FlashcardGenerateViewModelTests {
         #expect(viewModel.title == L10n.flashcardGenerateTitle.string)
         #expect(viewModel.countLabel == L10n.flashcardCountLabel.string)
         #expect(viewModel.difficultyLabel == L10n.flashcardDifficultyLabel.string)
+        #expect(viewModel.cardTypeLabel == L10n.flashcardTypeLabel.string)
         #expect(viewModel.generateTitle == L10n.flashcardGenerate.string)
         #expect(viewModel.saveDeckTitle == L10n.flashcardSaveDeck.string)
         #expect(viewModel.savedTitle == L10n.flashcardSavedTitle.string)
+        #expect(CardType.cloze.title == L10n.flashcardTypeCloze.string)
     }
 }
