@@ -123,6 +123,13 @@ struct FlashcardGenerateView: View {
                 title: { viewModel.difficultyTitle($0) }
             )
 
+            SFSegmentedField(
+                label: viewModel.cardTypeLabel,
+                selection: $viewModel.cardType,
+                options: CardType.allCases,
+                title: { $0.title }
+            )
+
             SFPrimaryButton(
                 title: viewModel.generateTitle,
                 isLoading: viewModel.isGenerating,
