@@ -18,13 +18,28 @@
 
 import Foundation
 
-/// What shape a card takes. Only `qa` is generated today; the others arrive with the card-type
-/// selector in a later pass, but the stored vocabulary already matches docs/05 §3.
-enum CardType: String, Sendable, CaseIterable, Codable {
+/// What shape a card takes.
+///
+/// E02's card-type selector (docs/03 §E) makes all four reachable. The stored vocabulary already
+/// matched docs/05 §3; what changed is that the selector now lets the student CHOOSE one, and the
+/// generator is told which — so `qa` is no longer the only answer the app can produce.
+enum CardType: String, Sendable, CaseIterable, Codable, Identifiable {
     case qa
     case cloze
     case imageOcclusion
     case reversible
+
+    var id: String { rawValue }
+
+    /// The localised segment title for E02's selector.
+    var title: String {
+        switch self {
+        case .qa: L10n.flashcardTypeQa.string
+        case .cloze: L10n.flashcardTypeCloze.string
+        case .imageOcclusion: L10n.flashcardTypeImageOcclusion.string
+        case .reversible: L10n.flashcardTypeReversible.string
+        }
+    }
 }
 
 /// A single flashcard.
