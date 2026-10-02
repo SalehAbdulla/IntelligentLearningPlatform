@@ -39,6 +39,9 @@ final class FlashcardGenerateViewModel {
     var count: Int? = 20
     var difficulty: FlashcardDifficulty? = .mixed
 
+    /// E02's card-type selector. Defaults to question-and-answer, the shape the app shipped with.
+    var cardType: CardType? = .qa
+
     /// The deck name the student can edit before saving. Empty means "use the material's title".
     var deckTitle = ""
 
@@ -86,6 +89,7 @@ final class FlashcardGenerateViewModel {
     var sourcePrompt: String { L10n.flashcardSourcePrompt.string }
     var countLabel: String { L10n.flashcardCountLabel.string }
     var difficultyLabel: String { L10n.flashcardDifficultyLabel.string }
+    var cardTypeLabel: String { L10n.flashcardTypeLabel.string }
     var generateTitle: String { L10n.flashcardGenerate.string }
     var generatingTitle: String { L10n.flashcardGeneratingTitle.string }
     var generatingBody: String { L10n.flashcardGeneratingBody.string }
@@ -122,7 +126,8 @@ final class FlashcardGenerateViewModel {
     }
 
     func generate() async {
-        guard !isGenerating, let material = selectedMaterial, let count, let difficulty else { return }
+        guard !isGenerating, let material = selectedMaterial, let count, let difficulty,
+              let cardType else { return }
         error = nil
         cards = []
         isGenerating = true
@@ -137,13 +142,13 @@ final class FlashcardGenerateViewModel {
 
         do {
             let generated = try await router.makeFlashcards(
-                FlashcardRequest(context: context, count: count, difficulty: difficulty)
+                FlashcardRequest(context: context, count: count, difficulty: difficulty, cardType: cardType)
             )
             cards = generated.value.map {
                 Flashcard(
                     front: $0.front,
                     back: $0.back,
-                    cardType: .qa,
+                    cardType: cardType,
                     provenance: generated.provenance,
                     aiDrafted: true
                 )
