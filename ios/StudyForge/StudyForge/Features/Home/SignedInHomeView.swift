@@ -42,6 +42,7 @@ struct SignedInHomeView: View {
                     libraryLink
                     flashcardsLink
                     quizzesLink
+                    studyPlanLink
                     profileLink
 
                     #if DEBUG
@@ -162,6 +163,20 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.quizTitle.string, systemImage: "checklist")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Study plan
+
+    /// The way into the study plan (G06).
+    private var studyPlanLink: some View {
+        NavigationLink {
+            StudyPlanView(store: container.studyPlans)
+        } label: {
+            Label(L10n.planTitle.string, systemImage: "calendar")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
