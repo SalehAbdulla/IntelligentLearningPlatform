@@ -433,6 +433,19 @@ enum L10n: String, CaseIterable, Sendable {
     case planNoSessions      = "plan.noSessions"
     case planMinutes         = "plan.minutes"
 
+    // MARK: F06 session detail (G08)
+    case planSessionDetail   = "plan.sessionDetail"
+    case planDuration        = "plan.duration"
+    case planScheduledFor    = "plan.scheduledFor"
+    case planStatusLabel     = "plan.statusLabel"
+    case planStatusPending   = "plan.status.pending"
+    case planStatusCompleted = "plan.status.completed"
+    case planStatusSkipped   = "plan.status.skipped"
+    case planStarted         = "plan.started"
+    case planInProgress      = "plan.inProgress"
+    case planStartNow        = "plan.startNow"
+    case planReschedule      = "plan.reschedule"
+
     // MARK: F07 Progress
     case progressTitle          = "progress.title"
     case progressEmptyTitle     = "progress.emptyTitle"
