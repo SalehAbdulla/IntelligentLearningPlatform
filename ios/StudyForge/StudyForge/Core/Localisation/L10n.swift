@@ -444,6 +444,32 @@ enum L10n: String, CaseIterable, Sendable {
     case progressQuizzesTaken   = "progress.quizzesTaken"
     case progressCardsMastered  = "progress.cardsMastered"
     case progressCardsValue     = "progress.cardsValue"
+
+    // MARK: F08 Shared folders
+    case folderTitle              = "folder.title"
+    case folderNewFolder          = "folder.newFolder"
+    case folderEmptyTitle         = "folder.emptyTitle"
+    case folderEmptyBody          = "folder.emptyBody"
+    case folderNameLabel          = "folder.nameLabel"
+    case folderNamePlaceholder    = "folder.namePlaceholder"
+    case folderCreate             = "folder.create"
+    case folderCreating           = "folder.creating"
+    case folderItemsTab           = "folder.itemsTab"
+    case folderMembersTab         = "folder.membersTab"
+    case folderNoItems            = "folder.noItems"
+    case folderAddItem            = "folder.addItem"
+    case folderAddItemsTitle      = "folder.addItemsTitle"
+    case folderAddMember          = "folder.addMember"
+    case folderMemberNameLabel    = "folder.memberNameLabel"
+    case folderMemberNamePlaceholder = "folder.memberNamePlaceholder"
+    case folderPermissionLabel    = "folder.permissionLabel"
+    case folderRoleOwner          = "folder.roleOwner"
+    case folderPermissionView     = "folder.permission.view"
+    case folderPermissionComment  = "folder.permission.comment"
+    case folderPermissionEdit     = "folder.permission.edit"
+    case folderItemCount          = "folder.itemCount"
+    case folderMemberCount        = "folder.memberCount"
+    case folderMemberExists       = "folder.memberExists"
 }
 
 // MARK: - Resolution
