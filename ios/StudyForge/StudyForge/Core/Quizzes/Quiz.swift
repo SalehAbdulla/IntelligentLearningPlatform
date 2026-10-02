@@ -23,6 +23,14 @@ struct Quiz: Identifiable, Equatable, Sendable, Codable {
     let questionType: QuizQuestionType
     var questions: [QuizQuestion]
 
+    /// The countdown the student chose when the quiz was generated, in minutes, or `nil` when the
+    /// quiz is untimed.
+    ///
+    /// Recorded ON THE QUIZ rather than in the taking session, for the same reason the questions
+    /// are: a timed quiz is timed on every attempt, not only the first, so a retake cannot quietly
+    /// drop the clock the student set.
+    let timerMinutes: Int?
+
     /// Attempts, most recent first.
     var attempts: [QuizAttempt]
 
@@ -34,6 +42,7 @@ struct Quiz: Identifiable, Equatable, Sendable, Codable {
         materialId: String? = nil,
         questionType: QuizQuestionType,
         questions: [QuizQuestion],
+        timerMinutes: Int? = nil,
         attempts: [QuizAttempt] = [],
         createdAt: Date = .now
     ) {
@@ -42,9 +51,13 @@ struct Quiz: Identifiable, Equatable, Sendable, Codable {
         self.materialId = materialId
         self.questionType = questionType
         self.questions = questions
+        self.timerMinutes = timerMinutes
         self.attempts = attempts
         self.createdAt = createdAt
     }
+
+    /// Whether the quiz runs against a clock.
+    var isTimed: Bool { timerMinutes != nil }
 
     /// The most recent attempt, when one exists.
     var latestAttempt: QuizAttempt? { attempts.first }
