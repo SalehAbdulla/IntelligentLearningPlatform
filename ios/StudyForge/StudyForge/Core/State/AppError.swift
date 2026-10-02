@@ -165,6 +165,10 @@ extension AppError {
         // our defect, so it carries a reference and a retry rather than a generic apology.
         if let folderError = error as? FolderError { return folderError.asAppError }
 
+        // And for the bookmark store: failing to read the student's OWN collections is our defect,
+        // so it carries a reference and a retry rather than a generic apology.
+        if let bookmarkError = error as? BookmarkError { return bookmarkError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
