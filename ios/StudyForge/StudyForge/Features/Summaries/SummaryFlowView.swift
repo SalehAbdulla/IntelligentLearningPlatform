@@ -88,6 +88,15 @@ struct SummaryFlowView: View {
                 title: { viewModel.languageTitle($0) }
             )
 
+            SFTextField(
+                label: viewModel.focusLabel,
+                text: $viewModel.focusTopics,
+                placeholder: viewModel.focusPlaceholder,
+                submitLabel: .done,
+                autocorrectionDisabled: false,
+                onSubmit: {}
+            )
+
             SFPrimaryButton(
                 title: viewModel.generateTitle,
                 isLoading: viewModel.isGenerating,
