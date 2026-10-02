@@ -13,6 +13,10 @@ struct QuizTakeView: View {
     @State private var viewModel: QuizTakeViewModel
     @Environment(\.dismiss) private var dismiss
 
+    /// Drives the countdown. A one-second pulse is ample: the clock is shown to the second, and the
+    /// view model decides whether the quiz is even timed, so an untimed quiz ticks to no effect.
+    private let clock = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
     init(quiz: Quiz, store: any QuizStore) {
         _viewModel = State(initialValue: QuizTakeViewModel(quiz: quiz, store: store))
     }
@@ -33,8 +37,43 @@ struct QuizTakeView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(L10n.commonClose.string) { dismiss() }
                 }
+                if viewModel.phase != .scorecard {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button(viewModel.submitTitle) { viewModel.requestSubmit() }
+                    }
+                }
+            }
+            .onReceive(clock) { _ in
+                Task { await viewModel.tick() }
+            }
+            .alert(viewModel.submitConfirmTitle, isPresented: isConfirmingSubmit) {
+                Button(L10n.commonCancel.string, role: .cancel) { viewModel.cancelSubmit() }
+                Button(viewModel.submitTitle) { Task { await viewModel.confirmSubmit() } }
+            } message: {
+                Text(viewModel.submitConfirmBody)
             }
         }
+    }
+
+    /// Bridges the view model's write-once flag to an `alert(_:isPresented:)` binding.
+    private var isConfirmingSubmit: Binding<Bool> {
+        Binding(
+            get: { viewModel.isConfirmingSubmit },
+            set: { if !$0 { viewModel.cancelSubmit() } }
+        )
+    }
+
+    private func flagButton(_ question: QuizQuestion) -> some View {
+        Button {
+            viewModel.toggleFlag(for: question)
+        } label: {
+            Image(systemName: viewModel.isFlagged(question) ? "flag.fill" : "flag")
+                .font(.sfBody)
+                .foregroundStyle(viewModel.isFlagged(question) ? ColorTokens.primary : ColorTokens.textSecondary)
+                .frame(minWidth: Layout.minTouchTarget, minHeight: Layout.minTouchTarget, alignment: .trailing)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(viewModel.flagTitle(for: question))
     }
 
     // MARK: Question
@@ -44,9 +83,24 @@ struct QuizTakeView: View {
             ProgressView(value: Double(viewModel.currentIndex), total: Double(viewModel.quiz.questions.count))
                 .tint(ColorTokens.primary)
 
-            Text(viewModel.progress)
-                .font(.sfFootnote)
-                .foregroundStyle(ColorTokens.textSecondary)
+            HStack(spacing: Spacing.s3) {
+                Text(viewModel.progress)
+                    .font(.sfFootnote)
+                    .foregroundStyle(ColorTokens.textSecondary)
+
+                if let time = viewModel.timeRemainingLabel {
+                    Text(time)
+                        .font(.sfFootnote)
+                        .foregroundStyle(ColorTokens.textSecondary)
+                        .monospacedDigit()
+                }
+
+                Spacer(minLength: Spacing.s2)
+
+                if let current = viewModel.currentQuestion {
+                    flagButton(current)
+                }
+            }
 
             if let current = viewModel.currentQuestion {
                 Text(current.stem)
@@ -73,6 +127,17 @@ struct QuizTakeView: View {
     private var feedback: some View {
         VStack(alignment: .leading, spacing: Spacing.s6) {
             if let current = viewModel.currentQuestion {
+                HStack(spacing: Spacing.s3) {
+                    if let time = viewModel.timeRemainingLabel {
+                        Text(time)
+                            .font(.sfFootnote)
+                            .foregroundStyle(ColorTokens.textSecondary)
+                            .monospacedDigit()
+                    }
+                    Spacer(minLength: Spacing.s2)
+                    flagButton(current)
+                }
+
                 banner(isCorrect: viewModel.lastResponseIsCorrect == true)
 
                 Text(current.explanation)
