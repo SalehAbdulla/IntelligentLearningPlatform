@@ -44,6 +44,7 @@ struct SignedInHomeView: View {
                     quizzesLink
                     studyPlanLink
                     progressLink
+                    foldersLink
                     profileLink
 
                     #if DEBUG
@@ -198,6 +199,24 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.progressTitle.string, systemImage: "chart.bar")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Folders
+
+    /// The way into shared folders (I01).
+    private var foldersLink: some View {
+        NavigationLink {
+            FolderListView(
+                store: container.folders,
+                materials: container.materials,
+                ownerName: session?.displayName ?? ""
+            )
+        } label: {
+            Label(L10n.folderTitle.string, systemImage: "folder")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
