@@ -259,3 +259,37 @@
 "import.error.text"         = "الصق المادة أولًا.";
 "import.error.unreadable"   = "تعذّر فتح ذلك الملف.";
 "import.error.noText"       = "لم نعثر على أي نص فيه.";
+
+/* ── F03 الملخص بالذكاء الاصطناعي (docs/03 §D) ────────────────────────── */
+"summary.title"              = "تلخيص المادة";
+"summary.lengthLabel"        = "الطول";
+"summary.length.short"       = "قصير";
+"summary.length.standard"    = "قياسي";
+"summary.length.examReady"   = "جاهز للاختبار";
+"summary.styleLabel"         = "الأسلوب";
+"summary.style.bullets"      = "نقاط موجزة";
+"summary.style.narrative"    = "سردي";
+"summary.style.cornell"      = "ملاحظات كورنيل";
+"summary.languageLabel"      = "اللغة";
+"summary.language.english"   = "English";
+"summary.language.arabic"    = "العربية";
+"summary.generate"           = "إنشاء الملخص";
+"summary.generating.title"   = "جارٍ كتابة ملخصك…";
+"summary.generating.body"    = "جارٍ قراءة المادة واستخراج ما يهم منها.";
+"summary.tldrHeading"        = "باختصار";
+"summary.keyPointsHeading"   = "النقاط الرئيسية";
+"summary.glossaryHeading"    = "المصطلحات";
+"summary.save"               = "حفظ الملخص";
+"summary.saving"             = "جارٍ الحفظ…";
+"summary.savedTitle"         = "تم حفظ الملخص";
+"summary.savedBody"          = "محفوظ على جهازك.";
+"summary.source"             = "المصدر";
+"summary.confidence.high"    = "ثقة عالية";
+"summary.confidence.medium"  = "ثقة متوسطة";
+"summary.confidence.low"     = "ثقة منخفضة — راجع";
+"summary.engine.onDevice"    = "على الجهاز · خاص";
+"summary.engine.firebaseAI"  = "سحابي (Firebase AI)";
+"summary.engine.cloudFunction" = "سحابي (الخادم)";
+
+/* المكتبة: زر إنشاء الملخص لكل مادة. */
+"library.summarise"          = "لخّص";
