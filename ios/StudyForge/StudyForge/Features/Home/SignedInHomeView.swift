@@ -116,7 +116,11 @@ struct SignedInHomeView: View {
     /// reason it carries the profile link.
     private var libraryLink: some View {
         NavigationLink {
-            MaterialLibraryView(store: container.materials)
+            MaterialLibraryView(
+                store: container.materials,
+                summaryStore: container.summaries,
+                router: container.ai
+            )
         } label: {
             Label(L10n.libraryTitle.string, systemImage: "books.vertical")
                 .font(.sfBodyEmph)
