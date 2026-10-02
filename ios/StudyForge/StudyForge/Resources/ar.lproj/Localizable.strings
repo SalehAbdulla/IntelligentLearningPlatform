@@ -380,6 +380,15 @@
 "quiz.reviewAnswers"   = "راجع الإجابات";
 "quiz.yourAnswer"      = "إجابتك";
 "quiz.correctAnswer"   = "الإجابة الصحيحة";
+"quiz.timerLabel"      = "الحد الزمني";
+"quiz.timerToggle"     = "اختبار بمؤقّت";
+"quiz.minutes"         = "%d دقيقة";
+"quiz.submit"          = "إرسال";
+"quiz.submitConfirm.title" = "إرسال الاختبار؟";
+"quiz.submitConfirm.body"  = "أجبت عن %d من %d. لا يمكنك تغيير إجاباتك بعد الإرسال.";
+"quiz.flag"            = "وضع علامة على هذا السؤال";
+"quiz.unflag"          = "إزالة العلامة";
+"quiz.timeRemaining"   = "الوقت المتبقي %@";
 
 /* ── F06 الخطة الدراسية (docs/03 §G) ──────────────────────────────────── */
 "plan.title"           = "الخطة الدراسية";
