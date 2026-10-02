@@ -421,6 +421,29 @@ enum L10n: String, CaseIterable, Sendable {
     case planWeekHeading     = "plan.weekHeading"
     case planNoSessions      = "plan.noSessions"
     case planMinutes         = "plan.minutes"
+
+    // MARK: F07 Progress
+    case progressTitle          = "progress.title"
+    case progressEmptyTitle     = "progress.emptyTitle"
+    case progressEmptyBody      = "progress.emptyBody"
+    case progressMastery        = "progress.mastery"
+    case progressStreak         = "progress.streak"
+    case progressHoursThisWeek  = "progress.hoursThisWeek"
+    case progressHoursValue     = "progress.hoursValue"
+    case progressWeeklyHeading  = "progress.weeklyHeading"
+    case progressGoalHeading    = "progress.goalHeading"
+    case progressGoalCaption    = "progress.goalCaption"
+    case progressSubjectsHeading = "progress.subjectsHeading"
+    case progressNoSubjects     = "progress.noSubjects"
+    case progressRadarTitle     = "progress.radarTitle"
+    case progressRadarEmpty     = "progress.radarEmpty"
+    case progressWeakTopicsHeading = "progress.weakTopicsHeading"
+    case progressNoWeakTopics   = "progress.noWeakTopics"
+    case progressMasteryValue   = "progress.masteryValue"
+    case progressStreakValue    = "progress.streakValue"
+    case progressQuizzesTaken   = "progress.quizzesTaken"
+    case progressCardsMastered  = "progress.cardsMastered"
+    case progressCardsValue     = "progress.cardsValue"
 }
 
 // MARK: - Resolution
