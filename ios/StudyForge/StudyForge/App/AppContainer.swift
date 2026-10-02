@@ -107,6 +107,17 @@ final class AppContainer {
     /// touch no disk at all.
     let materials: any MaterialStore
 
+    /// The student's saved AI summaries (F03). LOCAL-FIRST, like `materials`, and owned by the
+    /// same "no source file leaves the device" decision — a summary is derived from text that
+    /// already lives here. Protocol-backed so a screen can be previewed and tested with
+    /// `InMemorySummaryStore`.
+    let summaries: any SummaryStore
+
+    /// The three-tier AI router (F03). One place decides which engine runs a task, so no screen
+    /// ever hard-codes an engine. Constructed here like every other service, so a preview or a
+    /// test can swap in a router whose engines are all mocks.
+    let ai: AIRouter
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -144,6 +155,8 @@ final class AppContainer {
         profile: any ProfileService,
         // Defaulted so a container built for a preview or a test needs no disk: see `materials`.
         materials: any MaterialStore = InMemoryMaterialStore(),
+        summaries: any SummaryStore = InMemorySummaryStore(),
+        ai: AIRouter = AIRouter.standard(governor: AICostGovernor()),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -151,6 +164,8 @@ final class AppContainer {
         self.auth = auth
         self.profile = profile
         self.materials = materials
+        self.summaries = summaries
+        self.ai = ai
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -305,7 +320,8 @@ extension AppContainer {
             firebaseSource: source,
             auth: auth,
             profile: profile,
-            materials: materials
+            materials: materials,
+            summaries: FileSummaryStore()
         )
     }
 
