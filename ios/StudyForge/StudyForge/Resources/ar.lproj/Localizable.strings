@@ -293,3 +293,53 @@
 
 /* المكتبة: زر إنشاء الملخص لكل مادة. */
 "library.summarise"          = "لخّص";
+"library.makeCards"          = "إنشاء بطاقات";
+
+/* ── F04 البطاقات التعليمية (docs/03 §E) ─────────────────────────────── */
+"deck.title"          = "البطاقات التعليمية";
+"deck.newDeck"        = "مجموعة جديدة";
+"deck.emptyTitle"     = "لا توجد مجموعات بعد";
+"deck.emptyBody"      = "حوّل مادة إلى بطاقات وستبقى هنا، مجدولة للمراجعة.";
+"deck.studyNow"       = "ادرس الآن";
+"deck.cardsHeading"   = "البطاقات";
+"deck.dueLabel"       = "مستحق";
+"deck.newLabel"       = "جديد";
+"deck.learningLabel"  = "قيد التعلم";
+"deck.masteredLabel"  = "متقن";
+
+"flashcard.generateTitle"         = "إنشاء بطاقات";
+"flashcard.sourceLabel"           = "المادة";
+"flashcard.sourcePrompt"          = "اختر مادة";
+"flashcard.countLabel"            = "عدد البطاقات";
+"flashcard.difficultyLabel"       = "الصعوبة";
+"flashcard.difficulty.recall"     = "استرجاع";
+"flashcard.difficulty.understanding" = "فهم";
+"flashcard.difficulty.mixed"      = "مختلط";
+"flashcard.generate"              = "إنشاء البطاقات";
+"flashcard.generating.title"      = "جارٍ كتابة بطاقاتك…";
+"flashcard.generating.body"       = "جارٍ تحويل المادة إلى أسئلة وأجوبة.";
+"flashcard.reviewHeading"         = "راجع بطاقاتك";
+"flashcard.deckNameLabel"         = "اسم المجموعة";
+"flashcard.saveDeck"              = "حفظ المجموعة";
+"flashcard.savingDeck"            = "جارٍ الحفظ…";
+"flashcard.savedTitle"            = "تم حفظ المجموعة";
+"flashcard.savedBody"             = "بطاقاتك جاهزة للدراسة.";
+"flashcard.source"                = "المصدر";
+
+"flashcard.reviewTitle"          = "ادرس";
+"flashcard.progress"             = "%d من %d";
+"flashcard.tapToReveal"          = "اضغط لكشف الإجابة";
+"flashcard.rating.again"         = "مرة أخرى";
+"flashcard.rating.hard"          = "صعب";
+"flashcard.rating.good"          = "جيد";
+"flashcard.rating.easy"          = "سهل";
+"flashcard.interval.again"       = "أقل من دقيقة";
+"flashcard.interval.days"        = "%d يوم";
+"flashcard.interval.months"      = "%d شهر";
+"flashcard.sessionTitle"         = "اكتملت الجلسة";
+"flashcard.sessionReviewed"      = "البطاقات المراجَعة";
+"flashcard.sessionAccuracy"      = "الدقة";
+"flashcard.sessionDone"          = "تم";
+"flashcard.sessionKeepGoing"     = "متابعة";
+"flashcard.emptyTitle"           = "لا شيء مستحق الآن";
+"flashcard.emptyBody"            = "أنت على اطلاع بكل شيء. يمكنك دراسة المجموعة كاملة على أي حال.";
