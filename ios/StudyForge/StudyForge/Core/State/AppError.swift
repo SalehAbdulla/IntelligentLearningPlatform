@@ -144,6 +144,11 @@ extension AppError {
         // is our defect, so it carries a reference and a retry rather than a generic apology.
         if let materialError = error as? MaterialError { return materialError.asAppError }
 
+        // Same reasoning again for the summary store: a failure to read the student's OWN
+        // saved summaries is our defect, so it carries a reference and a retry rather than
+        // a generic apology.
+        if let summaryError = error as? SummaryError { return summaryError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
