@@ -133,6 +133,11 @@ final class AppContainer {
     /// `InMemoryStudyPlanStore`.
     let studyPlans: any StudyPlanStore
 
+    /// The student's shared study folders (F08). LOCAL-FIRST, like the other derived artefacts, so a
+    /// folder is usable before a Firebase project is configured. Protocol-backed so screens can be
+    /// previewed and tested with `InMemoryFolderStore`.
+    let folders: any FolderStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -175,6 +180,7 @@ final class AppContainer {
         decks: any DeckStore = InMemoryDeckStore(),
         quizzes: any QuizStore = InMemoryQuizStore(),
         studyPlans: any StudyPlanStore = InMemoryStudyPlanStore(),
+        folders: any FolderStore = InMemoryFolderStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -187,6 +193,7 @@ final class AppContainer {
         self.decks = decks
         self.quizzes = quizzes
         self.studyPlans = studyPlans
+        self.folders = folders
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -345,7 +352,8 @@ extension AppContainer {
             summaries: FileSummaryStore(),
             decks: FileDeckStore(),
             quizzes: FileQuizStore(),
-            studyPlans: FileStudyPlanStore()
+            studyPlans: FileStudyPlanStore(),
+            folders: FileFolderStore()
         )
     }
 
