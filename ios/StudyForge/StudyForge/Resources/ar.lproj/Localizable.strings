@@ -273,6 +273,8 @@
 "summary.languageLabel"      = "اللغة";
 "summary.language.english"   = "English";
 "summary.language.arabic"    = "العربية";
+"summary.focusLabel"         = "مواضيع التركيز";
+"summary.focusPlaceholder"   = "مثال: التطبيع، الفهارس";
 "summary.generate"           = "إنشاء الملخص";
 "summary.generating.title"   = "جارٍ كتابة ملخصك…";
 "summary.generating.body"    = "جارٍ قراءة المادة واستخراج ما يهم منها.";
