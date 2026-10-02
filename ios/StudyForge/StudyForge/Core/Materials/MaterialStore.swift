@@ -37,7 +37,7 @@ protocol MaterialStore: Sendable {
     func material(id: String) async throws -> Material?
 }
 
-/// Failures from the material store, in the app's own vocabulary.
+/// Failures from the material layer, in the app's own vocabulary.
 enum MaterialError: Error, Equatable {
 
     /// The local store could not be read or written.
@@ -45,6 +45,17 @@ enum MaterialError: Error, Equatable {
     /// One case rather than a code per `FileManager` error: nothing a student can do differs
     /// between them, and the screen shows a retry either way.
     case storageFailed
+
+    /// The source could not be read at all — not a PDF, corrupt, or a format nothing handles yet.
+    case unreadable
+
+    /// The source was read, but there was no text in it.
+    ///
+    /// Kept apart from `unreadable` because the student's next move differs, and so does the
+    /// copy: a photo of a blank page is not a broken file, and telling someone their file is
+    /// unreadable when the real problem is that it has no words in it sends them looking for a
+    /// fault that is not there.
+    case noTextFound
 
     /// Maps to the app's single user-facing error type.
     var asAppError: AppError {
@@ -54,6 +65,10 @@ enum MaterialError: Error, Equatable {
             // "the app could not reach its own storage" — a defect on our side, not the
             // student's mistake.
             .server(reference: "material-store-failed")
+        case .unreadable:
+            .materialUnreadable(reason: L10n.importErrorUnreadable.string)
+        case .noTextFound:
+            .materialUnreadable(reason: L10n.importErrorNoText.string)
         }
     }
 }
