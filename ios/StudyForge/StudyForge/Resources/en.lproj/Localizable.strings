@@ -414,6 +414,17 @@
 "plan.weekHeading"     = "This week";
 "plan.noSessions"      = "No sessions scheduled";
 "plan.minutes"         = "%d min";
+"plan.sessionDetail"   = "Session";
+"plan.duration"        = "Duration";
+"plan.scheduledFor"    = "Scheduled";
+"plan.statusLabel"     = "Status";
+"plan.status.pending"   = "Not started";
+"plan.status.completed" = "Done";
+"plan.status.skipped"   = "Skipped";
+"plan.started"         = "Started";
+"plan.inProgress"      = "In progress";
+"plan.startNow"        = "Start now";
+"plan.reschedule"      = "Reschedule";
 
 /* ── F07 Progress (docs/03 §G, G10–G11) ───────────────────────────────── */
 "progress.title"          = "Progress";
