@@ -40,6 +40,7 @@ struct SignedInHomeView: View {
                     }
 
                     libraryLink
+                    flashcardsLink
                     profileLink
 
                     #if DEBUG
@@ -119,10 +120,29 @@ struct SignedInHomeView: View {
             MaterialLibraryView(
                 store: container.materials,
                 summaryStore: container.summaries,
+                deckStore: container.decks,
                 router: container.ai
             )
         } label: {
             Label(L10n.libraryTitle.string, systemImage: "books.vertical")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Flashcards
+
+    /// The way into the deck list (E01).
+    private var flashcardsLink: some View {
+        NavigationLink {
+            DeckListView(
+                materialStore: container.materials,
+                deckStore: container.decks,
+                router: container.ai
+            )
+        } label: {
+            Label(L10n.deckTitle.string, systemImage: "rectangle.stack")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
