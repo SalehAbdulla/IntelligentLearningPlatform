@@ -32,6 +32,13 @@ final class QuizGenerateViewModel {
     var questionType: QuizQuestionType? = .mixed
     var count: Int? = 10
 
+    /// E02's timer toggle and minutes.
+    ///
+    /// Off by default, because a quiz the student did not ask to be timed should not put them
+    /// against a clock. The minutes default to 10 so flipping the toggle on is immediately usable.
+    var timerEnabled = false
+    var timerMinutes: Int? = 10
+
     /// The quiz name the student can edit before saving. Empty means "use the material's title".
     var quizTitle = ""
 
@@ -77,6 +84,10 @@ final class QuizGenerateViewModel {
     var sourcePrompt: String { L10n.quizSourcePrompt.string }
     var typeLabel: String { L10n.quizTypeLabel.string }
     var countLabel: String { L10n.quizCountLabel.string }
+    var timerLabel: String { L10n.quizTimerLabel.string }
+    var timerToggleTitle: String { L10n.quizTimerToggle.string }
+
+    func minutesTitle(_ minutes: Int) -> String { L10n.quizMinutes.string(minutes) }
     var generateTitle: String { L10n.quizGenerate.string }
     var generatingTitle: String { L10n.quizGeneratingTitle.string }
     var generatingBody: String { L10n.quizGeneratingBody.string }
@@ -156,7 +167,8 @@ final class QuizGenerateViewModel {
             title: name.isEmpty ? (selectedMaterial?.title ?? title) : name,
             materialId: selectedMaterial?.id,
             questionType: questionType ?? .mixed,
-            questions: questions
+            questions: questions,
+            timerMinutes: timerEnabled ? timerMinutes : nil
         )
 
         do {
