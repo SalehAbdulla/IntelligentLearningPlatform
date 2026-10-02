@@ -17,6 +17,13 @@
 //  D24 in code: the screen is written as if the materials were simply there, because on-device is
 //  where they are.
 //
+//  WHY IT ALSO CARRIES A BOOKMARK STORE
+//  ------------------------------------
+//  I17's save sheet is raised "from any screen", and the library is where a student is most likely
+//  to want it — a material they imported is exactly what they bookmark. The store is OPTIONAL so
+//  nothing else about the library changes when F10 is not wired: with no store the save action is
+//  simply not offered, rather than shown inert.
+//
 
 import SwiftUI
 
@@ -31,6 +38,9 @@ struct MaterialLibraryView: View {
     /// The material the student chose to turn into flashcards (F04), presented as a sheet.
     @State private var cardsMaterial: Material?
 
+    /// The material the student chose to bookmark (F10), presented as the save sheet.
+    @State private var saveMaterial: Material?
+
     /// Kept because the import sheet needs it. The screen itself only ever asks the view model.
     private let store: any MaterialStore
     private let summaryStore: any SummaryStore
@@ -38,18 +48,23 @@ struct MaterialLibraryView: View {
     private let router: AIRouter
     private let learningStyle: LearningStyle
 
+    /// F10's entry point, optional so the library is unchanged when bookmarks are not wired.
+    private let bookmarkStore: (any BookmarkStore)?
+
     init(
         store: any MaterialStore,
         summaryStore: any SummaryStore,
         deckStore: any DeckStore,
         router: AIRouter,
-        learningStyle: LearningStyle = .visual
+        learningStyle: LearningStyle = .visual,
+        bookmarkStore: (any BookmarkStore)? = nil
     ) {
         self.store = store
         self.summaryStore = summaryStore
         self.deckStore = deckStore
         self.router = router
         self.learningStyle = learningStyle
+        self.bookmarkStore = bookmarkStore
         _viewModel = State(initialValue: MaterialLibraryViewModel(store: store))
     }
 
@@ -103,6 +118,18 @@ struct MaterialLibraryView: View {
                 router: router,
                 learningStyle: learningStyle
             )
+        }
+        .sheet(item: $saveMaterial) { material in
+            if let bookmarkStore {
+                // F10 — the "save from any screen" entry point, raised here because the library is
+                // where a material a student wants to keep is already in front of them.
+                BookmarkSaveSheet(
+                    store: bookmarkStore,
+                    kind: .material,
+                    referenceId: material.id,
+                    itemTitle: material.title
+                )
+            }
         }
         .task { await viewModel.load() }
     }
@@ -210,6 +237,17 @@ struct MaterialLibraryView: View {
                 Task { await viewModel.delete(material) }
             } label: {
                 Label(L10n.commonDelete.string, systemImage: "trash")
+            }
+        }
+        .swipeActions(edge: .leading) {
+            if bookmarkStore != nil {
+                // Offered only when a bookmark store is wired — see the note at the top of the file.
+                Button {
+                    saveMaterial = material
+                } label: {
+                    Label(L10n.bookmarkSave.string, systemImage: "bookmark")
+                }
+                .tint(ColorTokens.primary)
             }
         }
     }
