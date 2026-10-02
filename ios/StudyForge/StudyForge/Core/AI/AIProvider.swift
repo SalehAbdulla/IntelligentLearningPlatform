@@ -74,6 +74,14 @@ struct FlashcardRequest: Sendable {
     let context: AIGenerationContext
     let count: Int
     let difficulty: FlashcardDifficulty
+
+    /// The shape the student asked for (E02's card-type selector).
+    ///
+    /// Defaulted to `.qa`, so a request that omits it produces the question-and-answer cards the
+    /// app shipped with — and every existing call site keeps its behaviour. `var` rather than `let`
+    /// on purpose: a `let` with a default is dropped from the memberwise initialiser, which would
+    /// leave no way to ask for any other shape.
+    var cardType: CardType = .qa
 }
 
 struct QuizRequest: Sendable {
