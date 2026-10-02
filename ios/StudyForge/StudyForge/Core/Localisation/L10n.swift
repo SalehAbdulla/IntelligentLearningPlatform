@@ -274,6 +274,40 @@ enum L10n: String, CaseIterable, Sendable {
     case importErrorText          = "import.error.text"
     case importErrorUnreadable    = "import.error.unreadable"
     case importErrorNoText        = "import.error.noText"
+
+    // MARK: F03 Summary
+    case summaryTitle            = "summary.title"
+    case summaryLengthLabel      = "summary.lengthLabel"
+    case summaryLengthShort      = "summary.length.short"
+    case summaryLengthStandard   = "summary.length.standard"
+    case summaryLengthExamReady  = "summary.length.examReady"
+    case summaryStyleLabel       = "summary.styleLabel"
+    case summaryStyleBullets     = "summary.style.bullets"
+    case summaryStyleNarrative   = "summary.style.narrative"
+    case summaryStyleCornell     = "summary.style.cornell"
+    case summaryLanguageLabel    = "summary.languageLabel"
+    case summaryLanguageEnglish  = "summary.language.english"
+    case summaryLanguageArabic   = "summary.language.arabic"
+    case summaryGenerate         = "summary.generate"
+    case summaryGeneratingTitle  = "summary.generating.title"
+    case summaryGeneratingBody   = "summary.generating.body"
+    case summaryTldrHeading      = "summary.tldrHeading"
+    case summaryKeyPointsHeading = "summary.keyPointsHeading"
+    case summaryGlossaryHeading  = "summary.glossaryHeading"
+    case summarySave             = "summary.save"
+    case summarySaving           = "summary.saving"
+    case summarySavedTitle       = "summary.savedTitle"
+    case summarySavedBody        = "summary.savedBody"
+    case summarySource           = "summary.source"
+    case summaryConfidenceHigh   = "summary.confidence.high"
+    case summaryConfidenceMedium = "summary.confidence.medium"
+    case summaryConfidenceLow    = "summary.confidence.low"
+    case summaryEngineOnDevice   = "summary.engine.onDevice"
+    case summaryEngineFirebaseAI = "summary.engine.firebaseAI"
+    case summaryEngineCloudFunction = "summary.engine.cloudFunction"
+
+    /// The library's per-material "generate a summary" affordance.
+    case librarySummarise        = "library.summarise"
 }
 
 // MARK: - Resolution
