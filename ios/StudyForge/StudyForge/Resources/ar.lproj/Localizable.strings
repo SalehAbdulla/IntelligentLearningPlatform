@@ -404,3 +404,26 @@
 "plan.weekHeading"     = "هذا الأسبوع";
 "plan.noSessions"      = "لا توجد جلسات مجدولة";
 "plan.minutes"         = "%d دقيقة";
+
+/* ── F07 التقدّم (docs/03 §G) ─────────────────────────────────────────── */
+"progress.title"          = "التقدّم";
+"progress.emptyTitle"     = "لا يوجد شيء لعرضه بعد";
+"progress.emptyBody"      = "أضف مادة أو أجرِ اختبارًا أو أكمل جلسة دراسة وسيظهر تقدّمك هنا.";
+"progress.mastery"        = "الإتقان";
+"progress.streak"         = "أيام متتالية";
+"progress.hoursThisWeek"  = "هذا الأسبوع";
+"progress.hoursValue"     = "%d ساعة";
+"progress.weeklyHeading"  = "نشاط هذا الأسبوع";
+"progress.goalHeading"    = "الهدف الأسبوعي";
+"progress.goalCaption"    = "%d من %d ساعات";
+"progress.subjectsHeading" = "المواد قيد التقدّم";
+"progress.noSubjects"     = "أنشئ خطة دراسية لتتبّع المواد هنا.";
+"progress.radarTitle"     = "قوة المواضيع";
+"progress.radarEmpty"     = "أجرِ اختبارًا لبناء خريطة مواضيعك.";
+"progress.weakTopicsHeading" = "ركّز على هذه";
+"progress.noWeakTopics"   = "لا توجد مواضيع ضعيفة بعد — أجرِ اختبارًا لاكتشافها.";
+"progress.masteryValue"   = "%d%%";
+"progress.streakValue"    = "%d";
+"progress.quizzesTaken"   = "الاختبارات المُجراة";
+"progress.cardsMastered"  = "البطاقات المتقنة";
+"progress.cardsValue"     = "%d من %d";
