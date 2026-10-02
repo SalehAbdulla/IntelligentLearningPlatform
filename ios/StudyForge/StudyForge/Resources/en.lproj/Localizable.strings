@@ -381,6 +381,15 @@
 "quiz.reviewAnswers"   = "Review answers";
 "quiz.yourAnswer"      = "Your answer";
 "quiz.correctAnswer"   = "Correct answer";
+"quiz.timerLabel"      = "Time limit";
+"quiz.timerToggle"     = "Timed quiz";
+"quiz.minutes"         = "%d min";
+"quiz.submit"          = "Submit";
+"quiz.submitConfirm.title" = "Submit quiz?";
+"quiz.submitConfirm.body"  = "%d of %d answered. You can't change answers after submitting.";
+"quiz.flag"            = "Flag this question";
+"quiz.unflag"          = "Remove flag";
+"quiz.timeRemaining"   = "Time left %@";
 
 /* ── F06 Study plan (docs/03 §G) ──────────────────────────────────────── */
 "plan.title"           = "Study plan";
