@@ -28,20 +28,26 @@ struct MaterialLibraryView: View {
     /// The material the student chose to summarise (F03), presented as a sheet.
     @State private var summaryMaterial: Material?
 
+    /// The material the student chose to turn into flashcards (F04), presented as a sheet.
+    @State private var cardsMaterial: Material?
+
     /// Kept because the import sheet needs it. The screen itself only ever asks the view model.
     private let store: any MaterialStore
     private let summaryStore: any SummaryStore
+    private let deckStore: any DeckStore
     private let router: AIRouter
     private let learningStyle: LearningStyle
 
     init(
         store: any MaterialStore,
         summaryStore: any SummaryStore,
+        deckStore: any DeckStore,
         router: AIRouter,
         learningStyle: LearningStyle = .visual
     ) {
         self.store = store
         self.summaryStore = summaryStore
+        self.deckStore = deckStore
         self.router = router
         self.learningStyle = learningStyle
         _viewModel = State(initialValue: MaterialLibraryViewModel(store: store))
@@ -86,6 +92,15 @@ struct MaterialLibraryView: View {
                 material: material,
                 router: router,
                 store: summaryStore,
+                learningStyle: learningStyle
+            )
+        }
+        .sheet(item: $cardsMaterial) { material in
+            FlashcardGenerateView(
+                initialMaterial: material,
+                materialStore: store,
+                deckStore: deckStore,
+                router: router,
                 learningStyle: learningStyle
             )
         }
@@ -177,6 +192,17 @@ struct MaterialLibraryView: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(L10n.librarySummarise.string)
+
+            Button {
+                cardsMaterial = material
+            } label: {
+                Image(systemName: "rectangle.stack")
+                    .font(.sfBody)
+                    .foregroundStyle(ColorTokens.primary)
+                    .frame(minWidth: Layout.minTouchTarget, minHeight: Layout.minTouchTarget)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(L10n.libraryMakeCards.string)
         }
         .padding(.vertical, Spacing.s2)
         .swipeActions(edge: .trailing) {
@@ -196,6 +222,7 @@ struct MaterialLibraryView: View {
         MaterialLibraryView(
             store: InMemoryMaterialStore(seededWith: Material.samples),
             summaryStore: InMemorySummaryStore(),
+            deckStore: InMemoryDeckStore(),
             router: AIRouter.standard(governor: AICostGovernor())
         )
     }
@@ -206,6 +233,7 @@ struct MaterialLibraryView: View {
         MaterialLibraryView(
             store: InMemoryMaterialStore(),
             summaryStore: InMemorySummaryStore(),
+            deckStore: InMemoryDeckStore(),
             router: AIRouter.standard(governor: AICostGovernor())
         )
     }
