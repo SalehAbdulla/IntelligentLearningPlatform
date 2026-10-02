@@ -79,10 +79,15 @@ enum PromptTemplates {
         case .cornell: "Separate the output into cue questions and their answers, as Cornell notes do."
         }
 
+        let focus = request.focusTopics.trimmingCharacters(in: .whitespacesAndNewlines)
+        let focusGuidance = focus.isEmpty
+            ? ""
+            : "\nFocus especially on: \(focus). Cover the rest of the material only in passing."
+
         return """
         Summarise the material below.
 
-        Produce \(lengthGuidance). \(styleGuidance)
+        Produce \(lengthGuidance). \(styleGuidance)\(focusGuidance)
 
         \(source(request.context))
         """
