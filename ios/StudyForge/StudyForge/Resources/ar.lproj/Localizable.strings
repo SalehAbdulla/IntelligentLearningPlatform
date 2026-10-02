@@ -427,3 +427,29 @@
 "progress.quizzesTaken"   = "الاختبارات المُجراة";
 "progress.cardsMastered"  = "البطاقات المتقنة";
 "progress.cardsValue"     = "%d من %d";
+
+/* ── F08 المجلدات المشتركة (docs/03 §I) ───────────────────────────────── */
+"folder.title"            = "المجلدات المشتركة";
+"folder.newFolder"        = "مجلد جديد";
+"folder.emptyTitle"       = "لا توجد مجلدات بعد";
+"folder.emptyBody"        = "أنشئ مجلدًا لمشاركة المواد والمجموعات مع فريق دراستك.";
+"folder.nameLabel"        = "اسم المجلد";
+"folder.namePlaceholder"  = "مراجعة قواعد البيانات";
+"folder.create"           = "إنشاء المجلد";
+"folder.creating"         = "جارٍ الإنشاء…";
+"folder.itemsTab"         = "العناصر";
+"folder.membersTab"       = "الأعضاء";
+"folder.noItems"          = "لا شيء مشترك هنا بعد.";
+"folder.addItem"          = "إضافة عنصر";
+"folder.addItemsTitle"    = "أضف من مكتبتك";
+"folder.addMember"        = "إضافة عضو";
+"folder.memberNameLabel"  = "الاسم";
+"folder.memberNamePlaceholder" = "رفيق الدراسة";
+"folder.permissionLabel"  = "الصلاحية";
+"folder.roleOwner"        = "المالك";
+"folder.permission.view"  = "عرض";
+"folder.permission.comment" = "تعليق";
+"folder.permission.edit"  = "تحرير";
+"folder.itemCount"        = "%d عناصر";
+"folder.memberCount"      = "%d أعضاء";
+"folder.memberExists"     = "هذا الشخص موجود بالفعل في هذا المجلد.";
