@@ -123,6 +123,22 @@ struct QuizGenerateView: View {
                 title: { "\($0)" }
             )
 
+            // E02's timer toggle and minutes. The minutes control appears only when the toggle is
+            // on, so the config stays short for the common untimed case.
+            VStack(alignment: .leading, spacing: Spacing.s3) {
+                Toggle(viewModel.timerToggleTitle, isOn: $viewModel.timerEnabled)
+                    .tint(ColorTokens.primary)
+
+                if viewModel.timerEnabled {
+                    SFSegmentedField(
+                        label: viewModel.timerLabel,
+                        selection: $viewModel.timerMinutes,
+                        options: [5, 10, 15, 20],
+                        title: { viewModel.minutesTitle($0) }
+                    )
+                }
+            }
+
             SFPrimaryButton(
                 title: viewModel.generateTitle,
                 isLoading: viewModel.isGenerating,
