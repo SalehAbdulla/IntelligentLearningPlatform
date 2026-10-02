@@ -42,6 +42,9 @@ final class SummaryFlowViewModel {
     var style: SummaryStyle? = .bullets
     var language: OutputLanguage? = .english
 
+    /// D01's focus-topics field. Empty means "cover the material evenly".
+    var focusTopics = ""
+
     // MARK: Derived state
 
     private(set) var isGenerating = false
@@ -88,6 +91,8 @@ final class SummaryFlowViewModel {
     var lengthLabel: String { L10n.summaryLengthLabel.string }
     var styleLabel: String { L10n.summaryStyleLabel.string }
     var languageLabel: String { L10n.summaryLanguageLabel.string }
+    var focusLabel: String { L10n.summaryFocusLabel.string }
+    var focusPlaceholder: String { L10n.summaryFocusPlaceholder.string }
     var generateTitle: String { L10n.summaryGenerate.string }
     var generatingTitle: String { L10n.summaryGeneratingTitle.string }
     var generatingBody: String { L10n.summaryGeneratingBody.string }
@@ -180,7 +185,7 @@ final class SummaryFlowViewModel {
 
         do {
             result = try await router.summarize(
-                SummaryRequest(context: context, length: length, style: style)
+                SummaryRequest(context: context, length: length, style: style, focusTopics: focusTopics)
             )
         } catch {
             self.error = AppError.from(error)
