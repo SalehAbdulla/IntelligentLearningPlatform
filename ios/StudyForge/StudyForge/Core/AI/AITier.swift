@@ -20,7 +20,7 @@ import Foundation
 // MARK: - Tier
 
 /// The three execution tiers, in preference order.
-enum AITier: String, Sendable, CaseIterable, Comparable {
+enum AITier: String, Sendable, CaseIterable, Comparable, Codable {
     /// **Tier 0** — Apple Foundation Models, on-device. Free, private, offline.
     case onDevice = "on-device"
     /// **Tier 1** — Firebase AI Logic / Gemini free tier. Works in the Simulator;
