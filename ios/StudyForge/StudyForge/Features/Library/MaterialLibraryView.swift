@@ -23,8 +23,13 @@ import SwiftUI
 struct MaterialLibraryView: View {
 
     @State private var viewModel: MaterialLibraryViewModel
+    @State private var isImporting = false
+
+    /// Kept because the import sheet needs it. The screen itself only ever asks the view model.
+    private let store: any MaterialStore
 
     init(store: any MaterialStore) {
+        self.store = store
         _viewModel = State(initialValue: MaterialLibraryViewModel(store: store))
     }
 
@@ -46,6 +51,22 @@ struct MaterialLibraryView: View {
         .navigationTitle(viewModel.title)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.query, prompt: Text(viewModel.searchPrompt))
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    isImporting = true
+                } label: {
+                    Label(L10n.importTitle.string, systemImage: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $isImporting) {
+            ImportMaterialView(store: store) {
+                // Reloaded rather than appended: one path back from the store, so the new material
+                // is where it would be on the next launch too.
+                Task { await viewModel.load() }
+            }
+        }
         .task { await viewModel.load() }
     }
 
