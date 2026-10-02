@@ -315,6 +315,11 @@
 "flashcard.difficulty.recall"     = "Recall";
 "flashcard.difficulty.understanding" = "Understanding";
 "flashcard.difficulty.mixed"      = "Mixed";
+"flashcard.typeLabel"             = "Card type";
+"flashcard.type.qa"               = "Q & A";
+"flashcard.type.cloze"            = "Cloze";
+"flashcard.type.imageOcclusion"   = "Image occlusion";
+"flashcard.type.reversible"       = "Reversible";
 "flashcard.generate"              = "Generate cards";
 "flashcard.generating.title"      = "Writing your cards…";
 "flashcard.generating.body"       = "Turning the material into questions and answers.";
