@@ -398,6 +398,17 @@ enum L10n: String, CaseIterable, Sendable {
     case quizYourAnswer         = "quiz.yourAnswer"
     case quizCorrectAnswer      = "quiz.correctAnswer"
 
+    // MARK: F05 quiz timer, flagging and submit
+    case quizTimerLabel         = "quiz.timerLabel"
+    case quizTimerToggle        = "quiz.timerToggle"
+    case quizMinutes            = "quiz.minutes"
+    case quizSubmit             = "quiz.submit"
+    case quizSubmitConfirmTitle = "quiz.submitConfirm.title"
+    case quizSubmitConfirmBody  = "quiz.submitConfirm.body"
+    case quizFlag               = "quiz.flag"
+    case quizUnflag             = "quiz.unflag"
+    case quizTimeRemaining      = "quiz.timeRemaining"
+
     // MARK: F06 Study plan
     case planTitle           = "plan.title"
     case planNewPlan         = "plan.newPlan"
