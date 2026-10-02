@@ -153,6 +153,38 @@ struct SummaryFlowViewModelTests {
         #expect(viewModel.savedSummary == nil)
     }
 
+    // MARK: Focus topics (D01)
+
+    @Test("Focus topics reach the prompt, and an empty focus adds no instruction")
+    func focusTopicsReachThePrompt() {
+        let context = AIGenerationContext(
+            materialId: "m1",
+            text: sampleText,
+            language: .english,
+            learningStyle: .visual
+        )
+
+        let focused = PromptTemplates.summarize(
+            SummaryRequest(context: context, length: .standard, style: .bullets, focusTopics: "  normalisation  ")
+        )
+        #expect(focused.contains("Focus especially on: normalisation"), "the focus is trimmed and included")
+
+        let even = PromptTemplates.summarize(
+            SummaryRequest(context: context, length: .standard, style: .bullets)
+        )
+        #expect(even.contains("Focus especially on:") == false)
+    }
+
+    @Test("Setting focus topics does not stop generation from working")
+    func focusTopicsGenerate() async {
+        let viewModel = model(material: material())
+        viewModel.focusTopics = "normalisation"
+
+        await viewModel.generate()
+
+        #expect(viewModel.result != nil)
+    }
+
     // MARK: Copy
 
     @Test("Every string comes from the catalogue")
@@ -163,6 +195,7 @@ struct SummaryFlowViewModelTests {
         #expect(viewModel.lengthLabel == L10n.summaryLengthLabel.string)
         #expect(viewModel.styleLabel == L10n.summaryStyleLabel.string)
         #expect(viewModel.languageLabel == L10n.summaryLanguageLabel.string)
+        #expect(viewModel.focusLabel == L10n.summaryFocusLabel.string)
         #expect(viewModel.generateTitle == L10n.summaryGenerate.string)
         #expect(viewModel.generatingTitle == L10n.summaryGeneratingTitle.string)
         #expect(viewModel.tldrHeading == L10n.summaryTldrHeading.string)
