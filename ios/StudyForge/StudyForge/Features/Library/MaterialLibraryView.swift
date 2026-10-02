@@ -25,11 +25,25 @@ struct MaterialLibraryView: View {
     @State private var viewModel: MaterialLibraryViewModel
     @State private var isImporting = false
 
+    /// The material the student chose to summarise (F03), presented as a sheet.
+    @State private var summaryMaterial: Material?
+
     /// Kept because the import sheet needs it. The screen itself only ever asks the view model.
     private let store: any MaterialStore
+    private let summaryStore: any SummaryStore
+    private let router: AIRouter
+    private let learningStyle: LearningStyle
 
-    init(store: any MaterialStore) {
+    init(
+        store: any MaterialStore,
+        summaryStore: any SummaryStore,
+        router: AIRouter,
+        learningStyle: LearningStyle = .visual
+    ) {
         self.store = store
+        self.summaryStore = summaryStore
+        self.router = router
+        self.learningStyle = learningStyle
         _viewModel = State(initialValue: MaterialLibraryViewModel(store: store))
     }
 
@@ -66,6 +80,14 @@ struct MaterialLibraryView: View {
                 // is where it would be on the next launch too.
                 Task { await viewModel.load() }
             }
+        }
+        .sheet(item: $summaryMaterial) { material in
+            SummaryFlowView(
+                material: material,
+                router: router,
+                store: summaryStore,
+                learningStyle: learningStyle
+            )
         }
         .task { await viewModel.load() }
     }
@@ -115,33 +137,48 @@ struct MaterialLibraryView: View {
     private func row(_ material: Material) -> some View {
         HStack(spacing: Spacing.s3) {
 
-            Image(systemName: material.source.symbolName)
-                .font(.sfBody)
-                .foregroundStyle(ColorTokens.primary)
-                .frame(minWidth: Spacing.s6, alignment: .leading)
-                .accessibilityHidden(true)
+            // The icon + title + tags read as one statement, so VoiceOver does not announce them
+            // as three fragments. The Summarise button stays a separate element beside them.
+            HStack(spacing: Spacing.s3) {
+                Image(systemName: material.source.symbolName)
+                    .font(.sfBody)
+                    .foregroundStyle(ColorTokens.primary)
+                    .frame(minWidth: Spacing.s6, alignment: .leading)
+                    .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: Spacing.s1) {
-                Text(material.title)
-                    .font(.sfBodyEmph)
-                    .foregroundStyle(ColorTokens.textPrimary)
-                    .lineLimit(2)
+                VStack(alignment: .leading, spacing: Spacing.s1) {
+                    Text(material.title)
+                        .font(.sfBodyEmph)
+                        .foregroundStyle(ColorTokens.textPrimary)
+                        .lineLimit(2)
 
-                if !material.tags.isEmpty {
-                    Text(material.tags.map { "#\($0)" }.joined(separator: "  "))
-                        .font(.sfCaption)
-                        .foregroundStyle(ColorTokens.textSecondary)
-                        .lineLimit(1)
+                    if !material.tags.isEmpty {
+                        Text(material.tags.map { "#\($0)" }.joined(separator: "  "))
+                            .font(.sfCaption)
+                            .foregroundStyle(ColorTokens.textSecondary)
+                            .lineLimit(1)
+                    }
                 }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(material.title), \(material.source.title)")
 
             Spacer(minLength: 0)
+
+            // F03's entry point. The source is the one thing the icon conveys and a screen reader
+            // cannot see, so the action is named rather than drawn.
+            Button {
+                summaryMaterial = material
+            } label: {
+                Image(systemName: "sparkles")
+                    .font(.sfBody)
+                    .foregroundStyle(ColorTokens.primary)
+                    .frame(minWidth: Layout.minTouchTarget, minHeight: Layout.minTouchTarget)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(L10n.librarySummarise.string)
         }
         .padding(.vertical, Spacing.s2)
-        // The source is the one thing the icon conveys and a screen reader cannot see, so it is
-        // said rather than drawn.
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(material.title), \(material.source.title)")
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
                 Task { await viewModel.delete(material) }
@@ -157,13 +194,19 @@ struct MaterialLibraryView: View {
 #Preview("C08 Library — with materials") {
     NavigationStack {
         MaterialLibraryView(
-            store: InMemoryMaterialStore(seededWith: Material.samples)
+            store: InMemoryMaterialStore(seededWith: Material.samples),
+            summaryStore: InMemorySummaryStore(),
+            router: AIRouter.standard(governor: AICostGovernor())
         )
     }
 }
 
 #Preview("C08 Library — empty") {
     NavigationStack {
-        MaterialLibraryView(store: InMemoryMaterialStore())
+        MaterialLibraryView(
+            store: InMemoryMaterialStore(),
+            summaryStore: InMemorySummaryStore(),
+            router: AIRouter.standard(governor: AICostGovernor())
+        )
     }
 }
