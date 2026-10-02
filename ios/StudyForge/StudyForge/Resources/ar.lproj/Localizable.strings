@@ -380,3 +380,27 @@
 "quiz.reviewAnswers"   = "راجع الإجابات";
 "quiz.yourAnswer"      = "إجابتك";
 "quiz.correctAnswer"   = "الإجابة الصحيحة";
+
+/* ── F06 الخطة الدراسية (docs/03 §G) ──────────────────────────────────── */
+"plan.title"           = "الخطة الدراسية";
+"plan.newPlan"         = "إنشاء خطة";
+"plan.emptyTitle"      = "لا توجد خطة بعد";
+"plan.emptyBody"       = "أنشئ خطة أسبوعية حول موادك ومواعيدك النهائية.";
+"plan.stepIndicator"   = "الخطوة %d من %d";
+"plan.subjectsHeading" = "ماذا تدرس؟";
+"plan.subjectPlaceholder" = "أضف مادة";
+"plan.addSubject"      = "إضافة";
+"plan.availabilityHeading" = "كم ساعة في الأسبوع؟";
+"plan.deadlineHeading" = "متى اختبارك القادم؟";
+"plan.noDeadline"      = "لا يوجد موعد نهائي";
+"plan.intensityHeading" = "ما مدى الكثافة؟";
+"plan.intensity.light" = "خفيفة";
+"plan.intensity.balanced" = "متوازنة";
+"plan.intensity.intensive" = "مكثفة";
+"plan.generate"        = "إنشاء الخطة";
+"plan.replan"          = "إعادة التخطيط";
+"plan.markDone"        = "وضع علامة منجز";
+"plan.skip"            = "تخطي";
+"plan.weekHeading"     = "هذا الأسبوع";
+"plan.noSessions"      = "لا توجد جلسات مجدولة";
+"plan.minutes"         = "%d دقيقة";
