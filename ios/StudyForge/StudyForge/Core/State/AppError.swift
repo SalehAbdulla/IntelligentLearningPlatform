@@ -153,6 +153,10 @@ extension AppError {
         // our defect, so it carries a reference and a retry rather than a generic apology.
         if let deckError = error as? DeckError { return deckError.asAppError }
 
+        // Same reasoning again for the quiz store: a failure to read the student's OWN quizzes is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let quizError = error as? QuizError { return quizError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
