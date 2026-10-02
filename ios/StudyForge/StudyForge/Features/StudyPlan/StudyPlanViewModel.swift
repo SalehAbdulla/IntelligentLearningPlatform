@@ -50,6 +50,54 @@ final class StudyPlanViewModel {
     var skipTitle: String { L10n.planSkip.string }
     var replanTitle: String { L10n.planReplan.string }
 
+    // MARK: Session detail (G08)
+
+    var sessionDetailTitle: String { L10n.planSessionDetail.string }
+    var durationLabel: String { L10n.planDuration.string }
+    var scheduledLabel: String { L10n.planScheduledFor.string }
+    var statusLabel: String { L10n.planStatusLabel.string }
+    var startedLabel: String { L10n.planStarted.string }
+    var startNowTitle: String { L10n.planStartNow.string }
+    var rescheduleTitle: String { L10n.planReschedule.string }
+    var inProgressTitle: String { L10n.planInProgress.string }
+
+    func statusTitle(_ status: StudySessionStatus) -> String {
+        switch status {
+        case .pending: L10n.planStatusPending.string
+        case .completed: L10n.planStatusCompleted.string
+        case .skipped: L10n.planStatusSkipped.string
+        }
+    }
+
+    func durationTitle(_ minutes: Int) -> String { L10n.planMinutes.string(minutes) }
+
+    /// One session by id, re-read from the plan so the sheet reflects live state after an action.
+    func session(id: String) -> StudySession? {
+        plan?.sessions.first { $0.id == id }
+    }
+
+    /// The detail sheet's summary lines, built here so the view only draws them — the same split
+    /// `SFDetailRow` documents.
+    func detailRows(for session: StudySession) -> [DetailRow] {
+        var rows: [DetailRow] = [
+            DetailRow(id: "duration", label: durationLabel, value: durationTitle(session.estimatedMinutes)),
+            DetailRow(
+                id: "scheduled",
+                label: scheduledLabel,
+                value: session.scheduledAt.formatted(date: .abbreviated, time: .shortened)
+            ),
+            DetailRow(id: "status", label: statusLabel, value: statusTitle(session.status)),
+        ]
+        if let started = session.startedAt {
+            rows.append(DetailRow(
+                id: "started",
+                label: startedLabel,
+                value: started.formatted(date: .omitted, time: .shortened)
+            ))
+        }
+        return rows
+    }
+
     // MARK: Actions
 
     /// Loads the most recently updated plan.
@@ -69,6 +117,35 @@ final class StudyPlanViewModel {
 
     func skip(_ session: StudySession) async {
         await setStatus(.skipped, for: session)
+    }
+
+    /// Marks a session as begun.
+    ///
+    /// A separate fact from `status`: the student has started, and has not yet said they finished.
+    /// Idempotent — starting an already-started session leaves the original time alone rather than
+    /// resetting the clock every time the sheet is opened.
+    func start(_ session: StudySession) async {
+        guard var plan, let index = plan.sessions.firstIndex(where: { $0.id == session.id }) else { return }
+        guard plan.sessions[index].startedAt == nil else { return }
+        plan.sessions[index].startedAt = .now
+        plan.updatedAt = .now
+        await persist(plan)
+    }
+
+    /// Moves a session to the same time the next day, back to pending.
+    ///
+    /// A deterministic one-day push rather than a re-solve: the design's Reschedule is a
+    /// per-session nudge, and re-solving the week would move sessions the student did not ask to
+    /// move — that is what Re-plan is for. The started marker is cleared, because a session moved
+    /// to another day has not been started on the new one.
+    func reschedule(_ session: StudySession) async {
+        guard var plan, let index = plan.sessions.firstIndex(where: { $0.id == session.id }) else { return }
+        plan.sessions[index].scheduledAt = Calendar.current
+            .date(byAdding: .day, value: 1, to: session.scheduledAt) ?? session.scheduledAt
+        plan.sessions[index].status = .pending
+        plan.sessions[index].startedAt = nil
+        plan.updatedAt = .now
+        await persist(plan)
     }
 
     func replan() async {
