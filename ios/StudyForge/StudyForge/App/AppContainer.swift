@@ -118,6 +118,11 @@ final class AppContainer {
     /// test can swap in a router whose engines are all mocks.
     let ai: AIRouter
 
+    /// The student's flashcard decks (F04). LOCAL-FIRST, like `materials` and `summaries`, so a
+    /// review session works offline. Protocol-backed so screens can be previewed and tested with
+    /// `InMemoryDeckStore`.
+    let decks: any DeckStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -157,6 +162,7 @@ final class AppContainer {
         materials: any MaterialStore = InMemoryMaterialStore(),
         summaries: any SummaryStore = InMemorySummaryStore(),
         ai: AIRouter = AIRouter.standard(governor: AICostGovernor()),
+        decks: any DeckStore = InMemoryDeckStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -166,6 +172,7 @@ final class AppContainer {
         self.materials = materials
         self.summaries = summaries
         self.ai = ai
+        self.decks = decks
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -321,7 +328,8 @@ extension AppContainer {
             auth: auth,
             profile: profile,
             materials: materials,
-            summaries: FileSummaryStore()
+            summaries: FileSummaryStore(),
+            decks: FileDeckStore()
         )
     }
 
