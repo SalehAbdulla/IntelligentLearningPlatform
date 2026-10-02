@@ -13,6 +13,9 @@ struct StudyPlanView: View {
     @State private var viewModel: StudyPlanViewModel
     @State private var isCreating = false
 
+    /// The session whose detail sheet is open (G08).
+    @State private var selectedSession: StudySession?
+
     private let store: any StudyPlanStore
 
     init(store: any StudyPlanStore) {
@@ -50,6 +53,9 @@ struct StudyPlanView: View {
             StudyPlanWizardView(store: store) {
                 Task { await viewModel.load() }
             }
+        }
+        .sheet(item: $selectedSession) { session in
+            StudySessionDetailView(viewModel: viewModel, sessionId: session.id)
         }
         .task { await viewModel.load() }
     }
@@ -108,18 +114,31 @@ struct StudyPlanView: View {
                 .fill(ColorTokens.Subject.color(for: session.subject))
                 .frame(width: Spacing.s1, height: Spacing.s10)
 
-            VStack(alignment: .leading, spacing: Spacing.s1) {
-                Text(session.subject)
-                    .font(.sfBodyEmph)
-                    .foregroundStyle(ColorTokens.textPrimary)
-                    .strikethrough(session.status == .completed)
+            // The text area opens the detail sheet (G08). It is a Button rather than a tap gesture
+            // on the whole row so the quick-action Menu beside it stays independently tappable, and
+            // so VoiceOver announces it as the control it is.
+            Button { selectedSession = session } label: {
+                VStack(alignment: .leading, spacing: Spacing.s1) {
+                    Text(session.subject)
+                        .font(.sfBodyEmph)
+                        .foregroundStyle(ColorTokens.textPrimary)
+                        .strikethrough(session.status == .completed)
 
-                Text("\(L10n.planMinutes.string(session.estimatedMinutes)) · \(session.scheduledAt.formatted(date: .omitted, time: .shortened))")
-                    .font(.sfFootnote)
-                    .foregroundStyle(ColorTokens.textSecondary)
+                    Text("\(L10n.planMinutes.string(session.estimatedMinutes)) · \(session.scheduledAt.formatted(date: .omitted, time: .shortened))")
+                        .font(.sfFootnote)
+                        .foregroundStyle(ColorTokens.textSecondary)
+
+                    if session.isInProgress {
+                        Text(viewModel.inProgressTitle)
+                            .font(.sfCaption)
+                            .foregroundStyle(ColorTokens.primary)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(.rect)
             }
-
-            Spacer(minLength: Spacing.s2)
+            .buttonStyle(.plain)
+            .accessibilityHint(viewModel.sessionDetailTitle)
 
             sessionAction(session)
         }
