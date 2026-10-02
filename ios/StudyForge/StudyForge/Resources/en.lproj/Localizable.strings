@@ -428,3 +428,29 @@
 "progress.quizzesTaken"   = "Quizzes taken";
 "progress.cardsMastered"  = "Cards mastered";
 "progress.cardsValue"     = "%d of %d";
+
+/* ── F08 Shared folders (docs/03 §I, I01–I06) ─────────────────────────── */
+"folder.title"            = "Shared folders";
+"folder.newFolder"        = "New folder";
+"folder.emptyTitle"       = "No folders yet";
+"folder.emptyBody"        = "Create a folder to share materials and decks with your study group.";
+"folder.nameLabel"        = "Folder name";
+"folder.namePlaceholder"  = "Database revision";
+"folder.create"           = "Create folder";
+"folder.creating"         = "Creating…";
+"folder.itemsTab"         = "Items";
+"folder.membersTab"       = "Members";
+"folder.noItems"          = "Nothing shared here yet.";
+"folder.addItem"          = "Add item";
+"folder.addItemsTitle"    = "Add from your library";
+"folder.addMember"        = "Add member";
+"folder.memberNameLabel"  = "Name";
+"folder.memberNamePlaceholder" = "Study partner";
+"folder.permissionLabel"  = "Permission";
+"folder.roleOwner"        = "Owner";
+"folder.permission.view"  = "View";
+"folder.permission.comment" = "Comment";
+"folder.permission.edit"  = "Edit";
+"folder.itemCount"        = "%d items";
+"folder.memberCount"      = "%d members";
+"folder.memberExists"     = "They're already in this folder.";
