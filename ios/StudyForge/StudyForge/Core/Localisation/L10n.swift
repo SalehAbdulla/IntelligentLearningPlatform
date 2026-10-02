@@ -397,6 +397,30 @@ enum L10n: String, CaseIterable, Sendable {
     case quizReviewAnswers      = "quiz.reviewAnswers"
     case quizYourAnswer         = "quiz.yourAnswer"
     case quizCorrectAnswer      = "quiz.correctAnswer"
+
+    // MARK: F06 Study plan
+    case planTitle           = "plan.title"
+    case planNewPlan         = "plan.newPlan"
+    case planEmptyTitle      = "plan.emptyTitle"
+    case planEmptyBody       = "plan.emptyBody"
+    case planStepIndicator   = "plan.stepIndicator"
+    case planSubjectsHeading = "plan.subjectsHeading"
+    case planSubjectPlaceholder = "plan.subjectPlaceholder"
+    case planAddSubject      = "plan.addSubject"
+    case planAvailabilityHeading = "plan.availabilityHeading"
+    case planDeadlineHeading = "plan.deadlineHeading"
+    case planNoDeadline      = "plan.noDeadline"
+    case planIntensityHeading = "plan.intensityHeading"
+    case planIntensityLight  = "plan.intensity.light"
+    case planIntensityBalanced = "plan.intensity.balanced"
+    case planIntensityIntensive = "plan.intensity.intensive"
+    case planGenerate        = "plan.generate"
+    case planReplan          = "plan.replan"
+    case planMarkDone        = "plan.markDone"
+    case planSkip            = "plan.skip"
+    case planWeekHeading     = "plan.weekHeading"
+    case planNoSessions      = "plan.noSessions"
+    case planMinutes         = "plan.minutes"
 }
 
 // MARK: - Resolution
