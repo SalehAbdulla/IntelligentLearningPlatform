@@ -149,6 +149,10 @@ extension AppError {
         // a generic apology.
         if let summaryError = error as? SummaryError { return summaryError.asAppError }
 
+        // Same reasoning again for the deck store: a failure to read the student's OWN decks is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let deckError = error as? DeckError { return deckError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
