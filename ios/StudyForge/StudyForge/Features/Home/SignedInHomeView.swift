@@ -45,6 +45,7 @@ struct SignedInHomeView: View {
                     studyPlanLink
                     progressLink
                     foldersLink
+                    bookmarksLink
                     profileLink
 
                     #if DEBUG
@@ -125,7 +126,8 @@ struct SignedInHomeView: View {
                 store: container.materials,
                 summaryStore: container.summaries,
                 deckStore: container.decks,
-                router: container.ai
+                router: container.ai,
+                bookmarkStore: container.bookmarks
             )
         } label: {
             Label(L10n.libraryTitle.string, systemImage: "books.vertical")
@@ -217,6 +219,29 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.folderTitle.string, systemImage: "folder")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Bookmarks
+
+    /// The way into bookmark collections (I15).
+    ///
+    /// Carries the library's stores as well, so the empty state's "Browse your library" CTA (I18)
+    /// can push the library directly rather than bouncing the student back to this screen.
+    private var bookmarksLink: some View {
+        NavigationLink {
+            CollectionListView(
+                store: container.bookmarks,
+                materials: container.materials,
+                summaries: container.summaries,
+                decks: container.decks,
+                router: container.ai
+            )
+        } label: {
+            Label(L10n.bookmarkTitle.string, systemImage: "bookmark")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
