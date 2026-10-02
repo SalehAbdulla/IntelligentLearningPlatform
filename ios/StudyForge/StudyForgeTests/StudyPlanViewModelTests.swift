@@ -96,6 +96,56 @@ struct StudyPlanViewModelTests {
         #expect(viewModel.plan?.sessions.count == 10)
     }
 
+    @Test("Starting a session marks it in progress, and starting again does not reset the clock")
+    func startMarksInProgress() async throws {
+        let store = InMemoryStudyPlanStore(seededWith: [plan(sessions: [session(id: "s1", day: day)])])
+        let viewModel = StudyPlanViewModel(store: store)
+        await viewModel.load()
+
+        await viewModel.start(session(id: "s1", day: day))
+
+        let started = try #require(viewModel.plan?.sessions.first)
+        #expect(started.isInProgress)
+        #expect(started.startedAt != nil)
+
+        await viewModel.start(session(id: "s1", day: day))
+        #expect(viewModel.plan?.sessions.first?.startedAt == started.startedAt, "a second start is a no-op")
+    }
+
+    @Test("Rescheduling pushes the session one day and returns it to pending")
+    func reschedulePushesADay() async throws {
+        let store = InMemoryStudyPlanStore(seededWith: [
+            plan(sessions: [session(id: "s1", day: day, status: .completed)])
+        ])
+        let viewModel = StudyPlanViewModel(store: store)
+        await viewModel.load()
+
+        let original = try #require(viewModel.plan?.sessions.first)
+        let expected = try #require(Calendar.current.date(byAdding: .day, value: 1, to: original.scheduledAt))
+
+        await viewModel.reschedule(original)
+
+        let moved = try #require(viewModel.plan?.sessions.first)
+        #expect(moved.scheduledAt == expected)
+        #expect(moved.status == .pending)
+        #expect(moved.startedAt == nil, "a session moved to another day has not been started on it")
+    }
+
+    @Test("The detail rows describe the session, adding a started line once begun")
+    func detailRows() async throws {
+        let store = InMemoryStudyPlanStore(seededWith: [plan(sessions: [session(id: "s1", day: day)])])
+        let viewModel = StudyPlanViewModel(store: store)
+        await viewModel.load()
+
+        let target = try #require(viewModel.plan?.sessions.first)
+        #expect(viewModel.detailRows(for: target).map(\.id) == ["duration", "scheduled", "status"])
+
+        await viewModel.start(target)
+
+        let begun = try #require(viewModel.session(id: "s1"))
+        #expect(viewModel.detailRows(for: begun).map(\.id) == ["duration", "scheduled", "status", "started"])
+    }
+
     @Test("Every string comes from the catalogue")
     func copyIsLocalised() {
         let viewModel = StudyPlanViewModel(store: InMemoryStudyPlanStore())
@@ -106,5 +156,8 @@ struct StudyPlanViewModelTests {
         #expect(viewModel.markDoneTitle == L10n.planMarkDone.string)
         #expect(viewModel.skipTitle == L10n.planSkip.string)
         #expect(viewModel.replanTitle == L10n.planReplan.string)
+        #expect(viewModel.sessionDetailTitle == L10n.planSessionDetail.string)
+        #expect(viewModel.statusTitle(.completed) == L10n.planStatusCompleted.string)
+        #expect(viewModel.durationTitle(45) == L10n.planMinutes.string(45))
     }
 }
