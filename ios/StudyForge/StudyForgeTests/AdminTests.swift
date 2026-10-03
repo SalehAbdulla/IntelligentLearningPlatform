@@ -286,3 +286,151 @@ struct AIAdminViewModelTests {
         #expect(AuditAction.aiConfigChanged.title == L10n.adminAuditConfigChanged.string)
     }
 }
+
+// MARK: - Directory
+
+@Suite("Admin directory (F12)")
+@MainActor
+struct AdminDirectoryTests {
+
+    private func student(id: String, lastLoginDaysAgo: Int, mastery: Int = 70) -> PlatformUser {
+        PlatformUser(
+            id: id,
+            displayName: "Student \(id)",
+            email: "\(id)@example.test",
+            role: .student,
+            masteryPercent: mastery,
+            lastLoginAt: .now.addingTimeInterval(-Double(lastLoginDaysAgo) * 86_400)
+        )
+    }
+
+    @Test("The store returns accounts most recently active first")
+    func ordersByActivity() async throws {
+        let store = InMemoryAdminDirectoryStore(seededWith: [
+            student(id: "old", lastLoginDaysAgo: 9),
+            student(id: "new", lastLoginDaysAgo: 1),
+        ])
+        #expect(try await store.users().map(\.id) == ["new", "old"])
+    }
+
+    @Test("The store saves and looks up an account")
+    func saveAndLookUp() async throws {
+        let store = InMemoryAdminDirectoryStore()
+        try await store.save(student(id: "a", lastLoginDaysAgo: 1))
+        #expect(try await store.user(id: "a")?.id == "a")
+        #expect(try await store.user(id: "nope") == nil)
+    }
+
+    @Test("The file store persists the directory across instances")
+    func fileStorePersists() async throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("directory-tests-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        try await FileAdminDirectoryStore(directory: directory).save(student(id: "a", lastLoginDaysAgo: 1))
+        #expect(try await FileAdminDirectoryStore(directory: directory).user(id: "a")?.id == "a")
+    }
+
+    @Test("Risk is a stated rule, not a hidden score")
+    func riskRule() {
+        // Recent and mastering.
+        #expect(student(id: "a", lastLoginDaysAgo: 1, mastery: 80).isAtRisk == false)
+        // Gone quiet for a fortnight.
+        #expect(student(id: "b", lastLoginDaysAgo: 20, mastery: 80).isAtRisk)
+        // Mastery under half.
+        #expect(student(id: "c", lastLoginDaysAgo: 1, mastery: 40).isAtRisk)
+        // A tutor is not "at risk": the flag is about students.
+        let tutor = PlatformUser(displayName: "Dr", email: "d@example.test", role: .tutor, masteryPercent: 0)
+        #expect(tutor.isAtRisk == false)
+    }
+
+    @Test("Active this week counts only recent sign-ins")
+    func activeThisWeek() {
+        #expect(student(id: "a", lastLoginDaysAgo: 3).isActive())
+        #expect(student(id: "b", lastLoginDaysAgo: 10).isActive() == false)
+    }
+}
+
+@Suite("Admin accounts screen (F12)")
+@MainActor
+struct AdminUsersViewModelTests {
+
+    private func model() -> (AdminUsersViewModel, InMemoryAdminDirectoryStore, InMemoryAIConfigurationStore) {
+        let store = InMemoryAdminDirectoryStore(seededWith: PlatformUser.samples)
+        let audit = InMemoryAIConfigurationStore()
+        let viewModel = AdminUsersViewModel(store: store, audit: audit, actorName: "Shahad Ashoor")
+        return (viewModel, store, audit)
+    }
+
+    @Test("An empty directory shows the empty state")
+    func emptyDirectory() async {
+        let viewModel = AdminUsersViewModel(
+            store: InMemoryAdminDirectoryStore(),
+            audit: InMemoryAIConfigurationStore(),
+            actorName: "Admin"
+        )
+        await viewModel.load()
+        #expect(viewModel.users.isEmpty)
+    }
+
+    @Test("Search and the role filter both narrow the list, and both count as filtered-empty")
+    func searchAndFilter() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+
+        viewModel.query = "omar"
+        #expect(viewModel.visibleUsers.map(\.displayName) == ["Omar Hassan"])
+
+        viewModel.query = ""
+        viewModel.roleFilter = .tutor
+        #expect(viewModel.visibleUsers.allSatisfy { $0.role == .tutor })
+
+        viewModel.query = "zzzz"
+        #expect(viewModel.visibleUsers.isEmpty)
+        #expect(viewModel.isFilteredEmpty, "accounts exist, the search hid them")
+    }
+
+    @Test("A role change persists and is recorded in the trail")
+    func roleChangeIsAudited() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let student = try #require(viewModel.users.first { $0.role == .student })
+
+        await viewModel.setRole(.tutor, for: student)
+
+        #expect(try await store.user(id: student.id)?.role == .tutor)
+        let trail = try await audit.auditLog()
+        #expect(trail.count == 1)
+        #expect(trail.first?.action == .roleChanged)
+        #expect(trail.first?.actorName == "Shahad Ashoor")
+    }
+
+    @Test("Suspending flips the status and reactivating flips it back, both recorded")
+    func suspensionToggles() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let student = try #require(viewModel.users.first { $0.role == .student })
+        #expect(student.isSuspended == false)
+
+        await viewModel.toggleSuspension(student)
+        #expect(try await store.user(id: student.id)?.isSuspended == true)
+
+        let suspended = try #require(viewModel.user(id: student.id))
+        await viewModel.toggleSuspension(suspended)
+        #expect(try await store.user(id: student.id)?.isSuspended == false)
+
+        #expect(try await audit.auditLog().count == 2)
+    }
+
+    @Test("Every string comes from the catalogue")
+    func copyIsLocalised() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+
+        #expect(viewModel.title == L10n.adminUsersTitle.string)
+        #expect(viewModel.emptyTitle == L10n.adminUsersEmptyTitle.string)
+        #expect(viewModel.suspendTitle == L10n.adminSuspend.string)
+        #expect(AuditAction.roleChanged.title == L10n.adminAuditRoleChanged.string)
+        #expect(AccountStatus.suspended.title == L10n.adminStatusSuspended.string)
+    }
+}
