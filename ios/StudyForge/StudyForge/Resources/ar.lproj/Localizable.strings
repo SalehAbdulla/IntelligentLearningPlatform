@@ -603,3 +603,24 @@
 "search.resultCount"    = "%d نتيجة";
 "search.deckCount"      = "%d بطاقة";
 "search.quizCount"      = "%d سؤالًا";
+
+/* ── F12 Admin — AI configuration (docs/03 §K, K07/K08) ───────────────── */
+"admin.title"                = "إعدادات الذكاء الاصطناعي";
+"admin.policyLabel"          = "سياسة المحرّك";
+"admin.policy.onDeviceFirst" = "على الجهاز أولًا";
+"admin.policy.cloudFirst"    = "السحابة أولًا";
+"admin.policy.offlineOnly"   = "على الجهاز فقط";
+"admin.policyHint"           = "التوليد على الجهاز مجاني وخاص. التوليد السحابي محسوب.";
+"admin.quotaLabel"           = "حد التوليد اليومي";
+"admin.quotaHint"            = "عدد التوليدات السحابية لكل طالب يوميًا. التوليد على الجهاز غير محدود ولا يُحتسب.";
+"admin.quotaUsePlanDefault"  = "استخدام الافتراضي للخطة";
+"admin.quotaValue"           = "%d يوميًا";
+"admin.costHeading"          = "استهلاك اليوم";
+"admin.costUsed"             = "استُخدم %d من %d من التوليدات السحابية";
+"admin.costOnDeviceNote"     = "التوليد على الجهاز لا يكلّف شيئًا.";
+"admin.save"                 = "حفظ الإعدادات";
+"admin.saving"               = "جارٍ الحفظ…";
+"admin.savedTitle"           = "تم حفظ الإعدادات";
+"admin.auditHeading"         = "التغييرات الأخيرة";
+"admin.auditEmpty"           = "لم تُسجَّل أي تغييرات بعد.";
+"admin.auditConfigChanged"   = "تم تغيير إعدادات الذكاء الاصطناعي";
