@@ -178,6 +178,10 @@ extension AppError {
         // it carries a reference and a retry rather than a generic apology.
         if let notificationError = error as? NotificationError { return notificationError.asAppError }
 
+        // And for the admin store: failing to read the platform's own settings is our defect, so it
+        // carries a reference and a retry rather than a generic apology.
+        if let adminError = error as? AdminError { return adminError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
