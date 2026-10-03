@@ -31,6 +31,10 @@ struct RootView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Watches connectivity so M06's banner can appear and disappear. Started once, from the view's
+    /// lifetime, because this view lives for as long as the app does.
+    @State private var offline = OfflineMonitor()
+
     /// Mirrors the persisted onboarding flag into view state, so finishing the pager
     /// re-renders immediately. The store is not observable (it is a plain protocol), and
     /// it does not need to be: onboarding happens once, and `onFinish` is the single
@@ -76,7 +80,15 @@ struct RootView: View {
     }
 
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
+            // M06 — the offline banner sits above every branch, because the state it describes
+            // applies to all of them: local-first means everything already downloaded still works.
+            if offline.isOffline {
+                SFOfflineBanner(message: L10n.notificationOfflineBanner.string)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+
+            Group {
             if !container.hasResolvedAuth {
                 SplashView()
             } else if let session = container.session {
@@ -136,7 +148,10 @@ struct RootView: View {
             } else {
                 AuthFlowView(container: container)
             }
+            }
         }
+        .animation(Motion.respecting(Motion.quick, reduceMotion: reduceMotion), value: offline.isOffline)
+        .task { offline.start() }
         // A hard swap between two full-screen branches reads as a glitch, so the change is
         // cross-faded. Reduce Motion shortens it rather than removing it, keeping the
         // branch change legible without animating.
