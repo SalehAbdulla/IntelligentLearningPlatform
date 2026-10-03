@@ -333,17 +333,12 @@ struct SignedInHomeView: View {
 
     // MARK: Admin
 
-    /// The way into the admin AI settings (K07/K08). Admin only.
+    /// The way into the admin area (K01). Admin only.
     private var adminLink: some View {
         NavigationLink {
-            AIAdminView(
-                store: container.aiConfigurations,
-                router: container.ai,
-                governor: container.ai.governor,
-                actorName: session?.displayName ?? ""
-            )
+            AdminDashboardView(container: container)
         } label: {
-            Label(L10n.adminTitle.string, systemImage: "slider.horizontal.3")
+            Label(L10n.adminDashboardTitle.string, systemImage: "person.badge.key")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
