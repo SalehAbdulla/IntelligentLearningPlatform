@@ -48,6 +48,7 @@ struct SignedInHomeView: View {
                     bookmarksLink
                     groupsLink
                     notificationsLink
+                    searchLink
                     profileLink
                     settingsLink
 
@@ -295,6 +296,28 @@ struct SignedInHomeView: View {
             SettingsView(container: container)
         } label: {
             Label(L10n.notificationSettingsTitle.string, systemImage: "gearshape")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Search
+
+    /// The way into global search (M05).
+    private var searchLink: some View {
+        NavigationLink {
+            GlobalSearchView(
+                materials: container.materials,
+                summaries: container.summaries,
+                decks: container.decks,
+                quizzes: container.quizzes,
+                folders: container.folders,
+                bookmarks: container.bookmarks,
+                recents: container.recentSearches
+            )
+        } label: {
+            Label(L10n.searchTitle.string, systemImage: "magnifyingglass")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
