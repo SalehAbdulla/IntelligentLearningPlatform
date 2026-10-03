@@ -52,6 +52,13 @@ struct SignedInHomeView: View {
                     profileLink
                     settingsLink
 
+                    // K07 is an ADMIN surface: offering it to a student would be a control they can
+                    // never use, which is worse than no control — the same rule the folder and
+                    // bookmark screens apply to permissions.
+                    if session?.role == .admin {
+                        adminLink
+                    }
+
                     #if DEBUG
                     developmentCard
                     #endif
@@ -318,6 +325,25 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.searchTitle.string, systemImage: "magnifyingglass")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Admin
+
+    /// The way into the admin AI settings (K07/K08). Admin only.
+    private var adminLink: some View {
+        NavigationLink {
+            AIAdminView(
+                store: container.aiConfigurations,
+                router: container.ai,
+                governor: container.ai.governor,
+                actorName: session?.displayName ?? ""
+            )
+        } label: {
+            Label(L10n.adminTitle.string, systemImage: "slider.horizontal.3")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
