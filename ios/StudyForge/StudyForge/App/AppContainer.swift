@@ -157,6 +157,10 @@ final class AppContainer {
     /// previewable and testable without a real prompt appearing.
     let notificationAuthorizer: any NotificationAuthorizer
 
+    /// The student's recent search queries (M05). Small and local, behind a protocol so the
+    /// recent-searches rule is testable without touching the real `UserDefaults`.
+    let recentSearches: any RecentSearchStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -204,6 +208,7 @@ final class AppContainer {
         groups: any GroupStore = InMemoryGroupStore(),
         notifications: any NotificationStore = InMemoryNotificationStore(),
         notificationAuthorizer: any NotificationAuthorizer = InMemoryNotificationAuthorizer(),
+        recentSearches: any RecentSearchStore = InMemoryRecentSearchStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -221,6 +226,7 @@ final class AppContainer {
         self.groups = groups
         self.notifications = notifications
         self.notificationAuthorizer = notificationAuthorizer
+        self.recentSearches = recentSearches
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -384,7 +390,8 @@ extension AppContainer {
             bookmarks: FileBookmarkStore(),
             groups: FileGroupStore(),
             notifications: FileNotificationStore(),
-            notificationAuthorizer: SystemNotificationAuthorizer()
+            notificationAuthorizer: SystemNotificationAuthorizer(),
+            recentSearches: UserDefaultsRecentSearchStore()
         )
     }
 
