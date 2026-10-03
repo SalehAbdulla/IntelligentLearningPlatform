@@ -161,6 +161,11 @@ final class AppContainer {
     /// recent-searches rule is testable without touching the real `UserDefaults`.
     let recentSearches: any RecentSearchStore
 
+    /// The platform's AI settings and the admin audit trail (F12, K07/K08). LOCAL-FIRST, so the admin
+    /// panel is demonstrable before a backend serves `aiConfig`. Protocol-backed so screens can be
+    /// previewed and tested with `InMemoryAIConfigurationStore`.
+    let aiConfigurations: any AIConfigurationStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -209,6 +214,7 @@ final class AppContainer {
         notifications: any NotificationStore = InMemoryNotificationStore(),
         notificationAuthorizer: any NotificationAuthorizer = InMemoryNotificationAuthorizer(),
         recentSearches: any RecentSearchStore = InMemoryRecentSearchStore(),
+        aiConfigurations: any AIConfigurationStore = InMemoryAIConfigurationStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -227,9 +233,19 @@ final class AppContainer {
         self.notifications = notifications
         self.notificationAuthorizer = notificationAuthorizer
         self.recentSearches = recentSearches
+        self.aiConfigurations = aiConfigurations
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
+    }
+
+    /// Pushes the stored admin AI configuration into the live router and governor.
+    ///
+    /// Called at launch and again whenever the admin saves, so the settings are never only on disk.
+    func applyAIConfiguration() async {
+        guard let configuration = try? await aiConfigurations.configuration() else { return }
+        ai.policy = configuration.policy
+        ai.governor.limitOverride = configuration.dailyQuotaOverride
     }
 
     /// Begins observing authentication state.
@@ -238,6 +254,10 @@ final class AppContainer {
     /// built for a preview or a test does not silently start a background subscription.
     func start() {
         guard authObservation.withLock({ $0 == nil }) else { return }
+
+        // The admin's AI settings are applied once at launch, so the FIRST generation of the session
+        // already obeys the policy the panel last saved (F12, K07) rather than only the next one.
+        Task { await applyAIConfiguration() }
 
         let task = Task { [weak self] in
             guard let stream = self?.auth.stateChanges() else { return }
@@ -391,7 +411,8 @@ extension AppContainer {
             groups: FileGroupStore(),
             notifications: FileNotificationStore(),
             notificationAuthorizer: SystemNotificationAuthorizer(),
-            recentSearches: UserDefaultsRecentSearchStore()
+            recentSearches: UserDefaultsRecentSearchStore(),
+            aiConfigurations: FileAIConfigurationStore()
         )
     }
 
