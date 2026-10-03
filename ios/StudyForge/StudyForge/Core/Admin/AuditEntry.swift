@@ -25,17 +25,27 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
     /// The routing policy or the quota changed (K07).
     case aiConfigChanged
 
+    /// An account's role changed (K03).
+    case roleChanged
+
+    /// An account was suspended or reactivated (K03).
+    case accountSuspended
+
     var id: String { rawValue }
 
     var title: String {
         switch self {
         case .aiConfigChanged: L10n.adminAuditConfigChanged.string
+        case .roleChanged: L10n.adminAuditRoleChanged.string
+        case .accountSuspended: L10n.adminAuditAccountChanged.string
         }
     }
 
     var symbolName: String {
         switch self {
         case .aiConfigChanged: "bolt.badge.clock"
+        case .roleChanged: "person.badge.key"
+        case .accountSuspended: "person.crop.circle.badge.xmark"
         }
     }
 }
