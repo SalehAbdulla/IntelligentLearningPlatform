@@ -143,6 +143,11 @@ final class AppContainer {
     /// Protocol-backed so screens can be previewed and tested with `InMemoryBookmarkStore`.
     let bookmarks: any BookmarkStore
 
+    /// The student's group revision spaces (F09). LOCAL-FIRST, so the board, chat and live quiz are
+    /// demonstrable before a realtime backend exists; the protocol is the seam that backend swaps in
+    /// behind. Protocol-backed so screens can be previewed and tested with `InMemoryGroupStore`.
+    let groups: any GroupStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -187,6 +192,7 @@ final class AppContainer {
         studyPlans: any StudyPlanStore = InMemoryStudyPlanStore(),
         folders: any FolderStore = InMemoryFolderStore(),
         bookmarks: any BookmarkStore = InMemoryBookmarkStore(),
+        groups: any GroupStore = InMemoryGroupStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -201,6 +207,7 @@ final class AppContainer {
         self.studyPlans = studyPlans
         self.folders = folders
         self.bookmarks = bookmarks
+        self.groups = groups
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -361,7 +368,8 @@ extension AppContainer {
             quizzes: FileQuizStore(),
             studyPlans: FileStudyPlanStore(),
             folders: FileFolderStore(),
-            bookmarks: FileBookmarkStore()
+            bookmarks: FileBookmarkStore(),
+            groups: FileGroupStore()
         )
     }
 
