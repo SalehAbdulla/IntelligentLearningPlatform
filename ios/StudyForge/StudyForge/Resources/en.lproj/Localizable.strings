@@ -586,3 +586,21 @@
 "notification.permissionGranted" = "Reminders are on.";
 "notification.permissionDenied"  = "Reminders are off. You can turn them on later in Settings.";
 "notification.offlineBanner"     = "You're offline — changes will sync when you're back.";
+
+/* ── M05 Global search (docs/03 §M) ───────────────────────────────────── */
+"search.title"          = "Search";
+"search.prompt"         = "Search everything you have saved";
+"search.emptyTitle"     = "Nothing found";
+"search.emptyBody"      = "Try a different word, or widen the scope.";
+"search.recentHeading"  = "Recent searches";
+"search.clearRecent"    = "Clear";
+"search.scopeAll"       = "All";
+"search.kind.material"  = "Materials";
+"search.kind.summary"   = "Summaries";
+"search.kind.deck"      = "Decks";
+"search.kind.quiz"      = "Quizzes";
+"search.kind.folder"    = "Folders";
+"search.kind.bookmark"  = "Bookmarks";
+"search.resultCount"    = "%d results";
+"search.deckCount"      = "%d cards";
+"search.quizCount"      = "%d questions";
