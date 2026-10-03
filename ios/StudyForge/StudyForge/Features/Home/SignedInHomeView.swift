@@ -46,6 +46,7 @@ struct SignedInHomeView: View {
                     progressLink
                     foldersLink
                     bookmarksLink
+                    groupsLink
                     profileLink
 
                     #if DEBUG
@@ -242,6 +243,25 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.bookmarkTitle.string, systemImage: "bookmark")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Groups
+
+    /// The way into group revision spaces (I08).
+    private var groupsLink: some View {
+        NavigationLink {
+            GroupListView(
+                store: container.groups,
+                materials: container.materials,
+                quizzes: container.quizzes,
+                me: session?.displayName ?? ""
+            )
+        } label: {
+            Label(L10n.groupTitle.string, systemImage: "person.3")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
