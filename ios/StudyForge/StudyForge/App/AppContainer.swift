@@ -148,6 +148,15 @@ final class AppContainer {
     /// behind. Protocol-backed so screens can be previewed and tested with `InMemoryGroupStore`.
     let groups: any GroupStore
 
+    /// The student's notification inbox and their notification choices (F14). LOCAL-FIRST, like the
+    /// other derived stores, so the inbox renders with no project configured. Protocol-backed so
+    /// screens can be previewed and tested with `InMemoryNotificationStore`.
+    let notifications: any NotificationStore
+
+    /// The system permission prompt, behind a protocol (F14, M02). Protocol-backed so the primer is
+    /// previewable and testable without a real prompt appearing.
+    let notificationAuthorizer: any NotificationAuthorizer
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -193,6 +202,8 @@ final class AppContainer {
         folders: any FolderStore = InMemoryFolderStore(),
         bookmarks: any BookmarkStore = InMemoryBookmarkStore(),
         groups: any GroupStore = InMemoryGroupStore(),
+        notifications: any NotificationStore = InMemoryNotificationStore(),
+        notificationAuthorizer: any NotificationAuthorizer = InMemoryNotificationAuthorizer(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -208,6 +219,8 @@ final class AppContainer {
         self.folders = folders
         self.bookmarks = bookmarks
         self.groups = groups
+        self.notifications = notifications
+        self.notificationAuthorizer = notificationAuthorizer
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -369,7 +382,9 @@ extension AppContainer {
             studyPlans: FileStudyPlanStore(),
             folders: FileFolderStore(),
             bookmarks: FileBookmarkStore(),
-            groups: FileGroupStore()
+            groups: FileGroupStore(),
+            notifications: FileNotificationStore(),
+            notificationAuthorizer: SystemNotificationAuthorizer()
         )
     }
 
