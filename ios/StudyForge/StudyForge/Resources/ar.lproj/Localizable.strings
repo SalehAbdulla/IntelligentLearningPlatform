@@ -585,3 +585,21 @@
 "notification.permissionGranted" = "التذكيرات مفعّلة.";
 "notification.permissionDenied"  = "التذكيرات متوقفة. يمكنك تفعيلها لاحقًا من الإعدادات.";
 "notification.offlineBanner"     = "أنت غير متصل — ستتم المزامنة عند العودة.";
+
+/* ── M05 Global search (docs/03 §M) ───────────────────────────────────── */
+"search.title"          = "البحث";
+"search.prompt"         = "ابحث في كل ما حفظته";
+"search.emptyTitle"     = "لا نتائج";
+"search.emptyBody"      = "جرّب كلمة أخرى، أو وسّع النطاق.";
+"search.recentHeading"  = "عمليات البحث الأخيرة";
+"search.clearRecent"    = "مسح";
+"search.scopeAll"       = "الكل";
+"search.kind.material"  = "المواد";
+"search.kind.summary"   = "الملخصات";
+"search.kind.deck"      = "المجموعات";
+"search.kind.quiz"      = "الاختبارات";
+"search.kind.folder"    = "المجلدات";
+"search.kind.bookmark"  = "المحفوظات";
+"search.resultCount"    = "%d نتيجة";
+"search.deckCount"      = "%d بطاقة";
+"search.quizCount"      = "%d سؤالًا";
