@@ -174,6 +174,10 @@ extension AppError {
         // they map to their own copy rather than to a generic server apology.
         if let groupError = error as? GroupError { return groupError.asAppError }
 
+        // And for the notification store: failing to read the student's OWN inbox is our defect, so
+        // it carries a reference and a retry rather than a generic apology.
+        if let notificationError = error as? NotificationError { return notificationError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
