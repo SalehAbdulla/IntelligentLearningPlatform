@@ -17,52 +17,20 @@ import Foundation
 // MARK: - Output shaping
 
 /// Output language. Arabic is first-class, not an afterthought (SDG 10).
-enum OutputLanguage: String, Sendable, CaseIterable {
+enum OutputLanguage: String, Sendable, CaseIterable, Codable {
     case english
     case arabic
 }
 
-/// The learning-style profile that changes the SHAPE of generated content, not
-/// just its wording — the concrete answer to the brief's "support different
-/// learning styles" question (docs/00 §2).
-///
-/// This belongs with the user profile long-term; it lives here for now because it
-/// is expressed through prompt templates.
-enum LearningStyle: String, Sendable, CaseIterable {
-    case visual
-    case verbal
-    case readWrite
-    case kinesthetic
-
-    var displayName: String {
-        switch self {
-        case .visual: "Visual"
-        case .verbal: "Verbal"
-        case .readWrite: "Read / write"
-        case .kinesthetic: "Hands-on"
-        }
-    }
-
-    /// How this style changes the generated output. Injected into every prompt.
-    var promptDirective: String {
-        switch self {
-        case .visual:
-            "Favour structure the reader can picture: grouped lists, comparisons, and spatial relationships. Where a process is described, present it as ordered steps."
-        case .verbal:
-            "Favour explanations that read as natural speech, as if explaining aloud to a classmate. Avoid dense notation."
-        case .readWrite:
-            "Favour well-organised written prose and precise definitions. Include the source's own terminology."
-        case .kinesthetic:
-            "Favour concrete examples, worked scenarios and 'what would happen if' applications rather than abstract statements."
-        }
-    }
-}
-
-enum SummaryLength: String, Sendable, CaseIterable {
+// NOTE: `LearningStyle` lives in `Core/Profile/LearningStyle.swift`. It moved there when
+// B02 made it something the student chooses and the app stores — that file explains why the
+// profile owns it and this layer reads it. It is NOT defined here any more, so a prompt
+// change that needs the style should import it from Core/Profile.
+enum SummaryLength: String, Sendable, CaseIterable, Codable {
     case short, standard, examReady
 }
 
-enum SummaryStyle: String, Sendable, CaseIterable {
+enum SummaryStyle: String, Sendable, CaseIterable, Codable {
     case bullets, narrative, cornell
 }
 
@@ -70,7 +38,7 @@ enum FlashcardDifficulty: String, Sendable, CaseIterable {
     case recall, understanding, mixed
 }
 
-enum QuizQuestionType: String, Sendable, CaseIterable {
+enum QuizQuestionType: String, Sendable, CaseIterable, Codable {
     case multipleChoice, trueFalse, shortAnswer, mixed
 }
 
@@ -100,12 +68,27 @@ struct SummaryRequest: Sendable {
     let context: AIGenerationContext
     let length: SummaryLength
     let style: SummaryStyle
+
+    /// D01's focus-topics field: what the student wants the summary to dwell on.
+    ///
+    /// Empty by default, which means "cover the material evenly" — so a request that omits it keeps
+    /// the behaviour the app shipped with. `var` rather than `let` for the reason `FlashcardRequest`
+    /// documents: a `let` with a default is dropped from the memberwise initialiser.
+    var focusTopics: String = ""
 }
 
 struct FlashcardRequest: Sendable {
     let context: AIGenerationContext
     let count: Int
     let difficulty: FlashcardDifficulty
+
+    /// The shape the student asked for (E02's card-type selector).
+    ///
+    /// Defaulted to `.qa`, so a request that omits it produces the question-and-answer cards the
+    /// app shipped with — and every existing call site keeps its behaviour. `var` rather than `let`
+    /// on purpose: a `let` with a default is dropped from the memberwise initialiser, which would
+    /// leave no way to ask for any other shape.
+    var cardType: CardType = .qa
 }
 
 struct QuizRequest: Sendable {
@@ -162,6 +145,11 @@ enum AIError: Error, Equatable {
             .onDeviceAIUnavailable
         case .unavailable(.offline):
             .offline
+        // A policy that forbids the cloud while the task needs it is an access decision, not a
+        // device fault: the student is not being told their phone is incapable, they are being told
+        // the institution has not enabled this. `.notPermitted` is that sentence.
+        case .unavailable(.policyOfflineOnly):
+            .notPermitted
         case .unavailable(.notImplemented), .generationFailed, .invalidOutput:
             .server(reference: "ai-\(UUID().uuidString.prefix(6))")
         case .emptySource:

@@ -31,6 +31,69 @@ service cloud.firestore {
     // Fields that must never change after creation.
     function keeps(field) { return request.resource.data[field] == resource.data[field]; }
 
+    // ── Allowlist guard for updates ──────────────────────────────────────
+    //
+    // True only when an update touches fields within `allowed` and nothing else.
+    // `diff().affectedKeys()` is the set of fields that differ between the stored
+    // document and the incoming one, which means it also catches fields the client
+    // simply OMITS: removing a field counts as affecting it.
+    //
+    // This exists because pinning individual fields is not enough. A rule that only
+    // says `keeps('role') && keeps('plan')` still permits a client to write ANY other
+    // field — so a student could set their own `streak` to 999 or award themselves
+    // `badges`. Those fields do not exist yet, which is exactly the danger: the rule
+    // silently grants write access to whatever the schema grows next.
+    //
+    // An allowlist inverts the default. A field added in a later sprint is NOT
+    // writable by clients until someone names it here, deliberately.
+    function onlyChanges(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
+
+    // The profile fields a student is allowed to edit about themselves. Everything
+    // else on `users/{uid}` is server-owned: `role` and `plan` by the Cloud Function,
+    // and gamification values (`streak`, `badges`, mastery) because the UI displays
+    // them as evidence of work done.
+    //
+    // Three families live here, and all are written by the profile wizard, so every step
+    // of that flow can complete without a mid-wizard denial:
+    //   · academic             — `university`, `major`, `year`, `courseIds`  (B01)
+    //   · learning preferences — `learningStyle`                             (B02)
+    //   · study goals          — `weeklyStudyGoalHours`, `targetGrade`       (B03)
+    //
+    // WHY THE PREFERENCES ARE NAMED HERE RATHER THAN PUT UNDER `users/{uid}/private`
+    // The obvious alternative — the `private` subcollection, which is already
+    // self-read/self-write — has NO field guard at all. A field added there is
+    // client-writable the moment it exists, which is precisely the fail-open hole this
+    // allowlist was introduced to close (D25, docs/09). Routing the wizard's own output
+    // into it would have reopened that hole under a different path.
+    //
+    // Naming them is a deliberate act, not a formality: the rule still denies a field
+    // nobody has considered, so `streak` and any future schema growth stay unwritable
+    // until someone writes the field down here and justifies it. These are safe to name
+    // because they are SELF-DECLARED goals and preferences — a student setting their own
+    // study goal or target grade is not falsifying an achievement the way a client-set
+    // `streak` would.
+    //
+    // `targetGrade` was NOT added until B03 needed it, even though the design named the
+    // control (`13_ProfileSetup_StudyGoals`). An allowlist that pre-authorises a field for
+    // a screen that does not exist yet is not an allowlist; it is a rubber stamp, and the
+    // cost of adding the name in the same change as the write is one line (docs/09 Q11).
+    function editableProfileFields() {
+      return [
+        'displayName',
+        'university',
+        'major',
+        'year',
+        'courseIds',
+        'learningStyle',
+        'weeklyStudyGoalHours',
+        'targetGrade',
+        'avatarUrl',
+        'updatedAt',
+      ];
+    }
+
     // Server-managed fields must match what already exists.
     function keepsServerFields() {
       return keeps('createdAt') && keeps('byUid');
@@ -50,8 +113,21 @@ service cloud.firestore {
                     && request.resource.data.role == 'student'
                     && request.resource.data.plan == 'free';
 
+      // A user may edit their own PROFILE, and nothing else.
+      //
+      // Three guards, deliberately overlapping:
+      //   · `keeps('role') && keeps('plan')` — explicit, so the failure is obvious
+      //   · `onlyChanges(editableProfileFields())` — the real protection, denying any
+      //     field not named in the allowlist, including ones added later
+      //   · `isSelf(userId)` — you can only do this to yourself
+      //
+      // Note the allowlist also covers `createdAt` / `byUid` / `ownerUid` by omission:
+      // a field absent from the list cannot appear in `affectedKeys()`.
       allow update: if isAdmin()
-                    || (isSelf(userId) && keeps('role') && keeps('plan'));
+                    || (isSelf(userId)
+                        && keeps('role')
+                        && keeps('plan')
+                        && onlyChanges(editableProfileFields()));
 
       allow delete: if isAdmin();
 

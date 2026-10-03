@@ -67,12 +67,39 @@ check_message() {
 SECRET_NAME_RE='(GoogleService-Info\.plist|\.env$|serviceAccountKey|\.p12$|\.mobileprovision$|secret|credential)'
 SECRET_BODY_RE='(AIza[0-9A-Za-z_-]{20,}|sk_live_[0-9A-Za-z]+|-----BEGIN [A-Z ]*PRIVATE KEY-----)'
 
+# Values that MATCH a secret pattern but are public by design.
+#
+# The Firebase Web API key is not a credential: it identifies the project to the Identity
+# Toolkit endpoints and ships inside every build of the app, so it is already in the App
+# Store binary. Access control lives in the security rules and in App Check — never in
+# this value's secrecy.
+#
+# It is listed EXPLICITLY rather than by loosening the regex, so the scanner still catches
+# every other AIza… value. Adding anything here requires the same justification.
+PUBLIC_VALUE_ALLOWLIST=(
+  'AIzaSyDTlYX9eHFd9bfuD8i9MNhZ9fj5Hlolpc8'
+)
+
 check_secret() {
   local path="$1"
   [[ "$(basename "$path")" =~ $SECRET_NAME_RE ]] && \
     die "'$path' looks like a secret/credential file. It must stay in .gitignore."
-  if [[ -f "$path" ]] && grep -qEI "$SECRET_BODY_RE" "$path" 2>/dev/null; then
-    die "'$path' appears to contain a key or private key. Remove it before committing."
+
+  [[ -f "$path" ]] || return 0
+
+  # Strip the known-public values first, then scan what remains. A file holding ONLY an
+  # allowlisted value passes; a file holding one alongside a real key still fails, because
+  # the real key survives the strip.
+  local scrubbed
+  scrubbed="$(cat "$path")"
+  for public_value in "${PUBLIC_VALUE_ALLOWLIST[@]}"; do
+    scrubbed="${scrubbed//$public_value/}"
+  done
+
+  if printf '%s' "$scrubbed" | grep -qEI "$SECRET_BODY_RE"; then
+    die "'$path' appears to contain a key or private key. Remove it before committing.
+    If the value is public by design, add it to PUBLIC_VALUE_ALLOWLIST in tools/commit.sh
+    with a written justification — do not use --no-verify."
   fi
 }
 

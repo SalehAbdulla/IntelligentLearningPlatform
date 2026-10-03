@@ -1,0 +1,652 @@
+/* ===========================================================================
+ *  Localizable.strings — العربية (Arabic)
+ *  StudyForge
+ *
+ *  Keys MUST match en.lproj/Localizable.strings exactly. A missing key silently
+ *  falls back to the key itself, which is how a half-translated app ships.
+ *
+ *  ⚠️  TRANSLATION STATUS: these were produced without a native speaker. They
+ *  are grammatically standard UI Arabic, but a native reviewer must sign them
+ *  off before the VIVA — particularly the legal lines (terms/privacy) and the
+ *  privacy claim in auth.signUp.subtitle, which is a factual promise about where
+ *  data goes and must not be mistranslated.
+ *
+ *  RTL: set the scheme's language to Arabic to test mirroring. Layouts must be
+ *  checked at AX5 in Arabic — mirrored + large type is the combination that
+ *  breaks.
+ * =========================================================================== */
+
+/* ── Common ─────────────────────────────────────────────────────────────── */
+"common.appName"            = "StudyForge";
+"common.continue"           = "متابعة";
+"common.next"               = "التالي";
+"common.skip"               = "تخطي";
+"common.cancel"             = "إلغاء";
+"common.done"               = "تم";
+"common.retry"              = "إعادة المحاولة";
+"common.back"               = "رجوع";
+"common.close"              = "إغلاق";
+"common.loading"            = "جارٍ التحميل…";
+"common.showPassword"       = "إظهار كلمة المرور";
+"common.hidePassword"       = "إخفاء كلمة المرور";
+"common.delete"             = "حذف";
+
+/* ── A01 Splash ─────────────────────────────────────────────────────────── */
+"auth.splash.tagline"       = "ادرس بذكاء، لا لفترة أطول";
+"auth.splash.checking"      = "جارٍ التحقق من جلستك…";
+
+/* ── A07 تسجيل الدخول ───────────────────────────────────────────────────── */
+"auth.login.title"          = "مرحبًا بعودتك";
+"auth.login.subtitle"       = "سجّل الدخول لمتابعة ما توقفت عنده.";
+"auth.login.email"          = "البريد الإلكتروني";
+"auth.login.password"       = "كلمة المرور";
+"auth.login.forgotPassword" = "نسيت كلمة المرور؟";
+"auth.login.submit"         = "تسجيل الدخول";
+"auth.login.submitting"     = "جارٍ تسجيل دخولك…";
+"auth.login.noAccount"      = "جديد على StudyForge؟";
+"auth.login.createAccount"  = "إنشاء حساب";
+"auth.login.errorTitle"     = "تعذّر تسجيل دخولك";
+
+/* ── A05 إنشاء حساب ─────────────────────────────────────────────────────── */
+"auth.signUp.title"          = "أنشئ حسابك";
+"auth.signUp.subtitle"       = "تبقى موادك على جهازك. تُزامَن الملخصات فقط.";
+"auth.signUp.name"           = "الاسم الكامل";
+"auth.signUp.nameHint"       = "حتى يتمكن مدرّسك من التعرف عليك.";
+"auth.signUp.email"          = "البريد الإلكتروني";
+"auth.signUp.password"       = "كلمة المرور";
+"auth.signUp.passwordHint"   = "%d أحرف على الأقل.";
+"auth.signUp.submit"         = "إنشاء حساب";
+"auth.signUp.submitting"     = "جارٍ إنشاء حسابك…";
+"auth.signUp.haveAccount"    = "لديك حساب بالفعل؟";
+"auth.signUp.logIn"          = "تسجيل الدخول";
+"auth.signUp.termsPrefix"    = "بالمتابعة، أنت توافق على";
+"auth.signUp.terms"          = "شروط الخدمة";
+"auth.signUp.termsJoiner"    = "و";
+"auth.signUp.privacy"        = "سياسة الخصوصية";
+"auth.signUp.termsUnavailable" = "هذه المستندات غير متاحة بعد.";
+"auth.signUp.errorTitle"     = "تعذّر إنشاء حسابك";
+
+/* مقياس قوة كلمة المرور */
+"auth.strength.label"        = "قوة كلمة المرور";
+"auth.strength.weak"         = "ضعيفة";
+"auth.strength.fair"         = "متوسطة";
+"auth.strength.strong"       = "قوية";
+"auth.strength.rule.length"  = "%d أحرف على الأقل";
+"auth.strength.rule.number"  = "تحتوي على رقم";
+"auth.strength.rule.symbol"  = "تحتوي على رمز";
+
+/* ── A08 إعادة تعيين كلمة المرور ────────────────────────────────────────── */
+"auth.forgot.title"          = "إعادة تعيين كلمة المرور";
+"auth.forgot.subtitle"       = "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.";
+"auth.forgot.email"          = "البريد الإلكتروني";
+"auth.forgot.submit"         = "إرسال رابط إعادة التعيين";
+"auth.forgot.submitting"     = "جارٍ الإرسال…";
+"auth.forgot.successTitle"   = "تحقق من بريدك";
+"auth.forgot.successBody"    = "إذا كان هناك حساب مرتبط بـ %@، فسيصل رابط إعادة التعيين قريبًا. افتحه لاختيار كلمة مرور جديدة — تنتهي صلاحيته خلال ساعة.";
+"auth.forgot.backToLogin"    = "العودة لتسجيل الدخول";
+"auth.forgot.errorTitle"     = "تعذّر إرسال الرابط";
+
+/* ── A02–A04 شاشات التعريف ──────────────────────────────────────────────── */
+"onboarding.skip"                = "تخطي";
+"onboarding.skip.hint"           = "ينهي المقدمة وينتقل إلى تسجيل الدخول.";
+"onboarding.next"                = "التالي";
+"onboarding.getStarted"          = "ابدأ الآن";
+"onboarding.pageIndicator"       = "الصفحة %d من %d";
+"onboarding.stepIndicator"       = "الخطوة %d من %d";
+
+"onboarding.valueProp.title"     = "ارفع أي شيء.";
+"onboarding.valueProp.body"      = "شرائح المحاضرات، وفصول الكتب، وملاحظاتك المكتوبة بخط اليد. أضفها وسيحوّلها StudyForge إلى مادة يمكنك المراجعة منها فعلاً.";
+
+"onboarding.howItWorks.title"    = "كيف تعمل";
+"onboarding.howItWorks.body"     = "أربع خطوات، في كل مرة تضيف شيئًا جديدًا.";
+"onboarding.step.upload.title"   = "ارفع";
+"onboarding.step.upload.body"    = "شرائح أو ملفات PDF أو صور أو ملاحظات.";
+"onboarding.step.generate.title" = "أنشئ";
+"onboarding.step.generate.body"  = "ملخصات وبطاقات تعليمية واختبارات.";
+"onboarding.step.plan.title"     = "خطّط";
+"onboarding.step.plan.body"      = "جدول يوزّع مراجعتك على فترات.";
+"onboarding.step.practise.title" = "تدرّب";
+"onboarding.step.practise.body"  = "اختبر نفسك واعرف ما رسخ في ذاكرتك.";
+
+"onboarding.privacy.title"       = "موادك تبقى ملكك";
+"onboarding.privacy.body"        = "تُنشأ الملخصات والاختبارات على جهازك قدر الإمكان، فلا تُرفع ملفاتك للمعالجة. تُزامَن النتائج التي تحتفظ بها فقط، ولهذا تعمل ملاحظاتك دون اتصال. ولا يُستخدم أي شيء ترفعه لتدريب أي ذكاء اصطناعي.";
+"onboarding.privacy.onDevice"    = "تعمل على جهازك";
+"onboarding.privacy.cloud"       = "السحابة، فقط عندما يتعذّر على جهازك";
+"onboarding.privacy.training"    = "لا تُستخدم أبدًا لتدريب نماذج الذكاء الاصطناعي";
+
+/* ── A06 التحقق من البريد الإلكتروني (بديل خطوة رمز التحقق في التصميم) ──── */
+"auth.verify.title"          = "تحقق من بريدك";
+"auth.verify.body"           = "أرسلنا رابط تحقق إلى %@. افتحه لتأكيد بريدك الإلكتروني، ثم عد إلى هنا.";
+"auth.verify.resend"         = "إعادة إرسال البريد";
+"auth.verify.resendIn"       = "يمكنك إعادة الإرسال بعد %d ثانية";
+"auth.verify.resendSent"     = "تم الإرسال. تحقق من بريدك.";
+"auth.verify.checkNow"       = "لقد أكّدت بريدي — تابع";
+"auth.verify.checking"       = "جارٍ التحقق…";
+"auth.verify.spamHint"       = "لم تجده؟ تحقق من مجلد البريد العشوائي.";
+"auth.verify.wrongAddress"   = "عنوان خاطئ؟ سجّل الخروج";
+"auth.verify.notYetTitle"    = "لم يتم التأكيد بعد";
+"auth.verify.notYetBody"     = "لم نتمكن من تأكيد الرابط بعد. افتح الرابط في بريدك ثم حاول مرة أخرى.";
+
+/* ── الجلسة والتوجيه ────────────────────────────────────────────────────── */
+"session.signedInAs"         = "مسجّل الدخول باسم %@";
+"session.signOut"            = "تسجيل الخروج";
+"session.homePlaceholder.title"  = "تم تسجيل دخولك";
+"session.homePlaceholder.body"   = "تظهر شاشة %@ الرئيسية في السبرنت التالي.";
+
+/* ── شاشة الانتقال: عرض الصلاحيات ───────────────────────────────────────── */
+"home.capabilities.heading"  = "صلاحياتك";
+"home.role.label"            = "الدور";
+"home.plan.label"            = "الخطة";
+"home.tutorStudio.label"     = "استوديو المدرّس";
+"home.studyGroups.label"     = "مجموعات الدراسة";
+"home.available"             = "متاحة";
+"home.unavailable"           = "غير متاحة";
+
+/* ── B01 إعداد الملف — البيانات الأكاديمية (docs/03 §B، الخطوة 1 من 3) ──── */
+"profile.academic.title"                 = "دراستك";
+"profile.academic.subtitle"              = "بهذه البيانات نُصنّف موادك ونبني خطتك الدراسية. يمكنك تغييرها لاحقًا.";
+"profile.academic.university"            = "الجامعة";
+"profile.academic.universityPlaceholder" = "اختر جامعتك";
+"profile.academic.major"                 = "التخصص أو البرنامج";
+"profile.academic.majorHint"             = "البرنامج الذي أنت مسجّل فيه";
+"profile.academic.year"                  = "السنة الدراسية";
+"profile.academic.courses"               = "المقررات المسجّلة";
+"profile.academic.coursesEmpty"          = "قائمة المقررات غير متاحة بعد. يمكنك إضافة مقرراتك لاحقًا.";
+"profile.academic.submitting"            = "جارٍ الحفظ…";
+"profile.academic.error.university"      = "اختر جامعتك.";
+"profile.academic.error.major"           = "أدخل تخصصك أو برنامجك.";
+"profile.academic.error.year"            = "اختر سنتك الدراسية.";
+"profile.academic.error.courses"         = "اختر مقررًا واحدًا على الأقل.";
+
+/* ── معالج إعداد الملف — مشترك بين الخطوات ──────────────────────────────── */
+"profile.step"                           = "الخطوة %d من %d";
+
+/* ── B02 إعداد الملف — أسلوب التعلّم (docs/03 §B، الخطوة 2 من 3) ────────── */
+"profile.learningStyle.title"            = "كيف تتعلّم أفضل";
+"profile.learningStyle.subtitle"         = "يُصمَّم كل ملخّص وبطاقة وشرح بناءً على هذا الاختيار. يمكنك تغييره لاحقًا.";
+"profile.learningStyle.submitting"       = "جارٍ الحفظ…";
+"profile.learningStyle.error"            = "اختر الأسلوب الذي يناسبك.";
+
+"profile.learningStyle.visual.title"      = "بصري";
+"profile.learningStyle.visual.preview"    = "نقاط مجمّعة ومقارنات ورسوم — بنية يمكنك تصوّرها.";
+"profile.learningStyle.verbal.title"      = "لفظي";
+"profile.learningStyle.verbal.preview"    = "شروح تُقرأ كأن زميلًا يشرح لك بصوته.";
+"profile.learningStyle.readWrite.title"   = "قراءة وكتابة";
+"profile.learningStyle.readWrite.preview" = "ملخّصات مكتوبة منظّمة مع تعريفات دقيقة ومصطلحات المصدر نفسه.";
+"profile.learningStyle.kinesthetic.title" = "حركي";
+"profile.learningStyle.kinesthetic.preview" = "أمثلة محلولة وأسئلة «ماذا لو» بدل العبارات المجرّدة.";
+
+/* ── B03 إعداد الملف — الأهداف الدراسية (docs/03 §B، الخطوة 3 من 3) ────── */
+"profile.studyGoals.title"               = "أهدافك الدراسية";
+"profile.studyGoals.subtitle"            = "على هذا الأساس نحدّد مقدار المادة التي نخطّطها لك كل أسبوع.";
+"profile.studyGoals.submitting"          = "جارٍ الحفظ…";
+"profile.studyGoals.finish"              = "إنهاء الإعداد";
+"profile.studyGoals.hoursLabel"          = "وقت الدراسة الأسبوعي";
+"profile.studyGoals.gradeLabel"          = "الدرجة المستهدفة";
+"profile.studyGoals.gradeError"          = "اختر الدرجة التي تسعى إليها.";
+
+/* صيغ العدد في قراءة الساعات. العربية تميّز أربع فئات (المفرد والمثنى والجمع والقليل)،
+   و«واحدة» و«ساعتان» عبارتان ثابتتان لا يُكتب فيهما الرقم — انظر WeekHoursReadout. */
+"profile.studyGoals.hours.one"           = "ساعة واحدة أسبوعيًا";
+"profile.studyGoals.hours.two"           = "ساعتان أسبوعيًا";
+"profile.studyGoals.hours.few"           = "%d ساعات أسبوعيًا";
+"profile.studyGoals.hours.many"          = "%d ساعة أسبوعيًا";
+
+/* ── B04 إعداد الملف الشخصي — الاكتمال (docs/03 §B) ──
+   تُعيد تسميات الملخّص قراءةَ ما جمعه المعالج. */
+"profile.complete.title"                  = "كل شيء جاهز";
+"profile.complete.subtitle"               = "إليك ما سنبني عليه خطتك الدراسية. يمكنك تغيير أي شيء لاحقًا.";
+"profile.complete.summaryHeading"         = "ما أخبرتنا به";
+"profile.complete.goToDashboard"          = "الانتقال إلى لوحة التحكم";
+"profile.complete.university"             = "الجامعة";
+"profile.complete.major"                  = "التخصص أو البرنامج";
+"profile.complete.year"                   = "السنة الدراسية";
+"profile.complete.courses"                = "المقررات المسجّلة";
+"profile.complete.learningStyle"          = "كيف تتعلّم أفضل";
+"profile.complete.hours"                  = "وقت الدراسة الأسبوعي";
+"profile.complete.grade"                  = "الدرجة المستهدفة";
+
+/* ── B07 تعديل الملف الشخصي (docs/03 §B) ──────────────────────────────── */
+"profile.edit.title"          = "تعديل الملف الشخصي";
+"profile.edit.name"           = "الاسم الكامل";
+"profile.edit.nameHint"       = "يظهر في ملفك الشخصي ولمدرّسك.";
+"profile.edit.nameError"      = "أدخل اسمك.";
+"profile.edit.save"           = "حفظ";
+"profile.edit.saving"         = "جارٍ الحفظ…";
+"profile.edit.avatarNote"     = "إضافة صورة ستتوفر عند تفعيل التخزين السحابي.";
+"profile.edit.discardTitle"   = "هل تريد تجاهل تغييراتك؟";
+"profile.edit.discardMessage" = "لدى ملفك تغييرات غير محفوظة.";
+"profile.edit.discard"        = "تجاهل";
+"profile.edit.keepEditing"    = "متابعة التعديل";
+
+/* ── B06 عرض الملف الشخصي (docs/03 §B) ────────────────────────────────── */
+"profile.view.title"           = "ملفك الشخصي";
+"profile.view.studiesHeading"  = "دراستك";
+"profile.view.planHeading"     = "خطتك الدراسية";
+"profile.view.progressTitle"   = "التقدّم والشارات";
+"profile.view.progressBody"    = "سيظهر الإتقان والسلاسل والشارات عند تفعيل تتبّع التقدّم.";
+
+/* ── F02 مكتبة المواد (docs/03 §C) ─────────────────────────────────────── */
+"library.title"             = "المكتبة";
+"library.searchPlaceholder" = "ابحث في موادك";
+"library.emptyTitle"        = "لا يوجد شيء بعد";
+"library.emptyBody"         = "أضف ملف PDF أو صورة أو مسحًا ضوئيًا أو رابطًا وسيبقى هنا — على جهازك ومتاحًا دون اتصال.";
+"library.noMatchesTitle"    = "لا نتائج مطابقة";
+"library.noMatchesBody"     = "جرّب كلمة أو وسمًا آخر.";
+
+/* مصدر المادة — اسم واحد لكل مصدر. */
+"material.source.pdf"    = "PDF";
+"material.source.image"  = "صورة";
+"material.source.scan"   = "مسح ضوئي";
+"material.source.link"   = "رابط";
+"material.source.text"   = "نص ملصوق";
+
+/* ── F02 الاستيراد (docs/03 §C) ────────────────────────────────────────── */
+"import.title"              = "إضافة مادة";
+"import.sourceText.title"   = "لصق نص";
+"import.sourceText.detail"  = "اكتب المادة أو الصقها مباشرة.";
+"import.sourcePdf.title"    = "اختيار ملف PDF";
+"import.sourcePdf.detail"   = "يُقرأ نصّه على جهازك.";
+"import.nameLabel"          = "العنوان";
+"import.namePlaceholder"    = "المحاضرة 4 — التطبيع";
+"import.textLabel"          = "المادة";
+"import.textHint"           = "يبقى كل شيء على جهازك. ولا يُحفظ إلا ما يولّده الذكاء الاصطناعي.";
+"import.tagsLabel"          = "الوسوم";
+"import.tagsHint"           = "افصل بينها بفواصل.";
+"import.submit"             = "إضافة إلى المكتبة";
+"import.submitting"         = "جارٍ الإضافة…";
+"import.error.name"         = "أعطِ المادة عنوانًا.";
+"import.error.text"         = "الصق المادة أولًا.";
+"import.error.unreadable"   = "تعذّر فتح ذلك الملف.";
+"import.error.noText"       = "لم نعثر على أي نص فيه.";
+
+/* ── F03 الملخص بالذكاء الاصطناعي (docs/03 §D) ────────────────────────── */
+"summary.title"              = "تلخيص المادة";
+"summary.lengthLabel"        = "الطول";
+"summary.length.short"       = "قصير";
+"summary.length.standard"    = "قياسي";
+"summary.length.examReady"   = "جاهز للاختبار";
+"summary.styleLabel"         = "الأسلوب";
+"summary.style.bullets"      = "نقاط موجزة";
+"summary.style.narrative"    = "سردي";
+"summary.style.cornell"      = "ملاحظات كورنيل";
+"summary.languageLabel"      = "اللغة";
+"summary.language.english"   = "English";
+"summary.language.arabic"    = "العربية";
+"summary.focusLabel"         = "مواضيع التركيز";
+"summary.focusPlaceholder"   = "مثال: التطبيع، الفهارس";
+"summary.generate"           = "إنشاء الملخص";
+"summary.generating.title"   = "جارٍ كتابة ملخصك…";
+"summary.generating.body"    = "جارٍ قراءة المادة واستخراج ما يهم منها.";
+"summary.tldrHeading"        = "باختصار";
+"summary.keyPointsHeading"   = "النقاط الرئيسية";
+"summary.glossaryHeading"    = "المصطلحات";
+"summary.save"               = "حفظ الملخص";
+"summary.saving"             = "جارٍ الحفظ…";
+"summary.savedTitle"         = "تم حفظ الملخص";
+"summary.savedBody"          = "محفوظ على جهازك.";
+"summary.source"             = "المصدر";
+"summary.confidence.high"    = "ثقة عالية";
+"summary.confidence.medium"  = "ثقة متوسطة";
+"summary.confidence.low"     = "ثقة منخفضة — راجع";
+"summary.engine.onDevice"    = "على الجهاز · خاص";
+"summary.engine.firebaseAI"  = "سحابي (Firebase AI)";
+"summary.engine.cloudFunction" = "سحابي (الخادم)";
+
+/* المكتبة: زر إنشاء الملخص لكل مادة. */
+"library.summarise"          = "لخّص";
+"library.makeCards"          = "إنشاء بطاقات";
+
+/* ── F04 البطاقات التعليمية (docs/03 §E) ─────────────────────────────── */
+"deck.title"          = "البطاقات التعليمية";
+"deck.newDeck"        = "مجموعة جديدة";
+"deck.emptyTitle"     = "لا توجد مجموعات بعد";
+"deck.emptyBody"      = "حوّل مادة إلى بطاقات وستبقى هنا، مجدولة للمراجعة.";
+"deck.studyNow"       = "ادرس الآن";
+"deck.cardsHeading"   = "البطاقات";
+"deck.dueLabel"       = "مستحق";
+"deck.newLabel"       = "جديد";
+"deck.learningLabel"  = "قيد التعلم";
+"deck.masteredLabel"  = "متقن";
+
+"flashcard.generateTitle"         = "إنشاء بطاقات";
+"flashcard.sourceLabel"           = "المادة";
+"flashcard.sourcePrompt"          = "اختر مادة";
+"flashcard.countLabel"            = "عدد البطاقات";
+"flashcard.difficultyLabel"       = "الصعوبة";
+"flashcard.difficulty.recall"     = "استرجاع";
+"flashcard.difficulty.understanding" = "فهم";
+"flashcard.difficulty.mixed"      = "مختلط";
+"flashcard.typeLabel"             = "نوع البطاقة";
+"flashcard.type.qa"               = "سؤال وجواب";
+"flashcard.type.cloze"            = "حجب الكلمات";
+"flashcard.type.imageOcclusion"   = "حجب الصورة";
+"flashcard.type.reversible"       = "قابلة للعكس";
+"flashcard.generate"              = "إنشاء البطاقات";
+"flashcard.generating.title"      = "جارٍ كتابة بطاقاتك…";
+"flashcard.generating.body"       = "جارٍ تحويل المادة إلى أسئلة وأجوبة.";
+"flashcard.reviewHeading"         = "راجع بطاقاتك";
+"flashcard.deckNameLabel"         = "اسم المجموعة";
+"flashcard.saveDeck"              = "حفظ المجموعة";
+"flashcard.savingDeck"            = "جارٍ الحفظ…";
+"flashcard.savedTitle"            = "تم حفظ المجموعة";
+"flashcard.savedBody"             = "بطاقاتك جاهزة للدراسة.";
+"flashcard.source"                = "المصدر";
+
+"flashcard.reviewTitle"          = "ادرس";
+"flashcard.progress"             = "%d من %d";
+"flashcard.tapToReveal"          = "اضغط لكشف الإجابة";
+"flashcard.rating.again"         = "مرة أخرى";
+"flashcard.rating.hard"          = "صعب";
+"flashcard.rating.good"          = "جيد";
+"flashcard.rating.easy"          = "سهل";
+"flashcard.interval.again"       = "أقل من دقيقة";
+"flashcard.interval.days"        = "%d يوم";
+"flashcard.interval.months"      = "%d شهر";
+"flashcard.sessionTitle"         = "اكتملت الجلسة";
+"flashcard.sessionReviewed"      = "البطاقات المراجَعة";
+"flashcard.sessionAccuracy"      = "الدقة";
+"flashcard.sessionDone"          = "تم";
+"flashcard.sessionKeepGoing"     = "متابعة";
+"flashcard.emptyTitle"           = "لا شيء مستحق الآن";
+"flashcard.emptyBody"            = "أنت على اطلاع بكل شيء. يمكنك دراسة المجموعة كاملة على أي حال.";
+
+/* ── F05 الاختبارات (docs/03 §F) ──────────────────────────────────────── */
+"quiz.title"           = "الاختبارات";
+"quiz.newQuiz"         = "اختبار جديد";
+"quiz.emptyTitle"      = "لا توجد اختبارات بعد";
+"quiz.emptyBody"       = "حوّل مادة إلى اختبار واختبر نفسك.";
+"quiz.retake"          = "إعادة";
+"quiz.generateTitle"   = "إنشاء اختبار";
+"quiz.sourceLabel"     = "المادة";
+"quiz.sourcePrompt"    = "اختر مادة";
+"quiz.typeLabel"       = "نوع السؤال";
+"quiz.type.multipleChoice" = "اختيار من متعدد";
+"quiz.type.trueFalse"  = "صح / خطأ";
+"quiz.type.shortAnswer" = "إجابة قصيرة";
+"quiz.type.mixed"      = "مختلط";
+"quiz.countLabel"      = "عدد الأسئلة";
+"quiz.generate"        = "إنشاء الاختبار";
+"quiz.generating.title" = "جارٍ كتابة أسئلتك…";
+"quiz.generating.body"  = "جارٍ تحويل المادة إلى اختبار.";
+"quiz.reviewHeading"    = "راجع أسئلتك";
+"quiz.nameLabel"       = "اسم الاختبار";
+"quiz.save"            = "حفظ الاختبار";
+"quiz.saving"          = "جارٍ الحفظ…";
+"quiz.savedTitle"      = "تم حفظ الاختبار";
+"quiz.savedBody"       = "جاهز لتختبر نفسك.";
+"quiz.source"          = "المصدر";
+"quiz.takeTitle"       = "أجرِ الاختبار";
+"quiz.progress"        = "%d من %d";
+"quiz.correct"         = "صحيح";
+"quiz.incorrect"       = "ليس تمامًا";
+"quiz.explanation"     = "الشرح";
+"quiz.scorecardTitle"  = "نتيجتك";
+"quiz.score"           = "%d / %d";
+"quiz.topicHeading"    = "حسب الموضوع";
+"quiz.reviewAnswers"   = "راجع الإجابات";
+"quiz.yourAnswer"      = "إجابتك";
+"quiz.correctAnswer"   = "الإجابة الصحيحة";
+"quiz.timerLabel"      = "الحد الزمني";
+"quiz.timerToggle"     = "اختبار بمؤقّت";
+"quiz.minutes"         = "%d دقيقة";
+"quiz.submit"          = "إرسال";
+"quiz.submitConfirm.title" = "إرسال الاختبار؟";
+"quiz.submitConfirm.body"  = "أجبت عن %d من %d. لا يمكنك تغيير إجاباتك بعد الإرسال.";
+"quiz.flag"            = "وضع علامة على هذا السؤال";
+"quiz.unflag"          = "إزالة العلامة";
+"quiz.timeRemaining"   = "الوقت المتبقي %@";
+
+/* ── F06 الخطة الدراسية (docs/03 §G) ──────────────────────────────────── */
+"plan.title"           = "الخطة الدراسية";
+"plan.newPlan"         = "إنشاء خطة";
+"plan.emptyTitle"      = "لا توجد خطة بعد";
+"plan.emptyBody"       = "أنشئ خطة أسبوعية حول موادك ومواعيدك النهائية.";
+"plan.stepIndicator"   = "الخطوة %d من %d";
+"plan.subjectsHeading" = "ماذا تدرس؟";
+"plan.subjectPlaceholder" = "أضف مادة";
+"plan.addSubject"      = "إضافة";
+"plan.availabilityHeading" = "كم ساعة في الأسبوع؟";
+"plan.deadlineHeading" = "متى اختبارك القادم؟";
+"plan.noDeadline"      = "لا يوجد موعد نهائي";
+"plan.intensityHeading" = "ما مدى الكثافة؟";
+"plan.intensity.light" = "خفيفة";
+"plan.intensity.balanced" = "متوازنة";
+"plan.intensity.intensive" = "مكثفة";
+"plan.generate"        = "إنشاء الخطة";
+"plan.replan"          = "إعادة التخطيط";
+"plan.markDone"        = "وضع علامة منجز";
+"plan.skip"            = "تخطي";
+"plan.weekHeading"     = "هذا الأسبوع";
+"plan.noSessions"      = "لا توجد جلسات مجدولة";
+"plan.minutes"         = "%d دقيقة";
+"plan.sessionDetail"   = "جلسة";
+"plan.duration"        = "المدة";
+"plan.scheduledFor"    = "الموعد";
+"plan.statusLabel"     = "الحالة";
+"plan.status.pending"   = "لم تبدأ";
+"plan.status.completed" = "مكتملة";
+"plan.status.skipped"   = "متجاوَزة";
+"plan.started"         = "بدأت";
+"plan.inProgress"      = "قيد التقدّم";
+"plan.startNow"        = "ابدأ الآن";
+"plan.reschedule"      = "إعادة الجدولة";
+
+/* ── F07 التقدّم (docs/03 §G) ─────────────────────────────────────────── */
+"progress.title"          = "التقدّم";
+"progress.emptyTitle"     = "لا يوجد شيء لعرضه بعد";
+"progress.emptyBody"      = "أضف مادة أو أجرِ اختبارًا أو أكمل جلسة دراسة وسيظهر تقدّمك هنا.";
+"progress.mastery"        = "الإتقان";
+"progress.streak"         = "أيام متتالية";
+"progress.hoursThisWeek"  = "هذا الأسبوع";
+"progress.hoursValue"     = "%d ساعة";
+"progress.weeklyHeading"  = "نشاط هذا الأسبوع";
+"progress.goalHeading"    = "الهدف الأسبوعي";
+"progress.goalCaption"    = "%d من %d ساعات";
+"progress.subjectsHeading" = "المواد قيد التقدّم";
+"progress.noSubjects"     = "أنشئ خطة دراسية لتتبّع المواد هنا.";
+"progress.radarTitle"     = "قوة المواضيع";
+"progress.radarEmpty"     = "أجرِ اختبارًا لبناء خريطة مواضيعك.";
+"progress.weakTopicsHeading" = "ركّز على هذه";
+"progress.noWeakTopics"   = "لا توجد مواضيع ضعيفة بعد — أجرِ اختبارًا لاكتشافها.";
+"progress.masteryValue"   = "%d%%";
+"progress.streakValue"    = "%d";
+"progress.quizzesTaken"   = "الاختبارات المُجراة";
+"progress.cardsMastered"  = "البطاقات المتقنة";
+"progress.cardsValue"     = "%d من %d";
+
+/* ── F08 المجلدات المشتركة (docs/03 §I) ───────────────────────────────── */
+"folder.title"            = "المجلدات المشتركة";
+"folder.newFolder"        = "مجلد جديد";
+"folder.emptyTitle"       = "لا توجد مجلدات بعد";
+"folder.emptyBody"        = "أنشئ مجلدًا لمشاركة المواد والمجموعات مع فريق دراستك.";
+"folder.nameLabel"        = "اسم المجلد";
+"folder.namePlaceholder"  = "مراجعة قواعد البيانات";
+"folder.create"           = "إنشاء المجلد";
+"folder.creating"         = "جارٍ الإنشاء…";
+"folder.itemsTab"         = "العناصر";
+"folder.membersTab"       = "الأعضاء";
+"folder.noItems"          = "لا شيء مشترك هنا بعد.";
+"folder.addItem"          = "إضافة عنصر";
+"folder.addItemsTitle"    = "أضف من مكتبتك";
+"folder.addMember"        = "إضافة عضو";
+"folder.memberNameLabel"  = "الاسم";
+"folder.memberNamePlaceholder" = "رفيق الدراسة";
+"folder.permissionLabel"  = "الصلاحية";
+"folder.roleOwner"        = "المالك";
+"folder.permission.view"  = "عرض";
+"folder.permission.comment" = "تعليق";
+"folder.permission.edit"  = "تحرير";
+"folder.itemCount"        = "%d عناصر";
+"folder.memberCount"      = "%d أعضاء";
+"folder.memberExists"     = "هذا الشخص موجود بالفعل في هذا المجلد.";
+
+/* ── F10 Resource bookmarks (docs/03 §I, I15–I18) ──────────────────────── */
+"bookmark.title"            = "المجموعات";
+"bookmark.newCollection"    = "مجموعة جديدة";
+"bookmark.emptyTitle"       = "لا توجد مجموعات بعد";
+"bookmark.emptyBody"        = "أنشئ مجموعة لحفظ الموارد التي تريد العودة إليها.";
+"bookmark.offlineNote"      = "المجموعات المحفوظة دون اتصال تبقى متاحة بلا إنترنت.";
+"bookmark.browseLibrary"    = "تصفّح مكتبتك";
+"bookmark.nameLabel"        = "اسم المجموعة";
+"bookmark.namePlaceholder"  = "مراجعة الاختبار";
+"bookmark.create"           = "إنشاء المجموعة";
+"bookmark.creating"         = "جارٍ الإنشاء…";
+"bookmark.itemCount"        = "%d عناصر";
+"bookmark.offlineCount"     = "%d دون اتصال";
+"bookmark.offlineBadge"     = "دون اتصال";
+"bookmark.noItems"          = "لم يُحفظ شيء هنا بعد.";
+"bookmark.savedOn"          = "حُفظ في %@";
+"bookmark.remove"           = "إزالة";
+"bookmark.move"             = "نقل";
+"bookmark.moveTitle"        = "النقل إلى مجموعة";
+"bookmark.share"            = "مشاركة";
+"bookmark.select"           = "تحديد";
+"bookmark.saveSheetTitle"   = "حفظ في مجموعة";
+"bookmark.saveTo"           = "اختر مجموعة";
+"bookmark.createNew"        = "إنشاء جديدة";
+"bookmark.saveOffline"      = "حفظها دون اتصال أيضًا";
+"bookmark.saveOfflineHint"  = "يحتفظ بنسخة على هذا الجهاز لتُفتح دون اتصال.";
+"bookmark.save"             = "حفظ";
+"bookmark.saving"           = "جارٍ الحفظ…";
+"bookmark.exists"           = "محفوظ بالفعل في هذه المجموعة.";
+"bookmark.noCollections"    = "أنشئ مجموعة لتُحفظ فيها.";
+
+/* ── F09 Group revision spaces (docs/03 §I, I08–I14) ───────────────────── */
+"group.title"              = "مجموعات الدراسة";
+"group.newGroup"           = "مجموعة جديدة";
+"group.emptyTitle"         = "لا توجد مجموعات بعد";
+"group.emptyBody"          = "أنشئ مجموعة للمراجعة معًا، أو انضم إلى واحدة برمز.";
+"group.nameLabel"          = "اسم المجموعة";
+"group.namePlaceholder"    = "مراجعة قواعد البيانات";
+"group.create"             = "إنشاء المجموعة";
+"group.creating"           = "جارٍ الإنشاء…";
+"group.memberCount"        = "%d أعضاء";
+"group.joinTitle"          = "الانضمام إلى مجموعة";
+"group.joinCodeLabel"      = "رمز الدعوة";
+"group.joinCodePlaceholder" = "ABC123";
+"group.join"               = "انضمام";
+"group.joining"            = "جارٍ الانضمام…";
+"group.joinCodeInvalid"    = "لا توجد مجموعة بهذا الرمز.";
+"group.joinAlreadyMember"  = "أنت عضو في هذه المجموعة بالفعل.";
+"group.inviteCodeLabel"    = "رمز الدعوة";
+"group.chatTitle"          = "المحادثة";
+"group.chatPlaceholder"    = "رسالة";
+"group.chatSend"           = "إرسال";
+"group.chatEmpty"          = "لا توجد رسائل بعد. ألقِ التحية.";
+"group.boardHeading"       = "الموارد المثبّتة";
+"group.noResources"        = "لا يوجد شيء مثبّت بعد.";
+"group.membersHeading"     = "الأعضاء";
+"group.startQuiz"          = "بدء اختبار المجموعة";
+"group.quizLobbyTitle"     = "اختبار المجموعة";
+"group.quizReady"          = "جاهز";
+"group.quizWaitingHost"    = "في انتظار أن يبدأ المضيف…";
+"group.quizStart"          = "بدء الاختبار";
+"group.quizQuestionProgress" = "%d من %d";
+"group.quizProgressStrip"  = "أجاب %d من %d";
+"group.quizLeaderboard"    = "لوحة الصدارة";
+"group.quizScorePoints"    = "%d نقطة";
+"group.quizChallengeRematch" = "تحدَّ مجددًا";
+"group.quizReviewAnswers"  = "مراجعة الإجابات";
+"group.quizResultsTitle"   = "نتيجة المجموعة";
+"group.quizTimeLeft"       = "%d ث";
+"group.liveNow"            = "مباشر الآن";
+"group.nextSession"        = "الجلسة القادمة";
+"group.presenceOnline"     = "%d متصل";
+"group.quizNoQuizzes"      = "أنشئ اختبارًا أولًا، ثم تحدَّ مجموعتك به.";
+
+/* ── F14 Notifications & reminders (docs/03 §M/B, M01–M02, B08–B09) ────── */
+"notification.inboxTitle"        = "الإشعارات";
+"notification.settingsTitle"     = "الإعدادات";
+"notification.settingsAccount"   = "الحساب";
+"notification.emptyTitle"        = "لا جديد";
+"notification.emptyBody"         = "ستظهر هنا التذكيرات ونشاط المجموعة.";
+"notification.markAllRead"       = "تحديد الكل كمقروء";
+"notification.markRead"          = "تحديد كمقروء";
+"notification.unread"            = "%d غير مقروء";
+"notification.today"             = "اليوم";
+"notification.yesterday"         = "أمس";
+"notification.earlier"           = "سابقًا";
+"notification.kind.studyReminder" = "تذكيرات الدراسة";
+"notification.kind.quizDue"      = "اختبارات مستحقة";
+"notification.kind.groupActivity" = "نشاط المجموعة";
+"notification.kind.achievement"  = "الإنجازات";
+"notification.kind.system"       = "إشعارات التطبيق";
+"notification.reminderBody"      = "%@ — %d دقيقة. افتح خطتك للبدء.";
+"notification.quietHours"        = "ساعات الهدوء";
+"notification.quietHoursCaption" = "تُؤجَّل تذكيرات الدراسة خلال هذه الساعات.";
+"notification.save"              = "حفظ";
+"notification.saving"            = "جارٍ الحفظ…";
+"notification.saved"             = "تم الحفظ";
+"notification.permissionTitle"   = "ابقَ على المسار";
+"notification.permissionBody"    = "يمكن لـ StudyForge أن يذكّرك عند حلول موعد الجلسة، لتبقى خطتك على المسار.";
+"notification.permissionEnable"  = "تفعيل التذكيرات";
+"notification.permissionNotNow"  = "ليس الآن";
+"notification.permissionGranted" = "التذكيرات مفعّلة.";
+"notification.permissionDenied"  = "التذكيرات متوقفة. يمكنك تفعيلها لاحقًا من الإعدادات.";
+"notification.offlineBanner"     = "أنت غير متصل — ستتم المزامنة عند العودة.";
+
+/* ── M05 Global search (docs/03 §M) ───────────────────────────────────── */
+"search.title"          = "البحث";
+"search.prompt"         = "ابحث في كل ما حفظته";
+"search.emptyTitle"     = "لا نتائج";
+"search.emptyBody"      = "جرّب كلمة أخرى، أو وسّع النطاق.";
+"search.recentHeading"  = "عمليات البحث الأخيرة";
+"search.clearRecent"    = "مسح";
+"search.scopeAll"       = "الكل";
+"search.kind.material"  = "المواد";
+"search.kind.summary"   = "الملخصات";
+"search.kind.deck"      = "المجموعات";
+"search.kind.quiz"      = "الاختبارات";
+"search.kind.folder"    = "المجلدات";
+"search.kind.bookmark"  = "المحفوظات";
+"search.resultCount"    = "%d نتيجة";
+"search.deckCount"      = "%d بطاقة";
+"search.quizCount"      = "%d سؤالًا";
+
+/* ── F12 Admin — AI configuration (docs/03 §K, K07/K08) ───────────────── */
+"admin.title"                = "إعدادات الذكاء الاصطناعي";
+"admin.policyLabel"          = "سياسة المحرّك";
+"admin.policy.onDeviceFirst" = "على الجهاز أولًا";
+"admin.policy.cloudFirst"    = "السحابة أولًا";
+"admin.policy.offlineOnly"   = "على الجهاز فقط";
+"admin.policyHint"           = "التوليد على الجهاز مجاني وخاص. التوليد السحابي محسوب.";
+"admin.quotaLabel"           = "حد التوليد اليومي";
+"admin.quotaHint"            = "عدد التوليدات السحابية لكل طالب يوميًا. التوليد على الجهاز غير محدود ولا يُحتسب.";
+"admin.quotaUsePlanDefault"  = "استخدام الافتراضي للخطة";
+"admin.quotaValue"           = "%d يوميًا";
+"admin.costHeading"          = "استهلاك اليوم";
+"admin.costUsed"             = "استُخدم %d من %d من التوليدات السحابية";
+"admin.costOnDeviceNote"     = "التوليد على الجهاز لا يكلّف شيئًا.";
+"admin.save"                 = "حفظ الإعدادات";
+"admin.saving"               = "جارٍ الحفظ…";
+"admin.savedTitle"           = "تم حفظ الإعدادات";
+"admin.auditHeading"         = "التغييرات الأخيرة";
+"admin.auditEmpty"           = "لم تُسجَّل أي تغييرات بعد.";
+"admin.auditConfigChanged"   = "تم تغيير إعدادات الذكاء الاصطناعي";
+"admin.auditRoleChanged"     = "تم تغيير الدور";
+"admin.auditAccountChanged"  = "تم تغيير صلاحية الحساب";
+"admin.dashboardTitle"       = "الإدارة";
+"admin.status.active"        = "نشط";
+"admin.status.suspended"     = "موقوف";
+"admin.kpi.users"            = "الحسابات";
+"admin.kpi.active"           = "نشط هذا الأسبوع";
+"admin.kpi.atRisk"           = "معرّضون للخطر";
+"admin.kpi.aiToday"          = "توليدات الذكاء الاصطناعي اليوم";
+"admin.manageHeading"        = "الإدارة";
+"admin.usersTitle"           = "الحسابات";
+"admin.usersSearchPlaceholder" = "ابحث بالاسم أو البريد";
+"admin.usersEmptyTitle"      = "لا حسابات للعرض";
+"admin.usersEmptyBody"       = "لا شيء يطابق هذا البحث. جرّب اسمًا أو دورًا آخر.";
+"admin.filterAll"            = "كل الأدوار";
+"admin.masteryValue"         = "إتقان %d%%";
+"admin.lastActive"           = "آخر ظهور %@";
+"admin.roleLabel"            = "الدور";
+"admin.accountTitle"         = "حساب";
+"admin.suspend"              = "إيقاف";
+"admin.reactivate"           = "إعادة التنشيط";
+"admin.suspendConfirm.title" = "إيقاف هذا الحساب؟";
+"admin.suspendConfirm.body"  = "سيُخرَج من التطبيق ولن يستطيع الدخول حتى يُعاد تنشيطه.";
+"admin.roleConfirm.title"    = "تغيير هذا الدور؟";
+"admin.roleConfirm.body"     = "تتغيّر صلاحياته فورًا.";
+"admin.noMastery"            = "—";

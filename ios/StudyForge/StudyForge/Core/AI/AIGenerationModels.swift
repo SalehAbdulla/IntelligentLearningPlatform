@@ -28,7 +28,7 @@ import FoundationModels
 
 /// How confident we are in a generated artefact, derived from the extraction
 /// quality of its source rather than from the model's own opinion.
-enum AIConfidence: String, Sendable, Equatable, CaseIterable {
+enum AIConfidence: String, Sendable, Equatable, CaseIterable, Codable {
     case high
     case medium
     case low
@@ -40,7 +40,7 @@ enum AIConfidence: String, Sendable, Equatable, CaseIterable {
 
 /// Where an artefact came from. The basis of the "tap to see the source" feature
 /// that distinguishes grounded generation from confident guessing.
-struct AIProvenance: Sendable, Equatable {
+struct AIProvenance: Sendable, Equatable, Codable {
     let materialId: String
     /// Page numbers in the source material, 1-based.
     let pageNumbers: [Int]

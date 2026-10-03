@@ -109,7 +109,8 @@
   "year": 3,
   "learningStyle": "visual",      // visual | verbal | readwrite | kinesthetic
   "accessibility": { "dyslexiaFont": false, "textScale": 1.0, "reduceMotion": false },
-  "weeklyStudyGoalHours": 12,
+  "weeklyStudyGoalHours": 12,     // study goal, B03
+  "targetGrade": "B",             // A | B | C | D  — placeholder scale, see docs/09 Q12
   "createdAt": "<timestamp>", "updatedAt": "<timestamp>", "byUid": "<uid>"
 }
 ```
@@ -228,14 +229,24 @@ service cloud.firestore {
 
     // 1. DENY BY DEFAULT — there is no catch-all `allow read, write: if true` anywhere.
 
-    // 2. OWNERSHIP + ROLE on the user record; no self-promotion, no self-upgrade.
+    // 2. ALLOWLIST on the user record — a field is NOT client-writable until it is NAMED.
+    //    Pinning only `role` and `plan` (the original rule) left every OTHER field
+    //    writable, including fields the schema had not grown yet. See decision D25.
+    function editableProfileFields() {
+      return ['displayName', 'university', 'major', 'year', 'courseIds', 'learningStyle',
+              'weeklyStudyGoalHours', 'targetGrade', 'avatarUrl', 'updatedAt'];
+    }
+    function onlyChanges(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
     match /users/{userId} {
       allow read:   if isSelf(userId) || isTutor() || isAdmin();
       allow create: if isSelf(userId)
                     && request.resource.data.role == 'student'
                     && request.resource.data.plan == 'free';
       allow update: if isAdmin()
-                    || (isSelf(userId) && untouched('role') && untouched('plan'));
+                    || (isSelf(userId) && untouched('role') && untouched('plan')
+                        && onlyChanges(editableProfileFields()));
       allow delete: if isAdmin();
 
       match /private/{doc} { allow read, write: if isSelf(userId); }
@@ -290,9 +301,11 @@ service cloud.firestore {
 }
 ```
 
+**The allowlist is the point, not the field list.** `onlyChanges(editableProfileFields())` denies every key it has not been told about, so a field added in a later sprint is **not** client-writable until somebody names it here and justifies it. Three families are named today, all written by the profile wizard: the academic fields (B01), the learning preference `learningStyle` (B02), and the study goals `weeklyStudyGoalHours` + `targetGrade` (B03). The preferences are named in the allowlist rather than stored under `users/{uid}/private` — which is already self-read/self-write — because that subcollection has **no field guard at all**, so anything placed there is client-writable the moment it exists. That is the fail-open hole this allowlist was introduced to close (D25); routing the wizard's output into it would have reopened the same hole under a different path. Verified both ways: the emulator tests assert the wizard's fields succeed *and* that `streak`, `badges` and any unnamed field still fail. One name was deliberately **not** added even though the design named the control: B03's *exam dates*, which are per-course and per-term and therefore belong to the study plan (F06) rather than to a profile document — see docs/09 Q11.
+
 **Storage rules follow the same philosophy:** `users/{uid}/**` is owner-only · `courses/{courseId}/published/**` is readable by enrolled students · `reports/**` is admin-only · everything else is denied.
 
-**Emulator tests are mandatory.** `backend/firestore.rules.test.js` must contain **negative** tests: a student reading another student's material, a non-tutor writing the review queue, and a client trying to update its own `subscriptions` document. *Proving the rules deny the wrong people is stronger evidence for LO3 than proving they allow the right ones.*
+**Emulator tests are mandatory.** `backend/rules-tests/firestore.rules.test.mjs` must contain **negative** tests: a student reading another student's material, a non-tutor writing the review queue, and a client trying to update its own `subscriptions` document. *Proving the rules deny the wrong people is stronger evidence for LO3 than proving they allow the right ones.* The emulator proves the rule **text**; because it is a re-implementation rather than the live service, `backend/rules-tests/live-rules-probe.py` additionally runs as a real client against the **deployed** rules — emulator-green says nothing about what was actually deployed (D25).
 
 ---
 

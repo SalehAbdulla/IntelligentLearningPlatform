@@ -231,7 +231,7 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P7-02` Write `storage.rules`; lock material files to the owner plus explicit folder grants
 - [ ] `P7-03` Deploy rules via the Firebase CLI and test them with the **emulator suite** before touching production
 - [ ] `P7-04` Define all Firestore composite indexes and commit `firestore.indexes.json`
-- [ ] `P7-05` Wire **Firebase Auth**: email/password, Sign in with Apple, OTP, and custom claims (`role`, `plan`, `groupIds`)
+- [ ] `P7-05` Wire **Firebase Auth**: email/password, Sign in with Apple, email-verification + password-reset links, and custom claims (`role`, `plan`, `groupIds`)
 - [ ] `P7-06` Implement the **extraction pipeline**: client-side downscale → Vision OCR → chunking with page + offset metadata → Storage upload → Firestore metadata
 - [ ] `P7-07` Implement the `AIProvider` protocol and `OnDeviceProvider` using `FoundationModels` (`LanguageModelSession`, `@Generable` structs for cards and quiz questions)
 - [ ] `P7-08` Implement `FirebaseAIProvider` using Firebase AI Logic with **structured JSON output** and streaming

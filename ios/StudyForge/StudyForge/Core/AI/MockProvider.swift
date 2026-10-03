@@ -64,12 +64,37 @@ final class MockProvider: AIProvider {
                 ? "Not enough source text to build this card."
                 : sentences[index % sentences.count]
             return AIFlashcard(
-                front: "Explain: \(sentence.prefix(60))",
+                front: Self.front(for: sentence, cardType: request.cardType),
                 back: sentence,
                 difficulty: (index % 3) + 1
             )
         }
         return wrap(cards, request.context, pageNumbers: [1])
+    }
+
+    /// The front a card of this shape would carry.
+    ///
+    /// The mock reproduces each shape rather than emitting one kind and labelling it another, so a
+    /// screen driven by it demonstrates the card-type selector honestly — the same reason the mock
+    /// reproduces the planner's weakest-first ordering rather than returning arbitrary order.
+    private static func front(for sentence: String, cardType: CardType) -> String {
+        switch cardType {
+        case .qa:
+            "Explain: \(sentence.prefix(60))"
+        case .cloze:
+            clozePrompt(from: sentence)
+        case .imageOcclusion:
+            "Label the part described here: \(sentence.prefix(50))"
+        case .reversible:
+            "\(sentence.prefix(60)) — explain this, then say what it would apply to."
+        }
+    }
+
+    /// Blanks the longest word, which is the shape a cloze deletion takes.
+    private static func clozePrompt(from sentence: String) -> String {
+        let words = sentence.split(separator: " ")
+        guard let blanked = words.max(by: { $0.count < $1.count }) else { return sentence }
+        return sentence.replacingOccurrences(of: String(blanked), with: "_____")
     }
 
     func makeQuiz(_ request: QuizRequest) async throws -> AIGenerated<[AIQuizQuestion]> {
