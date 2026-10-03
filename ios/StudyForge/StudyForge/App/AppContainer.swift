@@ -166,6 +166,11 @@ final class AppContainer {
     /// previewed and tested with `InMemoryAIConfigurationStore`.
     let aiConfigurations: any AIConfigurationStore
 
+    /// The platform directory (F12, K01–K03). A LOCAL STAND-IN for the cohort-wide `users` query: on
+    /// device it starts empty and only a backend can fill it, which is why the roster screens are
+    /// honest rather than invented. Protocol-backed so previews can seed `PlatformUser.samples`.
+    let adminDirectory: any AdminDirectoryStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -215,6 +220,7 @@ final class AppContainer {
         notificationAuthorizer: any NotificationAuthorizer = InMemoryNotificationAuthorizer(),
         recentSearches: any RecentSearchStore = InMemoryRecentSearchStore(),
         aiConfigurations: any AIConfigurationStore = InMemoryAIConfigurationStore(),
+        adminDirectory: any AdminDirectoryStore = InMemoryAdminDirectoryStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -234,6 +240,7 @@ final class AppContainer {
         self.notificationAuthorizer = notificationAuthorizer
         self.recentSearches = recentSearches
         self.aiConfigurations = aiConfigurations
+        self.adminDirectory = adminDirectory
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -412,7 +419,8 @@ extension AppContainer {
             notifications: FileNotificationStore(),
             notificationAuthorizer: SystemNotificationAuthorizer(),
             recentSearches: UserDefaultsRecentSearchStore(),
-            aiConfigurations: FileAIConfigurationStore()
+            aiConfigurations: FileAIConfigurationStore(),
+            adminDirectory: FileAdminDirectoryStore()
         )
     }
 
