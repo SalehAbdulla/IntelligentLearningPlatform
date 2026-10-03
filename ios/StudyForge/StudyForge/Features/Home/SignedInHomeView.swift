@@ -47,7 +47,9 @@ struct SignedInHomeView: View {
                     foldersLink
                     bookmarksLink
                     groupsLink
+                    notificationsLink
                     profileLink
+                    settingsLink
 
                     #if DEBUG
                     developmentCard
@@ -262,6 +264,37 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.groupTitle.string, systemImage: "person.3")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Notifications
+
+    /// The way into the notification inbox (M01).
+    private var notificationsLink: some View {
+        NavigationLink {
+            NotificationsInboxView(
+                store: container.notifications,
+                plans: container.studyPlans
+            )
+        } label: {
+            Label(L10n.notificationInboxTitle.string, systemImage: "bell")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Settings
+
+    /// The way into settings (B08).
+    private var settingsLink: some View {
+        NavigationLink {
+            SettingsView(container: container)
+        } label: {
+            Label(L10n.notificationSettingsTitle.string, systemImage: "gearshape")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
