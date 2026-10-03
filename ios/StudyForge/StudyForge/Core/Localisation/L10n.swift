@@ -606,6 +606,24 @@ enum L10n: String, CaseIterable, Sendable {
     case notificationPermissionGranted = "notification.permissionGranted"
     case notificationPermissionDenied  = "notification.permissionDenied"
     case notificationOfflineBanner     = "notification.offlineBanner"
+
+    // MARK: M05 Global search
+    case searchTitle          = "search.title"
+    case searchPrompt         = "search.prompt"
+    case searchEmptyTitle     = "search.emptyTitle"
+    case searchEmptyBody      = "search.emptyBody"
+    case searchRecentHeading  = "search.recentHeading"
+    case searchClearRecent    = "search.clearRecent"
+    case searchScopeAll       = "search.scopeAll"
+    case searchKindMaterial   = "search.kind.material"
+    case searchKindSummary    = "search.kind.summary"
+    case searchKindDeck       = "search.kind.deck"
+    case searchKindQuiz       = "search.kind.quiz"
+    case searchKindFolder     = "search.kind.folder"
+    case searchKindBookmark   = "search.kind.bookmark"
+    case searchResultCount    = "search.resultCount"
+    case searchDeckCount      = "search.deckCount"
+    case searchQuizCount      = "search.quizCount"
 }
 
 // MARK: - Resolution
