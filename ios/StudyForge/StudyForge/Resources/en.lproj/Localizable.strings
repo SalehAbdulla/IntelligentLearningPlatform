@@ -604,3 +604,24 @@
 "search.resultCount"    = "%d results";
 "search.deckCount"      = "%d cards";
 "search.quizCount"      = "%d questions";
+
+/* ── F12 Admin — AI configuration (docs/03 §K, K07/K08) ───────────────── */
+"admin.title"                = "AI settings";
+"admin.policyLabel"          = "Engine policy";
+"admin.policy.onDeviceFirst" = "On-device first";
+"admin.policy.cloudFirst"    = "Cloud first";
+"admin.policy.offlineOnly"   = "On-device only";
+"admin.policyHint"           = "On-device generation is free and private. Cloud generation is metered.";
+"admin.quotaLabel"           = "Daily generation limit";
+"admin.quotaHint"            = "Cloud generations per student per day. On-device generation is unlimited and never counted.";
+"admin.quotaUsePlanDefault"  = "Use the plan default";
+"admin.quotaValue"           = "%d per day";
+"admin.costHeading"          = "Cost today";
+"admin.costUsed"             = "%d of %d cloud generations used";
+"admin.costOnDeviceNote"     = "On-device generations cost nothing.";
+"admin.save"                 = "Save settings";
+"admin.saving"               = "Saving…";
+"admin.savedTitle"           = "Settings saved";
+"admin.auditHeading"         = "Recent changes";
+"admin.auditEmpty"           = "No changes recorded yet.";
+"admin.auditConfigChanged"   = "AI settings changed";
