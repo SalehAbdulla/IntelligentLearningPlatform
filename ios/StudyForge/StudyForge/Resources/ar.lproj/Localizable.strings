@@ -554,3 +554,34 @@
 "group.nextSession"        = "الجلسة القادمة";
 "group.presenceOnline"     = "%d متصل";
 "group.quizNoQuizzes"      = "أنشئ اختبارًا أولًا، ثم تحدَّ مجموعتك به.";
+
+/* ── F14 Notifications & reminders (docs/03 §M/B, M01–M02, B08–B09) ────── */
+"notification.inboxTitle"        = "الإشعارات";
+"notification.settingsTitle"     = "الإعدادات";
+"notification.settingsAccount"   = "الحساب";
+"notification.emptyTitle"        = "لا جديد";
+"notification.emptyBody"         = "ستظهر هنا التذكيرات ونشاط المجموعة.";
+"notification.markAllRead"       = "تحديد الكل كمقروء";
+"notification.markRead"          = "تحديد كمقروء";
+"notification.unread"            = "%d غير مقروء";
+"notification.today"             = "اليوم";
+"notification.yesterday"         = "أمس";
+"notification.earlier"           = "سابقًا";
+"notification.kind.studyReminder" = "تذكيرات الدراسة";
+"notification.kind.quizDue"      = "اختبارات مستحقة";
+"notification.kind.groupActivity" = "نشاط المجموعة";
+"notification.kind.achievement"  = "الإنجازات";
+"notification.kind.system"       = "إشعارات التطبيق";
+"notification.reminderBody"      = "%@ — %d دقيقة. افتح خطتك للبدء.";
+"notification.quietHours"        = "ساعات الهدوء";
+"notification.quietHoursCaption" = "تُؤجَّل تذكيرات الدراسة خلال هذه الساعات.";
+"notification.save"              = "حفظ";
+"notification.saving"            = "جارٍ الحفظ…";
+"notification.saved"             = "تم الحفظ";
+"notification.permissionTitle"   = "ابقَ على المسار";
+"notification.permissionBody"    = "يمكن لـ StudyForge أن يذكّرك عند حلول موعد الجلسة، لتبقى خطتك على المسار.";
+"notification.permissionEnable"  = "تفعيل التذكيرات";
+"notification.permissionNotNow"  = "ليس الآن";
+"notification.permissionGranted" = "التذكيرات مفعّلة.";
+"notification.permissionDenied"  = "التذكيرات متوقفة. يمكنك تفعيلها لاحقًا من الإعدادات.";
+"notification.offlineBanner"     = "أنت غير متصل — ستتم المزامنة عند العودة.";
