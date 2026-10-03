@@ -624,6 +624,27 @@ enum L10n: String, CaseIterable, Sendable {
     case searchResultCount    = "search.resultCount"
     case searchDeckCount      = "search.deckCount"
     case searchQuizCount      = "search.quizCount"
+
+    // MARK: F12 Admin — AI configuration (K07/K08)
+    case adminTitle              = "admin.title"
+    case adminPolicyLabel        = "admin.policyLabel"
+    case adminPolicyOnDeviceFirst = "admin.policy.onDeviceFirst"
+    case adminPolicyCloudFirst   = "admin.policy.cloudFirst"
+    case adminPolicyOfflineOnly  = "admin.policy.offlineOnly"
+    case adminPolicyHint         = "admin.policyHint"
+    case adminQuotaLabel         = "admin.quotaLabel"
+    case adminQuotaHint          = "admin.quotaHint"
+    case adminQuotaUsePlanDefault = "admin.quotaUsePlanDefault"
+    case adminQuotaValue         = "admin.quotaValue"
+    case adminCostHeading        = "admin.costHeading"
+    case adminCostUsed           = "admin.costUsed"
+    case adminCostOnDeviceNote   = "admin.costOnDeviceNote"
+    case adminSave               = "admin.save"
+    case adminSaving             = "admin.saving"
+    case adminSavedTitle         = "admin.savedTitle"
+    case adminAuditHeading       = "admin.auditHeading"
+    case adminAuditEmpty         = "admin.auditEmpty"
+    case adminAuditConfigChanged = "admin.auditConfigChanged"
 }
 
 // MARK: - Resolution
