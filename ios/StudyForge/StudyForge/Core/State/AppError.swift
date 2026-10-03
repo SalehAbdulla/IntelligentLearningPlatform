@@ -169,6 +169,11 @@ extension AppError {
         // so it carries a reference and a retry rather than a generic apology.
         if let bookmarkError = error as? BookmarkError { return bookmarkError.asAppError }
 
+        // And for the group store. `codeNotFound` and `alreadyAMember` are not storage faults in the
+        // same sense — they are the join-code outcomes I09 designs an error state for, which is why
+        // they map to their own copy rather than to a generic server apology.
+        if let groupError = error as? GroupError { return groupError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
