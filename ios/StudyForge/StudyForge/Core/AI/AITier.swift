@@ -94,6 +94,8 @@ enum AIUnavailableReason: String, Sendable, CaseIterable {
     case offline
     /// The daily generation budget is spent.
     case quotaExhausted
+    /// The admin's routing policy forbids the cloud, and this task cannot run on-device.
+    case policyOfflineOnly
 
     /// Plain-language title. No jargon, no blame (docs/06 §4.3).
     var title: String {
@@ -105,6 +107,7 @@ enum AIUnavailableReason: String, Sendable, CaseIterable {
         case .notImplemented: "Not available in this build"
         case .offline: "You're offline"
         case .quotaExhausted: "You've reached today's AI limit"
+        case .policyOfflineOnly: "This task needs an internet connection"
         }
     }
 
@@ -125,6 +128,8 @@ enum AIUnavailableReason: String, Sendable, CaseIterable {
             "Reconnect to use the cloud engine, or switch to the on-device engine to keep working."
         case .quotaExhausted:
             "Your free generations reset tomorrow. On-device generation has no limit."
+        case .policyOfflineOnly:
+            "Your institution has set StudyForge to stay on-device. This task needs an internet connection, so it cannot run right now."
         }
     }
 
@@ -138,6 +143,7 @@ enum AIUnavailableReason: String, Sendable, CaseIterable {
         case .notImplemented: nil
         case .offline: "Retry"
         case .quotaExhausted: "Use on-device instead"
+        case .policyOfflineOnly: nil
         }
     }
 }
