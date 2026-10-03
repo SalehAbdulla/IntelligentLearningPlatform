@@ -145,6 +145,11 @@ enum AIError: Error, Equatable {
             .onDeviceAIUnavailable
         case .unavailable(.offline):
             .offline
+        // A policy that forbids the cloud while the task needs it is an access decision, not a
+        // device fault: the student is not being told their phone is incapable, they are being told
+        // the institution has not enabled this. `.notPermitted` is that sentence.
+        case .unavailable(.policyOfflineOnly):
+            .notPermitted
         case .unavailable(.notImplemented), .generationFailed, .invalidOutput:
             .server(reference: "ai-\(UUID().uuidString.prefix(6))")
         case .emptySource:
