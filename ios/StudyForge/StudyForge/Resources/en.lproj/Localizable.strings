@@ -555,3 +555,34 @@
 "group.nextSession"        = "Next session";
 "group.presenceOnline"     = "%d online";
 "group.quizNoQuizzes"      = "Generate a quiz first, then challenge your group with it.";
+
+/* ── F14 Notifications & reminders (docs/03 §M/B, M01–M02, B08–B09) ────── */
+"notification.inboxTitle"        = "Notifications";
+"notification.settingsTitle"     = "Settings";
+"notification.settingsAccount"   = "Account";
+"notification.emptyTitle"        = "Nothing new";
+"notification.emptyBody"         = "Reminders and group activity will show up here.";
+"notification.markAllRead"       = "Mark all read";
+"notification.markRead"          = "Mark read";
+"notification.unread"            = "%d unread";
+"notification.today"             = "Today";
+"notification.yesterday"         = "Yesterday";
+"notification.earlier"           = "Earlier";
+"notification.kind.studyReminder" = "Study reminders";
+"notification.kind.quizDue"      = "Quizzes due";
+"notification.kind.groupActivity" = "Group activity";
+"notification.kind.achievement"  = "Achievements";
+"notification.kind.system"       = "App notices";
+"notification.reminderBody"      = "%@ — %d min. Open your plan to start.";
+"notification.quietHours"        = "Quiet hours";
+"notification.quietHoursCaption" = "Study reminders are held during these hours.";
+"notification.save"              = "Save";
+"notification.saving"            = "Saving…";
+"notification.saved"             = "Saved";
+"notification.permissionTitle"   = "Stay on track";
+"notification.permissionBody"    = "StudyForge can remind you when a session is due, so your plan keeps you on track.";
+"notification.permissionEnable"  = "Enable reminders";
+"notification.permissionNotNow"  = "Not now";
+"notification.permissionGranted" = "Reminders are on.";
+"notification.permissionDenied"  = "Reminders are off. You can turn them on later in Settings.";
+"notification.offlineBanner"     = "You're offline — changes will sync when you're back.";
