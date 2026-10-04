@@ -182,6 +182,12 @@ final class AppContainer {
     /// seam that docs/04 §6's App-Store-compliance argument depends on.
     let payments: any PaymentGateway
 
+    /// The tutor studio's courses, roster, review queue and announcements (F11). LOCAL-FIRST,
+    /// like the other derived stores, so the studio is demonstrable before a Firebase project and
+    /// a tutor role claim exist (docs/09 D22). Protocol-backed so screens can be previewed and
+    /// tested with `InMemoryCourseStore`.
+    let courses: any CourseStore
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -236,6 +242,7 @@ final class AppContainer {
         // simulated gateway — no disk, no network, no Firebase project.
         subscriptions: any SubscriptionStore = InMemorySubscriptionStore(),
         payments: (any PaymentGateway)? = nil,
+        courses: any CourseStore = InMemoryCourseStore(),
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -260,6 +267,7 @@ final class AppContainer {
         // The gateway defaults to one that writes through THIS store, so an entitlement and
         // its receipt can never end up in different places.
         self.payments = payments ?? SimulatedTapGateway(store: subscriptions)
+        self.courses = courses
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -443,7 +451,8 @@ extension AppContainer {
             // Real builds persist the entitlement on device. The gateway stays the simulated
             // one until a Tap account exists; swapping it is the one-line change `payments:`
             // exists for.
-            subscriptions: FileSubscriptionStore()
+            subscriptions: FileSubscriptionStore(),
+            courses: FileCourseStore()
         )
     }
 
