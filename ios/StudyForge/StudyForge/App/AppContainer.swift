@@ -171,6 +171,17 @@ final class AppContainer {
     /// honest rather than invented. Protocol-backed so previews can seed `PlatformUser.samples`.
     let adminDirectory: any AdminDirectoryStore
 
+    /// The account's entitlement and payment receipts (F13). LOCAL-FIRST, like the other
+    /// derived stores, so the paywall and the manage screen are demonstrable before a Tap
+    /// account and a Blaze plan exist (docs/09 D22). Protocol-backed so screens can be
+    /// previewed and tested with `InMemorySubscriptionStore`.
+    let subscriptions: any SubscriptionStore
+
+    /// Whoever takes the money (F13). Protocol-backed so `SimulatedTapGateway` serves the
+    /// demo and the tests while `TapPaymentsGateway` / `StoreKitGateway` remain the swap-in
+    /// seam that docs/04 §6's App-Store-compliance argument depends on.
+    let payments: any PaymentGateway
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -221,6 +232,10 @@ final class AppContainer {
         recentSearches: any RecentSearchStore = InMemoryRecentSearchStore(),
         aiConfigurations: any AIConfigurationStore = InMemoryAIConfigurationStore(),
         adminDirectory: any AdminDirectoryStore = InMemoryAdminDirectoryStore(),
+        // Defaulted so a preview or a test gets an in-memory entitlement store and a
+        // simulated gateway — no disk, no network, no Firebase project.
+        subscriptions: any SubscriptionStore = InMemorySubscriptionStore(),
+        payments: (any PaymentGateway)? = nil,
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -241,6 +256,10 @@ final class AppContainer {
         self.recentSearches = recentSearches
         self.aiConfigurations = aiConfigurations
         self.adminDirectory = adminDirectory
+        self.subscriptions = subscriptions
+        // The gateway defaults to one that writes through THIS store, so an entitlement and
+        // its receipt can never end up in different places.
+        self.payments = payments ?? SimulatedTapGateway(store: subscriptions)
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -420,7 +439,11 @@ extension AppContainer {
             notificationAuthorizer: SystemNotificationAuthorizer(),
             recentSearches: UserDefaultsRecentSearchStore(),
             aiConfigurations: FileAIConfigurationStore(),
-            adminDirectory: FileAdminDirectoryStore()
+            adminDirectory: FileAdminDirectoryStore(),
+            // Real builds persist the entitlement on device. The gateway stays the simulated
+            // one until a Tap account exists; swapping it is the one-line change `payments:`
+            // exists for.
+            subscriptions: FileSubscriptionStore()
         )
     }
 
