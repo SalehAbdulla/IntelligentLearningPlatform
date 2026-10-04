@@ -60,6 +60,13 @@ struct SignedInHomeView: View {
                         adminLink
                     }
 
+                    // F11 is a TUTOR surface, gated the same way. `isTutor` is true for a tutor OR
+                    // an admin, matching `firestore.rules`' `isTutor()` — so the link and the rules
+                    // agree about who may open the studio.
+                    if session?.isTutor == true {
+                        tutorLink
+                    }
+
                     #if DEBUG
                     developmentCard
                     #endif
@@ -356,6 +363,21 @@ struct SignedInHomeView: View {
             AdminDashboardView(container: container)
         } label: {
             Label(L10n.adminDashboardTitle.string, systemImage: "person.badge.key")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Tutor studio
+
+    /// The way into the tutor content studio (J01). Tutor and admin only — see the gate at the
+    /// call site.
+    private var tutorLink: some View {
+        NavigationLink {
+            TutorDashboardView(container: container)
+        } label: {
+            Label(L10n.tutorDashboardTitle.string, systemImage: "person.crop.rectangle.stack")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
