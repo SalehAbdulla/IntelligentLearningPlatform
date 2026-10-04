@@ -763,6 +763,8 @@
 "tutor.rosterEmptyBody"           = "شارك رمز الانضمام، أو ادعُ طالبًا مباشرةً.";
 "tutor.rosterNoMatch"             = "لا يوجد طالب يطابق هذا البحث";
 "tutor.inviteStudent"             = "دعوة طالب";
+"tutor.inviteNameLabel"           = "اسم الطالب";
+"tutor.inviteNamePlaceholder"     = "مثال: سارة علي";
 "tutor.exportCSV"                 = "تصدير CSV";
 "tutor.exportEmpty"               = "أضف طلابًا قبل التصدير";
 "tutor.pendingBadge"              = "معلّق";
