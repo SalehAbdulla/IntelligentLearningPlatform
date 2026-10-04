@@ -761,6 +761,7 @@ enum L10n: String, CaseIterable, Sendable {
     case tutorCourseMaterials       = "tutor.courseMaterials"
     case tutorCourseArchived        = "tutor.courseArchived"
     case tutorArchive               = "tutor.archive"
+    case tutorUnarchive             = "tutor.unarchive"
     case tutorTermDates             = "tutor.termDates"
     case tutorNewCourse             = "tutor.newCourse"
     case tutorEditCourse            = "tutor.editCourse"
