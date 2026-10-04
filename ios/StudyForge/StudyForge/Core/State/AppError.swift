@@ -191,6 +191,15 @@ extension AppError {
         // defect, so it carries a reference and a retry rather than a generic apology.
         if let subscriptionError = error as? SubscriptionError { return subscriptionError.asAppError }
 
+        // And for the tutor store: failing to read a tutor's OWN courses, roster or queue is our
+        // defect, so it carries a reference and a retry rather than a generic apology.
+        if let tutorError = error as? TutorError { return tutorError.asAppError }
+
+        // And for the review layer. The two cases here are RULES, not faults — a rejection with no
+        // reason is refused on purpose — so they carry their own reference rather than decaying to
+        // the generic apology, which would hide the rule the feature exists to enforce.
+        if let reviewError = error as? ReviewError { return reviewError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
