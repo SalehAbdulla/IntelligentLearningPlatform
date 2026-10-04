@@ -182,6 +182,15 @@ extension AppError {
         // carries a reference and a retry rather than a generic apology.
         if let adminError = error as? AdminError { return adminError.asAppError }
 
+        // And for the payment layer: a refused checkout (already subscribed, bad plan) is a
+        // designed outcome, not an apology — `PaymentError` carries the sentence the screen
+        // should show.
+        if let paymentError = error as? PaymentError { return paymentError.asAppError }
+
+        // And for the subscription store: failing to read the student's OWN entitlement is our
+        // defect, so it carries a reference and a retry rather than a generic apology.
+        if let subscriptionError = error as? SubscriptionError { return subscriptionError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
