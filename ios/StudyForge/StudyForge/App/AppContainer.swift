@@ -188,6 +188,21 @@ final class AppContainer {
     /// tested with `InMemoryCourseStore`.
     let courses: any CourseStore
 
+    /// The student's coach conversations and their answer ratings (F15). LOCAL-FIRST, like the
+    /// other derived stores, so the companion is demonstrable before a Firebase project exists.
+    let coach: any CoachStore
+
+    /// The on-device retrieval index (F15). The vectors never leave the device — see
+    /// `LocalRetrievalService` for why that is a privacy decision rather than a storage one.
+    let retrieval: any RetrievalService
+
+    /// The adaptive study-path planner (F15, M3's layer).
+    let coachPlanner: any CoachPlanningService
+
+    /// Retrieval plus grounded answering (F15). Built here so the router and the library it reads
+    /// through are the same ones every other feature uses.
+    let coachService: CoachService
+
     /// The signed-in user, or `nil` before authentication completes.
     /// Drives `RootView`'s routing.
     var session: UserSession?
@@ -243,6 +258,10 @@ final class AppContainer {
         subscriptions: any SubscriptionStore = InMemorySubscriptionStore(),
         payments: (any PaymentGateway)? = nil,
         courses: any CourseStore = InMemoryCourseStore(),
+        coach: any CoachStore = InMemoryCoachStore(),
+        retrieval: any RetrievalService = LocalRetrievalService(),
+        coachPlanner: any CoachPlanningService = LocalCoachPlanner(),
+        coachService: CoachService? = nil,
         onboarding: any OnboardingStore = UserDefaultsOnboardingStore()
     ) {
         self.environment = environment
@@ -268,6 +287,13 @@ final class AppContainer {
         // its receipt can never end up in different places.
         self.payments = payments ?? SimulatedTapGateway(store: subscriptions)
         self.courses = courses
+        self.coach = coach
+        self.retrieval = retrieval
+        self.coachPlanner = coachPlanner
+        // Built from the router and library above rather than injected, so a preview or a test that
+        // swaps either one gets a coach that follows it.
+        self.coachService = coachService
+            ?? CoachService(retrieval: retrieval, router: ai, materials: materials)
         self.onboarding = onboarding
         self.hasResolvedAuth = false
         self.session = auth.currentSession()
@@ -452,7 +478,8 @@ extension AppContainer {
             // one until a Tap account exists; swapping it is the one-line change `payments:`
             // exists for.
             subscriptions: FileSubscriptionStore(),
-            courses: FileCourseStore()
+            courses: FileCourseStore(),
+            coach: FileCoachStore()
         )
     }
 
