@@ -672,6 +672,8 @@ enum L10n: String, CaseIterable, Sendable {
     case adminSuspendConfirmBody  = "admin.suspendConfirm.body"
     case adminRoleConfirmTitle    = "admin.roleConfirm.title"
     case adminRoleConfirmBody     = "admin.roleConfirm.body"
+    case adminNoMastery           = "admin.noMastery"
+
     // MARK: F13 Subscription & Payments (L01–L10, B13)
     case subscriptionTitle            = "subscription.title"
     case subscriptionPaywallTitle     = "subscription.paywallTitle"
