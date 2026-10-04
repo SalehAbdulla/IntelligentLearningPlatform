@@ -143,6 +143,31 @@ final class MockProvider: AIProvider {
         )
     }
 
+    func answer(_ prompt: AICoachPrompt) async throws -> AIGenerated<AICoachAnswer> {
+        try await simulateWork()
+
+        // Grounded by construction: the reply is assembled FROM the supplied passages and cites
+        // them, so a mock answer cannot contain a fact that was not retrieved. The real prompt
+        // contract demands the same property, which is what makes this a usable stand-in rather
+        // than a fixture that flatters the UI.
+        let cited = Array(prompt.chunks.prefix(2))
+        let joined = cited.map(\.text).joined(separator: " ")
+        let body = joined.count > 600 ? String(joined.prefix(600)) + "…" : joined
+
+        let answer = AICoachAnswer(answer: body, citedChunkIds: cited.map(\.id))
+
+        // Aggregate provenance for the badge. The authoritative per-claim references are the
+        // messages' `Citation`s, which the service validates against these ids.
+        let provenance = AIProvenance(
+            materialId: prompt.chunks.first?.materialId ?? "coach",
+            pageNumbers: cited.compactMap(\.page),
+            confidence: .high
+        )
+
+        return AIGenerated(value: answer, provenance: provenance, tier: tier, duration: latency)
+    }
+
+
     // MARK: - Helpers
 
     private func simulateWork() async throws {
