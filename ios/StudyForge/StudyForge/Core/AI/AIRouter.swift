@@ -125,6 +125,12 @@ final class AIRouter {
     func makeStudyPath(_ request: StudyPathRequest) async throws -> AIGenerated<[AIStudyStep]> {
         try await execute(task: .studyPath) { try await $0.makeStudyPath(request) }
     }
+
+    /// Answers a grounded question (F15). Routed like every other task, so the admin's policy and
+    /// the daily budget apply to the coach exactly as they do to a summary.
+    func answer(_ prompt: AICoachPrompt) async throws -> AIGenerated<AICoachAnswer> {
+        try await execute(task: .coachAnswer) { try await $0.answer(prompt) }
+    }
 }
 
 // MARK: - The policy
