@@ -49,6 +49,7 @@ struct SignedInHomeView: View {
                     groupsLink
                     notificationsLink
                     searchLink
+                    coachLink
                     profileLink
                     subscriptionLink
                     settingsLink
@@ -378,6 +379,21 @@ struct SignedInHomeView: View {
             TutorDashboardView(container: container)
         } label: {
             Label(L10n.tutorDashboardTitle.string, systemImage: "person.crop.rectangle.stack")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Study companion
+
+    /// The way into the coach (H01). The designed route is a tab; the placeholder home carries the
+    /// link, the same reason it carries the library and settings links.
+    private var coachLink: some View {
+        NavigationLink {
+            CoachHomeView(container: container)
+        } label: {
+            Label(L10n.coachTitle.string, systemImage: "sparkles")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
