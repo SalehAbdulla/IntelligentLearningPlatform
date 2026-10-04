@@ -7,10 +7,10 @@
 //  WHY SOME OF THE DESIGNED ROWS ARE ABSENT
 //  ----------------------------------------
 //  B08 lists Account · Notifications · Accessibility · Language · AI & Data · Subscription · Sign out.
-//  Only the first two and Sign out have somewhere to go today: the accessibility and language switches
-//  belong to the RTL/accessibility pass, AI & Data to the admin config (F12), and Subscription to
-//  payments (F13). A row that leads nowhere is worse than a row that is not there, so the rest are
-//  recorded here rather than rendered inert.
+//  Account, Notifications, Subscription and Sign out have somewhere to go today. The accessibility and
+//  language switches belong to the RTL/accessibility pass and AI & Data to the admin config (F12); a
+//  row that leads nowhere is worse than a row that is not there, so those are recorded here rather than
+//  rendered inert.
 //
 //  WHY IT TAKES THE CONTAINER
 //  --------------------------
@@ -45,6 +45,16 @@ struct SettingsView: View {
                     )
                 } label: {
                     Label(L10n.notificationInboxTitle.string, systemImage: "bell")
+                }
+            }
+
+            // B13 — the subscription row (F13). It leads to the SAME screen L10 defines, so
+            // there is one place where plan, renewal and cancellation are described.
+            Section {
+                NavigationLink {
+                    ManageSubscriptionView(container: container)
+                } label: {
+                    Label(L10n.subscriptionTitle.string, systemImage: "creditcard")
                 }
             }
 
