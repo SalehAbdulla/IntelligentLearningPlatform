@@ -739,6 +739,7 @@
 "tutor.courseMaterials"           = "%d منشور";
 "tutor.courseArchived"            = "مؤرشف";
 "tutor.archive"                   = "أرشفة";
+"tutor.unarchive"                 = "إلغاء الأرشفة";
 "tutor.termDates"                 = "%@ – %@";
 "tutor.newCourse"                 = "مقرر جديد";
 "tutor.editCourse"                = "تعديل المقرر";
