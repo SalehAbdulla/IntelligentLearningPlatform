@@ -785,6 +785,8 @@ enum L10n: String, CaseIterable, Sendable {
     case tutorRosterEmptyBody       = "tutor.rosterEmptyBody"
     case tutorRosterNoMatch         = "tutor.rosterNoMatch"
     case tutorInviteStudent         = "tutor.inviteStudent"
+    case tutorInviteNameLabel       = "tutor.inviteNameLabel"
+    case tutorInviteNamePlaceholder = "tutor.inviteNamePlaceholder"
     case tutorExportCSV             = "tutor.exportCSV"
     case tutorExportEmpty           = "tutor.exportEmpty"
     case tutorPendingBadge          = "tutor.pendingBadge"
