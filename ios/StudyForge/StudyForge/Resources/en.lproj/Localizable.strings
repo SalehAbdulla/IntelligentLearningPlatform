@@ -764,6 +764,8 @@
 "tutor.rosterEmptyBody"           = "Share the join code, or invite a student directly.";
 "tutor.rosterNoMatch"             = "No students match that search";
 "tutor.inviteStudent"             = "Invite student";
+"tutor.inviteNameLabel"           = "Student name";
+"tutor.inviteNamePlaceholder"     = "e.g. Sara Ali";
 "tutor.exportCSV"                 = "Export CSV";
 "tutor.exportEmpty"               = "Add students before exporting";
 "tutor.pendingBadge"              = "Pending";
