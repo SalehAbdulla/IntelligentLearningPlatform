@@ -135,6 +135,53 @@ extension AppError {
         // sign-in form needs to show.
         if let authError = error as? AuthError { return authError.asAppError }
 
+        // And for the profile write: `writeRejected` in particular must not decay to
+        // `.unknown`, because it is the one failure that means the field allowlist and
+        // the app disagree — a bug worth naming rather than a generic apology.
+        if let profileError = error as? ProfileError { return profileError.asAppError }
+
+        // Same reasoning again for the material store: failing to read the student's OWN library
+        // is our defect, so it carries a reference and a retry rather than a generic apology.
+        if let materialError = error as? MaterialError { return materialError.asAppError }
+
+        // Same reasoning again for the summary store: a failure to read the student's OWN
+        // saved summaries is our defect, so it carries a reference and a retry rather than
+        // a generic apology.
+        if let summaryError = error as? SummaryError { return summaryError.asAppError }
+
+        // Same reasoning again for the deck store: a failure to read the student's OWN decks is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let deckError = error as? DeckError { return deckError.asAppError }
+
+        // Same reasoning again for the quiz store: a failure to read the student's OWN quizzes is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let quizError = error as? QuizError { return quizError.asAppError }
+
+        // Same reasoning again for the study-plan store: a failure to read the student's OWN plan is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let planError = error as? StudyPlanError { return planError.asAppError }
+
+        // Same reasoning again for the folder store: a failure to read the student's OWN folders is
+        // our defect, so it carries a reference and a retry rather than a generic apology.
+        if let folderError = error as? FolderError { return folderError.asAppError }
+
+        // And for the bookmark store: failing to read the student's OWN collections is our defect,
+        // so it carries a reference and a retry rather than a generic apology.
+        if let bookmarkError = error as? BookmarkError { return bookmarkError.asAppError }
+
+        // And for the group store. `codeNotFound` and `alreadyAMember` are not storage faults in the
+        // same sense — they are the join-code outcomes I09 designs an error state for, which is why
+        // they map to their own copy rather than to a generic server apology.
+        if let groupError = error as? GroupError { return groupError.asAppError }
+
+        // And for the notification store: failing to read the student's OWN inbox is our defect, so
+        // it carries a reference and a retry rather than a generic apology.
+        if let notificationError = error as? NotificationError { return notificationError.asAppError }
+
+        // And for the admin store: failing to read the platform's own settings is our defect, so it
+        // carries a reference and a retry rather than a generic apology.
+        if let adminError = error as? AdminError { return adminError.asAppError }
+
         if let urlError = error as? URLError {
             switch urlError.code {
             case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:

@@ -79,10 +79,15 @@ enum PromptTemplates {
         case .cornell: "Separate the output into cue questions and their answers, as Cornell notes do."
         }
 
+        let focus = request.focusTopics.trimmingCharacters(in: .whitespacesAndNewlines)
+        let focusGuidance = focus.isEmpty
+            ? ""
+            : "\nFocus especially on: \(focus). Cover the rest of the material only in passing."
+
         return """
         Summarise the material below.
 
-        Produce \(lengthGuidance). \(styleGuidance)
+        Produce \(lengthGuidance). \(styleGuidance)\(focusGuidance)
 
         \(source(request.context))
         """
@@ -95,10 +100,18 @@ enum PromptTemplates {
         case .mixed: "Mix direct recall with understanding and application."
         }
 
+        let typeGuidance = switch request.cardType {
+        case .qa: "Write each card as a question or a term to define on the front, with the answer on the back."
+        case .cloze: "Write each card as a cloze deletion: the front is a sentence with ONE key term replaced by a blank, and the back is the missing term."
+        case .imageOcclusion: "The source has no images, so write each front as a fully described prompt to label or identify a named part of the concept, with the answer on the back."
+        case .reversible: "Write each card so it reads correctly in BOTH directions: front to back and back to front."
+        }
+
         return """
         Create exactly \(request.count) flashcards from the material below.
 
         \(difficultyGuidance)
+        \(typeGuidance)
         Each card must be answerable from the material alone. Keep the back to one or two sentences.
 
         \(source(request.context))

@@ -217,3 +217,68 @@ struct MockAuthServiceTests {
     }
 }
 
+// MARK: - Display name
+
+@Suite("Display name update")
+struct DisplayNameUpdateTests {
+
+    private func signedIn(name: String = "Sara Ali") -> MockAuthService {
+        MockAuthService(
+            initialState: .signedIn(UserSession(
+                id: "uid_test",
+                displayName: name,
+                role: .student,
+                plan: .free,
+                groupIds: [],
+                email: "sara@studyforge.test",
+                isEmailVerified: true
+            )),
+            latency: .zero
+        )
+    }
+
+    @Test("Renaming re-emits a session carrying the new name")
+    func renamingReEmitsTheSession() async throws {
+        let auth = signedIn()
+
+        try await auth.updateDisplayName("  Sara A. Ali  ")
+
+        // Trimmed, and visible through the same accessor every screen reads.
+        #expect(auth.currentSession()?.displayName == "Sara A. Ali")
+        // The rest of the session is carried over rather than reset.
+        #expect(auth.currentSession()?.id == "uid_test")
+        #expect(auth.currentSession()?.isEmailVerified == true)
+    }
+
+    @Test("The rename reaches a subscriber through the auth stream")
+    func renamingIsPublished() async throws {
+        let auth = signedIn()
+        var iterator = auth.stateChanges().makeAsyncIterator()
+
+        // The current state, emitted on subscription.
+        #expect(await iterator.next() != nil)
+
+        try await auth.updateDisplayName("Sara A. Ali")
+
+        #expect(await iterator.next()?.session?.displayName == "Sara A. Ali")
+    }
+
+    @Test("A blank name is refused")
+    func blankNameIsRefused() async {
+        let auth = signedIn()
+
+        await #expect(throws: AuthError.missingDisplayName) {
+            try await auth.updateDisplayName("   ")
+        }
+    }
+
+    @Test("Renaming with nobody signed in is refused")
+    func renamingSignedOutIsRefused() async {
+        let auth = MockAuthService(initialState: .signedOut, latency: .zero)
+
+        await #expect(throws: AuthError.wrongCredentials) {
+            try await auth.updateDisplayName("Sara Ali")
+        }
+    }
+}
+

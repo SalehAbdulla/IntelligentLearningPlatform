@@ -1,0 +1,653 @@
+/* ===========================================================================
+ *  Localizable.strings — English
+ *  StudyForge
+ *
+ *  THE source of user-facing copy. No user-facing string may be hard-coded in a
+ *  Swift file (docs/04 §8, coding rules).
+ *
+ *  Key convention:  <area>.<screen>.<element>
+ *  e.g.  auth.login.title
+ *
+ *  ⚠️  KNOWN GAP: `AppError.title` / `.message` / `.recoveryAction` and the
+ *  `AuthError` reasons still hold inline copy in Core/State/AppError.swift and
+ *  Core/Auth/AuthService.swift. They are already CENTRALISED (one place to
+ *  change) but not yet localised. Tracked as localisation debt for S1; the keys
+ *  below cover the screen chrome F01 introduces.
+ * =========================================================================== */
+
+/* ── Common ─────────────────────────────────────────────────────────────── */
+"common.appName"            = "StudyForge";
+"common.continue"           = "Continue";
+"common.next"               = "Next";
+"common.skip"               = "Skip";
+"common.cancel"             = "Cancel";
+"common.done"               = "Done";
+"common.retry"              = "Try again";
+"common.back"               = "Back";
+"common.close"              = "Close";
+"common.loading"            = "Loading…";
+"common.showPassword"       = "Show password";
+"common.hidePassword"       = "Hide password";
+"common.delete"             = "Delete";
+
+/* ── A01 Splash ─────────────────────────────────────────────────────────── */
+"auth.splash.tagline"       = "Study smarter, not longer";
+"auth.splash.checking"      = "Checking your session…";
+
+/* ── A07 Log in ─────────────────────────────────────────────────────────── */
+"auth.login.title"          = "Welcome back";
+"auth.login.subtitle"       = "Sign in to pick up where you left off.";
+"auth.login.email"          = "Email";
+"auth.login.password"       = "Password";
+"auth.login.forgotPassword" = "Forgot password?";
+"auth.login.submit"         = "Log in";
+"auth.login.submitting"     = "Signing you in…";
+"auth.login.noAccount"      = "New to StudyForge?";
+"auth.login.createAccount"  = "Create an account";
+"auth.login.errorTitle"     = "We couldn't sign you in";
+
+/* ── A05 Sign up ────────────────────────────────────────────────────────── */
+"auth.signUp.title"          = "Create your account";
+"auth.signUp.subtitle"       = "Your materials stay on your device. Only summaries sync.";
+"auth.signUp.name"           = "Full name";
+"auth.signUp.nameHint"       = "So your tutor can identify you.";
+"auth.signUp.email"          = "Email";
+"auth.signUp.password"       = "Password";
+"auth.signUp.passwordHint"   = "At least %d characters.";
+"auth.signUp.submit"         = "Create account";
+"auth.signUp.submitting"     = "Creating your account…";
+"auth.signUp.haveAccount"    = "Already have an account?";
+"auth.signUp.logIn"          = "Log in";
+"auth.signUp.termsPrefix"    = "By continuing you agree to our";
+"auth.signUp.terms"          = "Terms of Service";
+"auth.signUp.termsJoiner"    = "and";
+"auth.signUp.privacy"        = "Privacy Policy";
+"auth.signUp.termsUnavailable" = "These documents are not yet available.";
+"auth.signUp.errorTitle"     = "We couldn't create your account";
+
+/* Password strength meter */
+"auth.strength.label"        = "Password strength";
+"auth.strength.weak"         = "Weak";
+"auth.strength.fair"         = "Fair";
+"auth.strength.strong"       = "Strong";
+"auth.strength.rule.length"  = "At least %d characters";
+"auth.strength.rule.number"  = "Contains a number";
+"auth.strength.rule.symbol"  = "Contains a symbol";
+
+/* ── A08 Forgot password ────────────────────────────────────────────────── */
+"auth.forgot.title"          = "Reset your password";
+"auth.forgot.subtitle"       = "Enter your email and we'll send you a reset link.";
+"auth.forgot.email"          = "Email";
+"auth.forgot.submit"         = "Send reset link";
+"auth.forgot.submitting"     = "Sending…";
+"auth.forgot.successTitle"   = "Check your inbox";
+"auth.forgot.successBody"    = "If an account exists for %@, a reset link is on its way. Open it to choose a new password — it expires in one hour.";
+"auth.forgot.backToLogin"    = "Back to log in";
+"auth.forgot.errorTitle"     = "We couldn't send the link";
+
+/* ── A02–A04 Onboarding ─────────────────────────────────────────────────── */
+"onboarding.skip"                = "Skip";
+"onboarding.skip.hint"           = "Finishes the introduction and continues to sign in.";
+"onboarding.next"                = "Next";
+"onboarding.getStarted"          = "Get started";
+"onboarding.pageIndicator"       = "Page %d of %d";
+"onboarding.stepIndicator"       = "Step %d of %d";
+
+"onboarding.valueProp.title"     = "Upload anything.";
+"onboarding.valueProp.body"      = "Lecture slides, textbook chapters, your own scrawled notes. Drop them in and StudyForge turns them into material you can actually revise from.";
+
+"onboarding.howItWorks.title"    = "How it works";
+"onboarding.howItWorks.body"     = "Four steps, every time you add something new.";
+"onboarding.step.upload.title"   = "Upload";
+"onboarding.step.upload.body"    = "Slides, PDFs, photos or notes.";
+"onboarding.step.generate.title" = "Generate";
+"onboarding.step.generate.body"  = "Summaries, flashcards and quizzes.";
+"onboarding.step.plan.title"     = "Plan";
+"onboarding.step.plan.body"      = "A schedule that spaces your revision.";
+"onboarding.step.practise.title" = "Practise";
+"onboarding.step.practise.body"  = "Quiz yourself and see what sticks.";
+
+"onboarding.privacy.title"       = "Your material stays yours";
+"onboarding.privacy.body"        = "Summaries and quizzes are generated on your device wherever possible, so your files are never uploaded to be processed. Only the results you keep are synced, which is also why your notes keep working offline. Nothing you upload is used to train anyone's AI.";
+"onboarding.privacy.onDevice"    = "Runs on your device";
+"onboarding.privacy.cloud"       = "Cloud, only when your device cannot";
+"onboarding.privacy.training"    = "Never used to train AI models";
+
+/* ── A06 Email verification (replaces the designed OTP step) ────────────── */
+"auth.verify.title"          = "Check your inbox";
+"auth.verify.body"           = "We sent a verification link to %@. Open it to confirm your email address, then come back here.";
+"auth.verify.resend"         = "Resend email";
+"auth.verify.resendIn"       = "You can resend in %d seconds";
+"auth.verify.resendSent"     = "Sent. Check your inbox.";
+"auth.verify.checkNow"       = "I've verified — continue";
+"auth.verify.checking"       = "Checking…";
+"auth.verify.spamHint"       = "Not seeing it? Check your spam or junk folder.";
+"auth.verify.wrongAddress"   = "Wrong address? Sign out";
+"auth.verify.notYetTitle"    = "Not verified yet";
+"auth.verify.notYetBody"     = "We couldn't confirm that link yet. Open the link in your email, then try again.";
+
+/* ── Session / router ───────────────────────────────────────────────────── */
+"session.signedInAs"         = "Signed in as %@";
+"session.signOut"            = "Log out";
+"session.homePlaceholder.title"  = "You're signed in";
+"session.homePlaceholder.body"   = "Your %@ home screen arrives with the next sprint.";
+
+/* ── Home placeholder: capability read-out ──────────────────────────────── */
+"home.capabilities.heading"  = "Your access";
+"home.role.label"            = "Role";
+"home.plan.label"            = "Plan";
+"home.tutorStudio.label"     = "Tutor studio";
+"home.studyGroups.label"     = "Study groups";
+"home.available"             = "Available";
+"home.unavailable"           = "Not available";
+
+/* ── B01 Profile setup — academic (docs/03 §B, step 1 of 3) ─────────────── */
+"profile.academic.title"                 = "Your studies";
+"profile.academic.subtitle"              = "This is how we file your material and shape your study plan. You can change it later.";
+"profile.academic.university"            = "University";
+"profile.academic.universityPlaceholder" = "Choose your university";
+"profile.academic.major"                 = "Major or programme";
+"profile.academic.majorHint"             = "The programme you are enrolled in";
+"profile.academic.year"                  = "Year of study";
+"profile.academic.courses"               = "Enrolled courses";
+"profile.academic.coursesEmpty"          = "Your course list isn't available yet. You can add your courses later.";
+"profile.academic.submitting"            = "Saving…";
+"profile.academic.error.university"      = "Choose your university.";
+"profile.academic.error.major"           = "Enter your major or programme.";
+"profile.academic.error.year"            = "Choose your year of study.";
+"profile.academic.error.courses"         = "Choose at least one course.";
+
+/* ── Profile wizard — shared across steps ──────────────────────────────── */
+"profile.step"                           = "Step %d of %d";
+
+/* ── B02 Profile setup — learning style (docs/03 §B, step 2 of 3) ──────── */
+"profile.learningStyle.title"            = "How you learn best";
+"profile.learningStyle.subtitle"         = "Every summary, flashcard and explanation is shaped around this. You can change it later.";
+"profile.learningStyle.submitting"       = "Saving…";
+"profile.learningStyle.error"            = "Choose the style that suits you.";
+
+"profile.learningStyle.visual.title"      = "Visual";
+"profile.learningStyle.visual.preview"    = "Grouped points, comparisons and diagrams — structure you can picture.";
+"profile.learningStyle.verbal.title"      = "Verbal";
+"profile.learningStyle.verbal.preview"    = "Explanations that read as if a classmate were talking you through it.";
+"profile.learningStyle.readWrite.title"   = "Read / write";
+"profile.learningStyle.readWrite.preview" = "Ordered written summaries with precise definitions and the source's own terms.";
+"profile.learningStyle.kinesthetic.title" = "Kinesthetic";
+"profile.learningStyle.kinesthetic.preview" = "Worked examples and 'what if' questions, rather than abstract statements.";
+
+/* ── B03 Profile setup — study goals (docs/03 §B, step 3 of 3) ─────────── */
+"profile.studyGoals.title"               = "Your study goals";
+"profile.studyGoals.subtitle"            = "This is how we decide how much material to plan for you each week.";
+"profile.studyGoals.submitting"          = "Saving…";
+"profile.studyGoals.finish"              = "Finish setup";
+"profile.studyGoals.hoursLabel"          = "Weekly study time";
+"profile.studyGoals.gradeLabel"          = "Target grade";
+"profile.studyGoals.gradeError"          = "Choose the grade you are aiming for.";
+
+/* Plural forms of the hours readout. English distinguishes two of the four categories; the
+   other two are defined so the catalogue stays symmetric with Arabic, which needs all four. */
+"profile.studyGoals.hours.one"           = "1 hour a week";
+"profile.studyGoals.hours.two"           = "2 hours a week";
+"profile.studyGoals.hours.few"           = "%d hours a week";
+"profile.studyGoals.hours.many"          = "%d hours a week";
+
+/* ── B04 Profile setup — complete (docs/03 §B, the confirmation screen) ──
+   The summary labels read back the answers the wizard collected. */
+"profile.complete.title"                  = "You're all set";
+"profile.complete.subtitle"               = "Here's what we'll shape your study plan around. You can change any of it later.";
+"profile.complete.summaryHeading"         = "What you told us";
+"profile.complete.goToDashboard"          = "Go to dashboard";
+"profile.complete.university"             = "University";
+"profile.complete.major"                  = "Programme";
+"profile.complete.year"                   = "Year of study";
+"profile.complete.courses"                = "Enrolled courses";
+"profile.complete.learningStyle"          = "How you learn best";
+"profile.complete.hours"                  = "Weekly study time";
+"profile.complete.grade"                  = "Target grade";
+
+/* ── B07 Profile edit (docs/03 §B) ─────────────────────────────────────── */
+"profile.edit.title"          = "Edit profile";
+"profile.edit.name"           = "Full name";
+"profile.edit.nameHint"       = "Shown on your profile and to your tutor.";
+"profile.edit.nameError"      = "Enter your name.";
+"profile.edit.save"           = "Save";
+"profile.edit.saving"         = "Saving…";
+"profile.edit.avatarNote"     = "Adding a photo arrives with cloud storage.";
+"profile.edit.discardTitle"   = "Discard your changes?";
+"profile.edit.discardMessage" = "Your profile has unsaved changes.";
+"profile.edit.discard"        = "Discard";
+"profile.edit.keepEditing"    = "Keep editing";
+
+/* ── B06 Profile view (docs/03 §B) ─────────────────────────────────────── */
+"profile.view.title"           = "Your profile";
+"profile.view.studiesHeading"  = "Your studies";
+"profile.view.planHeading"     = "Your study plan";
+"profile.view.progressTitle"   = "Progress and badges";
+"profile.view.progressBody"    = "Mastery, streaks and badges arrive with progress tracking.";
+
+/* ── F02 Material library (docs/03 §C) ─────────────────────────────────── */
+"library.title"             = "Library";
+"library.searchPlaceholder" = "Search your materials";
+"library.emptyTitle"        = "Nothing here yet";
+"library.emptyBody"         = "Import a PDF, a photo, a scan or a link and it will live here — on your device, and available offline.";
+"library.noMatchesTitle"    = "No matches";
+"library.noMatchesBody"     = "Try a different word or tag.";
+
+/* Where a material came from — one name per source. */
+"material.source.pdf"    = "PDF";
+"material.source.image"  = "Photo";
+"material.source.scan"   = "Scan";
+"material.source.link"   = "Link";
+"material.source.text"   = "Pasted text";
+
+/* ── F02 Import (docs/03 §C, C03–C07) ─────────────────────────────────── */
+"import.title"              = "Add material";
+"import.sourceText.title"   = "Paste text";
+"import.sourceText.detail"  = "Type or paste the material in directly.";
+"import.sourcePdf.title"    = "Choose a PDF";
+"import.sourcePdf.detail"   = "Its text is read on your device.";
+"import.nameLabel"          = "Title";
+"import.namePlaceholder"    = "Lecture 4 — Normalisation";
+"import.textLabel"          = "The material";
+"import.textHint"           = "Everything stays on your device. Only what the AI generates is saved.";
+"import.tagsLabel"          = "Tags";
+"import.tagsHint"           = "Separate with commas.";
+"import.submit"             = "Add to library";
+"import.submitting"         = "Adding…";
+"import.error.name"         = "Give it a title.";
+"import.error.text"         = "Paste the material in first.";
+"import.error.unreadable"   = "That file couldn't be opened.";
+"import.error.noText"       = "We couldn't find any text in it.";
+
+/* ── F03 AI Summary (docs/03 §D, D01–D07) ─────────────────────────────── */
+"summary.title"              = "Summarise material";
+"summary.lengthLabel"        = "Length";
+"summary.length.short"       = "Short";
+"summary.length.standard"    = "Standard";
+"summary.length.examReady"   = "Exam-ready";
+"summary.styleLabel"         = "Style";
+"summary.style.bullets"      = "Bullet points";
+"summary.style.narrative"    = "Narrative";
+"summary.style.cornell"      = "Cornell notes";
+"summary.languageLabel"      = "Language";
+"summary.language.english"   = "English";
+"summary.language.arabic"    = "العربية";
+"summary.focusLabel"         = "Focus topics";
+"summary.focusPlaceholder"   = "e.g. normalisation, indexes";
+"summary.generate"           = "Generate summary";
+"summary.generating.title"   = "Writing your summary…";
+"summary.generating.body"    = "Reading the material and pulling out what matters.";
+"summary.tldrHeading"        = "In a nutshell";
+"summary.keyPointsHeading"   = "Key points";
+"summary.glossaryHeading"    = "Glossary";
+"summary.save"               = "Save summary";
+"summary.saving"             = "Saving…";
+"summary.savedTitle"         = "Summary saved";
+"summary.savedBody"          = "It's kept on your device.";
+"summary.source"             = "Source";
+"summary.confidence.high"    = "High confidence";
+"summary.confidence.medium"  = "Medium confidence";
+"summary.confidence.low"     = "Low confidence — review";
+"summary.engine.onDevice"    = "On-device · private";
+"summary.engine.firebaseAI"  = "Cloud (Firebase AI)";
+"summary.engine.cloudFunction" = "Cloud (server)";
+
+/* Library: per-material generate affordance. */
+"library.summarise"          = "Summarise";
+"library.makeCards"          = "Make flashcards";
+
+/* ── F04 Decks (docs/03 §E, E01/E04) ─────────────────────────────────── */
+"deck.title"          = "Flashcards";
+"deck.newDeck"        = "New deck";
+"deck.emptyTitle"     = "No decks yet";
+"deck.emptyBody"      = "Turn a material into cards and they'll live here, scheduled for review.";
+"deck.studyNow"       = "Study now";
+"deck.cardsHeading"   = "Cards";
+"deck.dueLabel"       = "Due";
+"deck.newLabel"       = "New";
+"deck.learningLabel"  = "Learning";
+"deck.masteredLabel"  = "Mastered";
+
+/* ── F04 Flashcard generation (docs/03 §E, E02–E03) ──────────────────── */
+"flashcard.generateTitle"         = "Make flashcards";
+"flashcard.sourceLabel"           = "Material";
+"flashcard.sourcePrompt"          = "Choose a material";
+"flashcard.countLabel"            = "Number of cards";
+"flashcard.difficultyLabel"       = "Difficulty";
+"flashcard.difficulty.recall"     = "Recall";
+"flashcard.difficulty.understanding" = "Understanding";
+"flashcard.difficulty.mixed"      = "Mixed";
+"flashcard.typeLabel"             = "Card type";
+"flashcard.type.qa"               = "Q & A";
+"flashcard.type.cloze"            = "Cloze";
+"flashcard.type.imageOcclusion"   = "Image occlusion";
+"flashcard.type.reversible"       = "Reversible";
+"flashcard.generate"              = "Generate cards";
+"flashcard.generating.title"      = "Writing your cards…";
+"flashcard.generating.body"       = "Turning the material into questions and answers.";
+"flashcard.reviewHeading"         = "Review your cards";
+"flashcard.deckNameLabel"         = "Deck name";
+"flashcard.saveDeck"              = "Save deck";
+"flashcard.savingDeck"            = "Saving…";
+"flashcard.savedTitle"            = "Deck saved";
+"flashcard.savedBody"             = "Your cards are ready to study.";
+"flashcard.source"                = "Source";
+
+/* ── F04 Review (docs/03 §E, E05–E07) ────────────────────────────────── */
+"flashcard.reviewTitle"          = "Study";
+"flashcard.progress"             = "%d of %d";
+"flashcard.tapToReveal"          = "Tap to reveal the answer";
+"flashcard.rating.again"         = "Again";
+"flashcard.rating.hard"          = "Hard";
+"flashcard.rating.good"          = "Good";
+"flashcard.rating.easy"          = "Easy";
+"flashcard.interval.again"       = "<1m";
+"flashcard.interval.days"        = "%d d";
+"flashcard.interval.months"      = "%d mo";
+"flashcard.sessionTitle"         = "Session complete";
+"flashcard.sessionReviewed"      = "Cards reviewed";
+"flashcard.sessionAccuracy"      = "Accuracy";
+"flashcard.sessionDone"          = "Done";
+"flashcard.sessionKeepGoing"     = "Keep going";
+"flashcard.emptyTitle"           = "Nothing due right now";
+"flashcard.emptyBody"            = "You're all caught up. You can still study the whole deck.";
+
+/* ── F05 Quizzes (docs/03 §F) ─────────────────────────────────────────── */
+"quiz.title"           = "Quizzes";
+"quiz.newQuiz"         = "New quiz";
+"quiz.emptyTitle"      = "No quizzes yet";
+"quiz.emptyBody"       = "Turn a material into a quiz and test yourself.";
+"quiz.retake"          = "Retake";
+"quiz.generateTitle"   = "Make a quiz";
+"quiz.sourceLabel"     = "Material";
+"quiz.sourcePrompt"    = "Choose a material";
+"quiz.typeLabel"       = "Question type";
+"quiz.type.multipleChoice" = "Multiple choice";
+"quiz.type.trueFalse"  = "True / False";
+"quiz.type.shortAnswer" = "Short answer";
+"quiz.type.mixed"      = "Mixed";
+"quiz.countLabel"      = "Number of questions";
+"quiz.generate"        = "Generate quiz";
+"quiz.generating.title" = "Writing your questions…";
+"quiz.generating.body"  = "Turning the material into a quiz.";
+"quiz.reviewHeading"    = "Review your questions";
+"quiz.nameLabel"       = "Quiz name";
+"quiz.save"            = "Save quiz";
+"quiz.saving"          = "Saving…";
+"quiz.savedTitle"      = "Quiz saved";
+"quiz.savedBody"       = "Ready to test yourself.";
+"quiz.source"          = "Source";
+"quiz.takeTitle"       = "Take quiz";
+"quiz.progress"        = "%d of %d";
+"quiz.correct"         = "Correct";
+"quiz.incorrect"       = "Not quite";
+"quiz.explanation"     = "Explanation";
+"quiz.scorecardTitle"  = "Your result";
+"quiz.score"           = "%d / %d";
+"quiz.topicHeading"    = "By topic";
+"quiz.reviewAnswers"   = "Review answers";
+"quiz.yourAnswer"      = "Your answer";
+"quiz.correctAnswer"   = "Correct answer";
+"quiz.timerLabel"      = "Time limit";
+"quiz.timerToggle"     = "Timed quiz";
+"quiz.minutes"         = "%d min";
+"quiz.submit"          = "Submit";
+"quiz.submitConfirm.title" = "Submit quiz?";
+"quiz.submitConfirm.body"  = "%d of %d answered. You can't change answers after submitting.";
+"quiz.flag"            = "Flag this question";
+"quiz.unflag"          = "Remove flag";
+"quiz.timeRemaining"   = "Time left %@";
+
+/* ── F06 Study plan (docs/03 §G) ──────────────────────────────────────── */
+"plan.title"           = "Study plan";
+"plan.newPlan"         = "Create plan";
+"plan.emptyTitle"      = "No plan yet";
+"plan.emptyBody"       = "Build a weekly plan around your subjects and deadlines.";
+"plan.stepIndicator"   = "Step %d of %d";
+"plan.subjectsHeading" = "What are you studying?";
+"plan.subjectPlaceholder" = "Add a subject";
+"plan.addSubject"      = "Add";
+"plan.availabilityHeading" = "How many hours a week?";
+"plan.deadlineHeading" = "When's your next exam?";
+"plan.noDeadline"      = "No deadline";
+"plan.intensityHeading" = "How intensely?";
+"plan.intensity.light" = "Light";
+"plan.intensity.balanced" = "Balanced";
+"plan.intensity.intensive" = "Intensive";
+"plan.generate"        = "Generate plan";
+"plan.replan"          = "Re-plan";
+"plan.markDone"        = "Mark done";
+"plan.skip"            = "Skip";
+"plan.weekHeading"     = "This week";
+"plan.noSessions"      = "No sessions scheduled";
+"plan.minutes"         = "%d min";
+"plan.sessionDetail"   = "Session";
+"plan.duration"        = "Duration";
+"plan.scheduledFor"    = "Scheduled";
+"plan.statusLabel"     = "Status";
+"plan.status.pending"   = "Not started";
+"plan.status.completed" = "Done";
+"plan.status.skipped"   = "Skipped";
+"plan.started"         = "Started";
+"plan.inProgress"      = "In progress";
+"plan.startNow"        = "Start now";
+"plan.reschedule"      = "Reschedule";
+
+/* ── F07 Progress (docs/03 §G, G10–G11) ───────────────────────────────── */
+"progress.title"          = "Progress";
+"progress.emptyTitle"     = "Nothing to show yet";
+"progress.emptyBody"      = "Import a material, take a quiz or complete a study session and your progress will appear here.";
+"progress.mastery"        = "Mastery";
+"progress.streak"         = "Day streak";
+"progress.hoursThisWeek"  = "This week";
+"progress.hoursValue"     = "%d h";
+"progress.weeklyHeading"  = "This week's activity";
+"progress.goalHeading"    = "Weekly goal";
+"progress.goalCaption"    = "%d of %d hours";
+"progress.subjectsHeading" = "Subjects in progress";
+"progress.noSubjects"     = "Create a study plan to track subjects here.";
+"progress.radarTitle"     = "Topic strength";
+"progress.radarEmpty"     = "Take a quiz to build your topic map.";
+"progress.weakTopicsHeading" = "Focus on these";
+"progress.noWeakTopics"   = "No weak topics yet — take a quiz to find them.";
+"progress.masteryValue"   = "%d%%";
+"progress.streakValue"    = "%d";
+"progress.quizzesTaken"   = "Quizzes taken";
+"progress.cardsMastered"  = "Cards mastered";
+"progress.cardsValue"     = "%d of %d";
+
+/* ── F08 Shared folders (docs/03 §I, I01–I06) ─────────────────────────── */
+"folder.title"            = "Shared folders";
+"folder.newFolder"        = "New folder";
+"folder.emptyTitle"       = "No folders yet";
+"folder.emptyBody"        = "Create a folder to share materials and decks with your study group.";
+"folder.nameLabel"        = "Folder name";
+"folder.namePlaceholder"  = "Database revision";
+"folder.create"           = "Create folder";
+"folder.creating"         = "Creating…";
+"folder.itemsTab"         = "Items";
+"folder.membersTab"       = "Members";
+"folder.noItems"          = "Nothing shared here yet.";
+"folder.addItem"          = "Add item";
+"folder.addItemsTitle"    = "Add from your library";
+"folder.addMember"        = "Add member";
+"folder.memberNameLabel"  = "Name";
+"folder.memberNamePlaceholder" = "Study partner";
+"folder.permissionLabel"  = "Permission";
+"folder.roleOwner"        = "Owner";
+"folder.permission.view"  = "View";
+"folder.permission.comment" = "Comment";
+"folder.permission.edit"  = "Edit";
+"folder.itemCount"        = "%d items";
+"folder.memberCount"      = "%d members";
+"folder.memberExists"     = "They're already in this folder.";
+
+/* ── F10 Resource bookmarks (docs/03 §I, I15–I18) ──────────────────────── */
+"bookmark.title"            = "Collections";
+"bookmark.newCollection"    = "New collection";
+"bookmark.emptyTitle"       = "No collections yet";
+"bookmark.emptyBody"        = "Create a collection to keep the resources you want to find again.";
+"bookmark.offlineNote"      = "Collections saved offline stay available with no connection.";
+"bookmark.browseLibrary"    = "Browse your library";
+"bookmark.nameLabel"        = "Collection name";
+"bookmark.namePlaceholder"  = "Exam revision";
+"bookmark.create"           = "Create collection";
+"bookmark.creating"         = "Creating…";
+"bookmark.itemCount"        = "%d items";
+"bookmark.offlineCount"     = "%d offline";
+"bookmark.offlineBadge"     = "Offline";
+"bookmark.noItems"          = "Nothing saved here yet.";
+"bookmark.savedOn"          = "Saved %@";
+"bookmark.remove"           = "Remove";
+"bookmark.move"             = "Move";
+"bookmark.moveTitle"        = "Move to collection";
+"bookmark.share"            = "Share";
+"bookmark.select"           = "Select";
+"bookmark.saveSheetTitle"   = "Save to collection";
+"bookmark.saveTo"           = "Choose a collection";
+"bookmark.createNew"        = "Create new";
+"bookmark.saveOffline"      = "Also save offline";
+"bookmark.saveOfflineHint"  = "Keeps a copy on this device so it opens without a connection.";
+"bookmark.save"             = "Save";
+"bookmark.saving"           = "Saving…";
+"bookmark.exists"           = "Already saved to this collection.";
+"bookmark.noCollections"    = "Create a collection to save into.";
+
+/* ── F09 Group revision spaces (docs/03 §I, I08–I14) ───────────────────── */
+"group.title"              = "Study groups";
+"group.newGroup"           = "New group";
+"group.emptyTitle"         = "No groups yet";
+"group.emptyBody"          = "Create a group to revise together, or join one with a code.";
+"group.nameLabel"          = "Group name";
+"group.namePlaceholder"    = "Database revision";
+"group.create"             = "Create group";
+"group.creating"           = "Creating…";
+"group.memberCount"        = "%d members";
+"group.joinTitle"          = "Join a group";
+"group.joinCodeLabel"      = "Invite code";
+"group.joinCodePlaceholder" = "ABC123";
+"group.join"               = "Join";
+"group.joining"            = "Joining…";
+"group.joinCodeInvalid"    = "No group matches that code.";
+"group.joinAlreadyMember"  = "You're already in this group.";
+"group.inviteCodeLabel"    = "Invite code";
+"group.chatTitle"          = "Chat";
+"group.chatPlaceholder"    = "Message";
+"group.chatSend"           = "Send";
+"group.chatEmpty"          = "No messages yet. Say hello.";
+"group.boardHeading"       = "Pinned resources";
+"group.noResources"        = "Nothing pinned yet.";
+"group.membersHeading"     = "Members";
+"group.startQuiz"          = "Start group quiz";
+"group.quizLobbyTitle"     = "Group quiz";
+"group.quizReady"          = "Ready";
+"group.quizWaitingHost"    = "Waiting for the host to start…";
+"group.quizStart"          = "Start quiz";
+"group.quizQuestionProgress" = "%d of %d";
+"group.quizProgressStrip"  = "%d of %d answered";
+"group.quizLeaderboard"    = "Leaderboard";
+"group.quizScorePoints"    = "%d pts";
+"group.quizChallengeRematch" = "Challenge rematch";
+"group.quizReviewAnswers"  = "Review answers";
+"group.quizResultsTitle"   = "Group result";
+"group.quizTimeLeft"       = "%d s";
+"group.liveNow"            = "Live now";
+"group.nextSession"        = "Next session";
+"group.presenceOnline"     = "%d online";
+"group.quizNoQuizzes"      = "Generate a quiz first, then challenge your group with it.";
+
+/* ── F14 Notifications & reminders (docs/03 §M/B, M01–M02, B08–B09) ────── */
+"notification.inboxTitle"        = "Notifications";
+"notification.settingsTitle"     = "Settings";
+"notification.settingsAccount"   = "Account";
+"notification.emptyTitle"        = "Nothing new";
+"notification.emptyBody"         = "Reminders and group activity will show up here.";
+"notification.markAllRead"       = "Mark all read";
+"notification.markRead"          = "Mark read";
+"notification.unread"            = "%d unread";
+"notification.today"             = "Today";
+"notification.yesterday"         = "Yesterday";
+"notification.earlier"           = "Earlier";
+"notification.kind.studyReminder" = "Study reminders";
+"notification.kind.quizDue"      = "Quizzes due";
+"notification.kind.groupActivity" = "Group activity";
+"notification.kind.achievement"  = "Achievements";
+"notification.kind.system"       = "App notices";
+"notification.reminderBody"      = "%@ — %d min. Open your plan to start.";
+"notification.quietHours"        = "Quiet hours";
+"notification.quietHoursCaption" = "Study reminders are held during these hours.";
+"notification.save"              = "Save";
+"notification.saving"            = "Saving…";
+"notification.saved"             = "Saved";
+"notification.permissionTitle"   = "Stay on track";
+"notification.permissionBody"    = "StudyForge can remind you when a session is due, so your plan keeps you on track.";
+"notification.permissionEnable"  = "Enable reminders";
+"notification.permissionNotNow"  = "Not now";
+"notification.permissionGranted" = "Reminders are on.";
+"notification.permissionDenied"  = "Reminders are off. You can turn them on later in Settings.";
+"notification.offlineBanner"     = "You're offline — changes will sync when you're back.";
+
+/* ── M05 Global search (docs/03 §M) ───────────────────────────────────── */
+"search.title"          = "Search";
+"search.prompt"         = "Search everything you have saved";
+"search.emptyTitle"     = "Nothing found";
+"search.emptyBody"      = "Try a different word, or widen the scope.";
+"search.recentHeading"  = "Recent searches";
+"search.clearRecent"    = "Clear";
+"search.scopeAll"       = "All";
+"search.kind.material"  = "Materials";
+"search.kind.summary"   = "Summaries";
+"search.kind.deck"      = "Decks";
+"search.kind.quiz"      = "Quizzes";
+"search.kind.folder"    = "Folders";
+"search.kind.bookmark"  = "Bookmarks";
+"search.resultCount"    = "%d results";
+"search.deckCount"      = "%d cards";
+"search.quizCount"      = "%d questions";
+
+/* ── F12 Admin — AI configuration (docs/03 §K, K07/K08) ───────────────── */
+"admin.title"                = "AI settings";
+"admin.policyLabel"          = "Engine policy";
+"admin.policy.onDeviceFirst" = "On-device first";
+"admin.policy.cloudFirst"    = "Cloud first";
+"admin.policy.offlineOnly"   = "On-device only";
+"admin.policyHint"           = "On-device generation is free and private. Cloud generation is metered.";
+"admin.quotaLabel"           = "Daily generation limit";
+"admin.quotaHint"            = "Cloud generations per student per day. On-device generation is unlimited and never counted.";
+"admin.quotaUsePlanDefault"  = "Use the plan default";
+"admin.quotaValue"           = "%d per day";
+"admin.costHeading"          = "Cost today";
+"admin.costUsed"             = "%d of %d cloud generations used";
+"admin.costOnDeviceNote"     = "On-device generations cost nothing.";
+"admin.save"                 = "Save settings";
+"admin.saving"               = "Saving…";
+"admin.savedTitle"           = "Settings saved";
+"admin.auditHeading"         = "Recent changes";
+"admin.auditEmpty"           = "No changes recorded yet.";
+"admin.auditConfigChanged"   = "AI settings changed";
+"admin.auditRoleChanged"     = "Role changed";
+"admin.auditAccountChanged"  = "Account access changed";
+"admin.dashboardTitle"       = "Administration";
+"admin.status.active"        = "Active";
+"admin.status.suspended"     = "Suspended";
+"admin.kpi.users"            = "Accounts";
+"admin.kpi.active"           = "Active this week";
+"admin.kpi.atRisk"           = "At risk";
+"admin.kpi.aiToday"          = "AI generations today";
+"admin.manageHeading"        = "Manage";
+"admin.usersTitle"           = "Accounts";
+"admin.usersSearchPlaceholder" = "Search name or email";
+"admin.usersEmptyTitle"      = "No accounts to show";
+"admin.usersEmptyBody"       = "Nothing matches that search. Try a different name or role.";
+"admin.filterAll"            = "All roles";
+"admin.masteryValue"         = "%d%% mastery";
+"admin.lastActive"           = "Last active %@";
+"admin.roleLabel"            = "Role";
+"admin.accountTitle"         = "Account";
+"admin.suspend"              = "Suspend";
+"admin.reactivate"           = "Reactivate";
+"admin.suspendConfirm.title" = "Suspend this account?";
+"admin.suspendConfirm.body"  = "They will be signed out and unable to sign in until reactivated.";
+"admin.roleConfirm.title"    = "Change this role?";
+"admin.roleConfirm.body"     = "Their access changes immediately.";
+"admin.noMastery"            = "—";
