@@ -186,6 +186,12 @@ protocol AIProvider: Sendable {
     func makeQuiz(_ request: QuizRequest) async throws -> AIGenerated<[AIQuizQuestion]>
 
     func makeStudyPath(_ request: StudyPathRequest) async throws -> AIGenerated<[AIStudyStep]>
+
+    /// Answers a question grounded in retrieved passages (F15).
+    ///
+    /// Added to the protocol with a default implementation so no existing tier had to change to
+    /// keep compiling — see the extension below for why the default refuses rather than guesses.
+    func answer(_ prompt: AICoachPrompt) async throws -> AIGenerated<AICoachAnswer>
 }
 
 extension AIProvider {
@@ -205,6 +211,19 @@ extension AIProvider {
         AIProvenance(materialId: context.materialId,
                      pageNumbers: pageNumbers,
                      confidence: confidence)
+    }
+
+    // MARK: Defaults
+
+    /// A tier that has not wired grounded answering refuses rather than improvising.
+    ///
+    /// The alternative — a default that returns an ungrounded prose answer — would be the single
+    /// worst failure this feature could ship: the coach would sound confident about something no
+    /// material supports, and the citation chips that exist to prove grounding would be empty
+    /// under an answer that looked complete. The router logs the refusal, tries the next tier, and
+    /// `H08` is what the student sees if none of them can help.
+    func answer(_ prompt: AICoachPrompt) async throws -> AIGenerated<AICoachAnswer> {
+        throw AIError.unavailable(.notImplemented)
     }
 }
 

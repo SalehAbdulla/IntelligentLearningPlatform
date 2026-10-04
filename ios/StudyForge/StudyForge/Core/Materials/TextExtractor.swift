@@ -62,9 +62,15 @@ struct PdfKitTextExtractor: TextExtractor {
 
         // Per page rather than `document.string`, so a page that fails to parse does not take the
         // rest of the document with it — a partly-readable scan is worth more than nothing.
+        //
+        // The page marker is written BEFORE each page. F03–F05 ignore it (it is just text to a
+        // model), while F15's chunker reads it to attribute a passage back to its page — the one
+        // fact a citation cannot be reconstructed without. See `PageMarker` for why the boundary
+        // must be recorded here rather than derived later.
         var text = ""
         for index in 0..<document.pageCount {
             if let page = document.page(at: index)?.string {
+                text += PageMarker.forPage(index + 1)
                 text += page
                 text += "\n"
             }
