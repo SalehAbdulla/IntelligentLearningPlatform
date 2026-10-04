@@ -50,6 +50,7 @@ struct SignedInHomeView: View {
                     notificationsLink
                     searchLink
                     profileLink
+                    subscriptionLink
                     settingsLink
 
                     // K07 is an ADMIN surface: offering it to a student would be a control they can
@@ -289,6 +290,22 @@ struct SignedInHomeView: View {
             )
         } label: {
             Label(L10n.notificationInboxTitle.string, systemImage: "bell")
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.primary)
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+        }
+    }
+
+    // MARK: Subscription
+
+    /// The way into the paywall / manage screen (L01, L10). The designed route is B08's
+    /// settings row, but the placeholder home carries a direct link too — the same reason it
+    /// carries the library and settings links, since the student home (B05) is F07's.
+    private var subscriptionLink: some View {
+        NavigationLink {
+            PaywallView(container: container)
+        } label: {
+            Label(L10n.subscriptionTitle.string, systemImage: "creditcard")
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.primary)
                 .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
