@@ -52,7 +52,19 @@ struct TutorDashboardView: View {
 
     // MARK: Content
 
+    @ViewBuilder
     private var content: some View {
+        if #available(iOS 27.0, *) {
+            // J02's archive swipe. Rows outside a `List` only respond to `swipeActions` when the
+            // enclosing scroll container opts in, which is what `swipeActionsContainer()` does
+            // (SDK 27). On earlier systems the gesture is simply absent.
+            courseScroll.swipeActionsContainer()
+        } else {
+            courseScroll
+        }
+    }
+
+    private var courseScroll: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.s6) {
                 kpiRow
@@ -143,6 +155,17 @@ struct TutorDashboardView: View {
                     courseCard(course)
                 }
                 .buttonStyle(.plain)
+                .swipeActions(edge: .trailing) {
+                    Button {
+                        Task { await viewModel.setArchived(course, archived: !course.isArchived) }
+                    } label: {
+                        Label(
+                            viewModel.archiveActionTitle(course),
+                            systemImage: course.isArchived ? "tray.and.arrow.up" : "archivebox"
+                        )
+                    }
+                    .tint(ColorTokens.primary)
+                }
             }
         }
     }
@@ -175,6 +198,15 @@ struct TutorDashboardView: View {
             }
 
             Spacer(minLength: 0)
+
+            if course.isArchived {
+                Text(viewModel.archivedBadge)
+                    .font(.sfCaption)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                    .padding(.horizontal, Spacing.s2)
+                    .padding(.vertical, Spacing.s1)
+                    .background(ColorTokens.surface, in: .capsule)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.s4)
