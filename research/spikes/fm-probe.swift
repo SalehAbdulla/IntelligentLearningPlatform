@@ -1,4 +1,4 @@
-// Standalone FoundationModels probe — run on macOS to answer the spike's core
+// Standalone FoundationModels probe, run on macOS to answer the spike's core
 // question from real hardware instead of inference.
 //
 // Build & run:
@@ -29,7 +29,7 @@ struct Probe {
         case .available:
             print("VERDICT           : on-device model IS available on this machine")
         case .unavailable(let reason):
-            print("VERDICT           : unavailable — reason = \(reason)")
+            print("VERDICT           : unavailable, reason = \(reason)")
             print("(This is the path the app must degrade gracefully from.)")
             return
         }
@@ -51,7 +51,7 @@ struct Probe {
             print("plain generation  : OK in \(elapsed)")
             print("  -> \(response.content.prefix(120))")
         } catch {
-            print("plain generation  : FAILED — \(error)")
+            print("plain generation  : FAILED, \(error)")
         }
 
         // 2. Guided generation (the assumption flashcards and quizzes depend on)
@@ -77,7 +77,7 @@ struct Probe {
             let wellFormed = cards.allSatisfy { !$0.front.isEmpty && !$0.back.isEmpty }
             print("  structurally valid: \(wellFormed)")
         } catch {
-            print("guided generation : FAILED — \(error)")
+            print("guided generation : FAILED, \(error)")
         }
     }
 }
