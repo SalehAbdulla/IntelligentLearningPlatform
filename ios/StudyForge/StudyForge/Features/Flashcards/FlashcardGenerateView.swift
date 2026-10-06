@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+// TODO(M2 · F04): Add VoiceOver support to this screen. The generating progress, the engine
+// badge and the card previews announce as raw text or nothing today.
+// Done when: the primary action exposes a value while generating, each preview card is one
+// labelled element, and a VoiceOver pass reads the screen sensibly.
+
 struct FlashcardGenerateView: View {
 
     @State private var viewModel: FlashcardGenerateViewModel
