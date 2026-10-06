@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+// TODO(M4 · F04): Add VoiceOver support to the review screen. It has none today, so the card
+// side, the reveal action and the four rating buttons are unusable with VoiceOver.
+// Done when: the card front/back is announced, "reveal" is a labelled button, and each rating
+// button announces the interval it would set.
+
 struct FlashcardReviewView: View {
 
     @State private var viewModel: FlashcardReviewViewModel
