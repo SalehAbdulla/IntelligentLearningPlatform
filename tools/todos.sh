@@ -17,7 +17,7 @@ if [ "$#" -ge 1 ]; then members=("$1"); fi
 
 total=0
 for who in "${members[@]}"; do
-  hits="$(grep -rn "TODO($who" "$SRC" --include='*.swift' || true)"
+  hits="$(grep -rn "TODO($who" "$SRC" backend --include='*.swift' --include='*.ts' 2>/dev/null || true)"
   count=0
   if [ -n "$hits" ]; then
     count="$(printf '%s\n' "$hits" | grep -c "TODO($who")"
