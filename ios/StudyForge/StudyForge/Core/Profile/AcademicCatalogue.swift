@@ -70,6 +70,11 @@ struct AcademicCatalogue: Sendable, Equatable {
     /// Selectable courses, in the order they should be shown.
     var courses: [CourseOption]
 
+    // TODO(M1 · F02): Replace this scaffolding with the student's real enrolled courses.
+    // Done when: the catalogue is loaded from F02's store at its single injection point,
+    // `AcademicCatalogue.placeholder` is no longer referenced by a product screen, and a
+    // test covers the enrolled path.
+    //
     /// The placeholder catalogue. See the note above: this is F01 scaffolding, not data.
     ///
     /// `IT8108` is the one real course id here. It was confirmed rather than invented:
