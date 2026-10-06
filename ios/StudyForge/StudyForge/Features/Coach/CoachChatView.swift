@@ -110,7 +110,7 @@ struct CoachChatView: View {
             if !message.isGrounded {
                 Text(viewModel.ungroundedBadge)
                     .font(.sfCaption)
-                    .foregroundStyle(ColorTokens.warning)
+                    .foregroundStyle(ColorTokens.warningText)
             }
 
             if !message.citations.isEmpty {
@@ -204,7 +204,7 @@ struct CoachUnavailableView: View {
             VStack(alignment: .leading, spacing: Spacing.s4) {
                 Label(L10n.coachUnavailableTitle.string, systemImage: "cpu")
                     .font(.sfBodyEmph)
-                    .foregroundStyle(ColorTokens.warning)
+                    .foregroundStyle(ColorTokens.warningText)
 
                 Text(L10n.coachUnavailableBody.string)
                     .font(.sfCallout)
