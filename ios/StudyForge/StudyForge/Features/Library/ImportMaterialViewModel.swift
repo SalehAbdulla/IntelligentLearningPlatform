@@ -22,6 +22,11 @@
 
 import Foundation
 
+// TODO(M1 · F02): Detect a duplicate upload by content hash and offer Replace / Keep both,
+// rather than silently adding a second copy (docs/02 §6, F02 edge case "duplicate file").
+// Done when: importing a file whose hash matches an existing material prompts the student, a
+// test covers both choices, and the chosen path is recorded.
+
 @MainActor
 @Observable
 final class ImportMaterialViewModel {
