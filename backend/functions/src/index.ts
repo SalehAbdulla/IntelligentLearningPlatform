@@ -37,6 +37,15 @@ const db = getFirestore();
 const TAP_SECRET_KEY = defineSecret('TAP_SECRET_KEY');
 const TAP_WEBHOOK_SECRET = defineSecret('TAP_WEBHOOK_SECRET');
 
+// TODO(M1 · backend): Two prerequisites this surface cannot satisfy on its own.
+//   1. Add an `onUserCreate` Auth trigger that writes the `role` custom claim. The role model
+//      depends on it and nothing else sets it, so roles are currently granted out of band
+//      (docs/09 Q13).
+//   2. Deploy only after a Google Cloud budget alert and spend cap exist, and link the
+//      Functions SDK in the app so it can call `createCharge`.
+// Done when: the trigger exists, the three functions deploy, and plan and role claims come
+// from the server rather than an out-of-band grant.
+
 /** Plan catalogue. Mirrors docs/04 §6. Prices are VAT-inclusive, in BHD fils. */
 const PLANS: Record<string, { monthly: number; annual: number }> = {
   plus: { monthly: 1900, annual: 19000 },
@@ -78,7 +87,7 @@ export const createCharge = onCall(
     const idempotencyKey =
       `${uid}:${planId}:${term}:${new Date().toISOString().slice(0, 10)}`;
 
-    // TODO(S3): POST to Tap /v2/charges with TAP_SECRET_KEY.value(), the
+    // TODO(M3 · F13): POST to Tap /v2/charges with TAP_SECRET_KEY.value(), the
     //           server-resolved `amount`, currency "BHD", and `idempotencyKey`.
     //           Return { tapChargeId, redirectURL }.
     throw new HttpsError(
@@ -107,7 +116,7 @@ export const tapWebhook = onRequest(
       return;
     }
 
-    // TODO(S3):
+    // TODO(M3 · F13):
     //  1. verifySignature(req, TAP_WEBHOOK_SECRET.value())        -> 401 if invalid
     //  2. read charge id, amount, currency, status and our orderId
     //  3. RE-RESOLVE the expected amount from PLANS and reject the payload if it
@@ -138,7 +147,7 @@ export const tapWebhook = onRequest(
 export const rollupDailyMetrics = onSchedule(
   { schedule: 'every day 02:00', timeZone: 'Asia/Bahrain', timeoutSeconds: 300 },
   async () => {
-    // TODO(S4): for each user active in the last 24h:
+    // TODO(M3 · F07): for each user active in the last 24h:
     //   1. aggregate activityEvents -> streak, minutes studied, cards reviewed
     //   2. recompute topicMastery from quizAttempts and card ratings
     //   3. evaluate achievements
