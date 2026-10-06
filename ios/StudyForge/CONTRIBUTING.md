@@ -54,6 +54,21 @@ Find your feature, open its folder, and change it there. All paths are under `io
 
 Not owned by one feature: `Features/Home` (the signed-in shell), `Features/Search` (global search), `Features/DesignSystemGallery` and `Features/AISpike` (development surfaces). Treat these as shared; coordinate before changing them.
 
+## 4b. Find your TODO tasks
+
+Small, ready-to-implement tasks are marked in the code with your handle:
+
+```
+// TODO(M2 · F04): one-line task ...
+// Done when: the acceptance criterion
+```
+
+- List every open task: `bash tools/todos.sh`
+- Find only yours: `grep -rn "TODO(M2" ios/StudyForge --include='*.swift'`
+- Work one, then commit with `bash tools/commit.sh <file> "feat(F04): ..."` and **delete the marker**.
+
+Each task is derived from a real gap the code itself records (a comment that says "for now" or "not yet"), so it is a genuine improvement rather than busywork. Pick tasks for features you **own** first, then for features you **test**. If you finish them and want more, take an edge case from `docs/02-FEATURE-LIST-OWNERSHIP.md` §6 for a feature you own.
+
 ## 5. Where the tests live
 
 One file per area under `ios/StudyForge/StudyForgeTests/`, named `<Area>Tests.swift` (for example `FlashcardReviewViewModelTests.swift`, `QuizStoreTests.swift`). Add a test with every fix; the suite is Swift Testing (`import Testing`, `@Test`), not XCTest.
