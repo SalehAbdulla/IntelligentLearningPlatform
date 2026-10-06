@@ -13,6 +13,11 @@
 //  same every run and the tests can assert on them; a random simulation would look livelier and be
 //  untestable.
 //
+// TODO(M4 · F09): Add a reconnect/resync path. When a player is shown as disconnected and
+// rejoins, re-derive their state deterministically instead of restarting the session.
+// Done when: a `resync()` re-reads the answers and leaderboard, and a test drives a
+// disconnect then reconnect and asserts the same scores.
+//
 //  WHY THE SESSION IS NOT PERSISTED
 //  --------------------------------
 //  A live quiz is a moment, not a record. Its questions come from a `Quiz` the student already saved

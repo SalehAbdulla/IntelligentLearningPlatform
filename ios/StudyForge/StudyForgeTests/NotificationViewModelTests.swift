@@ -8,6 +8,9 @@
 import Foundation
 import Testing
 @testable import StudyForge
+// TODO(M3 · F14): Add a test that quiet hours suppress a scheduled reminder, and that a
+// reminder outside quiet hours is delivered. Done when both cases have a test here and the
+// suite passes.
 
 @Suite("Notifications inbox (F14)")
 @MainActor

@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+// TODO(M1 · F14): Add a "Send a test reminder" action (a row that fires one local notification
+// immediately), so notifications can be demonstrated and verified on demand.
+// Done when: the action exists, goes through the `NotificationAuthorizer` seam, and a test
+// asserts a reminder is scheduled.
+
 struct NotificationPreferencesView: View {
 
     @State private var viewModel: NotificationPreferencesViewModel

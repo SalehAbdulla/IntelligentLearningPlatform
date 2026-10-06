@@ -97,6 +97,10 @@ struct StudySession: Identifiable, Equatable, Sendable, Codable {
 }
 
 /// A generated plan.
+// TODO(M3 · F06): Add per-course exam-date capture that feeds the planner.
+// Why: docs/03 §B draws exam-date pickers on B03, but a date on a profile goes stale, so it
+// belongs to the plan (docs/09 Q11). Done when: exam dates can be entered and stored on the
+// plan, the planner avoids scheduling after them, and a test covers a plan that respects one.
 struct StudyPlan: Identifiable, Equatable, Sendable, Codable {
     let id: String
     var input: StudyPlanInput
