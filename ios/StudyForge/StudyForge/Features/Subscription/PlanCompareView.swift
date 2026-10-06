@@ -14,6 +14,10 @@
 
 import SwiftUI
 
+// TODO(M3 · F13): Add VoiceOver support. Each plan card should read its name, price and
+// included features as one element.
+// Done when: each card is combined into a single labelled element.
+
 struct PlanCompareView: View {
 
     let viewModel: PaywallViewModel

@@ -21,6 +21,10 @@
 
 import SwiftUI
 
+// TODO(M3 · F06): Add VoiceOver support. The session's subject, date and duration should read
+// as one labelled element.
+// Done when: the header is combined with a label that includes subject, day and time.
+
 struct StudySessionDetailView: View {
 
     private let viewModel: StudyPlanViewModel
