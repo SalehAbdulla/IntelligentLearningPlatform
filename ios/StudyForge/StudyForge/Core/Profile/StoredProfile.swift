@@ -1,0 +1,150 @@
+//
+//  StoredProfile.swift
+//  StudyForge
+//
+//  What `users/{uid}` holds, read back — the counterpart to the three write types.
+//
+//  WHY THIS IS A SEPARATE TYPE FROM `AcademicProfile` AND FRIENDS
+//  -------------------------------------------------------------
+//  The write types are strict on purpose: `AcademicProfile` carries four non-optional values
+//  because a screen that has validated a form knows all four. A READ is the opposite problem
+//  — the document is filled in three separate updates, so any field may be absent, and the
+//  only honest model of it is a type where everything is optional. Forcing a read into the
+//  write types would mean inventing the missing values, which is precisely the bug the gate
+//  this exists for would hide.
+//
+//  EVERY FIELD OPTIONAL, AND NO THROWING
+//  ------------------------------------
+//  A value the app cannot parse (an unknown `learningStyle`, a `year` stored as a string)
+//  becomes `nil` rather than failing the whole read. One unrecognised field must not blank
+//  out the fields beside it, and a student whose profile is partly unreadable should still
+//  reach their home screen.
+//
+//  Field names come from `ProfileField` — the same list the write uses and the rules
+//  allowlist mirrors — so a rename cannot make the read silently miss a field.
+//
+
+import Foundation
+
+/// A `users/{uid}` document, decoded.
+struct StoredProfile: Sendable, Equatable {
+
+    // MARK: The wizard's fields
+
+    /// B01 — academic.
+    var university: String?
+    var major: String?
+    var year: Int?
+    var courseIds: [String]?
+
+    /// B02 — learning style.
+    var learningStyle: LearningStyle?
+
+    /// B03 — study goals.
+    var weeklyStudyGoalHours: Int?
+    var targetGrade: TargetGrade?
+
+    init(
+        university: String? = nil,
+        major: String? = nil,
+        year: Int? = nil,
+        courseIds: [String]? = nil,
+        learningStyle: LearningStyle? = nil,
+        weeklyStudyGoalHours: Int? = nil,
+        targetGrade: TargetGrade? = nil
+    ) {
+        self.university = university
+        self.major = major
+        self.year = year
+        self.courseIds = courseIds
+        self.learningStyle = learningStyle
+        self.weeklyStudyGoalHours = weeklyStudyGoalHours
+        self.targetGrade = targetGrade
+    }
+
+    /// Decodes a Firestore document.
+    ///
+    /// Takes `[String: Any]` rather than a `DocumentSnapshot` so the decoding — including how
+    /// it handles a value it does not recognise — is testable with no Firebase project. The
+    /// Firestore wrapper in `FirebaseProfileService` is a one-line call to this.
+    init(document: [String: Any]) {
+        self.init(
+            university: document[ProfileField.university] as? String,
+            major: document[ProfileField.major] as? String,
+            year: document[ProfileField.year] as? Int,
+            courseIds: document[ProfileField.courseIds] as? [String],
+            learningStyle: (document[ProfileField.learningStyle] as? String)
+                .flatMap(LearningStyle.init(storageValue:)),
+            weeklyStudyGoalHours: document[ProfileField.weeklyStudyGoalHours] as? Int,
+            // The stored letter, read back through the wire vocabulary rather than `rawValue`
+            // — same reasoning as `learningStyle`.
+            targetGrade: (document[ProfileField.targetGrade] as? String)
+                .flatMap(TargetGrade.init(storageValue:))
+        )
+    }
+
+    // MARK: Reading the write types back
+
+    /// The academic fields, as B01 collects them — or `nil` when any is missing.
+    ///
+    /// All-or-nothing because the WRITE was: B01 saves its four fields in one update, so a
+    /// document either has them all or has none of them. That makes this the honest answer to
+    /// "has the academic step been answered?", and the single place that decides it.
+    var academicProfile: AcademicProfile? {
+        guard let university, !university.isEmpty,
+              let major, !major.isEmpty,
+              let year,
+              let courseIds, !courseIds.isEmpty
+        else { return nil }
+
+        return AcademicProfile(
+            university: university,
+            major: major,
+            year: year,
+            courseIds: courseIds
+        )
+    }
+
+    /// The study goals, as B03 collects them — or `nil` when either half is missing.
+    ///
+    /// Both or neither, for the same reason as the academic fields: B03 writes the pair in one
+    /// update, because a study time with no target says nothing about how hard to push.
+    var studyGoals: StudyGoals? {
+        guard let weeklyStudyGoalHours, let targetGrade else { return nil }
+        return StudyGoals(weeklyStudyGoalHours: weeklyStudyGoalHours, targetGrade: targetGrade)
+    }
+
+    // MARK: Completeness
+
+    /// Whether the student has finished the profile wizard.
+    ///
+    /// DERIVED RATHER THAN A FLAG THE WIZARD SETS
+    /// -----------------------------------------
+    /// The alternative is a `profileCompletedAt` marker the confirmation screen writes, and
+    /// it is worse here: it would be a second write that can fail AFTER the answers are saved
+    /// (leaving a complete profile the app still calls incomplete), and one more field for
+    /// the rules allowlist to name and defend. Deriving from the fields the wizard exists to
+    /// collect keeps the answer in one place and impossible to disagree with the data.
+    ///
+    /// All THREE steps must have produced their fields. A part-way profile is deliberately
+    /// incomplete, so the wizard re-opens — at the step the student left, not at the start:
+    /// see `ProfileSetupStep.resumePoint(for:)`.
+    var isComplete: Bool {
+        academicProfile != nil && learningStyle != nil && studyGoals != nil
+    }
+
+    /// A complete example — a profile all three wizard steps have filled in.
+    ///
+    /// Used by previews, and by the preview container that claims `.complete`: the gate reads
+    /// the profile service, so a preview of the home screen has to be backed by a document or
+    /// it would be demonstrating a state the code can never reach.
+    static let preview = StoredProfile(
+        university: "Bahrain Polytechnic",
+        major: "Programming",
+        year: 2,
+        courseIds: ["IT8108", "c_104"],
+        learningStyle: .visual,
+        weeklyStudyGoalHours: 12,
+        targetGrade: .a
+    )
+}

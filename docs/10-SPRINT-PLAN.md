@@ -1,4 +1,4 @@
-# 10 — Sprint Plan & Individual Contribution
+# 10, Sprint Plan & Individual Contribution
 
 > **The Sprint component: 10% of the course, assessed individually.**
 > Verbatim: *"Sprints (10%) – Individual assessment of each student's contribution and progress during the implementation of the group project."*
@@ -7,7 +7,7 @@
 
 ## 1. What is actually being assessed
 
-Read the sentence closely — three words carry the whole design of this document:
+Read the sentence closely, three words carry the whole design of this document:
 
 | Word | Implication | Consequence for us |
 |---|---|---|
@@ -15,15 +15,15 @@ Read the sentence closely — three words carry the whole design of this documen
 | **Contribution** | Work you personally did, produced, reviewed or verified | Must be attributable, per person, with timestamps |
 | **Progress** | Continuous movement, not one end-of-project burst | Evidence must appear **across** the project, not in a single dump |
 
-**Therefore:** every member must generate a visible, dated trail of their own work through every sprint — and it must be work they can *defend* in the VIVA.
+**Therefore:** every member must generate a visible, dated trail of their own work through every sprint, and it must be work they can *defend* in the VIVA.
 
 ---
 
 ## 2. What counts as your contribution
 
-**The tutor has confirmed that using AI to write code is acceptable.** So the question is no longer *"did you write this by hand?"* — it is *"is there attributable work of yours around it, and can you defend it?"*
+**The tutor has confirmed that using AI to write code is acceptable.** So the question is no longer *"did you write this by hand?"*, it is *"is there attributable work of yours around it, and can you defend it?"*
 
-What the tutor **does** require: a branch-based workflow with meaningful, well-scoped commits, pushed regularly ([doc 12 — Git Workflow](12-GIT-WORKFLOW.md)).
+What the tutor **does** require: a branch-based workflow with meaningful, well-scoped commits, pushed regularly ([doc 12, Git Workflow](12-GIT-WORKFLOW.md)).
 
 | Counts as your contribution | Does **not** count |
 |---|---|
@@ -36,7 +36,7 @@ What the tutor **does** require: a branch-based workflow with meaningful, well-s
 | Authoring Figma frames named with your own student ID | Duplicated work a teammate already did |
 | Writing documentation, references and test evidence | Anything you could not demo live |
 
-> **The comprehension contract (§9) makes this real rather than cosmetic.** It is not busywork — it is the mechanism that turns "the AI wrote it" into "I own it, I can explain it, and I can change it."
+> **The comprehension contract (§9) makes this real rather than cosmetic.** It is not busywork, it is the mechanism that turns "the AI wrote it" into "I own it, I can explain it, and I can change it."
 
 ---
 
@@ -53,15 +53,15 @@ What the tutor **does** require: a branch-based workflow with meaningful, well-s
 | **S4** | 16 Nov – 29 Nov | **Intelligence & polish** | F15 AI Coach answering grounded questions with citations; offline mode; RTL; accessibility pass |
 | **S5** | 30 Nov – 13 Dec | **Hardening & VIVA** | Feature freeze; full regression; rehearsed demo; every member presents a feature they did *not* build |
 
-**Design Document deadline (22 Oct)** falls inside S2. **Prototype deadline (12 Nov)** falls inside S3. Both are handled as fixed constraints inside those sprints — see [doc 01](01-ROADMAP-PHASES-TODOLIST.md).
+**Design Document deadline (22 Oct)** falls inside S2. **Prototype deadline (12 Nov)** falls inside S3. Both are handled as fixed constraints inside those sprints, see [doc 01](01-ROADMAP-PHASES-TODOLIST.md).
 
-**Rule:** a sprint is only "done" if the demoable outcome actually demos. Slipped scope moves to the next sprint and is recorded — never quietly dropped.
+**Rule:** a sprint is only "done" if the demoable outcome actually demos. Slipped scope moves to the next sprint and is recorded, never quietly dropped.
 
 ---
 
 ## 4. Per-sprint, per-member allocation
 
-Each cell names the work that member personally owns that sprint, plus the evidence it produces. **This table is the spine of the sprint assessment** — it is what each member is judged on.
+Each cell names the work that member personally owns that sprint, plus the evidence it produces. **This table is the spine of the sprint assessment**, it is what each member is judged on.
 
 ### S0 · Foundation & requirements (28 Sep – 4 Oct)
 
@@ -76,12 +76,12 @@ Each cell names the work that member personally owns that sprint, plus the evide
 
 | Member | Owns | Evidence produced |
 |---|---|---|
-| **M1** Saleh | **F01** auth end-to-end (sign-up, OTP, role routing) + **F02** upload → compress → Vision OCR → Storage | Two features merged, test logs from M4/M3 |
+| **M1** Saleh | **F01** auth end-to-end (sign-up, email verification, role routing) + **F02** upload → compress → Vision OCR → Storage | Two features merged, test logs from M4/M3 |
 | **M2** Mohammed | **F03** summary generation (tier 0 + tier 1) + **F04** flashcard generation with `@Generable` | Two features merged, prompt-eval notes |
 | **M3** Tasbeeh | **F06** plan-wizard skeleton + **F07** activity-event writes; app-wide `LoadState` handling | Two skeletons, loading/empty/error states |
 | **M4** Shahad | Figma P0 frames for groups A, C, D, E; **F10** bookmarking | Frames named per the rule, one merged feature |
 
-### S2 · Assessment engine (19 Oct – 1 Nov) — *Design Document due 22 Oct*
+### S2 · Assessment engine (19 Oct – 1 Nov), *Design Document due 22 Oct*
 
 | Member | Owns | Evidence produced |
 |---|---|---|
@@ -90,7 +90,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M3** Tasbeeh | **F06** adaptive re-planning + **F07** dashboard + weakness radar | Merged features, re-plan recording |
 | **M4** Shahad | **F08** shared folders; Figma P0 for groups F, G, I; usability-test plan; Design Document assembly support | Merged feature, frames, test plan, doc sections |
 
-### S3 · Collaboration & monetisation (2 Nov – 15 Nov) — *Prototype due 12 Nov*
+### S3 · Collaboration & monetisation (2 Nov – 15 Nov), *Prototype due 12 Nov*
 
 | Member | Owns | Evidence produced |
 |---|---|---|
@@ -117,7 +117,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M3** Tasbeeh | Performance and stability pass; crash-free verification via Crashlytics; regression of F06/F07/F13 | Stability report, test log |
 | **M4** Shahad | VIVA deck, demo script, **recorded walkthrough of every feature**, rehearsal coordination | Deck, script, recordings |
 
-> **Every member must appear in every sprint.** A blank cell is a lost individual mark — and it is visible to the marker.
+> **Every member must appear in every sprint.** A blank cell is a lost individual mark, and it is visible to the marker.
 
 
 ---
@@ -130,7 +130,7 @@ The marker needs to attribute work to **you**. These are the only forms of evide
 |---|---|---|---|
 | 1 | **Authored commits and PRs** on features you own | `git log --author`, GitHub PR list | Timestamped, attributable, code-level |
 | 2 | **Sprint review demo** of your own work | Recorded review in `research/sprints/sprint-N/` | Shows you can operate what you claim to have built |
-| 3 | **Review notes on AI-generated code** — what was wrong, what you changed and why | `research/reviews/` + the commit that fixes it | Proves genuine engineering judgement, not acceptance |
+| 3 | **Review notes on AI-generated code**, what was wrong, what you changed and why | `research/reviews/` + the commit that fixes it | Proves genuine engineering judgement, not acceptance |
 | 4 | **Test logs** for the features you test (per [doc 02 §7](02-FEATURE-LIST-OWNERSHIP.md)) | `research/testing/` | Independent verification by a named person |
 | 5 | **Design and decision documents** you authored | `docs/` history, decision log | Design work is contribution |
 | 6 | **Issue-board items you closed**, with linked PRs | GitHub Issues | Shows planned → done traceability |
@@ -161,7 +161,7 @@ Each member keeps their own log per sprint. This is the artefact you hand over i
 |---|---|---|---|---|---|
 | 07 Oct | F02 | Wrote the chunking spec; reviewed Cline's OCR pipeline and fixed the page-offset bug | PR #14, commit `a1b2c3d` | 4 | none |
 | 09 Oct | F02 | Tested 6 scan types; found 2 OCR failures, raised bugs | `research/testing/F02-log.md` | 2 | needs a clearer scan sample |
-| 12 Oct | — | Sprint review: demoed upload → OCR → library | `research/sprints/sprint-1/review.mp4` | 1 | — |
+| 12 Oct | - | Sprint review: demoed upload → OCR → library | `research/sprints/sprint-1/review.mp4` | 1 | - |
 
 **Rules:** log within 24 h · one row per work session · always link evidence · never back-fill a whole sprint at once (it reads as fabricated and defeats the point).
 
@@ -197,22 +197,22 @@ A sprint counts as complete only when **all** of these hold:
 
 ## 9. The comprehension contract
 
-**Corrected framing — the tutor has confirmed that using AI to write code is acceptable.** So this contract is *not* about proving you hand-wrote anything. It addresses the risk that remains:
+**Corrected framing, the tutor has confirmed that using AI to write code is acceptable.** So this contract is *not* about proving you hand-wrote anything. It addresses the risk that remains:
 
-> **The risk:** AI writes code fast. If nobody reads it, then in the VIVA a marker can say *"open your feature's view model and explain this function"* — and "the AI wrote it" fails a **must-pass** component. The tutor's permission removes the *authorship* problem. It does **not** remove the *understanding* requirement.
+> **The risk:** AI writes code fast. If nobody reads it, then in the VIVA a marker can say *"open your feature's view model and explain this function"*, and "the AI wrote it" fails a **must-pass** component. The tutor's permission removes the *authorship* problem. It does **not** remove the *understanding* requirement.
 
-What the tutor **does** require: branches, meaningful commits, and regular pushes ([doc 12 — Git Workflow](12-GIT-WORKFLOW.md)).
+What the tutor **does** require: branches, meaningful commits, and regular pushes ([doc 12, Git Workflow](12-GIT-WORKFLOW.md)).
 
 | # | Rule | Enforced by |
 |---|---|---|
-| 1 | **Disclose AI use on every PR** — which tool, for what. Permitted, but it must be stated. | PR template |
+| 1 | **Disclose AI use on every PR**, which tool, for what. Permitted, but it must be stated. | PR template |
 | 2 | **Read and review every generated line before it is committed.** Record what you corrected. | `research/reviews/` |
 | 3 | **No PR is merged for code you cannot explain.** Every PR body carries a 3-sentence plain-English explanation of what the code does and why. | PR template |
-| 4 | **Change something yourself each sprint** — a label, a bug, a layout, a validation rule. Not because hand-writing is required, but because **making a change is the fastest way to actually understand code**. | commit tagged `hand:` |
+| 4 | **Change something yourself each sprint**, a label, a bug, a layout, a validation rule. Not because hand-writing is required, but because **making a change is the fastest way to actually understand code**. | commit tagged `hand:` |
 | 5 | **Weekly "explain it" drill (15 min):** one member opens *another* member's feature and explains it from the code, unprompted. | rotation, logged |
 | 6 | **Record a 2-minute walkthrough of your own feature each sprint**, narrating what it does and how. | `research/sprints/sprint-N/` |
 | 7 | **Maintain a one-page cheat sheet:** purpose · key files · data touched · hard parts · limitations. | `research/cheatsheets/<name>.md` |
-| 8 | **Be able to name the trade-offs** — what you chose, what you rejected, and why. | cheat sheet + rehearsal |
+| 8 | **Be able to name the trade-offs**, what you chose, what you rejected, and why. | cheat sheet + rehearsal |
 
 **Why rules 7 and 8 matter most:** in the VIVA, "explain any part of the app" is really testing whether you know *where things live and why*. A cheat sheet per member turns that from a risk into an advantage.
 
@@ -228,6 +228,6 @@ What the tutor **does** require: branches, meaningful commits, and regular pushe
 | A member can't explain their feature at review | Rules 2–6 of the comprehension contract catch this from sprint 1, not at the VIVA |
 | Sprint dates assumed wrongly | Confirm both cadence and the demo date with the tutor in the first interview |
 | AI writes the code, so contribution feels intangible | §2 defines exactly what legitimately counts, and the branch/commit workflow in [doc 12](12-GIT-WORKFLOW.md) turns it into timestamped, attributable evidence |
-| **Commits go straight to `main`, or carry meaningless messages** — directly missing the tutor's stated requirement | `tools/commit.sh` refuses protected branches and rejects non-conventional messages · [doc 12](12-GIT-WORKFLOW.md) §3 golden rules · sprint review checks the branch list |
+| **Commits go straight to `main`, or carry meaningless messages**, directly missing the tutor's stated requirement | `tools/commit.sh` refuses protected branches and rejects non-conventional messages · [doc 12](12-GIT-WORKFLOW.md) §3 golden rules · sprint review checks the branch list |
 | **One member's branch history shows almost no commits** | Daily-push rule (golden rule 4); the `git log --author` check in [doc 12 §9.1](12-GIT-WORKFLOW.md) surfaces it before the review |
 

@@ -26,15 +26,31 @@ final class AIRouter {
 
     /// Registered engines, keyed by tier. A missing entry means "not built yet".
     private let providers: [AITier: any AIProvider]
-    private let governor: AICostGovernor
+
+    /// The budget the router spends against.
+    ///
+    /// Deliberately reachable (F12, K07): the admin configuration moves the daily ceiling on the
+    /// object that ENFORCES it, so there is one counter rather than a settings screen reading a
+    /// number the router never consults.
+    let governor: AICostGovernor
 
     /// The most recent routing decision, so the UI can explain what happened — for
     /// example why a generation went to the cloud rather than staying on device.
     private(set) var lastDecision: AIRoutingDecision?
 
+    /// The engine-routing policy (F12, K07). Defaults to the shipped behaviour, so a build with no
+    /// admin configuration behaves exactly as it did before the policy existed.
+    var policy: AIRoutingPolicy = .onDeviceFirst
+
     init(providers: [AITier: any AIProvider], governor: AICostGovernor) {
         self.providers = providers
         self.governor = governor
+    }
+
+    /// The tiers to try, in order, for a task — the task's own preference passed through the
+    /// policy. One place, so `decide` and `execute` can never disagree about the order.
+    func order(for task: AITask) -> [AITier] {
+        policy.ordered(task.tierPreference)
     }
 
     /// Convenience factory: the real engine set for this build.
@@ -65,8 +81,16 @@ final class AIRouter {
     /// button with an honest reason rather than letting the user tap into a failure.
     func decide(for task: AITask) -> AIRoutingDecision {
         var reasons: [AITier: AIUnavailableReason] = [:]
+        let order = order(for: task)
 
-        for tier in task.tierPreference {
+        // The policy removed every candidate, so there is nothing to walk. That is the POLICY's
+        // answer rather than a missing engine, and saying so is the difference between "we could not
+        // run this" and "we were told not to".
+        guard !order.isEmpty else {
+            return .noneAvailable([.firebaseAI: .policyOfflineOnly])
+        }
+
+        for tier in order {
             guard let provider = providers[tier] else {
                 reasons[tier] = .notImplemented
                 continue
@@ -101,6 +125,12 @@ final class AIRouter {
     func makeStudyPath(_ request: StudyPathRequest) async throws -> AIGenerated<[AIStudyStep]> {
         try await execute(task: .studyPath) { try await $0.makeStudyPath(request) }
     }
+
+    /// Answers a grounded question (F15). Routed like every other task, so the admin's policy and
+    /// the daily budget apply to the coach exactly as they do to a summary.
+    func answer(_ prompt: AICoachPrompt) async throws -> AIGenerated<AICoachAnswer> {
+        try await execute(task: .coachAnswer) { try await $0.answer(prompt) }
+    }
 }
 
 // MARK: - The policy
@@ -118,8 +148,13 @@ extension AIRouter {
 
         var reasons: [AITier: AIUnavailableReason] = [:]
         var fallbackFrom: AITier?
+        let order = order(for: task)
 
-        for tier in task.tierPreference {
+        guard !order.isEmpty else {
+            throw AIError.unavailable(.policyOfflineOnly)
+        }
+
+        for tier in order {
             guard let provider = providers[tier] else {
                 reasons[tier] = .notImplemented
                 fallbackFrom = fallbackFrom ?? tier

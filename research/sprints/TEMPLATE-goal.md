@@ -1,4 +1,4 @@
-# Sprint `<N>` — Goal & Plan
+# Sprint `<N>`, Goal & Plan
 
 > Template. Copy this file to `research/sprints/sprint-<N>/goal.md` at the start of every sprint.
 > Sprint definitions and the per-member allocation are in [doc 10](../../docs/10-SPRINT-PLAN.md).
@@ -10,9 +10,9 @@
 | **Sprint lead** | M__ |
 | **Theme** | (from [doc 01 §1](../../docs/01-ROADMAP-PHASES-TODOLIST.md)) |
 
-## Sprint goal — one sentence
+## Sprint goal, one sentence
 
-> _e.g. "A student can sign up, upload a real PDF, receive a grounded summary, and review generated flashcards — on a physical device."_
+> _e.g. "A student can sign up, upload a real PDF, receive a grounded summary, and review generated flashcards, on a physical device."_
 
 ## Demoable outcome (the sprint review must show this working)
 
@@ -55,7 +55,7 @@
 ## Sprint artefacts checklist
 
 - [ ] `goal.md` (this file)
-- [ ] `board.png` — task board snapshot at sprint end
-- [ ] `review.mp4` or `review/` screenshots — each member demoing their own work
-- [ ] `retro.md` — one thing to keep, one to change
+- [ ] `board.png`, task board snapshot at sprint end
+- [ ] `review.mp4` or `review/` screenshots, each member demoing their own work
+- [ ] `retro.md`, one thing to keep, one to change
 - [ ] `<name>-contribution.md` × 4

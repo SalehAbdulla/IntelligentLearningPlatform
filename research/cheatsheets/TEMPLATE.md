@@ -1,4 +1,4 @@
-# Feature Cheat Sheet — `<Your Name>`
+# Feature Cheat Sheet, `<Your Name>`
 
 > **Purpose:** one page you always have open in the VIVA. The marker may ask you to explain *any* part of the app; this makes "where does that live and why?" answerable in under ten seconds.
 > Fill this in from **S2** and keep it current to the feature freeze.
@@ -17,9 +17,9 @@
 
 Repeat this block once per feature you develop.
 
-### `F__ — <Feature name>`
+### `F__, <Feature name>`
 
-- **What it does, in three sentences** (no jargon — if you can't say it plainly you don't own it):
+- **What it does, in three sentences** (no jargon, if you can't say it plainly you don't own it):
   1.
   2.
   3.
@@ -36,7 +36,7 @@ Repeat this block once per feature you develop.
 
 ---
 
-## Code walkthrough — rehearsed
+## Code walkthrough, rehearsed
 
 > Practise this out loud. The marker will say: *"open it and walk me through it."*
 
@@ -49,7 +49,7 @@ Repeat this block once per feature you develop.
 
 ---
 
-## Where things live — the 10-second drill
+## Where things live, the 10-second drill
 
 | Feature | Screen ID | View file | ViewModel | Repository | Collections |
 |---|---|---|---|---|---|

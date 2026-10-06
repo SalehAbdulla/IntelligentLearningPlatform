@@ -64,12 +64,37 @@ final class MockProvider: AIProvider {
                 ? "Not enough source text to build this card."
                 : sentences[index % sentences.count]
             return AIFlashcard(
-                front: "Explain: \(sentence.prefix(60))",
+                front: Self.front(for: sentence, cardType: request.cardType),
                 back: sentence,
                 difficulty: (index % 3) + 1
             )
         }
         return wrap(cards, request.context, pageNumbers: [1])
+    }
+
+    /// The front a card of this shape would carry.
+    ///
+    /// The mock reproduces each shape rather than emitting one kind and labelling it another, so a
+    /// screen driven by it demonstrates the card-type selector honestly — the same reason the mock
+    /// reproduces the planner's weakest-first ordering rather than returning arbitrary order.
+    private static func front(for sentence: String, cardType: CardType) -> String {
+        switch cardType {
+        case .qa:
+            "Explain: \(sentence.prefix(60))"
+        case .cloze:
+            clozePrompt(from: sentence)
+        case .imageOcclusion:
+            "Label the part described here: \(sentence.prefix(50))"
+        case .reversible:
+            "\(sentence.prefix(60)) — explain this, then say what it would apply to."
+        }
+    }
+
+    /// Blanks the longest word, which is the shape a cloze deletion takes.
+    private static func clozePrompt(from sentence: String) -> String {
+        let words = sentence.split(separator: " ")
+        guard let blanked = words.max(by: { $0.count < $1.count }) else { return sentence }
+        return sentence.replacingOccurrences(of: String(blanked), with: "_____")
     }
 
     func makeQuiz(_ request: QuizRequest) async throws -> AIGenerated<[AIQuizQuestion]> {
@@ -117,6 +142,31 @@ final class MockProvider: AIProvider {
             duration: latency
         )
     }
+
+    func answer(_ prompt: AICoachPrompt) async throws -> AIGenerated<AICoachAnswer> {
+        try await simulateWork()
+
+        // Grounded by construction: the reply is assembled FROM the supplied passages and cites
+        // them, so a mock answer cannot contain a fact that was not retrieved. The real prompt
+        // contract demands the same property, which is what makes this a usable stand-in rather
+        // than a fixture that flatters the UI.
+        let cited = Array(prompt.chunks.prefix(2))
+        let joined = cited.map(\.text).joined(separator: " ")
+        let body = joined.count > 600 ? String(joined.prefix(600)) + "…" : joined
+
+        let answer = AICoachAnswer(answer: body, citedChunkIds: cited.map(\.id))
+
+        // Aggregate provenance for the badge. The authoritative per-claim references are the
+        // messages' `Citation`s, which the service validates against these ids.
+        let provenance = AIProvenance(
+            materialId: prompt.chunks.first?.materialId ?? "coach",
+            pageNumbers: cited.compactMap(\.page),
+            confidence: .high
+        )
+
+        return AIGenerated(value: answer, provenance: provenance, tier: tier, duration: latency)
+    }
+
 
     // MARK: - Helpers
 

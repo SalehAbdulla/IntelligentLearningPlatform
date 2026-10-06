@@ -1,8 +1,8 @@
-# 12 — Git Workflow: Branches, Commits & Pull Requests
+# 12, Git Workflow: Branches, Commits & Pull Requests
 
 > **Tutor guidance (confirmed):** using AI to write code is **acceptable**. What *is* required is a **branch-based workflow with meaningful, well-scoped commits, pushed regularly.**
 >
-> This document is the team's git contract. It is not housekeeping — git history is the primary evidence for the **Sprints (10%, individual)** component and for traceability in the **60% must-pass VIVA**.
+> This document is the team's git contract. It is not housekeeping, git history is the primary evidence for the **Sprints (10%, individual)** component and for traceability in the **60% must-pass VIVA**.
 
 ---
 
@@ -13,7 +13,7 @@
 | **The tutor requires it** | Branches + meaningful commits are the stated expectation, not a preference |
 | **Sprints are assessed individually (10%)** | Git history is the only scalable, timestamped proof of who did what, when |
 | **The VIVA is must-pass (60%)** | A marker may ask "show me where your feature was built." Branch and commit history answers instantly |
-| **LO3 — professional standards** | A clean, conventional history is exactly what "documentation and programming conventions" means in practice |
+| **LO3, professional standards** | A clean, conventional history is exactly what "documentation and programming conventions" means in practice |
 | **It protects the demo** | `main` stays working; risky work lives on branches, so nothing half-finished reaches the demo build |
 | **It makes AI-assisted work reviewable** | Since AI writes much of the code, small commits are the mechanism that makes review actually possible |
 
@@ -33,8 +33,8 @@ feat/*          ●─●   ●─●        ●─●   ●─●              
 
 | Branch | Purpose | Who pushes to it | Protected? |
 |---|---|---|---|
-| **`main`** | Stable, always builds and runs. This is the demo/release line | **Nobody directly** — only merged from `develop` or `release/*` via PR | ✅ Yes |
-| **`develop`** | Integration: the current state of the sprint | **Nobody directly** — only merged from feature branches via PR | ✅ Yes |
+| **`main`** | Stable, always builds and runs. This is the demo/release line | **Nobody directly**, only merged from `develop` or `release/*` via PR | ✅ Yes |
+| **`develop`** | Integration: the current state of the sprint | **Nobody directly**, only merged from feature branches via PR | ✅ Yes |
 | **`feat/<Fxx>-<slug>`** | One feature, one branch, one owner | The feature's developer | No |
 | **`fix/<slug>`** | A bug fix | Whoever finds and fixes it | No |
 | **`docs/<slug>`** | Documentation only | Whoever writes it | No |
@@ -70,14 +70,14 @@ release/sprint-3
 |---|---|---|
 | 1 | **Never commit directly to `main` or `develop`.** Always via a branch and a PR | Protects the demo build and creates review evidence |
 | 2 | **One file per commit**, wherever the change is separable | The tutor's explicit requirement; makes history granular and attributable |
-| 3 | **Every commit message is meaningful** — type, scope, and what changed | `update` or `fix stuff` is a non-commit |
+| 3 | **Every commit message is meaningful**, type, scope, and what changed | `update` or `fix stuff` is a non-commit |
 | 4 | **Push at least once a day** while working | Continuous progress evidence is what the sprint component rewards |
 | 5 | **Never rewrite pushed history** (no force-push to shared branches) | Others may have based work on it |
-| 6 | **Never commit secrets** — `GoogleService-Info.plist`, keys, `.env` | Already gitignored; verify before every commit |
+| 6 | **Never commit secrets**, `GoogleService-Info.plist`, keys, `.env` | Already gitignored; verify before every commit |
 | 7 | **`main` must always build and run** | It is the demo line; a red `main` is the day's top priority |
 | 8 | **Delete your branch after merge** | Keeps the branch list readable |
 
-### 3.1 Enforcement — and why rules 1 and 8 needed it
+### 3.1 Enforcement, and why rules 1 and 8 needed it
 
 Setting branch protection without `enforce_admins` turned out to be **advisory, not real**: the repository owner could still push straight to `main`, because GitHub lets admins bypass protection by default. The rule existed on paper and was silently bypassable in practice.
 
@@ -96,9 +96,9 @@ remote: - Changes must be made through a pull request.
 | Force-push blocked | ✅ | ✅ |
 | Branch deletion blocked | ✅ | ✅ |
 
-**Emergency procedure** — if a broken `main` must be fixed and no PR is possible, a repository admin may *temporarily* disable admin enforcement in **Settings → Branches**, push the fix, and **re-enable it immediately**. Record what happened in the decision log. This should be rare, and the fact that it requires disabling a guard is the point.
+**Emergency procedure**, if a broken `main` must be fixed and no PR is possible, a repository admin may *temporarily* disable admin enforcement in **Settings → Branches**, push the fix, and **re-enable it immediately**. Record what happened in the decision log. This should be rare, and the fact that it requires disabling a guard is the point.
 
-> **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. This is the same reasoning behind `tools/commit.sh` — enforcement beats documentation.
+> **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. This is the same reasoning behind `tools/commit.sh`, enforcement beats documentation.
 
 ---
 
@@ -109,8 +109,8 @@ Conventional Commits, with a **scope that names the feature or area**.
 ```
 <type>(<scope>): <subject>
 
-[optional body — why, not what]
-[optional footer — refs]
+[optional body, why, not what]
+[optional footer, refs]
 ```
 
 | Type | Use for | Example |
@@ -128,7 +128,7 @@ Conventional Commits, with a **scope that names the feature or area**.
 
 **Subject rules:** imperative mood ("add", not "added") · no trailing full stop · under ~72 characters · says *what changed*, the body says *why*.
 
-### 4.1 What "meaningful" means — bad vs good
+### 4.1 What "meaningful" means, bad vs good
 
 | ❌ Not a meaningful commit | ✅ Meaningful |
 |---|---|
@@ -140,7 +140,7 @@ Conventional Commits, with a **scope that names the feature or area**.
 | `asdfasdf` | `test(F04): cover SM-2 lapse case with a 21-day interval` |
 | *5 files in one commit, no message* | *5 separate commits, each named for its own file* |
 
-> **Test to apply before committing:** *could a marker read this message, open the diff, and understand what you did and why — without asking you?* If not, rewrite it.
+> **Test to apply before committing:** *could a marker read this message, open the diff, and understand what you did and why, without asking you?* If not, rewrite it.
 
 ---
 
@@ -154,7 +154,7 @@ git switch develop
 git pull origin develop
 git switch -c feat/F04-sm2-scheduling
 
-# ── 2. Do the work (with whatever tools you like — AI is fine) ─────────
+# ── 2. Do the work (with whatever tools you like, AI is fine) ─────────
 
 # ── 3. Commit ONE FILE at a time, each with its own meaningful message ─
 git add ios/StudyForge/StudyForge/Core/Scheduling/SpacedRepetition.swift
@@ -179,7 +179,7 @@ gh pr create --base develop --title "feat(F04): flashcard spaced repetition" \
 
 ### 5.1 Why one file per commit (not one file per change)
 
-A commit touching five files forces a reviewer to hold five unrelated thoughts at once — and it destroys attribution when several people work on the same feature area. One file per commit means:
+A commit touching five files forces a reviewer to hold five unrelated thoughts at once, and it destroys attribution when several people work on the same feature area. One file per commit means:
 
 - the diff is trivially reviewable
 - `git log --follow <file>` gives a clean history per file
@@ -187,7 +187,7 @@ A commit touching five files forces a reviewer to hold five unrelated thoughts a
 - a bad change is revertable in isolation
 - the commit list reads as a **narrative of the work**, which is exactly what the sprint component assesses
 
-**Exception:** a genuinely atomic multi-file change (e.g. a protocol and its only conformer) may share a commit — but say so in the message body.
+**Exception:** a genuinely atomic multi-file change (e.g. a protocol and its only conformer) may share a commit, but say so in the message body.
 
 ---
 
@@ -199,19 +199,19 @@ Every branch reaches `develop` through a PR. Even if you review it yourself, **t
 |---|---|
 | **Title** | Conventional Commit style: `feat(F04): flashcard spaced repetition` |
 | **Base** | `develop` (or `main` for a hotfix) |
-| **Body** | Use `.github/PULL_REQUEST_TEMPLATE.md` — it asks for the feature ID, screens touched, rubric row affected, evidence, and a 3-sentence plain-English explanation |
+| **Body** | Use `.github/PULL_REQUEST_TEMPLATE.md`, it asks for the feature ID, screens touched, rubric row affected, evidence, and a 3-sentence plain-English explanation |
 | **Reviewer** | The named **tester** for that feature ([doc 02 §7](02-FEATURE-LIST-OWNERSHIP.md)) |
 | **Evidence** | Test log, screenshots, or a recording |
 | **CI** | Must build clean with zero warnings before merge |
 
-**Merge style:** squash-merge is acceptable for a feature branch, but **do not squash your per-file commits into one** — the per-file history is the point. Use a regular merge commit, or rebase-merge which preserves individual commits.
+**Merge style:** squash-merge is acceptable for a feature branch, but **do not squash your per-file commits into one**, the per-file history is the point. Use a regular merge commit, or rebase-merge which preserves individual commits.
 
 
 ---
 
 ## 7. Helper tooling
 
-### `tools/commit.sh` — commit one file with a meaningful message, then push
+### `tools/commit.sh`, commit one file with a meaningful message, then push
 
 ```bash
 # Commit a single file
@@ -256,7 +256,7 @@ git rebase develop                             # or: git merge develop
 gh pr create --base develop --fill            # open the PR
 gh pr merge --merge --delete-branch          # merge, keep per-file commits, tidy up
 
-# ── release to main (ALSO via PR — main is protected against direct pushes) ──
+# ── release to main (ALSO via PR, main is protected against direct pushes) ──
 gh pr create --base main --head develop \
   --title "release(sprint-N): merge develop into main" \
   --body "Sprint N complete. Golden path verified. See research/sprints/sprint-N/."
@@ -283,7 +283,7 @@ git stash && git stash pop                    # park work temporarily
 |---|---|
 | **Sprints (10%, individual)** | Commits per author over time · branches per member · PRs authored and reviewed · daily-push pattern showing continuous progress |
 | **iOS App (60%, must pass)** | `main` always builds · feature branches map to the 15 features · `git log --grep="F04"` traces a feature end to end |
-| **VIVA** | Point at a branch, show the commits, open the diff — the work is provable in seconds |
+| **VIVA** | Point at a branch, show the commits, open the diff, the work is provable in seconds |
 | **LO3 (professional standards)** | Conventional Commits, conventional branching, PR templates, no secrets in history |
 
 ### 9.1 Reviewing your own evidence before each sprint review
@@ -292,7 +292,7 @@ git stash && git stash pop                    # park work temporarily
 # Everything I committed this sprint
 git log --oneline --author="<my name>" --since="2 weeks ago"
 
-# Changes I made myself (not AI-generated) — see doc 10 §9 rule 4
+# Changes I made myself (not AI-generated), see doc 10 §9 rule 4
 git log --oneline --author="<my name>" --grep="hand:"
 
 # My PRs
@@ -302,7 +302,7 @@ gh pr list --author="@me" --state all
 git log --all --name-only --pretty=format: | sort -u | grep -Ei 'plist$|\.env|secret|key\.'
 ```
 
-If the first command returns a thin list, that sprint's individual mark is thin — and it is fixable that week, not at the VIVA.
+If the first command returns a thin list, that sprint's individual mark is thin, and it is fixable that week, not at the VIVA.
 
 ---
 
@@ -314,10 +314,10 @@ If the first command returns a thin list, that sprint's individual mark is thin 
 | One giant commit at the end of a sprint | Reads as fabricated; destroys granularity | Commit per file as you finish each file |
 | `git commit -am "updates"` | Bundles unrelated files with a useless message | Stage and commit one file at a time |
 | Force-pushing a shared branch | Destroys others' work and history | Revert instead; force-push only your own unshared branch |
-| **A commit per file with no meaningful message** — technically split, still useless | The message is what makes the history readable | Name the file's role in the scope and subject (see §4.1) |
-| Committing generated code you have never read | Fails the VIVA, not the commit | Review it, then commit it — and note what you changed |
+| **A commit per file with no meaningful message**, technically split, still useless | The message is what makes the history readable | Name the file's role in the scope and subject (see §4.1) |
+| Committing generated code you have never read | Fails the VIVA, not the commit | Review it, then commit it, and note what you changed |
 | Long-lived branches (weeks) | Painful merges, stale code | Keep branches to a few days; rebase on `develop` daily |
-| Committing `GoogleService-Info.plist` | Secret leak; must be rotated | It is gitignored — verify with `git status` before staging |
+| Committing `GoogleService-Info.plist` | Secret leak; must be rotated | It is gitignored, verify with `git status` before staging |
 
 ---
 
@@ -331,8 +331,8 @@ If the first command returns a thin list, that sprint's individual mark is thin 
 | 4 | `.github/PULL_REQUEST_TEMPLATE.md` committed | ✅ done |
 | 5 | `tools/commit.sh` + `tools/new-branch.sh` committed, executable and behaviour-tested | ✅ done |
 | 6 | Full cycle demonstrated end to end (branch → per-file commits → PR → merge) | ✅ [PR #1](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/1) |
-| 7 | Direct push to a protected branch **verified to be rejected** | ✅ tested — `GH006: Changes must be made through a pull request` |
-| 8 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | 🟨 **M1 ✅ done** (`.mailmap` committed, 4 aliases → 1). **M2, M3, M4 ⬜** — convention in [§12](#12-author-identities) |
+| 7 | Direct push to a protected branch **verified to be rejected** | ✅ tested, `GH006: Changes must be made through a pull request` |
+| 8 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | 🟨 **M1 ✅ done** (`.mailmap` committed, 4 aliases → 1). **M2, M3, M4 ⬜**, convention in [§12](#12-author-identities) |
 | 9 | Every member practises the cycle once on a throwaway branch | ⬜ **each member, S0** |
 
 ### 11.1 Verify the setup
@@ -368,7 +368,7 @@ gh pr create --base develop --fill
 gh pr merge --merge --delete-branch
 ```
 
-> ⚠️ **Note on this repository's own history:** the initial planning commits, made before this workflow was agreed, went directly to `main`. That is recorded here for honesty. **All work from Sprint S0 onward follows the branch model above** — see [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md), decisions D17–D19.
+> ⚠️ **Note on this repository's own history:** the initial planning commits, made before this workflow was agreed, went directly to `main`. That is recorded here for honesty. **All work from Sprint S0 onward follows the branch model above**, see [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md), decisions D17–D19.
 
 
 ---
@@ -401,7 +401,7 @@ git config --local user.email "<studentID>@student.polytechnic.bh"
 
 ### Why a `.mailmap` exists
 
-A person can easily accumulate several identities — a personal email from before the convention, a GitHub `noreply` address from merging a PR in the browser, or a typo. Each one splits your commit count in `shortlog`, so you appear to have contributed less than you did.
+A person can easily accumulate several identities, a personal email from before the convention, a GitHub `noreply` address from merging a PR in the browser, or a typo. Each one splits your commit count in `shortlog`, so you appear to have contributed less than you did.
 
 `.mailmap` fixes the **display** without rewriting history. Add a line per alias:
 
@@ -410,7 +410,7 @@ Canonical Name <canonical@email>  Alias Name <alias@email>
 Canonical Name <canonical@email>  <alias@email>
 ```
 
-> ⚠️ **A mailmap is a display layer only.** It does **not** rewrite commits — a raw `git log --format='%ae'` still shows the original address. To see canonical values you must use the mailmap-aware formats (`%aN`, `%aE` — **capital** letter). `git shortlog` is mailmap-aware by default.
+> ⚠️ **A mailmap is a display layer only.** It does **not** rewrite commits, a raw `git log --format='%ae'` still shows the original address. To see canonical values you must use the mailmap-aware formats (`%aN`, `%aE`, **capital** letter). `git shortlog` is mailmap-aware by default.
 
 ### Verify
 
@@ -421,9 +421,9 @@ git log main --format='%an <%ae>' | sort -u     # raw        (ignores mailmap)
 ```
 
 > ⚠️ Use **`main`**, not `--all`. `--all` includes every local ref, and tooling can
-> leave extra ones behind — Cline checkpoints (`refs/cline/checkpoints/…`), for
+> leave extra ones behind, Cline checkpoints (`refs/cline/checkpoints/…`), for
 > instance, showed **188** commits where `main` has **184**. Those refs are local and
 > never pushed, but they inflate the count a marker would read.
 
-All three lines above should agree on the *people* involved. If the third one shows more identities than the first two, an alias is missing from `.mailmap` — add it.
+All three lines above should agree on the *people* involved. If the third one shows more identities than the first two, an alias is missing from `.mailmap`, add it.
 

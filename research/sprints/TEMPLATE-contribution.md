@@ -1,4 +1,4 @@
-# Contribution Log — `<Your Name>` · Sprint `<N>`
+# Contribution Log, `<Your Name>` · Sprint `<N>`
 
 > **This file is your individual sprint evidence.** Copy it to
 > `research/sprints/sprint-<N>/<yourname>-contribution.md` at the start of each sprint
@@ -7,7 +7,7 @@
 > Rules (from [doc 10 §6](../../docs/10-SPRINT-PLAN.md)):
 > - one row per work session
 > - every row links to evidence a marker can open
-> - **never** back-fill a whole sprint at once — it reads as fabricated and defeats the purpose
+> - **never** back-fill a whole sprint at once, it reads as fabricated and defeats the purpose
 
 | Field | Value |
 |---|---|
@@ -47,7 +47,7 @@
 | Sprint review recording / screenshots | |
 | Figma frames named with my student ID | |
 
-## Honesty check — answer these before submitting
+## Honesty check, answer these before submitting
 
 - [ ] Could I explain **every line** of what I claim to have done, if asked to open the file?
 - [ ] Does my evidence appear **throughout** the sprint, not clustered on the last day?

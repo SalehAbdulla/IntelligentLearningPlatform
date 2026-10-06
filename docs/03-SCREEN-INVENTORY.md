@@ -1,6 +1,6 @@
-# 03 — Screen Inventory & Figma Naming
+# 03, Screen Inventory & Figma Naming
 
-> Rubric area **c · Mockups — 8 marks** (largest single block) and the entire **Project Prototype — 20 marks**.
+> Rubric area **c · Mockups, 8 marks** (largest single block) and the entire **Project Prototype, 20 marks**.
 
 **Rubric requirements this document serves:**
 
@@ -9,7 +9,7 @@
 - *"Identify and label all UI elements, such as buttons, inputs, and labels, and explain their function."*
 - *"The mockups should include all necessary screens, show clear navigation or screen flow."*
 - *"All main features of the app are designed and linked based on your feature list."*
-- *"Error & feedback states — user feedback, success, and error screens or messages should be included."*
+- *"Error & feedback states, user feedback, success, and error screens or messages should be included."*
 - *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX"* ← **mandatory naming rule**
 
 ---
@@ -50,21 +50,21 @@ NN_ScreenName_FirstName_StudentID
 115_Admin_AIConfig_Settings_Shahad_202305767
 ```
 
-Group headings later in this document use the `{M1}` handle for brevity — expand it using the table above before creating the frame in Figma. **Every one of the 141 frames must carry a real name and student ID**, because the brief states: *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."*
+Group headings later in this document use the `{M1}` handle for brevity, expand it using the table above before creating the frame in Figma. **Every one of the 141 frames must carry a real name and student ID**, because the brief states: *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."*
 
 
-**Figma file structure** — one **Page** per owner, so the file stays navigable and the marker can see authorship instantly:
+**Figma file structure**, one **Page** per owner, so the file stays navigable and the marker can see authorship instantly:
 
 | Figma Page | Owner | Contents |
 |---|---|---|
 | `0 · Cover & Legend` | M1 | Cover with app name, logo, team table, legend, navigation index |
 | `1 · Design System` | M1 | Colour, type, spacing, components, icons, states |
 | `2 · Flow Overview` | M3 | Full navigation map + per-feature flow diagrams |
-| `3 · M1 — Auth, Library & States` | M1 | Groups A, B, C, M |
-| `4 · M2 — AI Content & Tutor` | M2 | Groups D, E, F, J |
-| `5 · M3 — Plan, Progress & Payments` | M3 | Groups G, L |
-| `6 · M2+M3 — AI Companion` | M2, M3 | Group H (advanced feature) |
-| `7 · M4 — Collaboration & Admin` | M4 | Groups I, K |
+| `3 · M1, Auth, Library & States` | M1 | Groups A, B, C, M |
+| `4 · M2, AI Content & Tutor` | M2 | Groups D, E, F, J |
+| `5 · M3, Plan, Progress & Payments` | M3 | Groups G, L |
+| `6 · M2+M3, AI Companion` | M2, M3 | Group H (advanced feature) |
+| `7 · M4, Collaboration & Admin` | M4 | Groups I, K |
 | `8 · States & Prototype Wiring` | all | Error / empty / loading / success tokens, RTL proof, connection map |
 
 ---
@@ -75,28 +75,28 @@ Group headings later in this document use the `{M1}` handle for brevity — expa
 
 | Tier | Frames | Meaning | Commitment at 10% weight |
 |---|---|---|---|
-| **Coverage floor** | **~55** | Every one of the 15 features' happy path — fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
-| **P0 — full happy path** | **89** | The coverage floor plus secondary paths within each feature | **Target** |
-| **P1 — states & kits** | **51** | Error / empty / loading / success states, permission screens, component boards, accessibility proof | Only if the app is on track |
-| **P2 — stretch** | **1** | Voice-quiz variant | Cut |
+| **Coverage floor** | **~55** | Every one of the 15 features' happy path, fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
+| **P0, full happy path** | **89** | The coverage floor plus secondary paths within each feature | **Target** |
+| **P1, states & kits** | **51** | Error / empty / loading / success states, permission screens, component boards, accessibility proof | Only if the app is on track |
+| **P2, stretch** | **1** | Voice-quiz variant | Cut |
 | | **141** | Total inventory | Retained for completeness |
 
-**Weight reality check:** the prototype is **10%** of the course. The working iOS app is **60% and must pass** ([doc 11](11-APP-IMPLEMENTATION-VIVA.md)). Spend Figma time proportionally — the **coverage floor of ~55 fully-linked frames** is worth more than 141 half-linked ones, and every hour saved goes to the app.
+**Weight reality check:** the prototype is **10%** of the course. The working iOS app is **60% and must pass** ([doc 11](11-APP-IMPLEMENTATION-VIVA.md)). Spend Figma time proportionally, the **coverage floor of ~55 fully-linked frames** is worth more than 141 half-linked ones, and every hour saved goes to the app.
 
-**Why keep the 141-frame inventory anyway:** it demonstrates the design thinking, and it is the source material for the design document's mockups section — 8 of that document's 20 marks, i.e. **4% of the course**. The inventory is a *plan*, not a commitment to build all of it in high fidelity.
+**Why keep the 141-frame inventory anyway:** it demonstrates the design thinking, and it is the source material for the design document's mockups section, 8 of that document's 20 marks, i.e. **4% of the course**. The inventory is a *plan*, not a commitment to build all of it in high fidelity.
 
-> **Rule:** a linked prototype beats a large one. The rubric rewards *"interactive links between screens"* and *"a clearly structured prototype"* — not frame count. Cut P1 before you cut a single link.
+> **Rule:** a linked prototype beats a large one. The rubric rewards *"interactive links between screens"* and *"a clearly structured prototype"*, not frame count. Cut P1 before you cut a single link.
 
 
 ---
 
 ## 3. Screen inventory
 
-**Notation:** in the *Frame* column, `{M1}` expands to `FirstName_StudentID` for member M1 (e.g. `Saleh_202300540`) — see §1. `F` = feature ID from [doc 02](02-FEATURE-LIST-OWNERSHIP.md). Tier: **P0** full happy path · **P1** states/kits · **P2** stretch.
+**Notation:** in the *Frame* column, `{M1}` expands to `FirstName_StudentID` for member M1 (e.g. `Saleh_202300540`), see §1. `F` = feature ID from [doc 02](02-FEATURE-LIST-OWNERSHIP.md). Tier: **P0** full happy path · **P1** states/kits · **P2** stretch.
 
 The *Purpose & key labelled elements* column is written to be **copy-pasted directly into the Design Document**, because the rubric requires a written description plus labelled, explained UI elements for every screen. Writing them once here saves the team weeks.
 
-### Group A — Onboarding & Auth · owner **M1 — Saleh** · F01
+### Group A, Onboarding & Auth · owner **M1, Saleh** · F01
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -105,47 +105,47 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | A03 | `03_Onboarding_HowItWorks_{M1}` | F01 | P0 | Slide 2 of 3. 4-step **pipeline diagram** (upload → generate → plan → practise) with numbered labels. |
 | A04 | `04_Onboarding_AIPrivacy_{M1}` | F01 | P0 | Slide 3 of 3. Explains where AI runs (on-device vs cloud), **privacy icon**, **Get Started** primary CTA. Trust-building screen. |
 | A05 | `05_SignUp_Email_{M1}` | F01 | P0 | **Email field**, **password field** with inline validation + **strength meter**, **Create account** primary, **Continue with Apple**, **ToS/Privacy** links. |
-| A06 | `06_SignUp_OTP_Verify_{M1}` | F01 | P0 | **6-box OTP input** with auto-advance, **resend timer** label, **Verify** primary. Error variant shows invalid-code message. |
+| A06 | `06_SignUp_OTP_Verify_{M1}` | F01 | P0 | **The address the link was sent to** (a mistyped address is the commonest reason a link never arrives), "check your inbox / spam" guidance, **I've verified, continue** primary which re-checks server-side, **resend timer** label, **sign out** for a wrong address. **Built as a verification *link*, not the 6-box OTP the frame shows**, Firebase email/password has no OTP, and a real code would need either phone auth (per-SMS cost) or Cloud Functions (Blaze). The screen's purpose is unchanged: prove the user controls the address. |
 | A07 | `07_Login_{M1}` | F01 | P0 | **Email/password fields**, **Forgot password?** link, **Face ID** biometric button, **Log in** primary, **inline error banner** for wrong credentials. |
 | A08 | `08_ForgotPassword_Request_{M1}` | F01 | P0 | **Email input**, **Send reset link** primary, **success confirmation** state ("Check your inbox"). |
-| A09 | `09_ForgotPassword_Reset_{M1}` | F01 | P1 | **New password** + **confirm password**, live **rule checklist** (8 chars, number, symbol), **Reset** primary. |
-| A10 | `10_RoleSelect_{M1}` | F01 | P0 | **Three tappable role cards** (Student / Tutor / Admin), each with icon, title and "what you'll get" micro-copy. Sets Firestore `role`. |
+| A09 | `09_ForgotPassword_Reset_{M1}` | F01 | P1 | **New password** + **confirm password**, live **rule checklist** (8 chars, number, symbol), **Reset** primary. **NOT built in-app, and deliberately.** Firebase's email/password reset completes on the provider's **hosted page** that the emailed link opens, the new password is chosen there and never passes through this app. Bringing it in-app means reading the link's `oobCode` from a **deep link**, which needs an associated domain, and this project cannot register one while the app cannot be signed for a device at all (docs/09 R22). **The flow's purpose survives, and the product says so**: A08 sends the link and its confirmation now names where the reset happens, so a student is not left hunting for a screen that does not exist. Same class of deviation as A06's OTP, the frame stays in the inventory, the behaviour is documented. |
+| A10 | `10_RoleSelect_{M1}` | F01 | P0 | **Three tappable role cards** (Student / Tutor / Admin), each with icon, title and "what you'll get" micro-copy. Sets Firestore `role`. **NOT built, and it cannot be as designed.** `role` is **server-owned**: `firestore.rules` accepts only `role == 'student'` on create, pins it with `keeps('role')` on update, and omits it from `editableProfileFields()`, so a client cannot promote itself to tutor or admin, which is precisely the property the authorisation model rests on. Roles arrive as **custom claims** written by an `onUserCreate` Cloud Function this project cannot deploy (no Blaze, docs/09 R21/D22). **So the flow has no role step: every account is created as a free student**, and a tutor/admin role is granted by the institution out of band. Opened as docs/09 **Q13** and answered there. |
 
-### Group B — Profile & Settings · owner **M1 — Saleh** · F01, F14
+### Group B, Profile & Settings · owner **M1, Saleh** · F01, F14
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
-| B01 | `11_ProfileSetup_Academic_{M1}` | F01 | P0 | **University picker**, **major field**, **year segmented control**, **enrolled-courses chips** with add button, **Continue**. |
-| B02 | `12_ProfileSetup_LearningStyle_{M1}` | F03 | P0 | **Four selectable cards** (Visual / Verbal / Read-Write / Kinesthetic). Each shows a *sample output preview* so the choice is meaningful, not abstract. **Continue**. |
-| B03 | `13_ProfileSetup_StudyGoals_{M1}` | F06 | P0 | **Weekly-hours slider**, **target-grade selector**, **exam-date date pickers**, **Finish setup**. |
-| B04 | `14_ProfileSetup_Complete_{M1}` | F01 | P1 | Success celebration, **choice summary list**, **Go to dashboard** primary. |
+| B01 | `11_ProfileSetup_Academic_{M1}` | F01 | P0 | **University picker**, **major field**, **year segmented control**, **enrolled-courses chips** with add button, **Continue**. **Built with the chips as the picker, and no add/search flow yet.** A course list is readable only by an *enrolled* student (`courses/{courseId}`), and a student filling in this screen is enrolled in nothing, so there is no catalogue to search at the moment the picker needs one. Every known course is therefore shown as a tap-to-toggle chip, and the add/search sheet arrives with C01 (F02), when there is a real list behind it. Free-text course codes are **deliberately refused** rather than added as a stopgap: a typed code would store an id that no `courses/{id}` document backs, which surfaces much later as material filed under a course that does not exist. |
+| B02 | `12_ProfileSetup_LearningStyle_{M1}` | F03 | P0 | **Four selectable cards** (Visual / Verbal / Read-Write / Kinesthetic). Each shows a *sample output preview* so the choice is meaningful, not abstract. **Continue**. **Built with the preview as a written line, not a rendered sample of generated output**, a real preview would mean running the AI on this screen, which costs a generation before the student has even started and depends on a model the Simulator cannot run (tier 0). The line says what the style changes, which is what a preview is for. The four styles are the app's existing `LearningStyle` cases rather than a UI list, so the screen cannot offer a style the prompt builder does not understand, and **Continue advances to B03 (study goals)**. |
+| B03 | `13_ProfileSetup_StudyGoals_{M1}` | F06 | P0 | **Weekly-hours slider**, **target-grade selector**, **exam-date date pickers**, **Finish setup**. **Built: the hours slider (1–40 h/week, starting at the documented 12) and the target grade (A–D, a marked placeholder scale, docs/09 Q12), written together in one update, then Finish setup, which ends the flow because this is the wizard's last step. The exam-date pickers are NOT built: exam dates are per-course and per-term, so they belong to the study plan F06 owns rather than to a profile document, and putting them on the profile is how a document goes stale (docs/09 Q11)**, recorded here rather than left as an omission. Both answers are stored for F06 to consume; **nothing reads them yet**, so they are captured now and used when the planner lands. |
+| B04 | `14_ProfileSetup_Complete_{M1}` | F01 | P1 | Success celebration, **choice summary list**, **Go to dashboard** primary. **Built with the summary read from the answers the wizard itself collected**, the flow carries each step's result (`ProfileSetupAnswers`), so the screen proves the app heard the student rather than re-reading the server or re-deriving the form's defaults. **Course ids are resolved back to names through the same catalogue B01 offers**, and an id the catalogue does not know is shown as the id rather than as a guessed name. **The primary button reads "Go to dashboard" as designed but currently lands on the signed-in home**, because the dashboard (B05) is F07's screen and does not exist yet, the label is kept as designed because that is where the flow goes the moment B05 lands. **The server-backed "has this student a profile?" gate is built**: a signed-in, verified student with no complete profile is routed to this wizard instead of straight to the home screen, and the answer is read from `users/{uid}` (`ProfileService.fetchProfile` → `StoredProfile`), so it survives a reinstall and a second device, the two moments a locally-remembered answer is wrong. Completeness is **derived** from the fields all three steps write (`StoredProfile.isComplete`) rather than from a marker this screen sets, so a student who abandons the wizard partway is asked again rather than let through with a half-built profile, and they are asked again **at the step they left off**, via `ProfileSetupStep.resumePoint(for:)`, with the steps they already answered summarised on this screen (`ProfileSetupAnswers(stored:)`). The wizard remains reachable without an account in DEBUG via `-seedProfileSetup` (`-profileSetupStep N` opens a later step). |
 | B05 | `15_Home_Dashboard_Student_{M1}` | F07 | P0 | **Greeting header**, **streak flame + count**, **Today's plan** card, **due-cards badge**, **quick-action tiles** (Upload, Summarise, Quiz, Plan), **bottom tab bar**. |
-| B06 | `16_Profile_View_{M1}` | F01 | P1 | **Avatar**, **name/ID**, **stat row** (mastery %, streak, hours), **badge strip**, **shortcut list**. |
-| B07 | `17_Profile_Edit_{M1}` | F01 | P1 | Editable name / avatar / academic fields, **Save** and **Cancel** in nav bar, **unsaved-change warning**. |
+| B06 | `16_Profile_View_{M1}` | F01 | P1 | **Avatar**, **name/ID**, **stat row** (mastery %, streak, hours), **badge strip**, **shortcut list**. **Built: the avatar (a monogram), the name and account address, the academic document and the study plan, and a shortcut into B07, fetched from nothing, because every value is already in hand** (the session, and the `users/{uid}` document the gate read), so opening the profile costs no round trip. **The stat row and badge strip are NOT built, and the screen says so**: mastery %, streaks and earned badges are gamification values written by a Cloud Function, and this project has no Cloud Functions (D22), a row of invented zeros would be worse than an honest note. The one statistic that IS real, **weekly study time**, appears in the plan section rather than the stat row. **Courses are resolved through the same catalogue B04 uses** (`AcademicCatalogue.courseNames(for:)`), so an unknown id is shown by its id on both screens. **The "ID" is the account's email**, a student recognises it and it identifies the account; an institutional student number is not collected yet (it arrives with enrolment, F02/C01). This screen is where the design puts the route into B07, so the signed-in home now links here rather than straight to the editor. |
+| B07 | `17_Profile_Edit_{M1}` | F01 | P1 | Editable name / avatar / academic fields, **Save** and **Cancel** in nav bar, **unsaved-change warning**. **Built: the name and all four academic fields, with Save and Cancel in the bar and a discard confirmation.** The name is written through `AuthService.updateDisplayName`, because `UserSession.displayName` is read from the **Auth record**, not the document, writing only `users/{uid}` would leave every screen showing the old name; the same call updates the document field so a tutor roster does not disagree. **Only what changed is written** (a rename does not rewrite the academic document, and vice versa), which is also why Save is offered only when something has changed. **The academic controls deliberately differ from B01's**: an edit screen must display a value the placeholder catalogue does not know, a real institution, a real course id, so the university menu and course chips append stored-but-unknown values and a save KEEPS them rather than replacing them with the catalogue's contents. **The avatar is deferred and says so on screen**: `avatarUrl` is allowlisted, but Cloud Storage needs Blaze and is bypassed (D24, docs/09 R21), so the screen shows a monogram derived from the name plus a note, instead of a control that cannot work. **The system back button is replaced by Cancel**, because a swipe-back cannot be intercepted and would lose an edit without asking. Reached for now from a link on the signed-in home (B05/B06/B08 do not exist yet), which is recorded rather than left implicit. |
 | B08 | `18_Settings_Main_{M1}` | F14 | P1 | Grouped list rows: Account · Notifications · Accessibility · Language · AI & Data · Subscription · **Sign out** (destructive). |
 | B09 | `19_Settings_Notifications_{M1}` | F14 | P1 | **Per-type toggles** (study reminders, quiz due, group activity), **quiet-hours time pickers**, **Save**. |
-| B10 | `20_Settings_Accessibility_{M1}` | — | P1 | **Text-size stepper**, **dyslexia-friendly font toggle**, **reduce motion toggle**, **high-contrast toggle**, live preview card. |
-| B11 | `21_Settings_Language_RTL_{M1}` | — | P1 | **EN / AR segmented switch** with **instant RTL preview** panel. Evidence for SDG 10. |
+| B10 | `20_Settings_Accessibility_{M1}` | - | P1 | **Text-size stepper**, **dyslexia-friendly font toggle**, **reduce motion toggle**, **high-contrast toggle**, live preview card. |
+| B11 | `21_Settings_Language_RTL_{M1}` | - | P1 | **EN / AR segmented switch** with **instant RTL preview** panel. Evidence for SDG 10. |
 | B12 | `22_Settings_AIDataPrivacy_{M1}` | F15 | P1 | **On-device vs cloud toggle**, **data-retention explainer**, **Delete my AI data** destructive button, **confirmation dialog**. |
 | B13 | `23_Settings_Subscription_{M1}` | F13 | P1 | **Current plan card**, **renewal date**, **Upgrade** / **Manage** / **Cancel** actions, billing-history link. |
 
-### Group C — Courses & Material Library · owner **M1 — Saleh** · F02
+### Group C, Courses & Material Library · owner **M1, Saleh** · F02
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
 | C01 | `24_Courses_List_{M1}` | F02 | P0 | Enrolled **course cards** with colour tag, material count, next-deadline chip, **+ Add course** button. |
 | C02 | `25_Course_Detail_{M1}` | F02 | P0 | Course header, **tab bar** (Materials / Decks / Quizzes / Plans / Members), material list, **Upload** FAB. |
-| C03 | `26_MaterialUpload_SourcePicker_{M1}` | F02 | P0 | **Source grid**: Files · Photos · Camera scan · Paste link · Paste text. **Recent files** strip. **Cancel**. |
+| C03 | `26_MaterialUpload_SourcePicker_{M1}` | F02 | P0 | **Source grid**: Files · Photos · Camera scan · Paste link · Paste text. **Recent files** strip. **Cancel**. **Built for TWO sources: pasted text and a PDF from Files.** Photos and camera scan need Vision and a camera session this build has not wired, and a pasted link needs a network fetch with failure modes of its own; the two that ship run end to end today, on the device, with no new capability. Rendered as **two radio cards rather than an icon grid**, with two sources a grid is two tiles wide, and the radio card is the control the design system already has for "pick one, and here is what it means". **The recent-files strip is not built**: it needs a file-picker history that iOS owns. |
 | C04 | `27_MaterialUpload_Compress_Progress_{M1}` | F02 | P1 | Client-side **downscale + compress** progress bar with size before/after label. Cost-saving step, made visible. |
-| C05 | `28_MaterialUpload_Processing_OCR_{M1}` | F02 | P0 | On-device **OCR / text-extraction** progress with page count ("Extracting page 4 of 22"), **background-safe** notice. |
-| C06 | `29_MaterialUpload_Success_{M1}` | F02 | P0 | **Success check**, extracted character count, **Generate now** primary (summary/cards/quiz), **View in library**. |
-| C07 | `30_MaterialUpload_Error_UnsupportedFormat_{M1}` | F02 | P1 | **Error state**: unsupported format / file too large / no text found in scan. **Retry** + **Choose another file** + *why* explanation. |
-| C08 | `31_Library_Materials_List_{M1}` | F02 | P0 | All materials with **cover thumbnails**, **type icon**, **tag chips**, **offline-available cloud icon**, **sort control**. |
+| C05 | `28_MaterialUpload_Processing_OCR_{M1}` | F02 | P0 | On-device **OCR / text-extraction** progress with page count ("Extracting page 4 of 22"), **background-safe** notice. **Built as on-device PDF text extraction inside the import sheet** (`PdfKitTextExtractor`), not as its own screen: extraction of a student's PDF is sub-second, so a progress screen would be a flash. Read **page by page** rather than through `PDFDocument.string`, so one unparseable page does not lose the rest of the document. **The page-count progress and the background-safe notice arrive with the scan path**, which is genuinely slow, and that path is **Vision OCR for images, which is NOT built**: PDFKit reads a born-digital PDF, while a photographed page needs Vision. **The Sprint-1 gate's "upload a real PDF" is covered**; "a photo of a page" is not. |
+| C06 | `29_MaterialUpload_Success_{M1}` | F02 | P0 | **Success check**, extracted character count, **Generate now** primary (summary/cards/quiz), **View in library**. **Built as the sheet closing on success, with the material appearing in the library**, the destination the design's "View in library" names. **"Generate now" is not built**: generation is F03/F04, neither of which exists, so the button would lead nowhere; the shortcut arrives with them. **The extracted character count is kept on the record** (`Material.characterCount`) and has a screen to appear on when C06 becomes one. |
+| C07 | `30_MaterialUpload_Error_UnsupportedFormat_{M1}` | F02 | P1 | **Error state**: unsupported format / file too large / no text found in scan. **Retry** + **Choose another file** + *why* explanation. **Built as an inline banner in the import sheet, with two failures deliberately kept apart**: `MaterialError.unreadable` (the file could not be opened) and `.noTextFound` (it opened and had no words in it), different problems, so different copy and a different next move, which is the distinction `AppError.materialUnreadable` already carried. **"Choose another file" is the sheet itself** (the source cards stay put), and **"Retry" is the button that was pressed** rather than a second control beside it. **"File too large" is not built**: that limit exists to protect an upload, and D24 means there is no upload. |
+| C08 | `31_Library_Materials_List_{M1}` | F02 | P0 | All materials with **cover thumbnails**, **type icon**, **tag chips**, **offline-available cloud icon**, **sort control**. **Built: the list, the search field, and a designed empty state, read from the ON-DEVICE store.** The import path that fills it is NOT built yet (C03 source picker, C04 compression, C05 OCR), what exists is the library those screens will write into, and `-seedLibrary` (DEBUG) fills it with sample materials so the screen can be shown without importing by hand. **`MaterialStore` is where the feature's real decision lives**: Cloud Storage is bypassed (D24, docs/09 R21), so a material's text stays on the device and the store owns where, `FileMaterialStore` in the app, `InMemoryMaterialStore` in previews and tests, and no screen can tell the difference. **Search matches the title, the tags AND the extracted text**, the words inside the document, which is what "searchable" means in the brief, filtering in memory because the library is local and small. **The "offline-available cloud icon" has no counterpart, deliberately**: under D24 nothing leaves the device, so a cloud badge would promise a sync that does not exist; the empty state says where materials live instead. **Cover thumbnails and the sort control are deferred**: a thumbnail needs the source image, which arrives with the viewer (C10), and newest-first is the one order that matters before there is enough material to sort. |
 | C09 | `32_Library_Search_Filter_{M1}` | F02 | P1 | **Search field** with recent queries, **filter sheet** (course, type, date, tags, has-AI-artefact), **active-filter chips**. |
 | C10 | `33_Material_Detail_Viewer_{M1}` | F02 | P0 | **PDF/image viewer** with page scrubber, **highlight tool**, **bookmark**, **Generate** toolbar, **provenance jump target** for AI citations. |
 | C11 | `34_Material_GenerateActionSheet_{M1}` | F02 | P0 | **Action sheet**: Summarise · Make flashcards · Make quiz · Add to study plan. Each shows estimated AI cost/time. |
 
-### Group D — AI Summaries & Notes · owner **M2 — Mohammed** · F03
+### Group D, AI Summaries & Notes · owner **M2, Mohammed** · F03
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -157,7 +157,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | D06 | `40_Summary_SaveToFolder_{M2}` | F03/08 | P1 | **Folder picker** with search, **Create new folder** inline, **permission indicator** if the folder is shared. |
 | D07 | `41_Summary_Error_QuotaExceeded_{M2}` | F03/15 | P0 | **Graceful quota failure**: "Your free AI generations reset in 3 h 12 m." Options: switch to on-device engine · upgrade plan · try later. **Never a raw error.** |
 
-### Group E — Flashcards & Spaced Repetition · owner **M2 — Mohammed** · F04
+### Group E, Flashcards & Spaced Repetition · owner **M2, Mohammed** · F04
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -171,7 +171,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | E08 | `49_Flashcard_Manual_Create_Edit_{M2}` | F04 | P1 | **Front/back text editors**, **image attach**, **tags picker**, **deck selector**, **Save**. |
 | E09 | `50_Flashcards_Offline_EmptyState_{M2}` | F04 | P1 | **Empty state**: "No cards due today." Also shows **offline mode banner** and *last synced* timestamp. |
 
-### Group F — Quizzes · owner **M2 — Mohammed** · F05
+### Group F, Quizzes · owner **M2, Mohammed** · F05
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -185,7 +185,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | F08 | `58_Quiz_Results_Scorecard_{M2}` | F05 | P0 | **Big score ring** (8/10 · 80%), **time taken**, **topic performance bars**, **weak-topic callout**, **Review answers** / **Retake weak topics** primaries. |
 | F09 | `59_Quiz_Review_Answers_Explanations_{M2}` | F05 | P0 | Scrollable per-question review: your answer, correct answer, explanation, **provenance chip**, **topic tag**. Feeds `topicMastery`. |
 
-### Group G — Study Plan & Progress · owner **M3 — Tasbeeh** · F06, F07
+### Group G, Study Plan & Progress · owner **M3, Tasbeeh** · F06, F07
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -197,13 +197,13 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | G06 | `65_StudyPlan_Calendar_Week_{M3}` | F06 | P0 | **Week grid** of colour-coded session blocks per subject, **today highlight**, **drag handle** on blocks, **+ Add session**. |
 | G07 | `66_StudyPlan_Calendar_Month_{M3}` | F06 | P1 | **Month view** with session-density dots, **deadline markers**, **tap day → day detail**. |
 | G08 | `67_StudyPlan_Session_Detail_{M3}` | F06 | P0 | **Session detail sheet**: subject, topic, duration, linked material, **Start now** primary, **Reschedule** / **Skip** / **Mark done**. |
-| G09 | `68_StudyPlan_MissedSession_Reschedule_{M3}` | F06 | P0 | **AI re-plan prompt**: "You missed 2 sessions — rebalance the week?" Shows the **before/after diff**, **Accept new plan** primary. This is the adaptive-planner innovation made visible. |
+| G09 | `68_StudyPlan_MissedSession_Reschedule_{M3}` | F06 | P0 | **AI re-plan prompt**: "You missed 2 sessions, rebalance the week?" Shows the **before/after diff**, **Accept new plan** primary. This is the adaptive-planner innovation made visible. |
 | G10 | `69_Progress_Dashboard_{M3}` | F07 | P0 | **Stat ring row** (mastery %, streak, hours this week), **weekly activity bar chart**, **subjects-in-progress list**, **goal progress bar**. |
 | G11 | `70_Progress_WeaknessRadar_{M3}` | F07 | P0 | **Radar chart** of topic mastery, **weakest-topics cards** with **Make quiz** / **Add to plan** actions. Directly closes the measure → adapt loop. |
 | G12 | `71_Progress_Achievements_{M3}` | F07 | P1 | **Badge grid** (earned in colour, locked dimmed with unlock hint), **streak calendar heatmap**, **next milestone card**. |
 | G13 | `72_Progress_ExportReport_{M3}` | F07 | P1 | **Export sheet**: date range picker, include-toggles, **Share as PDF** primary, **success toast**. |
 
-### Group H — ADVANCED FEATURE · AI Study Companion (RAG + Adaptive Coach) · owners **M2 — Mohammed + M3 — Tasbeeh** · F15
+### Group H, ADVANCED FEATURE · AI Study Companion (RAG + Adaptive Coach) · owners **M2, Mohammed + M3, Tasbeeh** · F15
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -216,7 +216,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | H07 | `79_Coach_RateResponse_{M2}` | F15 | P1 | **Feedback sheet**: helpfulness stars, **what went wrong** chips (wrong / too long / off-topic), optional comment, **Submit**. Feeds prompt-improvement loop. |
 | H08 | `80_Coach_OnDeviceUnavailable_Fallback_{M2}` | F15 | P0 | **Graceful-degradation screen**: explains that on-device Apple Intelligence is unavailable on this device/simulator, offers **Use cloud engine** (with privacy note) or **Continue offline**. Prevents a dead end. |
 
-### Group I — Collaboration: Folders, Group Spaces, Bookmarks · owner **M4 — Shahad** · F08, F09, F10
+### Group I, Collaboration: Folders, Group Spaces, Bookmarks · owner **M4, Shahad** · F08, F09, F10
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -239,7 +239,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | I17 | `97_Bookmark_Save_Sheet_{M4}` | F10 | P0 | **Save sheet** from any screen: **collection picker** with checkmarks, **Create new** inline, **also save offline** toggle, **Save** primary. |
 | I18 | `98_Bookmarks_EmptyState_{M4}` | F10 | P1 | **Empty state** explaining what bookmarks do + **Browse library** CTA. Also demonstrates the **offline-first** story. |
 
-### Group J — Tutor / Teacher Content Studio · owner **M2 — Mohammed** · F11
+### Group J, Tutor / Teacher Content Studio · owner **M2, Mohammed** · F11
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -254,7 +254,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | J09 | `107_Tutor_Announcement_Compose__{M2}` | F11 | P1 | **Message editor** with templates, **audience selector** (course / group / individual), **schedule send**, **Send now**. |
 | J10 | `108_Tutor_Gradebook_Export__{M2}` | F11 | P1 | **Gradebook table** (quiz scores, card mastery, plan adherence), **column config**, **date range**, **Export CSV / PDF** primaries. |
 
-### Group K — Admin Content Management · owner **M4 — Shahad** · F12
+### Group K, Admin Content Management · owner **M4, Shahad** · F12
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -268,7 +268,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | K08 | `116_Admin_AuditLog__{M4}` | F12 | P1 | **Filterable audit trail** (actor, action, target, timestamp), **export**, **redacted-fields indicator** for privacy compliance. |
 | K09 | `117_Admin_Broadcast_Notification__{M4}` | F12 | P1 | **Broadcast composer**: audience segment builder, title/body fields, **preview as push notification**, **schedule**, **Send with confirmation**. |
 
-### Group L — Subscription & Payments (Tap Payments) · owner **M3 — Tasbeeh** · F13
+### Group L, Subscription & Payments (Tap Payments) · owner **M3, Tasbeeh** · F13
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
@@ -276,29 +276,29 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | L02 | `119_Paywall_FeatureCompare__{M3}` | F13 | P1 | **Comparison table** of AI generations, materials, group spaces, offline export per tier, **sticky plan headers**, **Choose plan** buttons. |
 | L03 | `120_Checkout_OrderSummary_BHD__{M3}` | F13 | P0 | **Order summary**: plan, term, **subtotal / VAT 10% / total in BHD**, **promo-code field**, **terms checkbox**, **Proceed to payment**. |
 | L04 | `121_Payment_Method_Select__{M3}` | F13 | P0 | **Payment method cards**: Card · BenefitPay · Apple Pay · KNET, with **supported-network icons** (Visa/Mastercard), **secure-payment trust row**. |
-| L05 | `122_Payment_Card_Entry__{M3}` | F13 | P0 | **Tap Card SDK** secure fields (number/expiry/CVV) — **no card data ever touches our servers**; **save card** toggle, **Pay BHD 4.900** primary, **PCI-DSS note**. |
+| L05 | `122_Payment_Card_Entry__{M3}` | F13 | P0 | **Tap Card SDK** secure fields (number/expiry/CVV), **no card data ever touches our servers**; **save card** toggle, **Pay BHD 4.900** primary, **PCI-DSS note**. |
 | L06 | `123_Payment_BenefitPay_Redirect__{M3}` | F13 | P1 | **Web-redirect handoff** state with a clear explanation ("You'll return to StudyForge automatically"), **cancel** action, **progress indicator**. |
 | L07 | `124_Payment_Processing__{M3}` | F13 | P0 | **Processing overlay** with **never-double-charge** copy and a **Do not close** instruction. |
 | L08 | `125_Payment_Success_Receipt__{M3}` | F13 | P0 | **Success check**, **receipt card** (amount, method, last 4 digits, Tap reference), **unlocked-features list**, **Done**. |
 | L09 | `126_Payment_Failed_Retry__{M3}` | F13 | P0 | **Failure state** with **decline reason** (insufficient funds / 3-D Secure timeout / network), **Retry** and **Try another method** primaries. |
 | L10 | `127_Subscription_Manage_Cancel__{M3}` | F13 | P1 | **Current plan panel**, renewal date, **payment-method list** with default toggle, **Cancel subscription** destructive + **retention dialog**. |
 
-### Group M — System, Notifications & Cross-cutting States · owner **M1 — Saleh** · F14
+### Group M, System, Notifications & Cross-cutting States · owner **M1, Saleh** · F14
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
 | M01 | `128_Notifications_Inbox_{M1}` | F14 | P0 | **Notification list** grouped by day, **type icons**, **unread dots**, **swipe to mark read**, **grouped section headers**. |
 | M02 | `129_Notification_Permission_Request_{M1}` | F14 | P0 | **Primer screen *before* the system prompt** explaining value ("so your plan keeps you on track"), **Enable** / **Not now**. Improves opt-in rate. |
-| M03 | `130_Push_StudyReminder_{M1}` | F14 | P1 | **Push notification preview**: "Chemistry — 25 min. Your flashcards are ready." with **deep-link** open target. |
+| M03 | `130_Push_StudyReminder_{M1}` | F14 | P1 | **Push notification preview**: "Chemistry, 25 min. Your flashcards are ready." with **deep-link** open target. |
 | M04 | `131_Push_QuizDue_{M1}` | F14 | P1 | **Push preview**: weekly quiz ready with one-tap **Start** action button. |
-| M05 | `132_Global_Search_{M1}` | — | P0 | **Unified search** across materials, summaries, decks, quizzes, folders, bookmarks; **scope chips**, **recent searches**, **result-type tabs**. |
+| M05 | `132_Global_Search_{M1}` | - | P0 | **Unified search** across materials, summaries, decks, quizzes, folders, bookmarks; **scope chips**, **recent searches**, **result-type tabs**. |
 | M06 | `133_Error_NoInternet_OfflineBanner_{M1}` | F14 | P0 | **Offline banner** + queue indicator ("3 changes will sync"), cached-content badge. Explicitly required by the rubric's *error & feedback states*. |
-| M07 | `134_Error_Server_Retry_{M1}` | — | P0 | **Server error state** with plain-language explanation, **Retry** primary, **reference id** for support. |
-| M08 | `135_EmptyState_Kit_{M1}` | — | P1 | **Component board**: no-materials, no-folders, no-cards-due, no-results, no-notifications — illustration + explanation + single CTA each. |
-| M09 | `136_Toast_Success_Kit_{M1}` | — | P1 | **Component board**: saved, copied, invited, synced, generated — with undo variants where destructive. |
-| M10 | `137_Loading_Skeleton_Kit_{M1}` | — | P1 | **Shimmer skeleton components** for list, card, chart and reader layouts. |
-| M11 | `138_Accessibility_LargeText_Example_{M1}` | — | P1 | Same screen at **AX3 text size**, proving Dynamic Type layout integrity. Direct SDG 10 evidence. |
-| M12 | `139_RTL_Arabic_Example_{M1}` | — | P1 | Same screen mirrored in **Arabic RTL**, proving true bidirectional layout rather than a translated overlay. |
+| M07 | `134_Error_Server_Retry_{M1}` | - | P0 | **Server error state** with plain-language explanation, **Retry** primary, **reference id** for support. |
+| M08 | `135_EmptyState_Kit_{M1}` | - | P1 | **Component board**: no-materials, no-folders, no-cards-due, no-results, no-notifications, illustration + explanation + single CTA each. |
+| M09 | `136_Toast_Success_Kit_{M1}` | - | P1 | **Component board**: saved, copied, invited, synced, generated, with undo variants where destructive. |
+| M10 | `137_Loading_Skeleton_Kit_{M1}` | - | P1 | **Shimmer skeleton components** for list, card, chart and reader layouts. |
+| M11 | `138_Accessibility_LargeText_Example_{M1}` | - | P1 | Same screen at **AX3 text size**, proving Dynamic Type layout integrity. Direct SDG 10 evidence. |
+| M12 | `139_RTL_Arabic_Example_{M1}` | - | P1 | Same screen mirrored in **Arabic RTL**, proving true bidirectional layout rather than a translated overlay. |
 | M13 | `140_Home_Dashboard_Group_{M1}` | F09 | P1 | **Group-member home variant**: upcoming group sessions, group activity feed, shared-folder shortcuts, group leaderboard position. |
 | M14 | `141_Logout_Confirm_{M1}` | F01 | P1 | **Confirmation dialog** with "keep offline copies?" option, preventing accidental data-loss surprises. |
 
@@ -323,12 +323,12 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | M | System, Notifications & States | M1 | F14 | 14 | 5 | 9 | 0 |
 | | | | **Total** | **141** | **89** | **51** | **1** |
 
-Per-owner totals (**141** frames across **4** members): **M1 — Saleh = 48** · **M2 — Mohammed = 41** · **M3 — Tasbeeh = 25** · **M4 — Shahad = 27**.
+Per-owner totals (**141** frames across **4** members): **M1, Saleh = 48** · **M2, Mohammed = 41** · **M3, Tasbeeh = 25** · **M4, Shahad = 27**.
 
 Breakdown: M2's 41 = D(7) + E(9) + F(9) + J(10) + 6 of the 8 advanced-feature frames; M3's 25 = G(13) + L(10) + 2 of the 8 advanced-feature frames (the advanced feature is shared, so its frames split 6/2 to M2/M3).
 
 M5's former groups were distributed as: **J → M2** (fits the AI content-review workstream), **K → M4** (fits the permissions/moderation UI work), **L → M3** (fits the Cloud Functions and architecture work).
-Frame count is *not* the fairness metric — see the weighting rationale in [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md). M2's and M4's frames are the most interaction-heavy (realtime, permissions, admin tables). M1's higher count includes Groups B and M, which are low-complexity settings and shared-state/kit frames.
+Frame count is *not* the fairness metric, see the weighting rationale in [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md). M2's and M4's frames are the most interaction-heavy (realtime, permissions, admin tables). M1's higher count includes Groups B and M, which are low-complexity settings and shared-state/kit frames.
 
 ---
 
@@ -336,7 +336,7 @@ Frame count is *not* the fairness metric — see the weighting rationale in [doc
 
 **Root:** `RootView` switches on auth state → `OnboardingFlow` or `RoleRouter(role:)`.
 
-**Student tab bar (5 tabs)** — the persistent spine of the prototype:
+**Student tab bar (5 tabs)**, the persistent spine of the prototype:
 
 | Tab | Icon | Root screen | Contains |
 |---|---|---|---|
@@ -350,14 +350,14 @@ Frame count is *not* the fairness metric — see the weighting rationale in [doc
 **Admin tab bar (4 tabs):** Overview · Users · Moderation · Settings
 **Group variant:** adds a **Groups** entry in the Library tab plus `140_Home_Dashboard_Group`.
 
-**Modal flows** (presented, not pushed — important for correct prototype wiring):
+**Modal flows** (presented, not pushed, important for correct prototype wiring):
 `MaterialUploadFlow` · `Material_GenerateActionSheet` · `Flashcard_Review_Session` · `Quiz_Take` flow · `StudyPlan_Wizard` · `Checkout` flow · `Bookmark_Save_Sheet` · `Folder_Invite_Members`.
 
 ---
 
 ## 6. Prototype wiring checklist (rubric: *"interactive links between screens"*)
 
-Before submission, every one of these must be a real Figma connection — not a static frame:
+Before submission, every one of these must be a real Figma connection, not a static frame:
 
 - ⬜ Every primary button (`Next`, `Continue`, `Generate`, `Save`, `Join`, `Pay`, `Submit`) has a destination
 - ⬜ Every back / close / cancel affordance returns to the correct origin screen

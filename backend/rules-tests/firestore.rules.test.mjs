@@ -126,6 +126,219 @@ test('users: a user may update their own display name', async () => {
   await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { displayName: 'Sara A.' }));
 });
 
+// ── The allowlist on `users/{uid}` updates ──────────────────────────────
+//
+// Before this guard existed, the rule pinned only `role` and `plan`, which left every
+// OTHER field implicitly writable. These tests exist because that is the failure mode
+// that appears when the schema grows: a new field is client-writable by default unless
+// something says otherwise.
+
+test('users: a user may complete their academic profile (the profile wizard)', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_1'), {
+      // The confirmed sample profile (docs/09 §3, Q10): "Programming" is the MAJOR and
+      // IT8108 is the course id. These values are irrelevant to the rule, but using the
+      // real ones keeps the app, the fixtures and the documentation telling one story.
+      university: 'Bahrain Polytechnic',
+      major: 'Programming',
+      year: 3,
+      courseIds: ['IT8108'],
+    }),
+  );
+});
+
+test('users: a user may write every field the client names (the whole allowlist)', async () => {
+  // The Swift side keeps the same list, in `ProfileField`. This is the other half of that
+  // agreement, and it is the half that catches drift: a field the APP can send but the rule
+  // does not name fails here, at test time, instead of on a student's device where it
+  // surfaces as a permission error on a form that looks complete.
+  //
+  // `avatarUrl` and `updatedAt` are covered here and nowhere else — they belong to screens
+  // that are not built yet, and an allowlist nobody exercises is an allowlist that quietly
+  // stops matching.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_1'), {
+      displayName: 'Sara Ali',
+      university: 'Bahrain Polytechnic',
+      major: 'Programming',
+      year: 3,
+      courseIds: ['IT8108'],
+      learningStyle: 'readwrite',
+      weeklyStudyGoalHours: 9,
+      targetGrade: 'B',
+      avatarUrl: 'users/student_1/avatar.png',
+      updatedAt: '2026-09-30T09:00:00Z',
+    }),
+  );
+});
+
+test('users: a user may record a learning style (B02)', async () => {
+  // Named in the allowlist rather than routed to `users/{uid}/private`, because that
+  // subcollection has no field guard at all and would be client-writable by default.
+  // See the WHY block above `editableProfileFields()` in firestore.rules.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(updateDoc(doc(db, 'users/student_1'), { learningStyle: 'visual' }));
+});
+
+test('users: a user may set their study goals (B03)', async () => {
+  // B03 writes BOTH of these in one update: the weekly hours and the target grade are
+  // answers to the same question and are saved together, so they are asserted together.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_1'), {
+      weeklyStudyGoalHours: 12,
+      targetGrade: 'B',
+    }),
+  );
+});
+
+test('users: the wizard completes end to end — B01, then B02, then B03', async () => {
+  // The failure this guards against is ordering, not authorisation. The wizard writes
+  // the profile in THREE steps; if B02's or B03's field is missing from the allowlist,
+  // step 1 succeeds and the flow then dies half-built against deployed rules — the
+  // worst place to discover it, because the screen looks finished. Sequential updates
+  // here, each asserted, reproduce that sequence rather than testing one fat write.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  const profile = doc(db, 'users/student_1');
+
+  // Step B01 — academic.
+  await assertSucceeds(updateDoc(profile, {
+    university: 'Bahrain Polytechnic',
+    major: 'Programming',
+    year: 3,
+    courseIds: ['IT8108'],
+  }));
+
+  // Step B02 — learning style.
+  await assertSucceeds(updateDoc(profile, { learningStyle: 'kinesthetic' }));
+
+  // Step B03 — study goals. Both fields, in the one write the step performs.
+  await assertSucceeds(updateDoc(profile, {
+    weeklyStudyGoalHours: 9,
+    targetGrade: 'A',
+  }));
+});
+
+test('users: DENY a learning preference smuggled alongside a forged streak', async () => {
+  // Widening the allowlist must not make the guard any easier to defeat: bundling a
+  // now-permitted field with a forbidden one still fails, so the new entries widen the
+  // allowlist without widening the hole. Every family is in the bundle, so this is the
+  // test that fails if any single name were implemented as "allow if anything changed"
+  // rather than "allow only these keys".
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), {
+      learningStyle: 'visual',
+      weeklyStudyGoalHours: 40,
+      targetGrade: 'A',
+      streak: 999,
+    }),
+  );
+});
+
+test('users: DENY another student completing YOUR profile', async () => {
+  // `isSelf` is the third guard on the update rule. Every field written here IS in the
+  // allowlist, so this test isolates the identity check: a wider allowlist must not
+  // mean one student can fill in another student's academic record.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.otherStudent().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), {
+      university: 'Bahrain Polytechnic',
+      learningStyle: 'visual',
+    }),
+  );
+});
+
+test('users: DENY forging your own streak', async () => {
+  // `streak` does not exist on the document yet, and that is precisely the point: an
+  // allowlist denies fields the rules have never heard of. The profile screen (B06)
+  // SHOWS the streak, so a client-writable value is a falsified achievement.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(updateDoc(doc(db, 'users/student_1'), { streak: 999 }));
+});
+
+test('users: DENY awarding yourself a badge', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), { badges: ['night_owl', 'first_steps'] }),
+  );
+});
+
+test('users: DENY writing a field the rules do not name (the general case)', async () => {
+  // The catch-all that the old rule allowed. Any field not in the allowlist is denied,
+  // so a future sprint cannot accidentally open a client-writable hole.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(updateDoc(doc(db, 'users/student_1'), { somethingInventedLater: true }));
+});
+
+test('users: DENY tampering with a server-owned field', async () => {
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), {
+      displayName: 'Sara', role: 'student', plan: 'free', createdAt: '2026-01-01T00:00:00Z',
+    });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), { createdAt: '2030-01-01T00:00:00Z' }),
+  );
+});
+
+test('users: DENY smuggling a forbidden field alongside a permitted one', async () => {
+  // A partial allowlist must not be defeatable by bundling: mixing an allowed field with
+  // a forbidden one has to fail, or the guard is worthless.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_1'), { displayName: 'Sara', role: 'student', plan: 'free' });
+  });
+  const db = as.student().firestore();
+  await assertFails(
+    updateDoc(doc(db, 'users/student_1'), { displayName: 'Sara A.', streak: 999 }),
+  );
+});
+
+test('users: an admin may update any user field', async () => {
+  // The allowlist constrains SELF-service edits only. Server-side admin tooling is
+  // unaffected, otherwise the escape hatch for correcting bad data would be gone.
+  await seed(async (db) => {
+    await setDoc(doc(db, 'users/student_2'), { displayName: 'Omar', role: 'student', plan: 'free' });
+  });
+  const db = as.admin().firestore();
+  await assertSucceeds(
+    updateDoc(doc(db, 'users/student_2'), { displayName: 'Omar K.', plan: 'plus' }),
+  );
+});
+
 test('users: an admin may read any user', async () => {
   await seed(async (db) => {
     await setDoc(doc(db, 'users/student_2'), { displayName: 'Omar', role: 'student', plan: 'free' });

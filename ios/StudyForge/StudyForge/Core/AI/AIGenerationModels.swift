@@ -28,7 +28,7 @@ import FoundationModels
 
 /// How confident we are in a generated artefact, derived from the extraction
 /// quality of its source rather than from the model's own opinion.
-enum AIConfidence: String, Sendable, Equatable, CaseIterable {
+enum AIConfidence: String, Sendable, Equatable, CaseIterable, Codable {
     case high
     case medium
     case low
@@ -40,7 +40,7 @@ enum AIConfidence: String, Sendable, Equatable, CaseIterable {
 
 /// Where an artefact came from. The basis of the "tap to see the source" feature
 /// that distinguishes grounded generation from confident guessing.
-struct AIProvenance: Sendable, Equatable {
+struct AIProvenance: Sendable, Equatable, Codable {
     let materialId: String
     /// Page numbers in the source material, 1-based.
     let pageNumbers: [Int]
@@ -136,4 +136,45 @@ struct AIStudyStep: Sendable, Equatable {
 
     @Guide(description: "The topic this step targets, matching a topic from the weakness radar.")
     var topic: String
+}
+
+// MARK: - Coach answers (advanced feature F15)
+
+/// One retrieved passage handed to the model, with the id it must cite.
+///
+/// NOT `@Generable`: this is prompt INPUT. Only the answer is model output, and marking input as
+/// generable would invite the model to invent the evidence it is supposed to be reading.
+struct AICoachChunk: Sendable, Equatable {
+    let id: String
+    let materialId: String
+    let text: String
+    let page: Int?
+}
+
+/// A grounded question: the query plus ONLY the passages retrieval selected.
+struct AICoachPrompt: Sendable, Equatable {
+    let question: String
+
+    /// The retrieved passages. Nothing else may be used to answer — this is what "grounded" means.
+    let chunks: [AICoachChunk]
+
+    /// How to explain it (H03's depth control).
+    let depth: String
+
+    let language: OutputLanguage
+}
+
+/// The model's grounded reply.
+///
+/// `citedChunkIds` is validated against the chunks we supplied — the model may only cite what it
+/// was given. An invented id is dropped, which is what makes the citation ENFORCED rather than
+/// decorative (docs/02 §5, technique 2).
+@Generable
+struct AICoachAnswer: Sendable, Equatable {
+
+    @Guide(description: "The answer, using only facts stated in the provided passages. Never introduce outside knowledge. If the passages do not answer the question, say so plainly.")
+    var answer: String
+
+    @Guide(description: "The ids of the provided passages that support the answer. Cite only ids that were given to you.")
+    var citedChunkIds: [String]
 }

@@ -9,9 +9,16 @@ Coding rules, folder conventions and the Cline working agreement: [docs/04 §8](
 
 ---
 
-## Status — Sprint S0 scaffold ✅
+## Status — features implemented, 697 tests passing ✅
 
-The project builds clean on a first attempt and renders a design-system gallery.
+The project builds clean and the full unit-test suite passes on the iPhone 17 simulator
+(iOS 27.0). Verified locally:
+
+```
+xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
+  -destination 'platform=iOS Simulator,name=iPhone 17' test
+  -> Test run with 697 tests in 111 suites passed
+```
 
 | Layer | State |
 |---|---|
@@ -22,7 +29,10 @@ The project builds clean on a first attempt and renders a design-system gallery.
 | `LoadState` + `AppError` (loading/empty/failed states) | ✅ |
 | Design tokens — colour, type, spacing, radius, motion | ✅ mirrors the Figma variables |
 | Design-system gallery | ✅ proves the tokens in light and dark |
-| Auth, features, Firebase wiring | ⬜ Sprint S1 |
+| F01 auth, roles and onboarding | ✅ |
+| F02 to F15 features (library, summaries, flashcards, quizzes, plan, progress, folders, groups, bookmarks, tutor studio, admin, payments, notifications, coach) | ✅ implemented, with documented deviations (see docs/03) |
+| Unit tests (`StudyForgeTests`) | ✅ 697 tests in 111 suites pass |
+| Firebase wiring | ✅ `GoogleService-Info.plist` present locally (not committed) |
 
 ## Layout
 

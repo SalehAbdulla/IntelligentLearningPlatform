@@ -111,9 +111,50 @@ protocol AuthService: Sendable {
 
     func signOut() async throws
 
+    /// Changes the signed-in user's display name.
+    ///
+    /// WHY THIS IS AN AUTH CONCERN AND NOT A PROFILE ONE
+    /// ------------------------------------------------
+    /// `UserSession.displayName` is read from the Auth record (`user.displayName`), so a name
+    /// written only to `users/{uid}` would leave every screen showing the old name until the
+    /// next token happened to refresh. This updates the Auth record — the source of truth —
+    /// and re-emits auth state, so the session and everything reading it update at once. The
+    /// Firestore field is written in the same call, because a tutor roster reads the document
+    /// and must not disagree with what the student sees.
+    ///
+    /// - Parameter displayName: the new name. Surrounding whitespace is trimmed, and an empty
+    ///   result is rejected rather than saved.
+    /// - Throws: `AuthError.missingDisplayName` if the name is blank.
+    /// - Throws: `AuthError.wrongCredentials` if nobody is signed in — there is no record to
+    ///   rename.
+    func updateDisplayName(_ displayName: String) async throws
+
     /// Sends a reset email. Deliberately does NOT report whether the address exists —
     /// see `AuthError.wrongCredentials`.
     func sendPasswordReset(to email: String) async throws
+
+    /// Sends the email-verification message to the currently signed-in user.
+    ///
+    /// - Throws: `AuthError.tooManyRequests` if Firebase's rate limiter rejects it. A
+    ///   caller MUST surface that distinctly rather than retrying, because the limiter
+    ///   makes repeated attempts worse, not better.
+    /// - Throws: `AuthError.wrongCredentials` if nobody is signed in — there is no
+    ///   address to send to.
+    func sendEmailVerification() async throws
+
+    /// Reloads the user from the provider and re-emits auth state.
+    ///
+    /// WHY THIS EXISTS
+    /// `emailVerified` flips **server-side**, when the user clicks a link in their inbox —
+    /// something this process cannot observe. Without an explicit reload the app would
+    /// keep showing A06 to a user who has already verified, until the token happened to
+    /// refresh on its own.
+    ///
+    /// - Returns: the refreshed session, or `nil` if reloading found nobody signed in.
+    /// - Note: the resulting state is also emitted on `stateChanges()`, so `RootView`
+    ///   routes onward without the caller having to pass the result anywhere.
+    @discardableResult
+    func refreshSession() async throws -> UserSession?
 }
 
 // MARK: - Shared input validation

@@ -21,7 +21,6 @@
 //
 
 import Foundation
-import CryptoKit
 
 @MainActor
 @Observable
@@ -29,6 +28,12 @@ final class AICostGovernor {
 
     /// The tier's daily ceiling. On-device generation is exempt (see the file header).
     let plan: SubscriptionPlan
+
+    /// An admin override for the daily ceiling (F12, K07).
+    ///
+    /// `nil` means "use the plan's own limit", which is the shipped behaviour — so an install with
+    /// no admin configuration counts exactly as it did before this existed.
+    var limitOverride: Int?
 
     private(set) var usedToday: Int = 0
 
@@ -50,8 +55,8 @@ final class AICostGovernor {
 
     // MARK: - Budget
 
-    /// Daily cloud-generation ceiling for this plan.
-    var limit: Int { plan.dailyAIGenerationLimit }
+    /// Daily cloud-generation ceiling for this plan, or the admin's override when one is set.
+    var limit: Int { limitOverride ?? plan.dailyAIGenerationLimit }
 
     var hasBudget: Bool {
         resetIfNeeded()
@@ -107,8 +112,7 @@ final class AICostGovernor {
     ) -> String {
         let material = [text, language.rawValue, learningStyle.rawValue, variant]
             .joined(separator: "\u{1F}")
-        let digest = SHA256.hash(data: Data(material.utf8))
-        return digest.map { String(format: "%02x", $0) }.joined()
+        return ContentHash.sha256Hex(of: material)
     }
 
     /// Number of cloud generations a document would cost if not cached.
