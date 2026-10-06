@@ -44,9 +44,15 @@ enum ColorTokens {
 
     // MARK: Brand
 
-    static let primary            = Color(light: 0x4F46E5, dark: 0x818CF8)
-    static let primaryContainer   = Color(light: 0xE0E7FF, dark: 0x2A2A6E)
-    static let onPrimaryContainer = Color(light: 0x312E81, dark: 0xC7D2FE)
+    /// Apple's blue family, darkened to #0062CC so `primary` also clears AA as *text*:
+    /// 5.80:1 on the light surface, 5.55:1 on `surfaceVariant`, 5.00:1 on
+    /// `primaryContainer` and 4.97:1 on the most tinted point of the canvas. `primary`
+    /// is used as text in 26 places, and Apple's #007AFF (4.0:1 on white) and #0071E3
+    /// (4.02:1 on the tint) are both too light for that. Dark mode keeps Apple's #0A84FF.
+    static let primary            = Color(light: 0x0062CC, dark: 0x0A84FF)
+    static let primaryContainer   = Color(light: 0xE1F0FF, dark: 0x0B2B4A)
+    /// 8.79:1 on `primaryContainer` in light mode, 10.11:1 in dark. AAA both ways.
+    static let onPrimaryContainer = Color(light: 0x00427A, dark: 0xB9DCFF)
 
     /// Ember — the AI/generation accent. **Fill only, never text on light.**
     static let accent             = Color(light: 0xF97316, dark: 0xFB923C)
@@ -57,8 +63,16 @@ enum ColorTokens {
     /// Gold — achievement badges and highlights. Decorative only.
     static let accentGold         = Color(light: 0xFACC15, dark: 0xFDE047)
 
+    /// Ember as *text*, the darker burnt orange that passes AA (5.2:1 on `surface`,
+    /// 4.9:1 on the glass stat card). Use this, never `accent`, for ember-coloured text.
+    static let accentText         = Color(light: 0xC2410C, dark: 0xFDBA74)
+
     /// Teal — collaboration surfaces. **Fill only.**
     static let secondary          = Color(light: 0x14B8A6, dark: 0x2DD4BF)
+
+    /// Teal as *text*. 5.5:1 on `surface`, 5.2:1 on the glass stat card over the
+    /// most tinted canvas point, so it clears AA where the fill token does not.
+    static let secondaryText      = Color(light: 0x0F766E, dark: 0x5EEAD4)
 
     // MARK: Semantic
 
@@ -66,6 +80,9 @@ enum ColorTokens {
     /// Success as *text* — the darker green that actually passes AA (5.5:1).
     static let successText        = Color(light: 0x047857, dark: 0x6EE7B7)
     static let warning            = Color(light: 0xF59E0B, dark: 0xFBBF24)
+    /// Amber as *text*, the darker shade that passes AA (5.0:1 on `surface`, 4.8:1 on
+    /// the glass stat card). Use this, never `warning`, for amber-coloured text.
+    static let warningText        = Color(light: 0xB45309, dark: 0xFCD34D)
     static let error              = Color(light: 0xDC2626, dark: 0xF87171)
     static let onError            = Color(hex: 0xFFFFFF)
 
@@ -89,16 +106,18 @@ enum ColorTokens {
     /// Eight hues for course tags, calendar blocks and radar axes.
     /// Used as fills with `onAccent` labels, never as text.
     enum Subject {
-        static let indigo = Color(hex: 0x6366F1)
+        static let blue   = Color(hex: 0x0062CC)
         static let teal   = Color(hex: 0x14B8A6)
         static let rose   = Color(hex: 0xF43F5E)
         static let amber  = Color(hex: 0xF59E0B)
-        static let violet = Color(hex: 0x8B5CF6)
+        static let mint   = Color(hex: 0x00C7BE)
         static let cyan   = Color(hex: 0x06B6D4)
         static let lime   = Color(hex: 0x84CC16)
         static let slate  = Color(hex: 0x64748B)
 
-        static let all: [Color] = [indigo, teal, rose, amber, violet, cyan, lime, slate]
+        /// Eight hues, deliberately with no violet or pink in the set, so a stack of
+        /// course tags cannot assemble itself into the AI-gradient look.
+        static let all: [Color] = [blue, teal, rose, amber, mint, cyan, lime, slate]
 
         /// Deterministic colour for a subject so the same course always looks the same.
         static func color(for key: String) -> Color {
