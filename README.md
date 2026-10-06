@@ -104,7 +104,7 @@ IntelligentLearningPlatform/
 │   ├── rules-tests/                 emulator suites, negative tests first
 │   └── functions/                   createCharge · tapWebhook · rollupDailyMetrics
 │
-├── docs/                        planning set (00–12), start at README
+├── docs/                        planning set (00–13), start at README
 │
 ├── deliverables/
 │   ├── design-document/         10%, PDF source + low-fidelity mockups
