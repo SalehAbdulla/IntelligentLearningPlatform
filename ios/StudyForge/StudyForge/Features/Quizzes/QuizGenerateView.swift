@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+// TODO(M2 · F05): Add VoiceOver support. The type and count controls and the generate button
+// have no labels or values today.
+// Done when: each control is labelled, the button announces its working state, and the screen
+// reads sensibly under VoiceOver.
+
 struct QuizGenerateView: View {
 
     @State private var viewModel: QuizGenerateViewModel
