@@ -137,17 +137,22 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 
 ## Current status
 
-**Sprint S0, Foundation & requirements.** The **app (60%, must pass)** is the critical path; everything else runs alongside it.
+**Implementation underway.** The **app (60%, must pass)** is the critical path; everything else runs alongside it.
 
 | Component | Weight | Status |
 |---|---|---|
 | Individual App | 10% | ✅ complete |
-| iOS App Implementation & Demonstration | **60% (must pass)** | ⬜ not started |
-| Sprints (individual) | 10% | ⬜ not started |
-| Design Document | 10% | ⬜ not started |
-| Prototype (Figma) | 10% | ⬜ not started |
+| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: F01 to F15 implemented; builds and passes 697 unit tests |
+| Sprints (individual) | 10% | 🟨 in progress: continuous commit evidence on `feat/*` branches |
+| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/` |
+| Prototype (Figma) | 10% | 🟨 in progress: 98 frames built, see `deliverables/prototype/figma-link.txt` |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
+
+**Verified locally** (Xcode 27.0, iPhone 17 simulator, iOS 27.0, UDID `08D34825-D798-4328-929A-18616BEA64CB`):
+
+- `xcodebuild ... build` → `** BUILD SUCCEEDED **`
+- `xcodebuild ... test` → `Test run with 697 tests in 111 suites passed`
 
 - ✅ Brief decoded, rubric extracted, easy-to-miss requirements identified
 - ✅ Local toolchain verified (Xcode 27.0 · iOS 26.5 & 27.0 simulators · Swift 6.4 · Figma.app · Node 24.15)
