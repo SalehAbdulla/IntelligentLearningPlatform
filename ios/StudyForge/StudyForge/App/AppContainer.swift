@@ -285,6 +285,11 @@ final class AppContainer {
         self.subscriptions = subscriptions
         // The gateway defaults to one that writes through THIS store, so an entitlement and
         // its receipt can never end up in different places.
+        // TODO(M3 · F13): Implement the real gateway adapters and select one here.
+        // `TapPaymentsGateway` (the brief's Bahrain gateway) and `StoreKitGateway` (Apple 3.1.1
+        // compliance) are named in the docs but do not exist yet; only the simulated gateway does.
+        // Done when: at least one real adapter conforms to `PaymentGateway`, `AppContainer` can
+        // select it, and the paywall-to-receipt flow is verified against a sandbox account.
         self.payments = payments ?? SimulatedTapGateway(store: subscriptions)
         self.courses = courses
         self.coach = coach
