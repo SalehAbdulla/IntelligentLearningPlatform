@@ -180,7 +180,7 @@ struct CourseDetailView: View {
                         Text(viewModel.publishedStatusLabel(material))
                             .font(.sfCaption)
                             .foregroundStyle(
-                                material.isLive() ? ColorTokens.successText : ColorTokens.warning
+                                material.isLive() ? ColorTokens.successText : ColorTokens.warningText
                             )
                     }
                     .frame(minHeight: Layout.minTouchTarget)
