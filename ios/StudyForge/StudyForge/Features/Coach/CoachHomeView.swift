@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+// TODO(M2 · F15): Add VoiceOver support. The suggested-question rows and the empty state are
+// unlabelled.
+// Done when: each suggestion is a labelled button and the empty state is announced as one
+// element.
+
 struct CoachHomeView: View {
 
     let container: AppContainer
