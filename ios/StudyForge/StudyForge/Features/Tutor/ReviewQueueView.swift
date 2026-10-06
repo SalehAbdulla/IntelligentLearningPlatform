@@ -112,7 +112,7 @@ struct ReviewQueueView: View {
                 if item.isLowConfidence {
                     Text(viewModel.lowConfidenceBadge)
                         .font(.sfCaption)
-                        .foregroundStyle(ColorTokens.warning)
+                        .foregroundStyle(ColorTokens.warningText)
                         .padding(.horizontal, Spacing.s2)
                         .padding(.vertical, Spacing.s1)
                         .background(ColorTokens.warning.opacity(0.14), in: Capsule())

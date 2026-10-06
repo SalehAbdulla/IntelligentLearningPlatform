@@ -1,11 +1,114 @@
-StudyForge — Figma prototype link
+StudyForge, Figma prototype link
 =================================
 
-Shared view link : PASTE-THE-FIGMA-SHARED-URL-HERE
-Link permission  : Anyone with the link -> Can view
-Starting frame   : 01_Splash_Logo_<FirstName>_<StudentID>
-File version     : .fig exported to this folder
+Shared view link : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv  (StudyForge)
+Owner account    : 202300540@student.polytechnic.bh, Figma Education plan
+Link permission  : ⚠️ SET IN FIGMA, Share -> "Anyone with the link" -> "Can view"
+Starting frame   : 01_Splash_Logo_Saleh_202300540
+File version     : .fig export pending
 Exported on      : <date>
+
+Build status, COMPLETE
+-----------------------
+Built end-to-end via the Figma MCP server (Cline) on the Education plan.
+
+Pages
+  0 · Cover & Legend              team table, page index, legend
+  1 · Design System               colour (Light + Dark), type, spacing, radius, components
+                                  + "Glass & Depth" section (frosted-surface tokens)
+  2 · Flow Overview               navigation map + the core learning loop
+  3 · Screens (all features)      98 frames, every feature group A–M
+  4 · States & Prototype Wiring   error / empty / loading / success kits, RTL + AX3 proof
+
+Visual language, Apple-style glassmorphism (applied to all 98 screens)
+  Backdrop   soft near-white canvas (F5F6FB -> FFFFFF -> F8F7FC) with three
+             restrained glows in one cool family (blue / sky / teal) at 24% alpha,
+             heavily blurred so the canvas still reads as neutral, not a rainbow.
+  Surfaces   translucent white + BACKGROUND_BLUR + 1px hairline light border
+             (glass/border) + dual drop shadow + inner light edge for the
+             "lit edge" that makes glass read on a light canvas.
+  Tokens     glass/surface · glass/strong · glass/border · glass/tint
+             (colour variables, Light + Dark modes)
+  Effects    Glass/panel · Glass/card · Glass/bar · Glass/blob (effect styles)
+  Rules      full-width top/bottom bars -> Glass/bar; large cards -> Glass/panel;
+             small chips/rows -> Glass/card; dividers stay hairline; any backdrop
+             rect >= 90% of the screen is folded into the screen gradient.
+
+Palette, Apple system colours, purple removed
+  The first pass used an indigo/violet brand palette, and on a light canvas it read
+  as the generic AI gradient (indigo + violet + pink). The accent is now Apple's own
+  button blue, and the two subject accents were renamed and recoloured:
+    primary             #4F46E5 -> #0062CC Light   (Apple's #007AFF is 4.0:1 on white
+                        and #0071E3 only 4.02:1 on the tinted canvas; `primary` is
+                        used as text in 26 places, so #0062CC was chosen for 5.80:1
+                        on white and 4.97:1 on the most tinted canvas point)
+    primaryContainer    #E0E7FF -> #E1F0FF
+    onPrimaryContainer  #312E81 -> #00427A          (8.8:1 on primaryContainer)
+    glass/tint          #4F46E5 -> #0062CC
+    bg/blob1..3         indigo / violet / sky -> blue #0062CC / sky #32ADE6 / teal #30B0C7
+    bg/a, bg/b          indigo tint + pink -> neutral cool (#EDF3FB / #E9F2F6)
+    subject/indigo      -> subject/blue  #0062CC
+    subject/violet      -> subject/mint  #00C7BE
+  All 510 purple fills were variable-bound and this was fixed in the token layer,
+  so all 98 screens updated at once; zero purple fills were hardcoded. Verified by
+  re-scanning every fill on every frame: 0 purple-family fills remain.
+  The three backdrop glows were also dropped from 100% to 24% alpha. They are solid
+  ellipses whose softness comes only from a 150px layer blur, so at full alpha a
+  glow dumps roughly 28% chroma into the canvas and reads as tinted wallpaper. At
+  24% the measured backdrop is #E7EEF9 / #FCFCFE / #F5F8F9, i.e. near-neutral glass.
+  Dark-mode values were moved to match (primary #0A84FF, 5.1:1 on #0B1220).
+  Text-safe semantic variants, added to fix a measured WCAG AA failure:
+    secondaryText #0F766E / accentText #C2410C / warningText #B45309  (Light)
+    secondaryText #5EEAD4 / accentText #FDBA74 / warningText #FCD34D  (Dark)
+  Five dashboard statistics used secondary/accent/warning as TEXT at 1.8:1 to 2.8:1,
+  below even the 3:1 large-text bar. They now bind the *Text variants, and the bare
+  secondary/accent/warning variables stay fill-only. The same swap was applied to the
+  ten text labels in the iOS app that used a fill hue as text.
+
+Contrast & legibility (measured from rendered pixels, not eyeballed)
+  Moving to a light canvas creates one specific risk: text that was white for
+  a dark background becomes white-on-white. All 1,304 text nodes across the 98
+  frames were audited for exactly that, and it found two, both on
+  01_Splash_Logo, and both now fixed.
+  Fixed, 01_Splash_Logo: the wordmark and tagline were filled with the
+  `surface` token, i.e. white, because the original splash sat on a dark
+  branded background. Once the canvas went light they disappeared entirely,
+  measured 1.17:1 and 1.12:1 with zero dark glyph pixels in either region.
+  They now use textPrimary (17.4:1) and textSecondary (7.4:1), both AA/AAA.
+  Every text layer is token-bound, so a palette change propagates everywhere.
+  Fixed, screens 01-10: the glass pass added three blurred `blob` glows per
+  screen, but those ten frames kept their original decorative `Ellipse` glows
+  as well (named "Ellipse", so the blob cleanup did not match them). Six glows
+  made them read noticeably heavier than the other 88. The 30 duplicates were
+  removed; every frame now carries exactly three glows, and 01-10 match the
+  rest of the prototype pixel-for-pixel (same near-neutral backdrop, current
+  sampled values are in the palette note above).
+
+Screens built (98), by group and owner
+  A Onboarding & Auth         01–10     M1 Saleh
+  B Profile & Settings        11–18     M1 Saleh
+  C Courses & Library         24–34     M1 Saleh
+  M System, States & Feedback 128–141   M1 Saleh
+  D AI Summaries              35–41     M2 Mohammed
+  E Flashcards                42–48     M2 Mohammed
+  F Quizzes                   51–59     M2 Mohammed
+  J Tutor Content Studio      99–105    M2 Mohammed
+  G Study Plan & Progress     60–70     M3 Tasbeeh
+  L Subscription & Payments   118–126   M3 Tasbeeh
+  H AI Study Companion (F15)  73–78     M2 + M3
+  I Collaboration             81–97     M4 Shahad
+  K Admin Content Management  109–115   M4 Shahad
+
+Prototype wiring, interactive ON_CLICK links across:
+  onboarding -> home · upload -> summary -> cards · quiz -> feedback -> results ·
+  flashcard review loop · plan wizard -> calendar · coach -> citation sheet ·
+  folders · bookmarks · tutor studio · admin · paywall -> receipt
+
+Notes
+  - Frame naming follows NN_ScreenName_FirstName_StudentID exactly (brief requirement).
+  - Light + Dark variable modes are defined; screens are built in Light.
+  - The Figma API does not allow NAVIGATE links across pages, so all screens share
+    page 3; ownership is carried by the frame name and the cover table.
 
 Verification: open the link in a private browser window and confirm all
 frames and prototype links are visible without signing in.

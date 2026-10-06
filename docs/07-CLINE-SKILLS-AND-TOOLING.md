@@ -1,4 +1,4 @@
-# 07 — Cline Skills & Tooling
+# 07, Cline Skills & Tooling
 
 > "Add the skills needed" has **two meanings** in this project, and both are needed for full marks. This document covers both.
 
@@ -13,11 +13,11 @@
 
 ---
 
-## 2. Sense A — Agent skills to install
+## 2. Sense A, Agent skills to install
 
 These are real, published skills discovered through the open skills ecosystem (`npx skills find`). Install counts are shown because they are the ecosystem's quality signal.
 
-### 2.1 Firebase (official — `firebase/agent-skills`)
+### 2.1 Firebase (official, `firebase/agent-skills`)
 
 | Skill | Installs | Why we need it |
 |---|---|---|
@@ -25,7 +25,7 @@ These are real, published skills discovered through the open skills ecosystem (`
 | `firebase-auth-basics` | **159.8K** | Email/password + Apple sign-in, **and the custom-claims pattern our whole role model depends on** |
 | `firebase-firestore` | **120.4K** | Data modelling, offline persistence, pagination, indexes, transactions |
 | `firebase-ai-logic-basics` | **121.3K** | Tier-1 AI: Gemini via Firebase AI Logic, structured output, streaming |
-| `firebase-security-rules-auditor` | **123.7K** | Adversarially audits `firestore.rules` for holes — our LO3 security evidence |
+| `firebase-security-rules-auditor` | **123.7K** | Adversarially audits `firestore.rules` for holes, our LO3 security evidence |
 | `xcode-project-setup` | **116.5K** | Correct Xcode 27 + SPM wiring for the Firebase SDK |
 | `firebase-crashlytics` | **117.2K** | Crash reporting = evidence of professional practice |
 
@@ -37,7 +37,7 @@ These are real, published skills discovered through the open skills ecosystem (`
 |---|---|---|---|
 | `swiftui-expert-skill` | `avdlee/swiftui-agent-skill` | 33.1K | Modern SwiftUI patterns, `@Observable`, navigation, performance |
 | `swiftui-pro` | `twostraws/swiftui-agent-skill` | 30.2K | Correctness and API-usage review by a well-known Swift author |
-| `write-swift` | `emilkowalski/skills` | 62K | Idiomatic, readable Swift — matters for the LO3 documentation marks |
+| `write-swift` | `emilkowalski/skills` | 62K | Idiomatic, readable Swift, matters for the LO3 documentation marks |
 | `ios-design` | `uizze.sh` | 114.7K | Apple-native design quality, directly relevant to LO1 |
 
 ### 2.3 Testing
@@ -46,14 +46,14 @@ These are real, published skills discovered through the open skills ecosystem (`
 |---|---|---|---|
 | `swift-testing-pro` | `twostraws/swift-testing-agent-skill` | 9K | Swift Testing framework, parameterised tests |
 | `swift-testing-expert` | `avdlee/swift-testing-agent-skill` | 5K | Deeper testing strategy, async testing |
-| `ios-accessibility` | `dpearson2699/swift-ios-skills` | 4.6K | Accessibility auditing — produces our SDG 10 evidence |
+| `ios-accessibility` | `dpearson2699/swift-ios-skills` | 4.6K | Accessibility auditing, produces our SDG 10 evidence |
 
-### 2.4 Figma (Track B — the graded prototype)
+### 2.4 Figma (Track B, the graded prototype)
 
 | Skill | Source | Installs | Why we need it |
 |---|---|---|---|
 | `figma-use` | `figma/mcp-server-guide` | 7.6K | Official Figma guidance; lets the agent drive Figma via MCP |
-| `implement-design` | `figma/mcp-server-guide` | 6K | Translating a Figma design into production code accurately — the Track B → Track C bridge |
+| `implement-design` | `figma/mcp-server-guide` | 6K | Translating a Figma design into production code accurately, the Track B → Track C bridge |
 
 ### 2.5 Design and UX (optional, high value for LO1)
 
@@ -64,12 +64,12 @@ These are real, published skills discovered through the open skills ecosystem (`
 
 ---
 
-## 3. Installing them (corrected — verified against the real CLI)
+## 3. Installing them (corrected, verified against the real CLI)
 
 Two facts learned by actually running the installer on this machine:
 
 1. **Global install is not supported.** `-g` fails with *"PromptScript does not support global skill installation."* Skills must be installed **into the project**.
-2. That is **better for us anyway**: the skills land in the repository (`/.agents/skills/` plus a `skills-lock.json` lockfile) and are symlinked into `.claude/skills/`. Committing them means **all five team members get an identical, pinned agent setup** — no "works on my machine" divergence.
+2. That is **better for us anyway**: the skills land in the repository (`/.agents/skills/` plus a `skills-lock.json` lockfile) and are symlinked into `.claude/skills/`. Committing them means **all five team members get an identical, pinned agent setup**, no "works on my machine" divergence.
 
 ### Run the installer
 
@@ -102,24 +102,24 @@ npx skills update                # pull newer versions
 
 | Attempted | Result | Substitute |
 |---|---|---|
-| `figma/mcp-server-guide@implement-design` | ❌ no such skill in that package — installing the package without `@skill` pulled all of its real skills instead (`figma-use`, `figma-use-figjam`, `figma-use-motion`, `figma-use-slides`) | Install the whole package: `npx skills add figma/mcp-server-guide -y` |
-| `uizze.sh@ios-design` | ❌ `Failed to clone repository: 'uizze.sh@ios-design' does not exist` — it is a registry listing with no installable source | Use **`swiftui-pro`** + **`swiftui-expert-skill`** (already installed) for iOS design quality, and the Design System in [doc 06](06-DESIGN-SYSTEM.md) as the house style |
+| `figma/mcp-server-guide@implement-design` | ❌ no such skill in that package, installing the package without `@skill` pulled all of its real skills instead (`figma-use`, `figma-use-figjam`, `figma-use-motion`, `figma-use-slides`) | Install the whole package: `npx skills add figma/mcp-server-guide -y` |
+| `uizze.sh@ios-design` | ❌ `Failed to clone repository: 'uizze.sh@ios-design' does not exist`, it is a registry listing with no installable source | Use **`swiftui-pro`** + **`swiftui-expert-skill`** (already installed) for iOS design quality, and the Design System in [doc 06](06-DESIGN-SYSTEM.md) as the house style |
 
 ### What gets committed to git
 
 | Path | Committed? | Why |
 |---|---|---|
-| `skills-lock.json` | ✅ **yes** | Pins each skill to a verified hash — the source of truth for reproduction |
+| `skills-lock.json` | ✅ **yes** | Pins each skill to a verified hash, the source of truth for reproduction |
 | `tools/install-skills.sh` | ✅ **yes** | One command to restore the exact setup on any machine |
-| `.agents/skills/**` (~3.3 MB, 254 files) | ❌ no (gitignored) | Installed artefact, not source — same reasoning as `node_modules` |
+| `.agents/skills/**` (~3.3 MB, 254 files) | ❌ no (gitignored) | Installed artefact, not source, same reasoning as `node_modules` |
 | `.claude/skills/**` (symlinks) | ❌ no (gitignored) | Generated symlinks into `.agents/` |
 
 **Onboarding a teammate:** clone the repo, then run `bash tools/install-skills.sh`. That is the whole setup. Committing the lockfile rather than the skill bodies keeps the repository readable for the marker while guaranteeing reproducibility.
 
 > **Benign warning you may see from `npx skills check`:**
-> *"Multiple current paths match these skills from twostraws/swiftui-agent-skill; skipping them rather than deleting or migrating the wrong skill"* — for `swiftui-pro` and `swift-testing-pro`.
+> *"Multiple current paths match these skills from twostraws/swiftui-agent-skill; skipping them rather than deleting or migrating the wrong skill"*, for `swiftui-pro` and `swift-testing-pro`.
 >
-> Cause: those two were installed both as an individual skill (`@skill`) and as part of their whole package, so each now exists in two places (`.agents/skills/swiftui-pro/SKILL.md` and `.agents/skills/swiftui-pro/skills/swiftui-pro/SKILL.md`). **The file contents differ**, so the CLI deliberately refuses to guess which is canonical. This is harmless — the flat path is the one pinned in `skills-lock.json`, the CLI simply skips the ambiguity, and `.agents/` is gitignored so nothing reaches the repository. **Do not hand-delete either copy**; if it must be resolved, remove and re-add the skill cleanly:
+> Cause: those two were installed both as an individual skill (`@skill`) and as part of their whole package, so each now exists in two places (`.agents/skills/swiftui-pro/SKILL.md` and `.agents/skills/swiftui-pro/skills/swiftui-pro/SKILL.md`). **The file contents differ**, so the CLI deliberately refuses to guess which is canonical. This is harmless, the flat path is the one pinned in `skills-lock.json`, the CLI simply skips the ambiguity, and `.agents/` is gitignored so nothing reaches the repository. **Do not hand-delete either copy**; if it must be resolved, remove and re-add the skill cleanly:
 > ```bash
 > npx skills remove swiftui-pro swift-testing-pro
 > npx skills add twostraws/swiftui-agent-skill@swiftui-pro -y
@@ -127,13 +127,13 @@ npx skills update                # pull newer versions
 > ```
 
 
-**Optional, if we want Cline to touch the Figma file directly:** wire up the Figma MCP server, after which `figma-use` becomes an active tool rather than reference material. Worth doing if the team wants Cline to generate the Figma component library programmatically — a genuine time-saver across ~141 frames.
+**Optional, if we want Cline to touch the Figma file directly:** wire up the Figma MCP server, after which `figma-use` becomes an active tool rather than reference material. Worth doing if the team wants Cline to generate the Figma component library programmatically, a genuine time-saver across ~141 frames.
 
 
 
 ---
 
-## 4. Sense B — Human skills matrix
+## 4. Sense B, Human skills matrix
 
 The brief requires that **every member can present and explain any part of the app**. This matrix states what each member must be able to *do* by the end, not merely what they own. "Primary" means they go deep; "everyone" is the shared non-negotiable floor.
 
@@ -198,7 +198,7 @@ Track C is built by Cline, so the prompts matter as much as the architecture. Th
 | Rule | Example |
 |---|---|
 | **Give the feature ID and the screen IDs** | "Implement **F04** per screens `42`–`50` in [doc 03](03-SCREEN-INVENTORY.md)." |
-| **Name the convention document** | "Follow [doc 04 §8](04-TECH-ARCHITECTURE-COST.md) — MVVM, `@Observable`, `AppContainer`, no singletons." |
+| **Name the convention document** | "Follow [doc 04 §8](04-TECH-ARCHITECTURE-COST.md), MVVM, `@Observable`, `AppContainer`, no singletons." |
 | **Ask for the protocol first** | "Define the `SpacedRepetitionScheduling` protocol and its mock before the implementation." |
 | **Demand all states** | "Every screen must render `LoadState<…>`: loading, empty, failed, loaded." |
 | **Insist on the data contract** | "Write the Firestore document shape and its security rule together, then the Swift model." |
@@ -207,7 +207,7 @@ Track C is built by Cline, so the prompts matter as much as the architecture. Th
 | **Ask it to check itself** | "Re-read the requirements, list every state, error path and accessibility label you have not implemented, then implement them." |
 | **Never let it touch secrets** | `GoogleService-Info.plist` stays in `.gitignore`; keys go in `.xcconfig` files and Cloud Function environment variables. |
 
-**Guardrails to restate in every long session:** no secrets committed · no `allow read, write: if true` anywhere in rules · no AI call on the main thread · no hard-coded user-facing strings (EN + AR) · never silently drop a state the design requires — flag it instead.
+**Guardrails to restate in every long session:** no secrets committed · no `allow read, write: if true` anywhere in rules · no AI call on the main thread · no hard-coded user-facing strings (EN + AR) · never silently drop a state the design requires, flag it instead.
 
 ---
 

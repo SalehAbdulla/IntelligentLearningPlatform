@@ -55,6 +55,9 @@ final class TutorDashboardViewModel {
     var noCoursesBody: String { L10n.tutorNoCourses.string }
     var reviewTitle: String { L10n.tutorReviewTitle.string }
     var enrolmentsTitle: String { L10n.tutorRosterTitle.string }
+    var archiveTitle: String { L10n.tutorArchive.string }
+    var unarchiveTitle: String { L10n.tutorUnarchive.string }
+    var archivedBadge: String { L10n.tutorCourseArchived.string }
 
     /// The badge's text, or `nil` when there is nothing waiting — a badge reading
     /// "0 awaiting review" is noise, not information.
@@ -106,5 +109,29 @@ final class TutorDashboardViewModel {
         } catch {
             state = .failed(AppError.from(error))
         }
+    }
+
+    /// Archives or restores a course (J02's archive swipe action).
+    ///
+    /// Writing the flag and reloading — rather than mutating the row in place — keeps the list,
+    /// the badge count and the cohort KPIs derived from ONE read, so an archived course cannot
+    /// leave a stale "awaiting review" figure behind.
+    func setArchived(_ course: Course, archived: Bool) async {
+        var updated = course
+        updated.isArchived = archived
+        updated.updatedAt = .now
+
+        do {
+            try await store.upsert(updated)
+            await load()
+        } catch {
+            state = .failed(AppError.from(error))
+        }
+    }
+
+    /// J02's swipe label: what the action will DO, so a swipe on an archived course offers
+    /// "Unarchive" rather than the same word twice.
+    func archiveActionTitle(_ course: Course) -> String {
+        course.isArchived ? unarchiveTitle : archiveTitle
     }
 }

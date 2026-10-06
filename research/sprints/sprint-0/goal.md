@@ -1,15 +1,15 @@
-# Sprint S0 — Foundation & Requirements
+# Sprint S0, Foundation & Requirements
 
 | Field | Value |
 |---|---|
 | **Sprint** | **S0** |
 | **Dates** | Mon 28 Sep – Sun 4 Oct 2026 |
-| **Sprint lead** | M1 — Saleh Abdulla |
+| **Sprint lead** | M1, Saleh Abdulla |
 | **Theme** | Foundation, identity, research start, feature definition, tutor interview |
 
-## Sprint goal — one sentence
+## Sprint goal, one sentence
 
-> **One sentence:** *"Everything is decided and unblocked — the app builds and runs on a device, Firebase is live, the team and 15 features are signed off, and the tutor interview is booked with the advanced feature proposed for approval."*
+> **One sentence:** *"Everything is decided and unblocked, the app builds and runs on a device, Firebase is live, the team and 15 features are signed off, and the tutor interview is booked with the advanced feature proposed for approval."*
 
 ## Demoable outcome (the sprint review must show this working)
 
@@ -37,7 +37,7 @@
 |---|---|---|
 | On-device Apple Intelligence unavailable on the demo device | Medium | ✅ **Addressed by the S0 spike.** Verified available on Apple Silicon hardware; unavailable in the Simulator *by design*. Tier-1 fallback confirmed working, and `MockProvider` serves tier 1 in the Simulator until S1 |
 | Figma component library becomes a time sink | Medium | Time-box to half a day; it must only cover the components the P0 frames need |
-| Firebase setup blocked on account/billing | **Realised** | ⚠️ **This risk materialised.** The console failed at *"Billing setup can't be completed [OR_BACR2_59]"* — a **Google Payments** error, not a Firebase one, and one only the account owner can clear. **Mitigated rather than waited on:** (1) Spark needs no billing *at all*, so the project can be created from the CLI via `firebase projects:create`, which never enters the billing flow — runbook in [`backend/README.md`](../../../backend/README.md); and (2) the app no longer depends on a project existing, because `FirebaseBootstrap` runs against the Emulator Suite in Debug. See decision **D22**. **No Cloud Functions this sprint** |
+| Firebase setup blocked on account/billing | **Realised** | ⚠️ **This risk materialised.** The console failed at *"Billing setup can't be completed [OR_BACR2_59]"*, a **Google Payments** error, not a Firebase one, and one only the account owner can clear. **Mitigated rather than waited on:** (1) Spark needs no billing *at all*, so the project can be created from the CLI via `firebase projects:create`, which never enters the billing flow, runbook in [`backend/README.md`](../../../backend/README.md); and (2) the app no longer depends on a project existing, because `FirebaseBootstrap` runs against the Emulator Suite in Debug. See decision **D22**. **No Cloud Functions this sprint** |
 | Sprint boundaries not yet confirmed with the tutor | Medium | Confirm at the interview (Q9) and adjust |
 
 ## Definition of done
@@ -54,9 +54,9 @@
 ## Sprint artefacts checklist
 
 - [x] `goal.md` (this file)
-- [ ] `board.png` — task board snapshot at sprint end
-- [ ] `review/` — screenshots or recording of each member demoing their own work
-- [ ] `retro.md` — one thing to keep, one to change
+- [ ] `board.png`, task board snapshot at sprint end
+- [ ] `review/`, screenshots or recording of each member demoing their own work
+- [ ] `retro.md`, one thing to keep, one to change
 - [ ] `saleh-contribution.md` · `mohammed-contribution.md` · `tasbeeh-contribution.md` · `shahad-contribution.md`
 
 ---
@@ -74,31 +74,31 @@
 | Task | Owner | Evidence |
 |---|---|---|
 | Xcode 27 project scaffold + design tokens + gallery | M3 | `ios/StudyForge/`, `xcodebuild` BUILD SUCCEEDED |
-| Backend configuration: rules, indexes, emulator config | M1 | `backend/` — **58 rules tests, 0 failures** |
+| Backend configuration: rules, indexes, emulator config | M1 | `backend/`, **58 rules tests, 0 failures** |
 | Repo restructured into `ios/` + `backend/` | M1 | PR #7, decision D20/D21 |
-| **AI feasibility spike — on-device tier** | **M2** | `research/spikes/foundation-models.md` + `fm-probe.swift` · **all three AI assumptions verified** · measured 2.8 s for 3 guided cards · Simulator fallback confirmed by screenshot |
+| **AI feasibility spike, on-device tier** | **M2** | `research/spikes/foundation-models.md` + `fm-probe.swift` · **all three AI assumptions verified** · measured 2.8 s for 3 guided cards · Simulator fallback confirmed by screenshot |
 | **First unit-test target + AI layer tests** | **M3** | `StudyForgeTests` target wired into the scheme · `xcodebuild test` → **39 tests in 7 suites, 0 failures** · found and fixed a real `AppError.from` bug |
 | **Firebase SDK wired + `AuthService` (F01 foundation)** | **M1** | `firebase-ios-sdk` **12.19.2** resolved with 13 packages pinned in `Package.resolved` · new `Core/Auth/` (protocol, Firebase impl, mock, claims, state broadcaster) and `Core/Config/` (plist-optional bootstrap) · app **launches and renders with NO Firebase project** in the Simulator · `xcodebuild test` → **78 tests in 12 suites, 0 failures** · build has **0 errors, 0 warnings** · decisions **D22/D23** |
-| **Live project `studyforge-it8108` + rules deployed** | **M1** | Live on **Spark** (no billing, as predicted — the `OR_BACR2_59` console error was a Google Payments issue and was routed around) · Firestore **STANDARD** edition, `FIRESTORE_NATIVE`, location **`me-central2` (Dammam)** · Email/Password enabled · iOS app `com.studyforge.app` registered, its **App ID matches the plist byte-for-byte** · **rules and indexes deployed** · *verified against the live database*: the app's own `users/{uid}` payload → **HTTP 200 ALLOWED**; the same payload claiming `role=tutor` → **HTTP 403 PERMISSION_DENIED** · test account deleted and `users/` left at **0 documents** |
+| **Live project `studyforge-it8108` + rules deployed** | **M1** | Live on **Spark** (no billing, as predicted, the `OR_BACR2_59` console error was a Google Payments issue and was routed around) · Firestore **STANDARD** edition, `FIRESTORE_NATIVE`, location **`me-central2` (Dammam)** · Email/Password enabled · iOS app `com.studyforge.app` registered, its **App ID matches the plist byte-for-byte** · **rules and indexes deployed** · *verified against the live database*: the app's own `users/{uid}` payload → **HTTP 200 ALLOWED**; the same payload claiming `role=tutor` → **HTTP 403 PERMISSION_DENIED** · test account deleted and `users/` left at **0 documents** |
 
-### ✅ The human-only steps — completed
+### ✅ The human-only steps, completed
 
 > **No longer blocked.** These needed a person (a Google account plus a browser); they are
 > done, and every outcome is recorded above.
 
 | Task | Outcome |
 |---|---|
-| Create the Firebase project | ⚠️ The console's billing flow failed with **`OR_BACR2_59`** — a **Google Payments** error, not a Firebase one. Since **Spark needs no billing**, it was routed around rather than fought. Runbook: [`backend/README.md`](../../../backend/README.md) |
-| Firestore database | Created in **Standard** edition. *Not* Enterprise — that has **no automatic indexing**, which would break `firestore.indexes.json` and every single-field query we rely on |
-| Location | **`me-central2` (Dammam)** — ~15 ms from Bahrain instead of ~200 ms to Iowa. A permanent choice, so worth having got right |
-| Auth providers | ✅ **Email/Password enabled** (F01 depends on it). ⚠️ **Google was enabled too** — see the warning below |
+| Create the Firebase project | ⚠️ The console's billing flow failed with **`OR_BACR2_59`**, a **Google Payments** error, not a Firebase one. Since **Spark needs no billing**, it was routed around rather than fought. Runbook: [`backend/README.md`](../../../backend/README.md) |
+| Firestore database | Created in **Standard** edition. *Not* Enterprise, that has **no automatic indexing**, which would break `firestore.indexes.json` and every single-field query we rely on |
+| Location | **`me-central2` (Dammam)**, ~15 ms from Bahrain instead of ~200 ms to Iowa. A permanent choice, so worth having got right |
+| Auth providers | ✅ **Email/Password enabled** (F01 depends on it). ⚠️ **Google was enabled too**, see the warning below |
 | `GoogleService-Info.plist` | In `ios/StudyForge/StudyForge/`, auto-included by the synchronized folder, gitignored, **App ID matches the registered app exactly** |
 | Rules + indexes | Deployed via the CLI and **verified against the live database** (see the table above) |
-| Storage bucket | ✅ **Decision: Storage is bypassed entirely** — see **D24**. `projects.defaultBucket.create` requires **Blaze**, and the project reports `billingEnabled: false`, so it is not obtainable on Spark. Rather than pay for Storage to hold files that on-device AI reads locally anyway, **raw materials stay on the device and only derived data syncs to Firestore** (the same principle as tier-0, one layer down). `storage.rules` stays in the repo and stays emulator-tested (18 tests) — it is simply never deployed |
+| Storage bucket | ✅ **Decision: Storage is bypassed entirely**, see **D24**. `projects.defaultBucket.create` requires **Blaze**, and the project reports `billingEnabled: false`, so it is not obtainable on Spark. Rather than pay for Storage to hold files that on-device AI reads locally anyway, **raw materials stay on the device and only derived data syncs to Firestore** (the same principle as tier-0, one layer down). `storage.rules` stays in the repo and stays emulator-tested (18 tests), it is simply never deployed |
 
 > ⚠️ **Open item created by enabling Google sign-in.** App Store Guideline 4.8 requires that
 > if a third-party login is offered, **Sign in with Apple must be offered too**.
-> `FirebaseAuthService` implements email/password only, so Google currently does nothing —
+> `FirebaseAuthService` implements email/password only, so Google currently does nothing,
 > but shipping it would oblige us to ship Apple sign-in as well (which needs a paid Apple
 > Developer membership and a Firebase Service ID + key). **Safest S1 path: email/password
 > only**, and add Apple + Google together if time allows.
@@ -107,14 +107,14 @@
 
 | Task | Owner | Note |
 |---|---|---|
-| ~~Firebase SPM packages wired into the Xcode project~~ | M1 | ✅ **Done during S0** — `firebase-ios-sdk` 12.19.2 resolved and linked; `Package.resolved` committed to pin versions |
-| ~~`AuthService` protocol + Firebase impl + mock~~ | M1 | ✅ **Done during S0** — F01 foundation landed, with 39 auth tests. F01 continues in S1 with the sign-in/sign-up **screens** |
+| ~~Firebase SPM packages wired into the Xcode project~~ | M1 | ✅ **Done during S0**, `firebase-ios-sdk` 12.19.2 resolved and linked; `Package.resolved` committed to pin versions |
+| ~~`AuthService` protocol + Firebase impl + mock~~ | M1 | ✅ **Done during S0**, F01 foundation landed, with 39 auth tests. F01 continues in S1 with the sign-in/sign-up **screens** |
 | Tier-1 `FirebaseAIProvider` against the existing `AIProvider` protocol | M2 | The protocol and router already exist and are tested; this is the S1 wiring |
-| Emulator-backed **integration** test for sign-up (writes `users/{uid}`) | M1 | The write path is **already proven against the live project** (HTTP 200 vs 403 above). What remains is making that proof *repeatable in CI* rather than a manual probe — deliberately kept out of the hermetic unit suite (D23) |
+| Emulator-backed **integration** test for sign-up (writes `users/{uid}`) | M1 | The write path is **already proven against the live project** (HTTP 200 vs 403 above). What remains is making that proof *repeatable in CI* rather than a manual probe, deliberately kept out of the hermetic unit suite (D23) |
 | Figma file: 9 pages + variables + component library | M4 | Needs the design decisions in docs/06, already frozen |
 | Confirm tier 0 on the real demo iPhone | M2 | Simulator reports `simulatorUnsupported` by design; hardware verified available |
 
-### Sprint exit gate — **met**
+### Sprint exit gate, **met**
 
 > App builds on device · Firebase live · feature table signed off · tokens frozen
 
@@ -126,6 +126,6 @@
 | Tokens frozen | ✅ | Design gallery renders from the frozen token set |
 
 **S0 is complete.** The only outstanding Firebase item is the **Storage bucket**
-(`us-central1`), which S0 never needed — it becomes a prerequisite the moment S2 first
+(`us-central1`), which S0 never needed, it becomes a prerequisite the moment S2 first
 uploads a file, and it is noted above so it cannot be forgotten.
 

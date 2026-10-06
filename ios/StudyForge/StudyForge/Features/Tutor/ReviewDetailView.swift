@@ -71,7 +71,7 @@ struct ReviewDetailView: View {
                 Text(viewModel.confidenceLabel())
                     .font(.sfCaption)
                     .foregroundStyle(
-                        viewModel.isLowConfidence ? ColorTokens.warning : ColorTokens.textSecondary
+                        viewModel.isLowConfidence ? ColorTokens.warningText : ColorTokens.textSecondary
                     )
             }
 

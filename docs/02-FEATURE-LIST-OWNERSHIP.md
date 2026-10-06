@@ -1,6 +1,6 @@
-# 02 — Feature List & Ownership
+# 02, Feature List & Ownership
 
-> Rubric area **b · Features List — 4 marks**. Requirement text, verbatim:
+> Rubric area **b · Features List, 4 marks**. Requirement text, verbatim:
 > *"Submit a structured feature list. Include feature name, user role, main task, flow, developer, and tester. Use at least three user roles. Each student must develop at least two features. Include one approved advanced feature assigned to one or two developers."*
 
 **How this document satisfies it, point by point:**
@@ -9,14 +9,14 @@
 |---|---|
 | Structured feature list | §4 master table (`ID · Feature · Role · Main task · Flow · Developer · Tester`) |
 | Feature name | §4, column *Feature* |
-| User role | §4, column *Role* — 4 distinct roles used |
+| User role | §4, column *Role*, 4 distinct roles used |
 | Main task | §4, column *Main task* (user-perspective outcome) |
 | Flow | §4, column *Flow* (compact) + expanded sub-task steps in §6 |
 | Developer | §4, column *Developer* |
 | Tester | §4, column *Tester* |
 | ≥3 user roles | 4 roles: Student, Tutor, Study Group Member, Admin |
 | Each student ≥2 features | §3 workload-balance table: every member owns exactly 3 |
-| One advanced feature, 1–2 developers | §5 — **F15 AI Study Companion**, developers M2 + M3 |
+| One advanced feature, 1–2 developers | §5, **F15 AI Study Companion**, developers M2 + M3 |
 
 ---
 
@@ -29,13 +29,13 @@ Feature IDs are **stable** and referenced across every other document (`F03` →
 | `F01…F14` | Standard feature |
 | `F15` | Approved **advanced** feature (co-owned) |
 | `M1…M4` | Team member handle (see §2) |
-| `P0 / P1 / P2` | Priority tier — P0 = MVP must ship, P1 = should ship, P2 = stretch |
+| `P0 / P1 / P2` | Priority tier, P0 = MVP must ship, P1 = should ship, P2 = stretch |
 
 ---
 
 ## 2. Team roster
 
-> ✅ **Group size: 4 members — confirmed by the tutor.** The brief's default is *"each group should consist of 5 members only."* The tutor has confirmed that **4 members is acceptable for this group**, so the plan proceeds with four. M5 has been removed and their three features (F11, F12, F13) redistributed — see §2.1. **Record the tutor's approval here for the audit trail:** `Approved by: ____________ on ____________`.
+> ✅ **Group size: 4 members, confirmed by the tutor.** The brief's default is *"each group should consist of 5 members only."* The tutor has confirmed that **4 members is acceptable for this group**, so the plan proceeds with four. M5 has been removed and their three features (F11, F12, F13) redistributed, see §2.1. **Record the tutor's approval here for the audit trail:** `Approved by: ____________ on ____________`.
 
 | Handle | Name | Student ID | Role in team | Features owned | Frame suffix | Count |
 |---|---|---|---|---|---|---|
@@ -44,17 +44,17 @@ Feature IDs are **stable** and referenced across every other document (`F03` →
 | **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` | 3 + shared |
 | **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` | 4 |
 
-**How the assignment was made:** the two heaviest workstreams (the F01/F02 data foundation and the F15 advanced feature) were matched to technical fit rather than spread evenly, and the two members sharing F15 (M2 + M3) were deliberately given **disjoint** feature areas so neither can block the other. Every member owns at least three features — comfortably above the rubric's minimum of two — and the four feature areas map cleanly onto the four rubric roles (Student = M1, Tutor = M2, Admin = M1/M4, Study Group Member = M4).
+**How the assignment was made:** the two heaviest workstreams (the F01/F02 data foundation and the F15 advanced feature) were matched to technical fit rather than spread evenly, and the two members sharing F15 (M2 + M3) were deliberately given **disjoint** feature areas so neither can block the other. Every member owns at least three features, comfortably above the rubric's minimum of two, and the four feature areas map cleanly onto the four rubric roles (Student = M1, Tutor = M2, Admin = M1/M4, Study Group Member = M4).
 
 ### 2.1 Redistribution of the former M5 workstream
 
-With four members, M5's three features were redistributed on the principle of **adjacency** — each new feature sits next to work the member already owns, so no one has to learn an unrelated domain:
+With four members, M5's three features were redistributed on the principle of **adjacency**, each new feature sits next to work the member already owns, so no one has to learn an unrelated domain:
 
 | Former M5 feature | New developer | Why it fits | Group's frames |
 |---|---|---|---|
-| **F11** Tutor Content Studio | **M2** (Mohammed) | The tutor review queue is an AI-content feature — the same generation pipeline and provenance model M2 already owns in F03–F05 | Group J (10) |
-| **F12** Admin Content Management | **M4** (Shahad) | Admin is moderation, permissions and taxonomy — the same permission and sharing primitives M4 already builds for F08–F09 | Group K (9) |
-| **F13** Subscription & Payments | **M3** (Tasbeeh) | Payments is Cloud Functions, webhooks and server-side verification — the same server-side architecture M3 already owns | Group L (10) |
+| **F11** Tutor Content Studio | **M2** (Mohammed) | The tutor review queue is an AI-content feature, the same generation pipeline and provenance model M2 already owns in F03–F05 | Group J (10) |
+| **F12** Admin Content Management | **M4** (Shahad) | Admin is moderation, permissions and taxonomy, the same permission and sharing primitives M4 already builds for F08–F09 | Group K (9) |
+| **F13** Subscription & Payments | **M3** (Tasbeeh) | Payments is Cloud Functions, webhooks and server-side verification, the same server-side architecture M3 already owns | Group L (10) |
 
 **Result:** four members, 4/4/3/3 features, **48/41/25/27 frames**, and the F15 advanced feature still shared by exactly two developers as the rubric permits. Nobody's load is unmanageable, and every feature keeps a named developer **and** a named tester.
 
@@ -73,16 +73,16 @@ Counted the way the rubric counts it:
 | **M3** | Tasbeeh Saeed | 3 + F15 (co) | 4 | 25 | 2 (G, L) | ~3.1 |
 | **M4** | Shahad Ashoor | 4 | 4 | 27 | 2 (I, K) | ~3.0 |
 
-**Balance rationale (state this in the document — markers reward the reasoning):** feature counts run 4/4/3/3 and frame counts 48/41/25/27. The spread is intentional rather than accidental:
+**Balance rationale (state this in the document, markers reward the reasoning):** feature counts run 4/4/3/3 and frame counts 48/41/25/27. The spread is intentional rather than accidental:
 
-- **M1** carries the most frames (48) because Groups A, B, C and M are the most interconnected — but **13 of those (Group B) are settings forms and 14 (Group M) are shared state/kit frames**, both low-complexity. Excluding them, M1's genuinely bespoke screens number ~21.
-- **M2** carries the most features (4) plus a share of F15, so their frame count (41) is held moderate by keeping their individual feature groups (D, E, F, J) mid-sized — the largest of which is 10 frames.
-- **M3** has the fewest frames (25) but co-owns F15 — the highest-risk workstream — and owns F13, the only feature with an external financial dependency and the only one requiring server-side payment verification.
+- **M1** carries the most frames (48) because Groups A, B, C and M are the most interconnected, but **13 of those (Group B) are settings forms and 14 (Group M) are shared state/kit frames**, both low-complexity. Excluding them, M1's genuinely bespoke screens number ~21.
+- **M2** carries the most features (4) plus a share of F15, so their frame count (41) is held moderate by keeping their individual feature groups (D, E, F, J) mid-sized, the largest of which is 10 frames.
+- **M3** has the fewest frames (25) but co-owns F15, the highest-risk workstream, and owns F13, the only feature with an external financial dependency and the only one requiring server-side payment verification.
 - **M4** owns the most interaction-heavy group (I: 18 frames with realtime and permission states) plus the admin moderation surface (K).
 
-**The honest statement for the document:** *frame count is not the fairness metric.* Effort is balanced across feature count, frame count, risk ownership (F15, F13) and interaction complexity — and the weighting column above makes that auditable rather than a claim.
+**The honest statement for the document:** *frame count is not the fairness metric.* Effort is balanced across feature count, frame count, risk ownership (F15, F13) and interaction complexity, and the weighting column above makes that auditable rather than a claim.
 
-**Optional rebalance if the team wants a tighter frame split:** move **Group M (14 cross-cutting state frames)** from M1 to M3, giving M1 = 34 and M3 = 41. Group M contains no feature logic — only shared states — so the swap is clean. Record the decision in [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) if taken.
+**Optional rebalance if the team wants a tighter frame split:** move **Group M (14 cross-cutting state frames)** from M1 to M3, giving M1 = 34 and M3 = 41. Group M contains no feature logic, only shared states, so the swap is clean. Record the decision in [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) if taken.
 
 **Testing rotation principle:** nobody tests a feature they developed, and every member tests at least three features owned by someone else. See the matrix in §7.
 
@@ -104,7 +104,7 @@ Counted the way the rubric counts it:
 | **F06** | Study Plan Scheduling & Adaptive Re-planning | Student | Get a realistic, exam-aware revision calendar that fixes itself | Wizard (subjects → availability → deadlines → intensity) → AI plan → week/month calendar → session reminders → missed session → offer AI re-plan → accept | M3 | M2 |
 | **F07** | Progress Tracking & Analytics | Student, Tutor | See mastery, streaks and weak areas over time | Activity events recorded → nightly aggregation → dashboard (streak, mastery %, time) → subject breakdown → weakness radar → achievements → export PDF | M3 | M1 |
 | **F08** | Shared Study Folders | Study Group Member | Share resources with a study group, with real permissions | Create folder → invite by code / link / picker → assign view / comment / edit → members add materials and AI artefacts → folder activity feed | M4 | M3 |
-| **F09** | Group Revision Spaces | Study Group Member | Revise together, synchronously, in real time | Join by code → shared board + pinned resources → group chat → launch live group quiz → real-time progress + leaderboard → results summary | M4 | M2 |
+| **F09** | Group Revision Spaces | Study Group Member | Revise together, synchronously, in real time | Join by code → shared board + pinned resources → group chat → launch live group quiz → real-time progress + leaderboard → results summary | M4 | M1 |
 | **F10** | Resource Bookmarking & Collections | Student | Save anything for later and actually revisit it | Bookmark from any screen (long-press or toolbar) → choose / create collection → offline cache → collection view → resume navigation via deep link | M4 | M3 |
 | **F11** | Tutor Content Studio | Tutor | Publish and manage course material for a cohort | Create course → build roster → publish material → AI content review queue → approve / edit / reject → cohort progress view → send announcement → export gradebook | M2 | M4 |
 | **F12** | Admin Content Management & Moderation | Admin | Keep content correct, safe and compliant | Admin home KPIs → user list → user detail (role change / suspend) → moderation queue → flagged reports → taxonomy manage → AI config → audit log | M4 | M2 |
@@ -116,21 +116,21 @@ Counted the way the rubric counts it:
 
 ## 5. Advanced feature declaration (rubric: *"one approved advanced feature assigned to one or two developers"*)
 
-### F15 · AI Study Companion — Retrieval-Augmented Generation + Adaptive Coach
+### F15 · AI Study Companion, Retrieval-Augmented Generation + Adaptive Coach
 
 | Field | Value |
 |---|---|
 | **Feature ID** | F15 |
-| **Developers** | **M2 and M3** — exactly two, as the rubric permits |
+| **Developers** | **M2 and M3**, exactly two, as the rubric permits |
 | **Screens** | `73`–`80` (8 frames, group H) |
 | **Supporting screens for testing** | `41` (quota error), `76` (citation sheet), `133` (offline banner) |
-| **Tutor approval** | ⬜ **REQUIRED — record here once obtained** (`Approved by: ____ on ____, in class / by email`) |
+| **Tutor approval** | ⬜ **REQUIRED, record here once obtained** (`Approved by: ____ on ____, in class / by email`) |
 
-**Why this qualifies as an *advanced* feature** (the brief's own examples are *"LLM integration, maps, group chats, or real-time multiplayer"*) — F15 is not one technique, it is a **system of four techniques**:
+**Why this qualifies as an *advanced* feature** (the brief's own examples are *"LLM integration, maps, group chats, or real-time multiplayer"*), F15 is not one technique, it is a **system of four techniques**:
 
 1. **Retrieval-Augmented Generation over the user's own corpus.** Materials are chunked during extraction; each chunk is embedded on-device using `NLEmbedding` (NaturalLanguage framework) and stored as vectors alongside the chunk in SwiftData. A question is embedded, top-k chunks are retrieved by cosine similarity, and only those chunks are placed in the model's context window.
 2. **Grounded generation with enforced citation.** The prompt contract requires every factual claim to reference a retrieved chunk ID. Claims with no supporting chunk are dropped rather than emitted, and the UI renders citation chips (`76_Coach_Citation_SourceSheet`). This is the concrete answer to the brief's accuracy question.
-3. **Adaptive study path generation.** The coach reads `topicMastery` (written by F05 quiz attempts and F04 card ratings) and produces an ordered path — read → cards → quiz → review — each step with an estimated duration. This is **multi-source reasoning over the user's own behavioural data**, not a chat wrapper.
+3. **Adaptive study path generation.** The coach reads `topicMastery` (written by F05 quiz attempts and F04 card ratings) and produces an ordered path, read → cards → quiz → review, each step with an estimated duration. This is **multi-source reasoning over the user's own behavioural data**, not a chat wrapper.
 4. **Multi-tier execution with graceful degradation.** Runs on-device when Apple Intelligence is available (free, private, offline); falls back to Firebase AI Logic otherwise; shows `80_Coach_OnDeviceUnavailable_Fallback` rather than failing.
 
 **Ownership split (deliberate, to keep two developers non-blocking):**
@@ -152,7 +152,7 @@ protocol CoachPlanningService {
 }
 ```
 
-**Fallback if F15 slips:** the app remains fully functional — the Coach tab degrades to a "coming soon" state and F15 is documented as a Phase-2 roadmap item. **This must never block the prototype**, which is why M2 and M3 own only 2–3 standard features each.
+**Fallback if F15 slips:** the app remains fully functional, the Coach tab degrades to a "coming soon" state and F15 is documented as a Phase-2 roadmap item. **This must never block the prototype**, which is why M2 and M3 own only 2–3 standard features each.
 
 ---
 
@@ -179,9 +179,9 @@ The rubric asks for *"Sub-Tasks/Steps: Describe a brief flow or individual steps
 | **F12** | 1 Admin home KPIs · 2 Search users · 3 Change role / suspend (with reason) · 4 Work the moderation queue · 5 Resolve flagged reports · 6 Manage taxonomy · 7 Configure AI routing + quotas · 8 Review audit log | Self-suspension blocked · demoting the last admin blocked · removing content that is referenced elsewhere (cascade warning) · audit log must be append-only | `users/{uid}`, `reports/{id}`, `tags/{id}`, `aiConfig/{doc}`, `auditLog/{id}` |
 | **F13** | 1 Open paywall · 2 Select plan · 3 Order summary in BHD with VAT · 4 Choose method · 5 Tap Card SDK / BenefitPay redirect · 6 Processing state · 7 Server-side verification via webhook · 8 Entitlement written · 9 Receipt + unlocked features · 10 Manage / cancel | Card declined · 3-D Secure timeout · user closes app mid-payment (reconcile on next launch) · duplicate charge (idempotency key) · webhook arrives before redirect returns · refund path | `subscriptions/{uid}`, `payments/{id}`, custom claim `plan` |
 | **F14** | 1 Server event or local schedule fires · 2 Relevance + quiet-hours filter · 3 FCM push or local notification delivered · 4 Tap deep-links to the exact screen · 5 Inbox lists history · 6 Preferences respected | Permission denied (in-app explanation + settings deep link) · duplicate notifications (dedupe key) · quiet hours · device offline (deliver on reconnect) | `notifications/{id}`, `deviceTokens/{id}`, `notificationPrefs/{uid}` |
-| **F15** | 1 User asks a question in Coach · 2 Query embedded on-device · 3 Top-k chunks retrieved by cosine similarity · 4 Grounded prompt built with chunk IDs · 5 Router picks tier (on-device → cloud → fallback) · 6 Streamed answer with citation chips · 7 Tap citation → source sheet · 8 Adjust explanation level · 9 Request study path (reads `topicMastery`) · 10 Feedback captured | No relevant chunk found (say so — do **not** guess) · on-device model unavailable (show fallback screen) · very long answer (chunked streaming) · citation target material deleted · low-confidence response flagged | `chunks/{id}` (with vectors), `coachThreads/{id}`, `coachMessages/{id}`, `aiFeedback/{id}` |
+| **F15** | 1 User asks a question in Coach · 2 Query embedded on-device · 3 Top-k chunks retrieved by cosine similarity · 4 Grounded prompt built with chunk IDs · 5 Router picks tier (on-device → cloud → fallback) · 6 Streamed answer with citation chips · 7 Tap citation → source sheet · 8 Adjust explanation level · 9 Request study path (reads `topicMastery`) · 10 Feedback captured | No relevant chunk found (say so, do **not** guess) · on-device model unavailable (show fallback screen) · very long answer (chunked streaming) · citation target material deleted · low-confidence response flagged | `chunks/{id}` (with vectors), `coachThreads/{id}`, `coachMessages/{id}`, `aiFeedback/{id}` |
 
-**Design note to state in the document:** every feature above lists explicit edge cases. This is deliberate — the brief requires the prototype to include *"error and feedback states"*, and edge cases identified at design time are the cheapest possible way to satisfy that requirement.
+**Design note to state in the document:** every feature above lists explicit edge cases. This is deliberate, the brief requires the prototype to include *"error and feedback states"*, and edge cases identified at design time are the cheapest possible way to satisfy that requirement.
 
 ---
 
@@ -209,7 +209,7 @@ The rubric asks for *"Sub-Tasks/Steps: Describe a brief flow or individual steps
 
 **Handle → name legend for the matrix above:** M1 = Saleh Abdulla · M2 = Mohammed Almadhoon · M3 = Tasbeeh Saeed · M4 = Shahad Ashoor.
 
-**Cross-check rule:** for every feature, the primary tester, the secondary tester and the developer are three different people — so each feature is independently read by at least three team members before it counts as done. This is deliberate: the brief requires *"all members of the team must have a strong understanding of the entire application"*, and rotation is how that is actually achieved rather than assumed.
+**Cross-check rule:** for every feature, the primary tester, the secondary tester and the developer are three different people, so each feature is independently read by at least three team members before it counts as done. This is deliberate: the brief requires *"all members of the team must have a strong understanding of the entire application"*, and rotation is how that is actually achieved rather than assumed.
 
 
 

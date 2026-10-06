@@ -205,7 +205,7 @@ struct ProgressDashboardView: View {
                             Spacer(minLength: Spacing.s2)
                             Text(viewModel.masteryValue(topic.percent))
                                 .font(.sfBodyEmph)
-                                .foregroundStyle(topic.isWeak ? ColorTokens.warning : ColorTokens.successText)
+                                .foregroundStyle(topic.isWeak ? ColorTokens.warningText : ColorTokens.successText)
                         }
                     }
                 }
@@ -241,7 +241,7 @@ struct ProgressDashboardView: View {
         HStack(spacing: Spacing.s3) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.sfCaption)
-                .foregroundStyle(ColorTokens.warning)
+                .foregroundStyle(ColorTokens.warningText)
                 .accessibilityHidden(true)
 
             Text(topic.topic)
@@ -252,7 +252,7 @@ struct ProgressDashboardView: View {
 
             Text(viewModel.masteryValue(topic.percent))
                 .font(.sfBodyEmph)
-                .foregroundStyle(ColorTokens.warning)
+                .foregroundStyle(ColorTokens.warningText)
         }
         .padding(Spacing.s3)
         .frame(maxWidth: .infinity, alignment: .leading)

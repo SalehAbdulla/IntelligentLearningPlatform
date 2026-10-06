@@ -740,6 +740,7 @@
 "tutor.courseMaterials"           = "%d published";
 "tutor.courseArchived"            = "Archived";
 "tutor.archive"                   = "Archive";
+"tutor.unarchive"                 = "Unarchive";
 "tutor.termDates"                 = "%@ – %@";
 "tutor.newCourse"                 = "New course";
 "tutor.editCourse"                = "Edit course";

@@ -62,7 +62,7 @@ struct AdminDashboardView: View {
                     systemImage: "exclamationmark.triangle.fill"
                 )
                 .font(.sfCallout)
-                .foregroundStyle(ColorTokens.warning)
+                .foregroundStyle(ColorTokens.warningText)
             }
             if viewModel.atRiskCount > 0 {
                 Label(

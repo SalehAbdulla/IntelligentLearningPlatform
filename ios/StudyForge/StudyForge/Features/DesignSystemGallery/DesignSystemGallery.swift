@@ -53,6 +53,11 @@ struct DesignSystemGallery: View {
                 ("error", ColorTokens.error),
                 ("outline", ColorTokens.outline),
             ])
+            swatchRow([
+                ("secondaryText", ColorTokens.secondaryText),
+                ("accentText", ColorTokens.accentText),
+                ("warningText", ColorTokens.warningText),
+            ])
             HStack(spacing: Spacing.s3) {
                 Text("Correct")
                     .font(.sfCaption)
@@ -64,6 +69,7 @@ struct DesignSystemGallery: View {
                     .font(.sfCaption)
                     .foregroundStyle(ColorTokens.successText)
             }
+            caption("The *Text tokens are the AA-safe text variants of their hue: use them wherever the colour itself is the text. successText 5.5:1, secondaryText 5.5:1, accentText 5.2:1 and warningText 5.0:1 on surface. The bare secondary/accent/warning tokens stay fill-only.")
         }
     }
 

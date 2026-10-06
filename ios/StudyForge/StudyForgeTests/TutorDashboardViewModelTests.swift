@@ -116,5 +116,42 @@ struct TutorDashboardViewModelTests {
 
         let course = Course(name: "IT8108", code: "IT8108", tutorUid: "t1")
         #expect(viewModel.enrolmentLabel(course) == L10n.tutorCourseEnrolments.string(0))
+        #expect(viewModel.archivedBadge == L10n.tutorCourseArchived.string)
+    }
+
+    @Test("Archiving a course writes the flag, and the row reflects it after the reload")
+    func archivePersists() async throws {
+        let store = InMemoryCourseStore(courses: [course(id: "a")])
+        let viewModel = TutorDashboardViewModel(uid: "t1", store: store)
+
+        await viewModel.load()
+        let listed = try #require(viewModel.courses.first)
+        await viewModel.setArchived(listed, archived: true)
+
+        #expect(viewModel.courses.first?.isArchived == true)
+        #expect(try await store.course(id: "a")?.isArchived == true, "the flag is written, not just shown")
+    }
+
+    @Test("The archive swipe offers the action that is not already in effect")
+    func archiveActionTitleFlips() {
+        let viewModel = TutorDashboardViewModel(uid: "t1", store: InMemoryCourseStore())
+        var course = Course(name: "IT8108", code: "IT8108", tutorUid: "t1")
+
+        #expect(viewModel.archiveActionTitle(course) == L10n.tutorArchive.string, "a live course offers Archive")
+
+        course.isArchived = true
+        #expect(viewModel.archiveActionTitle(course) == L10n.tutorUnarchive.string, "an archived course offers Unarchive")
+    }
+
+    @Test("A failed archive surfaces as an AppError rather than a silent no-op")
+    func archiveFailureMaps() async {
+        let store = InMemoryCourseStore(courses: [course(id: "a")])
+        let viewModel = TutorDashboardViewModel(uid: "t1", store: store)
+
+        await viewModel.load()
+        await store.forceFailure(.storageFailed)
+        await viewModel.setArchived(course(id: "a"), archived: true)
+
+        #expect(viewModel.error != nil)
     }
 }

@@ -1,4 +1,4 @@
-# 05 — Data Model & Security
+# 05, Data Model & Security
 
 > Firestore + Cloud Storage schema, role model and security rules for **StudyForge**. Feeds Phase 7 of the [roadmap](01-ROADMAP-PHASES-TODOLIST.md) and the Design Document's architecture section.
 
@@ -8,7 +8,7 @@
 
 | # | Rule | Reason |
 |---|---|---|
-| 1 | **Denormalise for reads.** Store course name, deck title and author display name on the child document. | Firestore has no joins; a client-side join costs N extra reads — the classic cost trap. |
+| 1 | **Denormalise for reads.** Store course name, deck title and author display name on the child document. | Firestore has no joins; a client-side join costs N extra reads, the classic cost trap. |
 | 2 | **Subcollections for high-cardinality children.** `decks/{id}/cards/{id}`, `quizzes/{id}/questions/{id}`. | Keeps parent documents small and avoids the 1 MiB document limit. |
 | 3 | **Every document carries `createdAt`, `updatedAt`, `byUid`.** | Auditability (LO3) and conflict resolution during offline sync. |
 | 4 | **Soft delete** via `deletedAt`, purged by a scheduled function. | Undo, and referential safety during sync. |
@@ -52,7 +52,7 @@
 | `quizzes/{quizId}` | Generated quiz metadata + settings | owner · folder members · tutor | owner |
 | `quizzes/{id}/questions/{qId}` | Question, options, answer, explanation, provenance | owner · folder members | owner |
 | `quizAttempts/{id}` | Attempt score + per-question responses | self · tutor (cohort) · admin | self · CF |
-| `topicMastery/{uid}/topics/{topicId}` | Per-topic mastery — feeds the weakness radar | self · tutor (aggregate) · admin | **CF only** |
+| `topicMastery/{uid}/topics/{topicId}` | Per-topic mastery, feeds the weakness radar | self · tutor (aggregate) · admin | **CF only** |
 | `aiCache/{textHash}` | Cached generations keyed by SHA-256 of source text | CF only | **CF only** |
 | `aiUsage/{uid}/days/{yyyy-mm-dd}` | Per-user daily AI generation counter | self (for quota UX) · admin | **CF only** |
 | `coachThreads/{threadId}` | Advanced-feature conversation thread | owner | owner |
@@ -110,7 +110,7 @@
   "learningStyle": "visual",      // visual | verbal | readwrite | kinesthetic
   "accessibility": { "dyslexiaFont": false, "textScale": 1.0, "reduceMotion": false },
   "weeklyStudyGoalHours": 12,     // study goal, B03
-  "targetGrade": "B",             // A | B | C | D  — placeholder scale, see docs/09 Q12
+  "targetGrade": "B",             // A | B | C | D, placeholder scale, see docs/09 Q12
   "createdAt": "<timestamp>", "updatedAt": "<timestamp>", "byUid": "<uid>"
 }
 ```
@@ -120,7 +120,7 @@
 {
   "ownerUid": "<uid>",
   "courseId": "cs201",
-  "title": "Lecture 4 — Normalisation",
+  "title": "Lecture 4, Normalisation",
   "sourceType": "pdf",            // pdf | image | scan | link | text
   "storagePath": "users/<uid>/materials/<id>.pdf",
   "pageCount": 22,
@@ -128,7 +128,7 @@
   "textHash": "sha256:9f2c…",     // powers the AI response cache
   "tags": ["databases", "normalisation"],
   "visibility": "private",        // private | folder | course
-  "ocrQuality": 0.94,             // 0…1 — flags scans that need review
+  "ocrQuality": 0.94,             // 0…1, flags scans that need review
   "deletedAt": null,
   "createdAt": "<timestamp>", "updatedAt": "<timestamp>", "byUid": "<uid>"
 }
@@ -138,7 +138,7 @@
 // decks/{deckId}/cards/{cardId}
 {
   "front": "What is 3NF?",
-  "back": "A relation where every non-key attribute depends only on the primary key — no transitive dependencies.",
+  "back": "A relation where every non-key attribute depends only on the primary key, no transitive dependencies.",
   "cardType": "qa",               // qa | cloze | imageOcclusion | reversible
   "tags": ["databases"],
   "provenance": { "materialId": "<id>", "chunkIds": ["c12","c13"], "pageNumbers": [18] },
@@ -149,7 +149,7 @@
 ```
 
 ```jsonc
-// subscriptions/{uid}   — written ONLY by the Tap webhook handler
+// subscriptions/{uid}, written ONLY by the Tap webhook handler
 {
   "plan": "plus",
   "status": "active",             // active | past_due | canceled | expired
@@ -177,7 +177,7 @@
 ## 4. Cloud Storage layout
 
 ```
-{default bucket — region us-central1}
+{default bucket, region us-central1}
 users/{uid}/materials/{materialId}.pdf          # owner only
 users/{uid}/materials/{materialId}_thumb.jpg    # lists never load the full PDF
 users/{uid}/avatars/{uid}.jpg                   # world-readable to signed-in users
@@ -203,7 +203,7 @@ Three roles and one plan value are mirrored into the Firebase Auth token as **cu
 }
 ```
 
-**Why claims rather than reading `users/{uid}` in every rule:** rules can read the token for **free**, but reading another document inside a rule costs a billed read and slows the query. This is simultaneously a cost optimisation and a performance one — worth stating explicitly in the document.
+**Why claims rather than reading `users/{uid}` in every rule:** rules can read the token for **free**, but reading another document inside a rule costs a billed read and slows the query. This is simultaneously a cost optimisation and a performance one, worth stating explicitly in the document.
 
 **Capability layering (from [doc 00 §7](00-MASTER-PLAN.md)):** *Study Group Member* is **not** a role. It is the presence of `groupIds` plus a `folders/{id}/members/{uid}` document carrying `permission: view | comment | edit`.
 
@@ -227,9 +227,9 @@ service cloud.firestore {
     function isSelf(u)    { return signedIn() && uid() == u; }
     function untouched(f) { return request.resource.data[f] == resource.data[f]; }
 
-    // 1. DENY BY DEFAULT — there is no catch-all `allow read, write: if true` anywhere.
+    // 1. DENY BY DEFAULT, there is no catch-all `allow read, write: if true` anywhere.
 
-    // 2. ALLOWLIST on the user record — a field is NOT client-writable until it is NAMED.
+    // 2. ALLOWLIST on the user record, a field is NOT client-writable until it is NAMED.
     //    Pinning only `role` and `plan` (the original rule) left every OTHER field
     //    writable, including fields the schema had not grown yet. See decision D25.
     function editableProfileFields() {
@@ -268,14 +268,14 @@ service cloud.firestore {
       }
     }
 
-    // 4. IMMUTABLE AUDIT LOG — append-only; not even admins may rewrite history.
+    // 4. IMMUTABLE AUDIT LOG, append-only; not even admins may rewrite history.
     match /auditLog/{entryId} {
       allow read:   if isAdmin();
       allow create: if false;            // the Admin SDK (Cloud Functions) bypasses rules
       allow update, delete: if false;
     }
 
-    // 5. SERVER-OWNED COLLECTIONS — clients read their own, never write.
+    // 5. SERVER-OWNED COLLECTIONS, clients read their own, never write.
     match /subscriptions/{userId}              { allow read: if isSelf(userId) || isAdmin(); allow write: if false; }
     match /payments/{paymentId}                { allow read: if isAdmin() || resource.data.uid == uid(); allow write: if false; }
     match /aiCache/{hash}                      { allow read, write: if false; }
@@ -290,7 +290,7 @@ service cloud.firestore {
       allow update, delete: if isAdmin() || resource.data.ownerUid == uid();
     }
 
-    // 7. TUTOR REVIEW QUEUE — only tutors/admins, and every rejection needs a reason.
+    // 7. TUTOR REVIEW QUEUE, only tutors/admins, and every rejection needs a reason.
     match /reviewQueue/{id} {
       allow read:  if isTutor();
       allow write: if isTutor()
@@ -301,11 +301,11 @@ service cloud.firestore {
 }
 ```
 
-**The allowlist is the point, not the field list.** `onlyChanges(editableProfileFields())` denies every key it has not been told about, so a field added in a later sprint is **not** client-writable until somebody names it here and justifies it. Three families are named today, all written by the profile wizard: the academic fields (B01), the learning preference `learningStyle` (B02), and the study goals `weeklyStudyGoalHours` + `targetGrade` (B03). The preferences are named in the allowlist rather than stored under `users/{uid}/private` — which is already self-read/self-write — because that subcollection has **no field guard at all**, so anything placed there is client-writable the moment it exists. That is the fail-open hole this allowlist was introduced to close (D25); routing the wizard's output into it would have reopened the same hole under a different path. Verified both ways: the emulator tests assert the wizard's fields succeed *and* that `streak`, `badges` and any unnamed field still fail. One name was deliberately **not** added even though the design named the control: B03's *exam dates*, which are per-course and per-term and therefore belong to the study plan (F06) rather than to a profile document — see docs/09 Q11.
+**The allowlist is the point, not the field list.** `onlyChanges(editableProfileFields())` denies every key it has not been told about, so a field added in a later sprint is **not** client-writable until somebody names it here and justifies it. Three families are named today, all written by the profile wizard: the academic fields (B01), the learning preference `learningStyle` (B02), and the study goals `weeklyStudyGoalHours` + `targetGrade` (B03). The preferences are named in the allowlist rather than stored under `users/{uid}/private`, which is already self-read/self-write, because that subcollection has **no field guard at all**, so anything placed there is client-writable the moment it exists. That is the fail-open hole this allowlist was introduced to close (D25); routing the wizard's output into it would have reopened the same hole under a different path. Verified both ways: the emulator tests assert the wizard's fields succeed *and* that `streak`, `badges` and any unnamed field still fail. One name was deliberately **not** added even though the design named the control: B03's *exam dates*, which are per-course and per-term and therefore belong to the study plan (F06) rather than to a profile document, see docs/09 Q11.
 
 **Storage rules follow the same philosophy:** `users/{uid}/**` is owner-only · `courses/{courseId}/published/**` is readable by enrolled students · `reports/**` is admin-only · everything else is denied.
 
-**Emulator tests are mandatory.** `backend/rules-tests/firestore.rules.test.mjs` must contain **negative** tests: a student reading another student's material, a non-tutor writing the review queue, and a client trying to update its own `subscriptions` document. *Proving the rules deny the wrong people is stronger evidence for LO3 than proving they allow the right ones.* The emulator proves the rule **text**; because it is a re-implementation rather than the live service, `backend/rules-tests/live-rules-probe.py` additionally runs as a real client against the **deployed** rules — emulator-green says nothing about what was actually deployed (D25).
+**Emulator tests are mandatory.** `backend/rules-tests/firestore.rules.test.mjs` must contain **negative** tests: a student reading another student's material, a non-tutor writing the review queue, and a client trying to update its own `subscriptions` document. *Proving the rules deny the wrong people is stronger evidence for LO3 than proving they allow the right ones.* The emulator proves the rule **text**; because it is a re-implementation rather than the live service, `backend/rules-tests/live-rules-probe.py` additionally runs as a real client against the **deployed** rules, emulator-green says nothing about what was actually deployed (D25).
 
 ---
 
@@ -324,7 +324,7 @@ service cloud.firestore {
 | `reviewQueue` | `courseId` asc, `status` asc, `createdAt` asc | Tutor queue |
 | `notifications` | `uid` asc, `createdAt` desc | Inbox |
 
-Every index is declared in `backend/firestore.indexes.json` so the build is reproducible — a missing index is a runtime crash on a cold query, not a compile error.
+Every index is declared in `backend/firestore.indexes.json` so the build is reproducible, a missing index is a runtime crash on a cold query, not a compile error.
 
 ---
 
@@ -336,13 +336,13 @@ Every index is declared in `backend/firestore.indexes.json` so the build is repr
 | Is uploaded material used for model training? | **No.** | Stated in the privacy copy; no data sharing with providers beyond the inference request |
 | Right to deletion | Full self-service | `22_Settings_AIDataPrivacy` → "Delete my AI data" purges `summaries`, `decks`, `quizzes`, `chunks`, `coachThreads` and derived cache entries |
 | Retention | Indefinite while the account is active; 30-day purge after account deletion | Scheduled Cloud Function |
-| Minors | Out of scope — stated as an explicit limitation | Product decision, documented |
+| Minors | Out of scope, stated as an explicit limitation | Product decision, documented |
 | Card data | Never stored, never seen by us | Tap SDK tokenises client-side; we hold only a charge reference |
 | Academic integrity | Disclosed, not hidden | Tutor review queue (`105`), "AI-drafted" watermark on summaries, an explicit academic-integrity note in onboarding, and **no auto-grading of assessed work** |
 | Accessibility | Committed and testable | VoiceOver labels, Dynamic Type to AX5, contrast ≥4.5:1, RTL, dyslexia-friendly font option |
 | Auditability | Admin actions are provably logged | Append-only `auditLog`; rules deny update and delete |
 
-**Why this section exists in the design document:** LO3 explicitly assesses *"professional ethics"*. Naming the hard problems — AI accuracy, student data, minors, academic integrity, card data — and showing a concrete control for each is exactly what that learning outcome is looking for.
+**Why this section exists in the design document:** LO3 explicitly assesses *"professional ethics"*. Naming the hard problems, AI accuracy, student data, minors, academic integrity, card data, and showing a concrete control for each is exactly what that learning outcome is looking for.
 
 
 
