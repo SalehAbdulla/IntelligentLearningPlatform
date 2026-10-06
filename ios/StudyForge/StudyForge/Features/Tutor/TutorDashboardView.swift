@@ -105,7 +105,7 @@ struct TutorDashboardView: View {
         VStack(alignment: .leading, spacing: Spacing.s1) {
             Text(value)
                 .font(.sfTitleM)
-                .foregroundStyle(isAlert && value != "0" ? ColorTokens.warning : ColorTokens.textPrimary)
+                .foregroundStyle(isAlert && value != "0" ? ColorTokens.warningText : ColorTokens.textPrimary)
 
             Text(label)
                 .font(.sfFootnote)
