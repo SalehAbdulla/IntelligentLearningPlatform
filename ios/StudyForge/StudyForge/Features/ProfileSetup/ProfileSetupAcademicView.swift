@@ -6,18 +6,14 @@
 //  wizard: university picker, major field, year segmented control, enrolled-course
 //  chips, Continue.
 //
-//  DEVIATION FROM THE DESIGN, RECORDED HERE
-//  ---------------------------------------
-//  The frame's course row includes an **add button**, which implies a searchable course
-//  catalogue behind it. There is no catalogue to search: `courses/{courseId}` is readable
-//  only by an enrolled student, and a student mid-wizard is enrolled in nothing (see the
-//  note in `AcademicCatalogue`). So the chips ARE the picker in F01 — every known course
-//  is shown and tap-toggles — and the add/search flow arrives with C01 in F02, when there
-//  is a real list to search. docs/03's description column records the same deviation.
-//
-//  Free-text type input is deliberately NOT accepted instead of the missing button: it
-//  would let a student store a course id that no `courses/{id}` document backs, which
-//  surfaces much later as material filed under a course that does not exist.
+//  WHY THE PICKERS ALSO ACCEPT FREE TEXT
+//  ------------------------------------
+//  The catalogue is a starter set (see the note in `AcademicCatalogue`), and a global product
+//  cannot enumerate every institution or course. So the catalogue's entries are offered as
+//  quick-picks and the student can type their own: their institution, and any subject the list
+//  lacks. A typed subject's NAME is its stored id, because there is no institutional catalogue
+//  to key against: the student's own words are the source of truth, which is what makes this
+//  screen usable outside one polytechnic. docs/03 §B records the same.
 //
 
 import SwiftUI
@@ -31,6 +27,10 @@ struct ProfileSetupAcademicView: View {
 
     /// Chip selection animates, so it has to respect Reduce Motion like everything else.
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// The subject being typed into the add field: throwaway UI state, so it lives here
+    /// rather than in the view model that owns the saved profile.
+    @State private var draftCourse = ""
 
     init(
         profile: any ProfileService,
@@ -107,62 +107,49 @@ struct ProfileSetupAcademicView: View {
         }
     }
 
-    /// A `Menu` rather than a `Picker`: a menu renders the whole row as the control, so
-    /// the entire field is tappable and the chrome matches the text fields beside it. A
-    /// `.menu` picker sizes to its own label and leaves the rest of the row inert, which
-    /// reads as a broken field.
+    /// A free-text field with the catalogue's institutions as quick-picks, not a closed menu:
+    /// a global product cannot enumerate every university, so the list can only suggest. What
+    /// the student types is what is stored.
     private var universityField: some View {
-        VStack(alignment: .leading, spacing: Spacing.s2) {
+        VStack(alignment: .leading, spacing: Spacing.s3) {
 
-            fieldLabel(L10n.profileAcademicUniversity.string)
+            SFTextField(
+                label: L10n.profileAcademicUniversity.string,
+                text: universityBinding,
+                placeholder: L10n.profileAcademicUniversityPlaceholder.string,
+                error: viewModel.universityError,
+                submitLabel: .next,
+                autocapitalization: .words,
+                autocorrectionDisabled: false,
+                onSubmit: {}
+            )
 
-            Menu {
-                ForEach(viewModel.catalogue.universities, id: \.self) { name in
-                    Button {
-                        viewModel.university = name
-                        viewModel.didEdit(.university)
-                    } label: {
-                        // A tick against the current value, because a menu gives no other
-                        // feedback about what is already chosen.
-                        if viewModel.university == name {
-                            Label(name, systemImage: "checkmark")
-                        } else {
-                            Text(name)
+            if !viewModel.catalogue.universities.isEmpty {
+                SFChipFlow {
+                    ForEach(viewModel.catalogue.universities, id: \.self) { name in
+                        SFChoiceChip(title: name, isSelected: viewModel.university == name) {
+                            viewModel.university = name
+                            viewModel.didEdit(.university)
                         }
                     }
                 }
-            } label: {
-                HStack(spacing: Spacing.s3) {
-                    Text(viewModel.university ?? L10n.profileAcademicUniversityPlaceholder.string)
-                        .font(.sfBody)
-                        .foregroundStyle(
-                            viewModel.university == nil
-                                ? ColorTokens.textSecondary
-                                : ColorTokens.textPrimary
-                        )
-                        // Wraps rather than truncating: an institution name is a value,
-                        // and a clipped value at AX5 is unreadable for the people who
-                        // need AX5.
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer(minLength: 0)
-
-                    Image(systemName: "chevron.up.chevron.down")
-                        .font(.sfFootnote)
-                        .foregroundStyle(ColorTokens.textTertiary)
-                        .accessibilityHidden(true)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .sfFieldBackground(hasError: viewModel.universityError != nil)
-            .accessibilityLabel(L10n.profileAcademicUniversity.string)
-            .accessibilityValue(
-                viewModel.university ?? L10n.profileAcademicUniversityPlaceholder.string
-            )
-
-            SFFieldFeedback(error: viewModel.universityError, hint: nil)
         }
+    }
+
+    /// `university` is optional: nil means "nothing chosen", which is what validation and the
+    /// quick-pick ticks want, while a text field needs a plain `String`, so an all-whitespace
+    /// value round-trips back to nil.
+    private var universityBinding: Binding<String> {
+        Binding(
+            get: { viewModel.university ?? "" },
+            set: { newValue in
+                viewModel.university = newValue.trimmingCharacters(in: .whitespaces).isEmpty
+                    ? nil
+                    : newValue
+                viewModel.didEdit(.university)
+            }
+        )
     }
 
     private var majorField: some View {
@@ -198,21 +185,29 @@ struct ProfileSetupAcademicView: View {
 
             fieldLabel(L10n.profileAcademicCourses.string)
 
-            if viewModel.catalogue.courses.isEmpty {
-                // An empty catalogue is a real state, not an impossible one: the list is
-                // placeholder data in F01 and comes from C01 later. An empty row with no
-                // explanation would read as a bug in the screen.
+            if viewModel.selectedCourses.isEmpty && viewModel.catalogue.courses.isEmpty {
+                // Not a dead end: the add field below is the real way in, which is why this
+                // only appears when there is neither a catalogue nor a typed subject.
                 Text(L10n.profileAcademicCoursesEmpty.string)
                     .font(.sfCallout)
                     .foregroundStyle(ColorTokens.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
-            } else {
+            }
+
+            if !viewModel.selectedCourses.isEmpty || !viewModel.catalogue.courses.isEmpty {
                 SFChipFlow {
+                    // The catalogue's courses: each is a tap-to-toggle chip.
                     ForEach(viewModel.catalogue.courses) { course in
                         SFChoiceChip(
                             title: course.name,
                             isSelected: viewModel.isSelected(course)
                         ) {
+                            viewModel.toggle(course)
+                        }
+                    }
+                    // Subjects the student typed: shown chosen, and a tap removes one.
+                    ForEach(viewModel.selectedCourses.filter { viewModel.catalogue.course(for: $0.id) == nil }) { course in
+                        SFChoiceChip(title: course.name, isSelected: true) {
                             viewModel.toggle(course)
                         }
                     }
@@ -223,8 +218,23 @@ struct ProfileSetupAcademicView: View {
                 )
             }
 
+            SFTextField(
+                label: L10n.profileAcademicAddCourse.string,
+                text: $draftCourse,
+                placeholder: L10n.profileAcademicAddCoursePlaceholder.string,
+                submitLabel: .done,
+                autocorrectionDisabled: false,
+                onSubmit: { addDraftCourse() }
+            )
+
             SFFieldFeedback(error: viewModel.coursesError, hint: nil)
         }
+    }
+
+    /// Adds the typed subject on Return and clears the field, ready for the next one.
+    private func addDraftCourse() {
+        viewModel.addCustomCourse(draftCourse)
+        draftCourse = ""
     }
 
     /// The caption above a control, hidden from VoiceOver because the control carries the

@@ -163,6 +163,22 @@ struct ProfileEditTests {
         #expect(viewModel.universityOptions.first == "Arabian Gulf University")
     }
 
+    @Test("A typed course is added, marks the form changed, and is saved")
+    func aTypedCourseIsSaved() async {
+        let profile = MockProfileService(latency: .zero)
+        let viewModel = model(academic: academic, profile: profile)
+
+        viewModel.addCustomCourse("Linear Algebra")
+
+        #expect(viewModel.selectedCourseIds.contains("Linear Algebra"))
+        #expect(viewModel.hasUnsavedChanges)
+
+        await viewModel.save()
+
+        // Catalogue ids first, then the unknown one, sorted: the same order B01 writes.
+        #expect(profile.lastSavedProfile?.courseIds == ["IT8108", "c_104", "Linear Algebra"])
+    }
+
     // MARK: Refusals
 
     @Test("A blank name is reported, and nothing is written")

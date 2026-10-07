@@ -146,12 +146,14 @@
 "profile.academic.title"                 = "دراستك";
 "profile.academic.subtitle"              = "بهذه البيانات نُصنّف موادك ونبني خطتك الدراسية. يمكنك تغييرها لاحقًا.";
 "profile.academic.university"            = "الجامعة";
-"profile.academic.universityPlaceholder" = "اختر جامعتك";
+"profile.academic.universityPlaceholder" = "اكتب جامعتك أو اخترها";
 "profile.academic.major"                 = "التخصص أو البرنامج";
 "profile.academic.majorHint"             = "البرنامج الذي أنت مسجّل فيه";
 "profile.academic.year"                  = "السنة الدراسية";
 "profile.academic.courses"               = "المقررات المسجّلة";
-"profile.academic.coursesEmpty"          = "قائمة المقررات غير متاحة بعد. يمكنك إضافة مقرراتك لاحقًا.";
+"profile.academic.coursesEmpty"          = "ستظهر قائمة مقرراتك هنا. أضف مقررًا خاصًا بك أدناه.";
+"profile.academic.addCourse"             = "أضف مقررًا";
+"profile.academic.addCoursePlaceholder"  = "اكتب اسم المقرر ثم اضغط تمّ";
 "profile.academic.submitting"            = "جارٍ الحفظ…";
 "profile.academic.error.university"      = "اختر جامعتك.";
 "profile.academic.error.major"           = "أدخل تخصصك أو برنامجك.";

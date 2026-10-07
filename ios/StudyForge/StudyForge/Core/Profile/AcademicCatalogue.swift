@@ -53,11 +53,12 @@ struct CourseOption: Identifiable, Hashable, Sendable {
 /// Everything the academic step chooses from.
 struct AcademicCatalogue: Sendable, Equatable {
 
-    /// Institutions offered by the university picker.
+    /// Institutions offered as quick-picks by the university picker.
     ///
-    /// Deliberately short. It contains the two institutions the repository already
-    /// references, and no more, because inventing a longer list would look like real
-    /// data — the real list is institutional data that arrives with enrolment (C01/F02).
+    /// Deliberately short, and now a SUGGESTION rather than a boundary: the picker is a free
+    /// text field, so a student types their own institution when it is not here. Inventing a
+    /// longer list would look like real data; the real institutional list arrives with
+    /// enrolment (C01/F02).
     var universities: [String]
 
     /// Years offered by the segmented control.
@@ -67,7 +68,8 @@ struct AcademicCatalogue: Sendable, Equatable {
     /// pattern at the institutions above.
     var years: [Int]
 
-    /// Selectable courses, in the order they should be shown.
+    /// Courses offered as quick-picks, in the order they should be shown. Like `universities`,
+    /// a suggestion: a student may add subjects the list does not carry.
     var courses: [CourseOption]
 
     // TODO(M1 · F02): Replace this scaffolding with the student's real enrolled courses.

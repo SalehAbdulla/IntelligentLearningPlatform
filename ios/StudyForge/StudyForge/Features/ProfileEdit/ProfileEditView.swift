@@ -33,6 +33,10 @@ struct ProfileEditView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// The subject being typed into the add field: throwaway UI state, so it lives here
+    /// rather than in the view model that owns the saved profile.
+    @State private var draftCourse = ""
+
     init(container: AppContainer) {
         _viewModel = State(
             initialValue: ProfileEditViewModel(
@@ -134,57 +138,48 @@ struct ProfileEditView: View {
 
     /// A `Menu` rather than a `Picker`, for the reason B01 documents: a menu makes the whole row
     /// the control, so the field is tappable and its chrome matches the text fields beside it.
+    /// A free-text field with the known institutions as quick-picks, not a closed menu: a global
+    /// product cannot enumerate every university, so the list can only suggest. What the student
+    /// types is what is stored.
     private var universityField: some View {
-        VStack(alignment: .leading, spacing: Spacing.s2) {
+        VStack(alignment: .leading, spacing: Spacing.s3) {
 
-            fieldLabel(L10n.profileAcademicUniversity.string)
+            SFTextField(
+                label: L10n.profileAcademicUniversity.string,
+                text: universityBinding,
+                placeholder: L10n.profileAcademicUniversityPlaceholder.string,
+                error: viewModel.universityError,
+                submitLabel: .next,
+                autocapitalization: .words,
+                autocorrectionDisabled: false,
+                onSubmit: {}
+            )
 
-            Menu {
-                ForEach(viewModel.universityOptions, id: \.self) { name in
-                    Button {
-                        viewModel.university = name
-                        viewModel.didEdit(.university)
-                    } label: {
-                        // A tick against the current value, because a menu gives no other
-                        // feedback about what is already chosen.
-                        if viewModel.university == name {
-                            Label(name, systemImage: "checkmark")
-                        } else {
-                            Text(name)
+            if !viewModel.universityOptions.isEmpty {
+                SFChipFlow {
+                    ForEach(viewModel.universityOptions, id: \.self) { name in
+                        SFChoiceChip(title: name, isSelected: viewModel.university == name) {
+                            viewModel.university = name
+                            viewModel.didEdit(.university)
                         }
                     }
                 }
-            } label: {
-                HStack(spacing: Spacing.s3) {
-                    Text(viewModel.university ?? L10n.profileAcademicUniversityPlaceholder.string)
-                        .font(.sfBody)
-                        .foregroundStyle(
-                            viewModel.university == nil
-                                ? ColorTokens.textSecondary
-                                : ColorTokens.textPrimary
-                        )
-                        // Wraps rather than truncating: an institution name is a value, and a
-                        // clipped value at AX5 is unreadable for the people who need AX5.
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer(minLength: 0)
-
-                    Image(systemName: "chevron.up.chevron.down")
-                        .font(.sfFootnote)
-                        .foregroundStyle(ColorTokens.textTertiary)
-                        .accessibilityHidden(true)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .sfFieldBackground(hasError: viewModel.universityError != nil)
-            .accessibilityLabel(L10n.profileAcademicUniversity.string)
-            .accessibilityValue(
-                viewModel.university ?? L10n.profileAcademicUniversityPlaceholder.string
-            )
-
-            SFFieldFeedback(error: viewModel.universityError, hint: nil)
         }
+    }
+
+    /// `university` is optional: nil means "nothing chosen", while a text field needs a plain
+    /// `String`, so an all-whitespace value round-trips back to nil.
+    private var universityBinding: Binding<String> {
+        Binding(
+            get: { viewModel.university ?? "" },
+            set: { newValue in
+                viewModel.university = newValue.trimmingCharacters(in: .whitespaces).isEmpty
+                    ? nil
+                    : newValue
+                viewModel.didEdit(.university)
+            }
+        )
     }
 
     private var majorField: some View {
@@ -232,8 +227,23 @@ struct ProfileEditView: View {
                 value: viewModel.selectedCourseIds
             )
 
+            SFTextField(
+                label: L10n.profileAcademicAddCourse.string,
+                text: $draftCourse,
+                placeholder: L10n.profileAcademicAddCoursePlaceholder.string,
+                submitLabel: .done,
+                autocorrectionDisabled: false,
+                onSubmit: { addDraftCourse() }
+            )
+
             SFFieldFeedback(error: viewModel.coursesError, hint: nil)
         }
+    }
+
+    /// Adds the typed subject on Return and clears the field, ready for the next one.
+    private func addDraftCourse() {
+        viewModel.addCustomCourse(draftCourse)
+        draftCourse = ""
     }
 
     /// The caption above a control, hidden from VoiceOver because the control carries the same
