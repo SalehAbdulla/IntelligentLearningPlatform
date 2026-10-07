@@ -120,6 +120,19 @@ def main() -> int:
         print()
         print("1. creation and the self-service allowlist")
 
+        # THE TRAP THE APP HAS TO AVOID. A merge-write against a document that does not exist
+        # is a CREATE, and `create` pins role/plan, which the wizard's payload does not carry.
+        # So this is DENIED, and the app has to bootstrap the document first (the Swift side's
+        # `FirebaseAuthService.ensureUserDocument`). If this ever returns 200, the create rule
+        # has been loosened and the bootstrap is no longer what protects the wizard.
+        status, _ = patch(
+            f"users/{uid}",
+            {"university": {"stringValue": "Bahrain Polytechnic"}},
+            token,
+            "university",
+        )
+        check("write a profile field BEFORE any document exists", status, 403)
+
         # Creation is pinned to student/free by the rules, so this is the only shape that
         # can succeed. A full-document write, i.e. no update mask.
         status, _ = patch(
