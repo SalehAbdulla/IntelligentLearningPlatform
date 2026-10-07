@@ -27,15 +27,34 @@ final class NotificationPreferencesViewModel {
     var quietStartHour = 22
     var quietEndHour = 7
 
+    /// What a test reminder did, so the screen can say so rather than look inert.
+    enum TestReminderOutcome: Equatable {
+        case idle
+        case sent
+        case denied
+    }
+
     private(set) var isLoading = false
     private(set) var isSaving = false
     private(set) var didSave = false
     private(set) var error: AppError?
 
-    private let store: any NotificationStore
+    /// What the last "send a test reminder" tap did. `.idle` until the student tries it.
+    private(set) var testReminderOutcome: TestReminderOutcome = .idle
+    private(set) var isSendingTestReminder = false
 
-    init(store: any NotificationStore) {
+    private let store: any NotificationStore
+    private let authorizer: any NotificationAuthorizer
+    private let scheduler: any NotificationScheduler
+
+    init(
+        store: any NotificationStore,
+        authorizer: any NotificationAuthorizer = InMemoryNotificationAuthorizer(),
+        scheduler: any NotificationScheduler = InMemoryNotificationScheduler()
+    ) {
         self.store = store
+        self.authorizer = authorizer
+        self.scheduler = scheduler
     }
 
     // MARK: Derived
@@ -121,5 +140,36 @@ final class NotificationPreferencesViewModel {
         } catch {
             self.error = AppError.from(error)
         }
+    }
+
+    /// Sends one reminder right now, so notifications can be demonstrated and verified on demand:
+    /// `docs/11` §6 needs the reminder to fire during the demo.
+    ///
+    /// Permission is resolved first through the same seam M02 uses: undecided prompts, granted
+    /// proceeds, denied is reported. A "sent" that never appeared would be the worst possible demo
+    /// answer, so the outcome is always one the screen can show.
+    func sendTestReminder() async {
+        guard !isSendingTestReminder else { return }
+        isSendingTestReminder = true
+        defer { isSendingTestReminder = false }
+
+        var status = await authorizer.currentStatus()
+        if status == .notDetermined {
+            status = await authorizer.requestAuthorization()
+        }
+
+        guard status.allowsDelivery else {
+            testReminderOutcome = .denied
+            return
+        }
+
+        await scheduler.deliver(
+            StudyNotification(
+                kind: .studyReminder,
+                title: L10n.notificationTestReminder.string,
+                body: L10n.notificationTestReminderBody.string
+            )
+        )
+        testReminderOutcome = .sent
     }
 }
