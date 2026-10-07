@@ -21,6 +21,9 @@
 
 import SwiftUI
 
+// Accessibility: the wizard is a container of step views, each of which carries its own labels; the step
+// transition goes through `Motion.respecting`, so Reduce Motion shortens it rather than removing it.
+
 struct ProfileSetupFlowView: View {
 
     let profile: any ProfileService
