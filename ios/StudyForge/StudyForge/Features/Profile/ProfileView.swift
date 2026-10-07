@@ -34,7 +34,8 @@ struct ProfileView: View {
         _viewModel = State(
             initialValue: ProfileViewModel(
                 session: container.session,
-                stored: container.storedProfile
+                stored: container.storedProfile,
+                catalogue: container.catalogue
             )
         )
     }

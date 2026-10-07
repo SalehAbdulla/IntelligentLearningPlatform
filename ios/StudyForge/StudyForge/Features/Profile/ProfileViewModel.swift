@@ -46,7 +46,7 @@ final class ProfileViewModel {
     init(
         session: UserSession?,
         stored: StoredProfile?,
-        catalogue: AcademicCatalogue = .placeholder
+        catalogue: AcademicCatalogue = SeededCourseCatalogueStore.starter
     ) {
         self.name = (session?.displayName ?? "")
             .trimmingCharacters(in: .whitespacesAndNewlines)

@@ -44,6 +44,7 @@ struct ProfileEditView: View {
                 // The academic half comes from the document the gate already read, so opening
                 // the editor costs no extra round trip.
                 initialAcademic: container.storedProfile?.academicProfile,
+                catalogue: container.catalogue,
                 auth: container.auth,
                 profile: container.profile
             )
