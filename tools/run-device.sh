@@ -109,9 +109,15 @@ step "Installing $(basename "$APP_PATH")"
 xcrun devicectl device install app --device "$UDID" "$APP_PATH"
 
 step "Launching $BUNDLE_ID"
-xcrun devicectl device process launch --device "$UDID" "$BUNDLE_ID" >/dev/null
-
-ok "StudyForge $SHA ($BRANCH) is running on '$DEVICE_NAME'"
+if xcrun devicectl device process launch --device "$UDID" "$BUNDLE_ID" >/dev/null 2>&1; then
+  ok "StudyForge $SHA ($BRANCH) is running on '$DEVICE_NAME'"
+else
+  # The install above is the part that had to succeed: a LOCKED phone refuses to launch
+  # anything (SBMainWorkspace: "the device was not, or could not be, unlocked"), which is a
+  # state the student clears by tapping the icon, not a build failure.
+  warn "installed, but iOS refused to launch it."
+  ok "StudyForge $SHA ($BRANCH) is installed on '$DEVICE_NAME'. Unlock it and tap the icon."
+fi
 
 if [[ "$BRANCH" != "develop" ]]; then
   warn "that build came from '$BRANCH', not 'develop'.
