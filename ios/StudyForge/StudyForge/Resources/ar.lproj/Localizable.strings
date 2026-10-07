@@ -580,6 +580,9 @@
 "notification.save"              = "حفظ";
 "notification.saving"            = "جارٍ الحفظ…";
 "notification.saved"             = "تم الحفظ";
+"notification.testReminder"      = "أرسل تذكيرًا تجريبيًا";
+"notification.testReminderBody"  = "هكذا يبدو تذكير المراجعة.";
+"notification.testReminderSent"  = "أُرسل. تحقّق من مركز الإشعارات.";
 "notification.permissionTitle"   = "ابقَ على المسار";
 "notification.permissionBody"    = "يمكن لـ StudyForge أن يذكّرك عند حلول موعد الجلسة، لتبقى خطتك على المسار.";
 "notification.permissionEnable"  = "تفعيل التذكيرات";

@@ -44,7 +44,8 @@ struct SettingsView: View {
                 NavigationLink {
                     NotificationPreferencesView(
                         store: container.notifications,
-                        authorizer: container.notificationAuthorizer
+                        authorizer: container.notificationAuthorizer,
+                        scheduler: container.notificationScheduler
                     )
                 } label: {
                     Label(L10n.notificationInboxTitle.string, systemImage: "bell")

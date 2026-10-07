@@ -581,6 +581,9 @@
 "notification.save"              = "Save";
 "notification.saving"            = "Saving…";
 "notification.saved"             = "Saved";
+"notification.testReminder"      = "Send a test reminder";
+"notification.testReminderBody"  = "This is what a study reminder looks like.";
+"notification.testReminderSent"  = "Sent. Check your notification centre.";
 "notification.permissionTitle"   = "Stay on track";
 "notification.permissionBody"    = "StudyForge can remind you when a session is due, so your plan keeps you on track.";
 "notification.permissionEnable"  = "Enable reminders";

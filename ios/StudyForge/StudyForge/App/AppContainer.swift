@@ -157,6 +157,10 @@ final class AppContainer {
     /// previewable and testable without a real prompt appearing.
     let notificationAuthorizer: any NotificationAuthorizer
 
+    /// Posts a notification to the system (F14). Protocol-backed so the "send a test reminder" action
+    /// is testable without a real banner, and so previews never fire one.
+    let notificationScheduler: any NotificationScheduler
+
     /// The student's recent search queries (M05). Small and local, behind a protocol so the
     /// recent-searches rule is testable without touching the real `UserDefaults`.
     let recentSearches: any RecentSearchStore
@@ -265,6 +269,7 @@ final class AppContainer {
         groups: any GroupStore = InMemoryGroupStore(),
         notifications: any NotificationStore = InMemoryNotificationStore(),
         notificationAuthorizer: any NotificationAuthorizer = InMemoryNotificationAuthorizer(),
+        notificationScheduler: any NotificationScheduler = InMemoryNotificationScheduler(),
         recentSearches: any RecentSearchStore = InMemoryRecentSearchStore(),
         aiConfigurations: any AIConfigurationStore = InMemoryAIConfigurationStore(),
         adminDirectory: any AdminDirectoryStore = InMemoryAdminDirectoryStore(),
@@ -297,6 +302,7 @@ final class AppContainer {
         self.groups = groups
         self.notifications = notifications
         self.notificationAuthorizer = notificationAuthorizer
+        self.notificationScheduler = notificationScheduler
         self.recentSearches = recentSearches
         self.aiConfigurations = aiConfigurations
         self.adminDirectory = adminDirectory
@@ -493,6 +499,7 @@ extension AppContainer {
             groups: FileGroupStore(),
             notifications: FileNotificationStore(),
             notificationAuthorizer: SystemNotificationAuthorizer(),
+            notificationScheduler: SystemNotificationScheduler(),
             recentSearches: UserDefaultsRecentSearchStore(),
             aiConfigurations: FileAIConfigurationStore(),
             adminDirectory: FileAdminDirectoryStore(),
