@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+// Accessibility: each KPI card reads as one element and the decorative glyph is hidden.
+
 struct AdminDashboardView: View {
 
     @State private var viewModel: AdminDashboardViewModel
