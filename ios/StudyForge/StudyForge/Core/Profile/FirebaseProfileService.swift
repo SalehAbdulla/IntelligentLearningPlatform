@@ -12,6 +12,11 @@
 //  `streak` and `badges` a Cloud Function owns would disappear the moment a student
 //  corrects their major.
 //
+//  It also makes sure the document it writes INTO exists. A merge-write to a missing document
+//  is a create, and the create rule pins `role` and `plan`, which no wizard step sends, so an
+//  account without a document could not finish a single step. `ensureUserDocument` is that
+//  bootstrap, defined once in `FirebaseAuthService` beside the sign-up write it mirrors.
+//
 
 import Foundation
 import FirebaseAuth
@@ -84,9 +89,10 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
     /// - Parameter fields: field name → value. Names come from `ProfileField`, so this
     ///   write and the rules allowlist cannot drift apart.
     private func write(_ fields: [String: Any]) async throws {
-        guard let uid = Auth.auth().currentUser?.uid else {
+        guard let user = Auth.auth().currentUser else {
             throw ProfileError.notSignedIn
         }
+        let uid = user.uid
 
         // Stamped here rather than by each caller: `updatedAt` is writable but must not be
         // forgeable, and a client clock is trivially backdated.
@@ -94,6 +100,15 @@ final class FirebaseProfileService: ProfileService, @unchecked Sendable {
         body[ProfileField.updatedAt] = FieldValue.serverTimestamp()
 
         do {
+            // A merge-write to a document that does not exist is a CREATE, and the create
+            // rule demands `role` and `plan`, which no wizard step sends, because a profile
+            // form has no business writing an entitlement. Without this line an account with no
+            // document (one created in the Firebase console, or one whose sign-up write never
+            // landed) cannot get past the wizard's FIRST step: every step fails with
+            // PERMISSION_DENIED on a form that looks complete. Measured against the live
+            // project: the same payload is 403 with no document and 200 with one.
+            try await FirebaseAuthService.ensureUserDocument(in: firestore, for: user)
+
             // `merge: true` — an update must not become a replace, or the `plan`, `streak`
             // and `badges` a Cloud Function owns would vanish the moment a student corrects
             // their major.

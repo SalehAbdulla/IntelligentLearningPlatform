@@ -172,6 +172,12 @@ final class FirebaseAuthService: AuthService, @unchecked Sendable {
             change.displayName = name
             try await change.commitChanges()
 
+            // An account can reach here without a document (one created in the Firebase
+            // console, say). A merge-write against a missing document is a CREATE, which the
+            // rules reject unless it carries `role` and `plan`, so bootstrap it first and this
+            // is the update it was written to be.
+            try await Self.ensureUserDocument(in: firestore, for: user)
+
             // Then the document, so a tutor roster (and anything else reading `users/{uid}`)
             // does not keep the old name. Only these two fields, deliberately: re-sending
             // `role` or `plan` would be rejected by `keeps()` for anyone who is not a free
@@ -375,18 +381,68 @@ extension FirebaseAuthService {
     /// display and joins, while the CLAIMS are what authorisation reads. Nothing this
     /// function writes grants a capability, so a client that lies here gains nothing.
     private func writeUserProfile(uid: String, email: String, displayName: String) async throws {
-        let profile: [String: Any] = [
+        try await firestore
+            .collection(Self.usersCollection)
+            .document(uid)
+            .setData(Self.newUserDocument(displayName: displayName, email: email), merge: true)
+    }
+
+    /// The document every account must have, in the only shape a client may create it in.
+    ///
+    /// ONE DEFINITION, TWO WRITERS. Registration writes this, and `ensureUserDocument` writes
+    /// it for an account that arrived without one. A second copy would be the usual pair that
+    /// drifts apart quietly, and here the drift is invisible until a student cannot save
+    /// anything: `create` is the only rule that lets a client set `role` and `plan`, and it
+    /// pins them to exactly these two values.
+    ///
+    /// - Parameter email: optional, because an account can have none and still needs a
+    ///   document. Lowercased, so one address typed two ways cannot become two spellings of
+    ///   one account.
+    static func newUserDocument(displayName: String, email: String?) -> [String: Any] {
+        var document: [String: Any] = [
             "displayName": displayName,
-            "email": email.lowercased(),
             "role": AppRole.student.rawValue,
             "plan": SubscriptionPlan.free.rawValue,
             "createdAt": FieldValue.serverTimestamp(),
         ]
 
-        try await firestore
-            .collection(Self.usersCollection)
-            .document(uid)
-            .setData(profile, merge: true)
+        if let email, !email.isEmpty {
+            document["email"] = email.lowercased()
+        }
+
+        return document
+    }
+
+    /// Creates `users/{uid}` when it is absent, and does nothing when it is already there.
+    ///
+    /// WHY THIS EXISTS
+    /// ---------------
+    /// A `setData(merge: true)` against a document that does not exist is a CREATE, not an
+    /// UPDATE, and Firestore evaluates the two rules separately. The profile wizard writes
+    /// `university`, `major`, `year`, `courseIds` and `updatedAt`, none of which is `role` or
+    /// `plan`, so against a missing document it fails the create condition and the whole write
+    /// returns PERMISSION_DENIED. Measured against the live project: the same payload is 403
+    /// with no document and 200 with one.
+    ///
+    /// An account can arrive without its document. The Firebase console creates Auth users
+    /// and never touches Firestore, and only `signUp` has ever written this document, so such
+    /// a student reaches the wizard through the gate (a read of a missing document is
+    /// allowed, and reads as "no profile yet") and then cannot complete its FIRST step.
+    ///
+    /// - Note: the values are the least-privilege defaults, and they have to be. `create` is
+    ///   pinned to `role == 'student'` and `plan == 'free'`, so a console-created TUTOR cannot
+    ///   bootstrap a document that says `tutor`. Their claims still carry the real role and the
+    ///   claims are what authorisation reads, so nothing is escalated; but the document is
+    ///   display data, and a tutor without one needs it created out of band, exactly as their
+    ///   role was.
+    static func ensureUserDocument(in firestore: Firestore, for user: FirebaseAuth.User) async throws {
+        let reference = firestore.collection(usersCollection).document(user.uid)
+        let snapshot = try await reference.getDocument()
+        guard !snapshot.exists else { return }
+
+        try await reference.setData(
+            newUserDocument(displayName: Self.displayName(for: user), email: user.email)
+        )
     }
 }
 
