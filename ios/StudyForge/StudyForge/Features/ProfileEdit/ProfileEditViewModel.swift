@@ -7,12 +7,13 @@
 //
 //  WHY THIS IS NOT B01's VIEW MODEL REUSED
 //  --------------------------------------
-//  The two screens share a field SET and that is all. A create screen offers the catalogue and
-//  nothing else; an EDIT screen has to be able to show what is already stored even when the
-//  placeholder catalogue does not know it — a real institution, a real course id. That is why
-//  `universityOptions` and `courseOptions` below can contain values the catalogue lacks, and
-//  why a save keeps them instead of quietly replacing them with the catalogue's contents.
-//  B01 deliberately refuses free text; B07 must not destroy a value a student already has.
+//  The two screens share a field SET and that is all. Both now accept values the catalogue
+//  does not know, because a global app cannot enumerate every institution or course. The
+//  catalogue is a set of quick-picks, not a boundary: a student types their own, and its
+//  name is its id. An EDIT screen additionally has to SHOW values already stored: a real
+//  institution, a real course id, which is why `universityOptions` and `courseOptions`
+//  below can contain values the catalogue lacks, and why a save keeps them instead of
+//  quietly replacing them with the catalogue's contents.
 //
 //  WHY IT TRACKS THE ORIGINAL VALUES
 //  --------------------------------
@@ -148,6 +149,23 @@ final class ProfileEditViewModel {
             selectedCourseIds.remove(course.id)
         } else {
             selectedCourseIds.insert(course.id)
+        }
+        didEdit(.courses)
+    }
+
+    /// Adds a subject the catalogue does not know: the same self-description B01 offers, so
+    /// an edit screen is not a more limited place than the wizard that created the profile.
+    /// The typed name IS the stored id; a name matching a known course selects it instead.
+    func addCustomCourse(_ raw: String) {
+        let name = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+
+        if let known = catalogue.courses.first(where: {
+            $0.name.caseInsensitiveCompare(name) == .orderedSame
+        }) {
+            selectedCourseIds.insert(known.id)
+        } else {
+            selectedCourseIds.insert(name)
         }
         didEdit(.courses)
     }
