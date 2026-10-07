@@ -12,7 +12,7 @@ Legend: `[ ]` open, `[x]` done.
 ## 0. Done recently (context, not work)
 
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
-- [x] F12 admin: K06 taxonomy management, subjects and tags CRUD with merge
+- [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
@@ -62,8 +62,10 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 - [x] K05 flagged-report decision panel
 - [x] K08 dedicated audit log
 - [x] K06 taxonomy management: subject and tag CRUD, drag reorder, merge duplicates, usage count (`114_Admin_Taxonomy_Manage`)
-- [ ] K09 broadcast composer: audience segment builder, push preview, schedule, send with confirmation (`117_Admin_Broadcast_Notification`)
+- [x] K09 broadcast composer: audience segment builder, push preview, schedule, send with confirmation (`117_Admin_Broadcast_Notification`)
 - [ ] (optional, K08) redacted-fields indicator (filter and export are done)
+
+Group K (admin content management) is now feature-complete.
 
 
 ## 3. Backend (work-queue B)
