@@ -227,6 +227,41 @@ struct ProfileSetupAcademicTests {
         #expect(profile.savedCount == 1, "the second tap must not write twice")
     }
 
+    // MARK: Free entry
+
+    @Test("A subject the catalogue does not know can be typed, and is saved by its name")
+    func customCourseIsSaved() async {
+        let profile = MockProfileService(latency: .zero)
+        var received: [AcademicProfile] = []
+        let viewModel = model(profile: profile, onSaved: { received.append($0) })
+        completed(viewModel)
+
+        viewModel.addCustomCourse("  Linear Algebra  ")
+
+        await viewModel.submit()
+
+        // The catalogue's course first, then the typed one: a typed subject's name IS its id.
+        #expect(received.first?.courseIds == ["c_101", "Linear Algebra"])
+    }
+
+    @Test("Typing the name of a known course selects it instead of creating a near-duplicate")
+    func customCourseMatchingAKnownNameSelectsIt() {
+        let viewModel = model()
+
+        viewModel.addCustomCourse("data structures")
+
+        #expect(viewModel.selectedCourseIds == ["c_104"])
+    }
+
+    @Test("A blank subject is ignored")
+    func blankCustomCourseIsIgnored() {
+        let viewModel = model()
+
+        viewModel.addCustomCourse("   ")
+
+        #expect(viewModel.selectedCourseIds.isEmpty)
+    }
+
     // MARK: Injected catalogue
 
     @Test("The pickers come from the injected catalogue, not a hard-coded list")
