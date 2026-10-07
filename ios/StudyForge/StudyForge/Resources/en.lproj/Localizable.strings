@@ -712,6 +712,27 @@
 "admin.reportStatus.approved"         = "Kept";
 "admin.reportStatus.removed"          = "Removed";
 "admin.reportStatus.escalated"        = "Escalated";
+"admin.auditTaxonomyChanged"          = "Taxonomy changed";
+
+/* ── F12 Admin - taxonomy management (K06) ──────────────────────────────── */
+"admin.taxonomy.title"          = "Subjects and tags";
+"admin.taxonomy.kind.subject"   = "Subjects";
+"admin.taxonomy.kind.tag"       = "Tags";
+"admin.taxonomy.add"            = "Add";
+"admin.taxonomy.addPlaceholder" = "New name";
+"admin.taxonomy.edit"           = "Edit";
+"admin.taxonomy.rename"         = "Rename";
+"admin.taxonomy.renameTitle"    = "Rename '%@'";
+"admin.taxonomy.delete"         = "Delete";
+"admin.taxonomy.merge"          = "Merge into...";
+"admin.taxonomy.mergeTitle"     = "Merge into";
+"admin.taxonomy.mergeBody"      = "Merges '%@' into the term you choose. The counts add up.";
+"admin.taxonomy.emptyTitle"     = "Nothing here yet";
+"admin.taxonomy.emptyBody"      = "Add the first subject or tag for this platform.";
+"admin.taxonomy.usage"          = "%d items";
+"admin.taxonomy.unused"         = "Unused";
+"admin.taxonomy.nameRequired"   = "A name is required.";
+"admin.taxonomy.duplicate"      = "That name is already in use.";
 
 /* ── F13 Subscription & Payments (L01–L10, B13) ─────────────────────────── */
 "subscription.title"              = "Subscription";
