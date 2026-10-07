@@ -83,6 +83,8 @@ final class AdminDashboardViewModel {
     var kpiAIToday: String { L10n.adminKpiAIToday.string }
     var usersTitle: String { L10n.adminUsersTitle.string }
     var aiTitle: String { L10n.adminTitle.string }
+    var moderationTitle: String { L10n.adminModerationTitle.string }
+    var auditLogTitle: String { L10n.adminAuditLogTitle.string }
 
     func costUsedTitle(used: Int, limit: Int) -> String { L10n.adminCostUsed.string(used, limit) }
 
