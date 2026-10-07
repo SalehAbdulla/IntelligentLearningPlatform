@@ -895,4 +895,144 @@ struct TaxonomyEditingTests {
     }
 }
 
+
+// MARK: - Broadcast store
+
+@Suite("Broadcast store (F12)")
+struct BroadcastStoreTests {
+
+    @Test("An untouched store has no announcements")
+    func emptyByDefault() async throws {
+        let store = InMemoryBroadcastStore()
+        #expect(try await store.broadcasts().isEmpty)
+    }
+
+    @Test("Save reads back, and replaces rather than duplicates")
+    func saveReadsBack() async throws {
+        let store = InMemoryBroadcastStore()
+        let broadcast = Broadcast(segment: .everyone, title: "Hi", message: "Body", isSent: true)
+        try await store.save(broadcast)
+        try await store.save(broadcast)
+        #expect(try await store.broadcasts().count == 1)
+    }
+
+    @Test("Announcements come back newest first")
+    func newestFirst() async throws {
+        let older = Broadcast(segment: .everyone, title: "Old", message: "a", createdAt: .now.addingTimeInterval(-600))
+        let newer = Broadcast(segment: .everyone, title: "New", message: "b", createdAt: .now)
+        let store = InMemoryBroadcastStore(seededWith: [older, newer])
+        #expect(try await store.broadcasts().map(\.title) == ["New", "Old"])
+    }
+
+    @Test("A forced failure surfaces as a storage error, and clearing restores success")
+    func forcedFailure() async throws {
+        let store = InMemoryBroadcastStore(seededWith: [Broadcast(segment: .everyone, title: "Hi", message: "b")])
+        await store.forceFailure(.storageFailed)
+        do {
+            _ = try await store.broadcasts()
+            Issue.record("expected a storage error")
+        } catch {
+            #expect(error as? AdminError == .storageFailed)
+        }
+        await store.forceFailure(nil)
+        #expect(try await store.broadcasts().isEmpty == false)
+    }
+}
+
+// MARK: - Broadcast composer
+
+@Suite("Broadcast composer (F12)")
+@MainActor
+struct BroadcastComposerViewModelTests {
+
+    private func model() -> (BroadcastComposerViewModel, InMemoryBroadcastStore, InMemoryAIConfigurationStore) {
+        let store = InMemoryBroadcastStore()
+        let audit = InMemoryAIConfigurationStore()
+        let directory = InMemoryAdminDirectoryStore(seededWith: PlatformUser.samples)
+        let viewModel = BroadcastComposerViewModel(
+            store: store,
+            audit: audit,
+            directory: directory,
+            actorName: "Shahad Ashoor"
+        )
+        return (viewModel, store, audit)
+    }
+
+    @Test("The audience size is derived from the roster")
+    func audienceSize() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+
+        viewModel.segment = .everyone
+        #expect(viewModel.audienceSize == PlatformUser.samples.count)
+
+        viewModel.segment = .tutors
+        #expect(viewModel.audienceSize == 1)
+
+        viewModel.segment = .students
+        #expect(viewModel.audienceSize == 2, "two sample students")
+
+        viewModel.segment = .atRiskStudents
+        #expect(viewModel.audienceSize == 1, "one sample student is at risk")
+    }
+
+    @Test("Sending records the announcement and the audit line, and clears the form")
+    func sendRecords() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        viewModel.segment = .students
+        viewModel.title = "Revision clinic"
+        viewModel.message = "Thursday at 4pm."
+
+        #expect(await viewModel.send())
+
+        let saved = try await store.broadcasts()
+        #expect(saved.count == 1)
+        #expect(saved.first?.isSent == true)
+        #expect(saved.first?.recipientCount == 2)
+        #expect(viewModel.title.isEmpty)
+        #expect(viewModel.sentConfirmation == "Revision clinic")
+        #expect(try await audit.auditLog().first?.action == .broadcastSent)
+    }
+
+    @Test("A scheduled announcement is not marked sent yet")
+    func scheduled() async throws {
+        let (viewModel, store, _) = model()
+        await viewModel.load()
+        viewModel.title = "Later"
+        viewModel.message = "Body"
+        viewModel.isScheduling = true
+        viewModel.scheduledAt = .now.addingTimeInterval(86_400)
+
+        #expect(await viewModel.send())
+
+        let saved = try await store.broadcasts()
+        #expect(saved.first?.isSent == false)
+        #expect(saved.first?.isScheduled == true)
+    }
+
+    @Test("An empty title, body or audience is refused and nothing is written")
+    func refusesEmpty() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        viewModel.title = ""
+        viewModel.message = ""
+
+        #expect(await viewModel.send() == false)
+        #expect(viewModel.formError != nil)
+        #expect(try await store.broadcasts().isEmpty)
+        #expect(try await audit.auditLog().isEmpty)
+    }
+
+    @Test("Every string comes from the catalogue")
+    func copyIsLocalised() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        #expect(viewModel.navTitle == L10n.adminBroadcastTitle.string)
+        #expect(viewModel.sendButton == L10n.adminBroadcastSend.string)
+        #expect(AudienceSegment.tutors.title == L10n.adminBroadcastAudienceTutors.string)
+        #expect(AuditAction.broadcastSent.title == L10n.adminAuditBroadcastSent.string)
+    }
+}
+
 }
