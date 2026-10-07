@@ -22,10 +22,13 @@
 
 import Foundation
 
-// TODO(M1 · F02): Detect a duplicate upload by content hash and offer Replace / Keep both,
-// rather than silently adding a second copy (docs/02 §6, F02 edge case "duplicate file").
-// Done when: importing a file whose hash matches an existing material prompts the student, a
-// test covers both choices, and the chosen path is recorded.
+//  WHY A DUPLICATE IS CAUGHT BEFORE IT IS WRITTEN
+//  ---------------------------------------------
+//  The same material imported twice is almost never wanted: it doubles the library entry, and every
+//  AI feature would then generate from it twice: two summaries, two decks, two sets of cards for one
+//  piece of material. So the extracted text's hash (the same `textHash` the AI cache keys on) is
+//  checked against the library before the write, and the student chooses Replace or Keep both
+//  (docs/02 §6, the F02 "duplicate file" edge case) rather than the app guessing on their behalf.
 
 @MainActor
 @Observable
@@ -57,6 +60,15 @@ final class ImportMaterialViewModel {
     /// Set once something was imported, so the sheet can close itself and the library reload.
     private(set) var didImport = false
 
+    /// The library item a pending import would duplicate, when one was found. Non-`nil` means the
+    /// student is being asked what to do, and the import is held until they answer.
+    private(set) var duplicate: Material?
+
+    /// The import waiting on that answer.
+    private var pendingImport: Material?
+
+    var isResolvingDuplicate: Bool { duplicate != nil }
+
     private let store: any MaterialStore
     private let extractor: any TextExtractor
 
@@ -85,6 +97,12 @@ final class ImportMaterialViewModel {
     var tagsHint: String { L10n.importTagsHint.string }
     var submitTitle: String { L10n.importSubmit.string }
     var submittingTitle: String { L10n.importSubmitting.string }
+    var duplicateTitle: String { L10n.importDuplicateTitle.string }
+    var duplicateReplaceTitle: String { L10n.importDuplicateReplace.string }
+    var duplicateKeepBothTitle: String { L10n.importDuplicateKeepBoth.string }
+
+    /// The prompt's message, naming the item already in the library so the student knows what it is.
+    var duplicateMessage: String { L10n.importDuplicateBody.string(duplicate?.title ?? "") }
 
     var isSubmitEnabled: Bool { !isImporting }
 
@@ -101,7 +119,7 @@ final class ImportMaterialViewModel {
         isImporting = true
         defer { isImporting = false }
 
-        await save(
+        await addIfUnique(
             Material(title: name, source: .text, text: text, tags: parsedTags())
         )
     }
@@ -129,7 +147,7 @@ final class ImportMaterialViewModel {
             let typed = title.trimmingCharacters(in: .whitespacesAndNewlines)
             let fromFile = url.deletingPathExtension().lastPathComponent
 
-            await save(
+            await addIfUnique(
                 Material(
                     title: typed.isEmpty ? fromFile : typed,
                     source: .pdf,
@@ -145,13 +163,59 @@ final class ImportMaterialViewModel {
 
     // MARK: Helpers
 
-    private func save(_ material: Material) async {
+    /// Writes the material, unless its text is already in the library, in which case it is held and
+    /// the student is asked instead. See the note at the top of the file.
+    private func addIfUnique(_ material: Material) async {
         do {
-            try await store.add(material)
+            let existing = try await store.all().first {
+                $0.textHash == material.textHash && $0.id != material.id
+            }
+
+            guard let existing else {
+                try await store.add(material)
+                didImport = true
+                return
+            }
+
+            duplicate = existing
+            pendingImport = material
+        } catch {
+            self.error = AppError.from(error)
+        }
+    }
+
+    /// Replaces the copy already in the library with the new one: the student meant to update it.
+    func replaceDuplicate() async {
+        guard let pendingImport, let duplicate else { return }
+        await resolve {
+            try await self.store.delete(id: duplicate.id)
+            try await self.store.add(pendingImport)
+        }
+    }
+
+    /// Keeps both: the student knows they have two versions and wants the second one too.
+    func keepBoth() async {
+        guard let pendingImport else { return }
+        await resolve { try await self.store.add(pendingImport) }
+    }
+
+    /// Dismisses the prompt without importing, leaving the filled-in form on screen.
+    func cancelDuplicate() {
+        duplicate = nil
+        pendingImport = nil
+    }
+
+    /// Runs the chosen write, reports a failure, and clears the held import either way: a prompt
+    /// that outlived its decision would be worse than an error.
+    private func resolve(_ write: () async throws -> Void) async {
+        do {
+            try await write()
             didImport = true
         } catch {
             self.error = AppError.from(error)
         }
+        duplicate = nil
+        pendingImport = nil
     }
 
     private func reset() {
