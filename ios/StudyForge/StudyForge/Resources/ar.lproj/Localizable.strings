@@ -137,6 +137,12 @@
 "home.capabilities.heading"  = "صلاحياتك";
 "home.role.label"            = "الدور";
 "home.plan.label"            = "الخطة";
+"session.role.student"       = "طالب";
+"session.role.tutor"         = "مدرّس";
+"session.role.admin"         = "مسؤول";
+"session.plan.free"          = "مجاني";
+"session.plan.plus"          = "بلس";
+"session.plan.pro"           = "برو";
 "home.tutorStudio.label"     = "استوديو المدرّس";
 "home.studyGroups.label"     = "مجموعات الدراسة";
 "home.available"             = "متاحة";
