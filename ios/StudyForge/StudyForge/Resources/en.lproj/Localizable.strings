@@ -256,6 +256,10 @@
 "import.tagsHint"           = "Separate with commas.";
 "import.submit"             = "Add to library";
 "import.submitting"         = "Adding…";
+"import.duplicate.title"    = "Already in your library";
+"import.duplicate.body"     = "You already imported %@. Replace it, or keep both?";
+"import.duplicate.replace"  = "Replace";
+"import.duplicate.keepBoth" = "Keep both";
 "import.error.name"         = "Give it a title.";
 "import.error.text"         = "Paste the material in first.";
 "import.error.unreadable"   = "That file couldn't be opened.";
