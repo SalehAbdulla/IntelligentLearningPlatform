@@ -209,6 +209,53 @@ struct NotificationPreferencesViewModelTests {
         #expect(viewModel.didSave == false)
     }
 
+    // MARK: Test reminder
+
+    @Test("Sending a test reminder delivers one, and says so")
+    func testReminderDelivers() async {
+        let scheduler = InMemoryNotificationScheduler()
+        let viewModel = NotificationPreferencesViewModel(
+            store: InMemoryNotificationStore(),
+            authorizer: InMemoryNotificationAuthorizer(status: .granted),
+            scheduler: scheduler
+        )
+
+        await viewModel.sendTestReminder()
+
+        #expect(scheduler.deliveredNotifications.count == 1)
+        #expect(scheduler.deliveredNotifications.first?.kind == .studyReminder)
+        #expect(viewModel.testReminderOutcome == .sent)
+    }
+
+    @Test("An undecided permission is prompted before anything is sent")
+    func testReminderPromptsWhenUndecided() async {
+        let scheduler = InMemoryNotificationScheduler()
+        let viewModel = NotificationPreferencesViewModel(
+            store: InMemoryNotificationStore(),
+            authorizer: InMemoryNotificationAuthorizer(status: .notDetermined, outcome: .granted),
+            scheduler: scheduler
+        )
+
+        await viewModel.sendTestReminder()
+
+        #expect(scheduler.deliveredNotifications.count == 1)
+    }
+
+    @Test("A denied permission sends nothing, and says so rather than looking inert")
+    func testReminderDeniedSendsNothing() async {
+        let scheduler = InMemoryNotificationScheduler()
+        let viewModel = NotificationPreferencesViewModel(
+            store: InMemoryNotificationStore(),
+            authorizer: InMemoryNotificationAuthorizer(status: .denied),
+            scheduler: scheduler
+        )
+
+        await viewModel.sendTestReminder()
+
+        #expect(scheduler.deliveredNotifications.isEmpty)
+        #expect(viewModel.testReminderOutcome == .denied)
+    }
+
     @Test("Every string comes from the catalogue")
     func copyIsLocalised() {
         let viewModel = NotificationPreferencesViewModel(store: InMemoryNotificationStore())
