@@ -14,6 +14,9 @@
 
 import SwiftUI
 
+// Accessibility: the add button is labelled, each subject and tag row reads as one element, and the merge
+// glyph is hidden.
+
 struct TaxonomyManageView: View {
 
     @State private var viewModel: TaxonomyManageViewModel
