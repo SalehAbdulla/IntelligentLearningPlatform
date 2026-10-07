@@ -152,10 +152,9 @@ struct AIAdminView: View {
 
     // MARK: Audit trail
 
-    // TODO(M4 · F12): Promote this inline trail to the dedicated K08 screen (`116_Admin_AuditLog`):
-    // a filterable audit log (actor, action, target, timestamp) with an export and a
-    // redacted-fields indicator. The trail is already written; this needs the screen.
-    // Done when: K08 filters by actor and action and exports.
+    // A short summary of the trail. The dedicated K08 screen (`116_Admin_AuditLog`, reached from the
+    // admin dashboard via `AuditLogView`) is where it is filtered by actor and action and exported;
+    // this list stays here as the "what just changed" glance next to the settings that produced it.
     private var auditSection: some View {
         VStack(alignment: .leading, spacing: Spacing.s3) {
             Text(viewModel.auditHeading)
