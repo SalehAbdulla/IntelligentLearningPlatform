@@ -14,6 +14,9 @@
 
 import SwiftUI
 
+// Accessibility: the reason filter is labelled, each report row reads as one element, and each decision
+// announces its outcome as a hint.
+
 struct ModerationQueueView: View {
 
     @State private var viewModel: ModerationQueueViewModel
