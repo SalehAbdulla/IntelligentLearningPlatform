@@ -151,11 +151,24 @@ struct AdminDashboardView: View {
                 manageRow(viewModel.aiTitle, "slider.horizontal.3")
             }
 
-            // TODO(M4 · F12): Add the missing admin surfaces as rows into their own screens: the
-            // content moderation queue (K04, a Tier B "must operate" item), flagged reports (K05),
-            // taxonomy management (K06) and the broadcast composer (K09), each backed by a store
-            // the way `adminDirectory` backs K02.
-            // Done when: approving a report removes the content and records an audit line.
+            // The remaining admin surfaces are tracked as TODOs on the dashboard: the taxonomy manager
+            // (K06) and the broadcast composer (K09). The moderation queue (K04, with K05's decision
+            // panel) and the dedicated audit log (K08) now have their own screens, linked above.
+            NavigationLink {
+                ModerationQueueView(
+                    store: container.moderation,
+                    audit: container.aiConfigurations,
+                    actorName: container.session?.displayName ?? ""
+                )
+            } label: {
+                manageRow(viewModel.moderationTitle, "exclamationmark.bubble")
+            }
+
+            NavigationLink {
+                AuditLogView(audit: container.aiConfigurations)
+            } label: {
+                manageRow(viewModel.auditLogTitle, "list.bullet.rectangle")
+            }
         }
     }
 
