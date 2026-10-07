@@ -22,7 +22,7 @@ SIM_RUNTIME="${SIM_RUNTIME:-com.apple.CoreSimulator.SimRuntime.iOS-27-0}"
 
 PROJECT="ios/StudyForge/StudyForge.xcodeproj"
 SCHEME="StudyForge"
-BUNDLE_ID="com.studyforge.app"
+BUNDLE_ID="com.saleh.studyforge"
 DEVICE_HUB="/Applications/Xcode.app/Contents/Applications/DeviceHub.app"
 
 die()  { printf '\033[31m✗ %s\033[0m\n' "$1" >&2; exit 1; }
