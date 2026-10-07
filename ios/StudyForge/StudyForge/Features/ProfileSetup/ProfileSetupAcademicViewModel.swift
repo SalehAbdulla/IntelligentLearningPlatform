@@ -74,7 +74,7 @@ final class ProfileSetupAcademicViewModel {
 
     init(
         profile: any ProfileService,
-        catalogue: AcademicCatalogue = .placeholder,
+        catalogue: AcademicCatalogue = SeededCourseCatalogueStore.starter,
         onSaved: @escaping (AcademicProfile) -> Void
     ) {
         self.profile = profile
