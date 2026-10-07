@@ -9,7 +9,7 @@ Coding rules, folder conventions and the Cline working agreement: [docs/04 §8](
 
 ---
 
-## Status — features implemented, 697 tests passing ✅
+## Status — features implemented, 723 tests passing ✅
 
 The project builds clean and the full unit-test suite passes on the iPhone 17 simulator
 (iOS 27.0). Verified locally:
@@ -17,7 +17,7 @@ The project builds clean and the full unit-test suite passes on the iPhone 17 si
 ```
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' test
-  -> Test run with 697 tests in 111 suites passed
+  -> Test run with 723 tests in 117 suites passed
 ```
 
 | Layer | State |
@@ -31,7 +31,7 @@ xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
 | Design-system gallery | ✅ proves the tokens in light and dark |
 | F01 auth, roles and onboarding | ✅ |
 | F02 to F15 features (library, summaries, flashcards, quizzes, plan, progress, folders, groups, bookmarks, tutor studio, admin, payments, notifications, coach) | ✅ implemented, with documented deviations (see docs/03) |
-| Unit tests (`StudyForgeTests`) | ✅ 697 tests in 111 suites pass |
+| Unit tests (`StudyForgeTests`) | ✅ 723 tests in 117 suites pass |
 | Firebase wiring | ✅ `GoogleService-Info.plist` present locally (not committed) |
 
 ## Layout
