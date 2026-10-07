@@ -14,7 +14,7 @@ Legend: `[ ]` open, `[x]` done.
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
-- [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver notes across the golden path (F02, F03, F07, F08, F10, F14); Reduce Motion honoured on the group-chat scroll (F09)
+- [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver recorded on every product screen (F01-F15); Reduce Motion honoured where it animates; the one fill-hue-as-text contrast defect fixed
 - [x] Backend: `onUserCreate` claims trigger and `rollupDailyMetrics` implemented (typechecked)
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
@@ -109,7 +109,7 @@ Group K (admin content management) is now feature-complete.
 - [ ] Seed demo data and four verified accounts (student, tutor, group, admin)
 - [ ] Demo script, two timed rehearsals, backup screen recording on the device and on a USB stick
 - [x] Accessibility: 44 pt targets (`Layout.minTouchTarget`), Dynamic Type to AX5, Reduce Motion, VoiceOver on the golden path
-- [ ] Accessibility: contrast 4.5:1 verification, and the VoiceOver pass on the remaining screens (Tutor, Admin, Onboarding, Profile/ProfileSetup, groups live quiz)
+- [x] Accessibility: contrast (no fill hue left as text after the `PaymentView` fix; ratios recorded in `docs/06` §1.1) and VoiceOver across the remaining screens (Tutor, Admin, Onboarding, Profile/ProfileSetup, groups)
 
 ## 8. Blocked, needs a decision (work-queue E)
 
