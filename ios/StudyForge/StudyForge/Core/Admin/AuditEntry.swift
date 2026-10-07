@@ -43,6 +43,9 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
     /// The subject and tag vocabulary changed (K06).
     case taxonomyChanged
 
+    /// An announcement was sent or scheduled (K09).
+    case broadcastSent
+
     var id: String { rawValue }
 
     var title: String {
@@ -54,6 +57,7 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
         case .moderationRemoved: L10n.adminAuditModerationRemoved.string
         case .moderationEscalated: L10n.adminAuditModerationEscalated.string
         case .taxonomyChanged: L10n.adminAuditTaxonomyChanged.string
+        case .broadcastSent: L10n.adminAuditBroadcastSent.string
         }
     }
 
@@ -66,6 +70,7 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
         case .moderationRemoved: "trash"
         case .moderationEscalated: "arrow.up.circle"
         case .taxonomyChanged: "tag"
+        case .broadcastSent: "megaphone"
         }
     }
 }
