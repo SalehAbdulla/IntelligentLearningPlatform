@@ -22,6 +22,9 @@
 
 import SwiftUI
 
+// Accessibility: each question's heading reads as one element, the illustrative glyph is hidden, and the
+// university picker announces its value.
+
 struct ProfileSetupAcademicView: View {
 
     @State private var viewModel: ProfileSetupAcademicViewModel
