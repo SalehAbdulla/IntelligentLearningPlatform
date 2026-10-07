@@ -15,9 +15,9 @@
 
 import SwiftUI
 
-// TODO(M3 · F13): Add VoiceOver support. The order-summary rows and the pay button carry no
-// accessibility labels or values.
-// Done when: the rows are labelled and the pay button announces its processing state.
+// Accessibility: the order-summary rows and the pay button are already covered by the shared
+// components (`SFDetailRow` announces a label and a value; `SFPrimaryButton` announces its working
+// state), so this screen only has to hide the decorative divider between the subtotal and the total.
 
 struct CheckoutView: View {
 
@@ -85,6 +85,7 @@ struct CheckoutView: View {
             SFDetailRow(row: DetailRow(id: "vat", label: viewModel.vatLabel, value: viewModel.vatValue))
 
             Divider()
+                .accessibilityHidden(true)
 
             SFDetailRow(row: DetailRow(id: "total", label: viewModel.totalLabel, value: viewModel.totalValue))
         }
