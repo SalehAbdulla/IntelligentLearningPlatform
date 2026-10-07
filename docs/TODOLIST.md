@@ -14,11 +14,12 @@ Legend: `[ ]` open, `[x]` done.
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
+- [x] Backend: `onUserCreate` claims trigger and `rollupDailyMetrics` implemented (typechecked)
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
 
-## 1. In-code TODO markers (15 open)
+## 1. In-code TODO markers (13 open)
 
 Run `bash tools/todos.sh` for the live list; each line names its file and feature.
 
@@ -28,7 +29,6 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 - [ ] `AcademicCatalogue.swift:73` replace the scaffolding with the student's real enrolled courses (F02)
 - [ ] `ImportMaterialViewModel.swift:25` detect a duplicate upload by content hash, offer Replace / Keep both (F02)
 - [ ] `NotificationPreferencesView.swift:11` add a "Send a test reminder" action (F14)
-- [ ] `backend/functions/src/index.ts:47` backend prerequisites, see section 3
 
 ### M2, Mohammed Almadhoon
 
@@ -41,7 +41,6 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 - [ ] `StudyPlan.swift:100` per-course exam-date capture feeding the planner (F06)
 - [ ] `SignedInHomeView.swift:144` replace the placeholder with the real student home B05 (F07)
 - [ ] `NotificationViewModelTests.swift:11` test quiet-hours suppression and a scheduled reminder (F14)
-- [ ] `backend/functions/src/index.ts:352` implement `rollupDailyMetrics` (F07)
 
 ### M4, Shahad Ashoor
 
@@ -63,11 +62,11 @@ Group K (admin content management) is now feature-complete.
 
 ## 3. Backend (work-queue B)
 
-- [ ] Deploy prerequisites: Blaze plan, budget alert, spend cap, Tap secrets (account action, human)
-- [ ] Add an `onUserCreate` Auth trigger to set the `role` custom claim (unblocks the tutor and admin demo account)
-- [ ] Implement `rollupDailyMetrics` (skeleton today, `index.ts:352`)
-- [ ] Deploy `createCharge` and `tapWebhook` once Blaze is enabled, then point `.staging` at them
-- Note: `cd backend/functions && npx tsc --noEmit` passes today.
+- [x] Add an `onUserCreate` Auth trigger that sets the `role` and `plan` custom claims at sign-up
+- [x] Implement `rollupDailyMetrics` (activity and quiz aggregation into `progress` and `topicMastery`)
+- [ ] Deploy prerequisites: Blaze plan, budget alert, spend cap, Identity Platform, Tap secrets (account action, human)
+- [ ] Deploy the four functions once Blaze is enabled, then point `.staging` at them
+- Note: `cd backend/functions && npx tsc --noEmit` passes; the functions are not deployed.
 
 ## 4. Design Document, 10%, due 22 Oct 2026 (work-queue C)
 
