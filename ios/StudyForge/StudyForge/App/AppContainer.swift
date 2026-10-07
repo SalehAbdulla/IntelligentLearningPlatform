@@ -176,6 +176,11 @@ final class AppContainer {
     /// tested with `InMemoryModerationStore`.
     let moderation: any ModerationStore
 
+    /// The platform taxonomy (F12, K06). LOCAL-FIRST, like the other admin stores, so the subjects and
+    /// tags are curatable before a backend exists. Protocol-backed so screens can be previewed and
+    /// tested with `InMemoryTaxonomyStore`.
+    let taxonomy: any TaxonomyStore
+
     /// The account's entitlement and payment receipts (F13). LOCAL-FIRST, like the other
     /// derived stores, so the paywall and the manage screen are demonstrable before a Tap
     /// account and a Blaze plan exist (docs/09 D22). Protocol-backed so screens can be
@@ -259,6 +264,7 @@ final class AppContainer {
         aiConfigurations: any AIConfigurationStore = InMemoryAIConfigurationStore(),
         adminDirectory: any AdminDirectoryStore = InMemoryAdminDirectoryStore(),
         moderation: any ModerationStore = InMemoryModerationStore(),
+        taxonomy: any TaxonomyStore = InMemoryTaxonomyStore(),
         // Defaulted so a preview or a test gets an in-memory entitlement store and a
         // simulated gateway — no disk, no network, no Firebase project.
         subscriptions: any SubscriptionStore = InMemorySubscriptionStore(),
@@ -289,6 +295,7 @@ final class AppContainer {
         self.aiConfigurations = aiConfigurations
         self.adminDirectory = adminDirectory
         self.moderation = moderation
+        self.taxonomy = taxonomy
         self.subscriptions = subscriptions
         // Development stays on the deterministic simulator, so the demo and CI never depend on
         // a deployed function or a Tap account. Staging uses Tap; production uses StoreKit (a
@@ -483,6 +490,7 @@ extension AppContainer {
             aiConfigurations: FileAIConfigurationStore(),
             adminDirectory: FileAdminDirectoryStore(),
             moderation: FileModerationStore(),
+            taxonomy: FileTaxonomyStore(),
             // Real builds persist the entitlement on device. The gateway stays the simulated
             // one until a Tap account exists; swapping it is the one-line change `payments:`
             // exists for.

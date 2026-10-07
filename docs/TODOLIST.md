@@ -12,7 +12,9 @@ Legend: `[ ]` open, `[x]` done.
 ## 0. Done recently (context, not work)
 
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
+- [x] F12 admin: K06 taxonomy management, subjects and tags CRUD with merge
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
+- [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
 
 ## 1. In-code TODO markers (23 open)
@@ -59,7 +61,7 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 - [x] K04 moderation queue
 - [x] K05 flagged-report decision panel
 - [x] K08 dedicated audit log
-- [ ] K06 taxonomy management: subject and tag CRUD, drag reorder, merge duplicates, usage count (`114_Admin_Taxonomy_Manage`)
+- [x] K06 taxonomy management: subject and tag CRUD, drag reorder, merge duplicates, usage count (`114_Admin_Taxonomy_Manage`)
 - [ ] K09 broadcast composer: audience segment builder, push preview, schedule, send with confirmation (`117_Admin_Broadcast_Notification`)
 - [ ] (optional, K08) redacted-fields indicator (filter and export are done)
 
@@ -130,5 +132,5 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 
 1. The three teammates author their first commits (section 6): gates 10 percent plus the VIVA.
 2. The Design Document items (section 4): the nearest deadline, 22 Oct.
-3. K06 and K09 (section 2): finish group K.
+3. K09 (section 2): the last admin surface.
 4. The decisions (section 8).

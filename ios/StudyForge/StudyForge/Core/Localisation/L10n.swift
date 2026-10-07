@@ -734,6 +734,27 @@ enum L10n: String, CaseIterable, Sendable {
     case adminReportStatusApproved       = "admin.reportStatus.approved"
     case adminReportStatusRemoved        = "admin.reportStatus.removed"
     case adminReportStatusEscalated      = "admin.reportStatus.escalated"
+    case adminAuditTaxonomyChanged       = "admin.auditTaxonomyChanged"
+
+    // MARK: F12 Admin - taxonomy management (K06)
+    case adminTaxonomyTitle         = "admin.taxonomy.title"
+    case adminTaxonomyKindSubject   = "admin.taxonomy.kind.subject"
+    case adminTaxonomyKindTag       = "admin.taxonomy.kind.tag"
+    case adminTaxonomyAdd           = "admin.taxonomy.add"
+    case adminTaxonomyAddPlaceholder = "admin.taxonomy.addPlaceholder"
+    case adminTaxonomyEdit          = "admin.taxonomy.edit"
+    case adminTaxonomyRename        = "admin.taxonomy.rename"
+    case adminTaxonomyRenameTitle   = "admin.taxonomy.renameTitle"
+    case adminTaxonomyDelete        = "admin.taxonomy.delete"
+    case adminTaxonomyMerge         = "admin.taxonomy.merge"
+    case adminTaxonomyMergeTitle    = "admin.taxonomy.mergeTitle"
+    case adminTaxonomyMergeBody     = "admin.taxonomy.mergeBody"
+    case adminTaxonomyEmptyTitle    = "admin.taxonomy.emptyTitle"
+    case adminTaxonomyEmptyBody     = "admin.taxonomy.emptyBody"
+    case adminTaxonomyUsage         = "admin.taxonomy.usage"
+    case adminTaxonomyUnused        = "admin.taxonomy.unused"
+    case adminTaxonomyNameRequired  = "admin.taxonomy.nameRequired"
+    case adminTaxonomyDuplicate     = "admin.taxonomy.duplicate"
 
 
     // MARK: F13 Subscription & Payments (L01–L10, B13)

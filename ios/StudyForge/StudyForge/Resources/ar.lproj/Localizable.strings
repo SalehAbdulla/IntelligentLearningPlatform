@@ -711,6 +711,27 @@
 "admin.reportStatus.approved"         = "تم الإبقاء";
 "admin.reportStatus.removed"          = "أُزيل";
 "admin.reportStatus.escalated"        = "مُصعَّد";
+"admin.auditTaxonomyChanged"          = "تغيّر التصنيف";
+
+/* ── F12 Admin - taxonomy management (K06) ──────────────────────────────── */
+"admin.taxonomy.title"          = "المواد والوسوم";
+"admin.taxonomy.kind.subject"   = "المواد";
+"admin.taxonomy.kind.tag"       = "الوسوم";
+"admin.taxonomy.add"            = "إضافة";
+"admin.taxonomy.addPlaceholder" = "اسم جديد";
+"admin.taxonomy.edit"           = "تعديل";
+"admin.taxonomy.rename"         = "إعادة تسمية";
+"admin.taxonomy.renameTitle"    = "إعادة تسمية '%@'";
+"admin.taxonomy.delete"         = "حذف";
+"admin.taxonomy.merge"          = "دمج في...";
+"admin.taxonomy.mergeTitle"     = "دمج في";
+"admin.taxonomy.mergeBody"      = "يدمج '%@' في المصطلح الذي تختاره. تُجمع الأعداد.";
+"admin.taxonomy.emptyTitle"     = "لا يوجد شيء بعد";
+"admin.taxonomy.emptyBody"      = "أضف أول مادة أو وسم لهذه المنصة.";
+"admin.taxonomy.usage"          = "%d عنصرًا";
+"admin.taxonomy.unused"         = "غير مستخدم";
+"admin.taxonomy.nameRequired"   = "الاسم مطلوب.";
+"admin.taxonomy.duplicate"      = "هذا الاسم مستخدم بالفعل.";
 
 
 /* ── F13 الاشتراك والمدفوعات (L01–L10, B13) ─────────────────────────────── */
