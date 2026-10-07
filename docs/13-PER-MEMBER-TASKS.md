@@ -98,4 +98,36 @@ A member does not count as having contributed in a sprint until these exist for 
 
 > **The controlling sentence:** a strong teammate does not raise your Sprints mark. Your own attributable, timestamped evidence is the only thing that counts, and it has to exist **before** the review, not be assembled after it.
 
+---
+
+## Starter briefs: turnkey first commits (prepared by M1, 7 Oct 2026)
+
+> M1's task in section **M1** is "split the codebase so others can own it". These three briefs do that: each is one real TODO from the code, with the files, the seam, the acceptance criterion and the exact commit to make. The work stays the teammate's to read, change, test and commit, so the git history stays theirs.
+
+### M2: track "Hard" separately from "correct" in SM-2
+
+- **TODO:** `ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewViewModel.swift:119`
+- **What it is:** a "Hard" grade is an SM-2 *success*, but it is not the same as "Good" or "Easy", so the session summary currently folds it into `correctCount`.
+- **Key files:** `FlashcardReviewViewModel.swift` (rating to count), `Core/Scheduling/SpacedRepetition.swift` (the SM-2 maths), `Features/Flashcards/FlashcardReviewView.swift` (the summary that shows the counts).
+- **Done when:** the summary reports Hard distinctly, and a Swift Testing case in `StudyForgeTests/FlashcardReviewViewModelTests.swift` proves a Hard grade is counted separately. Delete the TODO marker.
+- **Suggested:** branch `feat/F04-hard-grade-tracking`; commit `feat(F04): track the Hard grade separately in the session summary`.
+
+### M3: per-course exam dates that feed the planner
+
+- **TODO:** `ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift:100` (docs/09 Q11)
+- **What it is:** exam dates belong on the *plan*, not the profile, so a date cannot go stale; they have to reach the planner.
+- **Key files:** `Core/Planning/StudyPlan.swift` (the model), `Core/Planning/StudyPlanner.swift` (the scheduler, which should weight a near exam harder), `Features/StudyPlan/StudyPlanWizardView.swift` (capture UI).
+- **Done when:** dates can be entered and stored on the plan, the planner uses them, and a test proves a nearer exam changes the plan.
+- **Suggested:** branch `feat/F06-exam-dates`; commit `feat(F06): capture per-course exam dates and feed the planner`.
+
+### M4: a Firestore-backed BookmarkStore
+
+- **TODO:** `ios/StudyForge/StudyForge/Core/Bookmarks/BookmarkStore.swift:14` (docs/05 §2.5)
+- **What it is:** the bookmarks screen shows an empty store today; a Firestore implementation behind the existing protocol is what makes it demonstrable and survives a reinstall.
+- **Key files:** `Core/Bookmarks/BookmarkStore.swift` (the protocol), `App/AppContainer.swift` (the single injection point), `Features/Bookmarks/*` (already written against the protocol).
+- **Done when:** the implementation exists (`collections/{id}`, `bookmarks/{id}`, owner-only), `AppContainer` can select it, and a test proves a round-trip. Delete the TODO marker.
+- **Suggested:** branch `feat/F10-firestore-bookmarks`; commit `feat(F10): add a Firestore-backed BookmarkStore`.
+
+> Each brief ends the same way: a reviewed, tested, committed change under the teammate's own git identity, plus a two-line note in `research/sprints/sprint-<N>/<name>-contribution.md`. That is exactly the evidence the "How a marker reads this" section looks for.
+
 <!-- ##APPEND## -->
