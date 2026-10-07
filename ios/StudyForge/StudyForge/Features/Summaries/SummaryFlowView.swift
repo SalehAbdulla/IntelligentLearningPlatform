@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+// Accessibility: the generating state is one announcement rather than a progress indicator followed by
+// two loose lines, the citation chip is a named button, and the key-point bullets are decorative, so the
+// result reads as prose instead of a run of marks.
+
 struct SummaryFlowView: View {
 
     @State private var viewModel: SummaryFlowViewModel
@@ -126,6 +130,8 @@ struct SummaryFlowView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, Spacing.s10)
+        // One announcement, not a progress indicator with two loose lines after it.
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: D03 — result
@@ -148,6 +154,7 @@ struct SummaryFlowView: View {
                             Text("•")
                                 .font(.sfBody)
                                 .foregroundStyle(ColorTokens.primary)
+                                .accessibilityHidden(true)
                             Text(point)
                                 .font(.sfBody)
                                 .foregroundStyle(ColorTokens.textPrimary)
