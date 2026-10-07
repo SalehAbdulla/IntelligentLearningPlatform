@@ -651,6 +651,67 @@
 "admin.roleConfirm.body"     = "تتغيّر صلاحياته فورًا.";
 "admin.noMastery"            = "—";
 
+/* ── F12 Admin - audit log (K08) ────────────────────────────────────────── */
+"admin.auditLog.title"                = "سجل التدقيق";
+"admin.auditLog.searchPlaceholder"    = "ابحث في السجل";
+"admin.auditLog.actors"               = "المستخدم";
+"admin.auditLog.actions"              = "الإجراء";
+"admin.auditLog.allActors"            = "كل المستخدمين";
+"admin.auditLog.allActions"           = "كل الإجراءات";
+"admin.auditLog.emptyTitle"           = "لا توجد تغييرات بعد";
+"admin.auditLog.emptyBody"            = "تظهر إجراءات الإدارة هنا فور حدوثها، الأحدث أولًا.";
+"admin.auditLog.filteredEmptyTitle"   = "لا شيء يطابق هذه المرشّحات";
+"admin.auditLog.filteredEmptyBody"    = "امسح مرشّح المستخدم أو الإجراء لعرض بقية السجل.";
+"admin.auditLog.export"               = "تصدير CSV";
+"admin.auditLog.exportFileName"       = "studyforge-audit-log.csv";
+"admin.auditLog.appendOnly"           = "هذا السجل للإضافة فقط. لا يمكن تعديل المدخلات أو حذفها، ويصدّر ما تحدده المرشّحات الحالية.";
+"admin.auditLog.entry"                = "%@ · %@";
+"admin.auditModerationApproved"       = "تمت مراجعة البلاغ: أُبقي على المحتوى";
+"admin.auditModerationRemoved"        = "تم تأييد البلاغ: أُزيل المحتوى";
+"admin.auditModerationEscalated"      = "تم تصعيد البلاغ";
+
+/* ── F12 Admin - moderation queue (K04/K05) ─────────────────────────────── */
+"admin.moderation.title"              = "قائمة الإشراف";
+"admin.moderation.emptyTitle"         = "لا يوجد ما يُراجَع";
+"admin.moderation.emptyBody"          = "ستظهر البلاغات التي تنتظر قرارًا هنا.";
+"admin.moderation.filteredEmptyTitle" = "لا شيء يطابق هذا المرشّح";
+"admin.moderation.filteredEmptyBody"  = "امسح مرشّح السبب، أو أظهر البلاغات المحسومة، لعرض المزيد.";
+"admin.moderation.filterAll"          = "كل الأسباب";
+"admin.moderation.contentLabel"       = "المحتوى المُبلَّغ عنه";
+"admin.moderation.reporterLabel"      = "أبلغ عنه";
+"admin.moderation.reasonLabel"        = "السبب";
+"admin.moderation.decideHeading"      = "القرار";
+"admin.moderation.reasonPlaceholder"  = "لماذا؟ سيُسجَّل هذا.";
+"admin.moderation.reasonRequired"     = "السبب مطلوب.";
+"admin.moderation.showDecided"        = "إظهار البلاغات المحسومة";
+"admin.moderation.detailTitle"        = "تفاصيل البلاغ";
+"admin.moderation.statusLabel"        = "الحالة";
+"admin.moderation.ageLabel"           = "العمر";
+"admin.moderation.decisionLabel"      = "سبب القرار";
+"admin.moderation.openCount"          = "%d بانتظار المراجعة";
+"admin.moderation.reportedBy"         = "أبلغ عنه %@";
+"admin.moderation.ageToday"           = "اليوم";
+"admin.moderation.ageDays"            = "قبل %d أيام";
+"admin.moderation.keep"               = "الإبقاء على المحتوى";
+"admin.moderation.keepBody"           = "يبقى المحتوى ظاهرًا ويُغلق البلاغ.";
+"admin.moderation.remove"             = "إزالة المحتوى";
+"admin.moderation.removeBody"         = "يُزال المحتوى ويُبلَّغ عنه المُبلِّغ.";
+"admin.moderation.escalate"           = "تصعيد";
+"admin.moderation.escalateBody"       = "يُرسل البلاغ لمراجعة ثانية قبل أي إجراء.";
+"admin.reportKind.summary"            = "ملخّص";
+"admin.reportKind.deck"               = "مجموعة بطاقات";
+"admin.reportKind.quiz"               = "اختبار";
+"admin.reportKind.comment"            = "تعليق";
+"admin.reportReason.spam"             = "بريد مزعج";
+"admin.reportReason.harassment"       = "تحرّش";
+"admin.reportReason.misinformation"   = "معلومات مضلّلة";
+"admin.reportReason.copyright"        = "حقوق نشر";
+"admin.reportReason.other"            = "أخرى";
+"admin.reportStatus.pending"          = "قيد الانتظار";
+"admin.reportStatus.approved"         = "تم الإبقاء";
+"admin.reportStatus.removed"          = "أُزيل";
+"admin.reportStatus.escalated"        = "مُصعَّد";
+
 
 /* ── F13 الاشتراك والمدفوعات (L01–L10, B13) ─────────────────────────────── */
 "subscription.title"              = "الاشتراك";

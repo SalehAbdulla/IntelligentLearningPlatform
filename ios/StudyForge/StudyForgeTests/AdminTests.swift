@@ -433,4 +433,279 @@ struct AdminUsersViewModelTests {
         #expect(AuditAction.roleChanged.title == L10n.adminAuditRoleChanged.string)
         #expect(AccountStatus.suspended.title == L10n.adminStatusSuspended.string)
     }
+
+// MARK: - Moderation store
+
+@Suite("Moderation store (F12)")
+struct ModerationStoreTests {
+
+    private func sample() -> ContentReport {
+        ContentReport(
+            id: "r_test",
+            kind: .comment,
+            contentTitle: "A reply",
+            contentPreview: "preview",
+            reporterName: "Reporter",
+            reason: .harassment
+        )
+    }
+
+    @Test("An untouched store has an empty queue")
+    func emptyByDefault() async throws {
+        let store = InMemoryModerationStore()
+        #expect(try await store.reports().isEmpty)
+    }
+
+    @Test("A saved report reads back, and saving again replaces it rather than duplicating it")
+    func saveReadsBack() async throws {
+        let store = InMemoryModerationStore()
+        var report = sample()
+        try await store.save(report)
+        #expect(try await store.report(id: report.id)?.status == .pending)
+
+        report.status = .removed
+        try await store.save(report)
+        #expect(try await store.reports().count == 1)
+        #expect(try await store.report(id: report.id)?.status == .removed)
+    }
+
+    @Test("Reports come back newest first")
+    func newestFirst() async throws {
+        let older = ContentReport(
+            kind: .summary, contentTitle: "Old", contentPreview: "",
+            reporterName: "A", reason: .spam,
+            reportedAt: .now.addingTimeInterval(-86_400))
+        let newer = ContentReport(
+            kind: .summary, contentTitle: "New", contentPreview: "",
+            reporterName: "B", reason: .spam,
+            reportedAt: .now)
+        let store = InMemoryModerationStore(seededWith: [older, newer])
+        #expect(try await store.reports().map(\.contentTitle) == ["New", "Old"])
+    }
+
+    @Test("A forced failure surfaces as a storage error, and clearing it restores success")
+    func forcedFailure() async throws {
+        let store = InMemoryModerationStore(seededWith: [sample()])
+        await store.forceFailure(.storageFailed)
+        do {
+            _ = try await store.reports()
+            Issue.record("expected a storage error")
+        } catch {
+            #expect(error as? AdminError == .storageFailed)
+        }
+        await store.forceFailure(nil)
+        #expect(try await store.reports().count == 1)
+    }
+}
+
+// MARK: - Moderation decision
+
+@Suite("Moderation decision (F12)")
+struct ModerationDecisionTests {
+
+    @Test("Each decision maps to the status and the audit action it produces")
+    func mapping() {
+        #expect(ModerationDecision.keep.resultingStatus == .approved)
+        #expect(ModerationDecision.remove.resultingStatus == .removed)
+        #expect(ModerationDecision.escalate.resultingStatus == .escalated)
+
+        #expect(ModerationDecision.keep.auditAction == .moderationApproved)
+        #expect(ModerationDecision.remove.auditAction == .moderationRemoved)
+        #expect(ModerationDecision.escalate.auditAction == .moderationEscalated)
+    }
+
+    @Test("Only removal is destructive")
+    func destructive() {
+        #expect(ModerationDecision.remove.isDestructive)
+        #expect(ModerationDecision.keep.isDestructive == false)
+        #expect(ModerationDecision.escalate.isDestructive == false)
+    }
+}
+
+
+// MARK: - Moderation queue screen
+
+@Suite("Moderation queue screen (F12)")
+@MainActor
+struct ModerationQueueViewModelTests {
+
+    private func model() -> (ModerationQueueViewModel, InMemoryModerationStore, InMemoryAIConfigurationStore) {
+        let store = InMemoryModerationStore(seededWith: ContentReport.samples)
+        let audit = InMemoryAIConfigurationStore()
+        let viewModel = ModerationQueueViewModel(store: store, audit: audit, actorName: "Shahad Ashoor")
+        return (viewModel, store, audit)
+    }
+
+    @Test("Only pending reports are in the queue by default")
+    func pendingByDefault() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        let allPending = viewModel.visibleReports.allSatisfy { $0.isPending }
+        #expect(allPending)
+        #expect(viewModel.openCount == 2, "two of the three samples are pending")
+    }
+
+    @Test("Showing decided reports reveals the rest")
+    func showDecided() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        viewModel.showsDecided = true
+        #expect(viewModel.visibleReports.count == ContentReport.samples.count)
+    }
+
+    @Test("Removing a report takes the content down and writes an audit line")
+    func removeIsAudited() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let report = try #require(viewModel.visibleReports.first)
+
+        let didRecord = await viewModel.decide(.remove, for: report, reason: "Removed for harassment")
+
+        #expect(didRecord)
+        #expect(try await store.report(id: report.id)?.status == .removed)
+        let trail = try await audit.auditLog()
+        #expect(trail.count == 1)
+        #expect(trail.first?.action == .moderationRemoved)
+        #expect(trail.first?.actorName == "Shahad Ashoor")
+        #expect(trail.first?.detail.contains("Removed for harassment") == true)
+    }
+
+    @Test("Keeping a report closes it without removing the content")
+    func keepIsAudited() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let report = try #require(viewModel.visibleReports.first)
+
+        #expect(await viewModel.decide(.keep, for: report, reason: "Not a breach"))
+        #expect(try await store.report(id: report.id)?.status == .approved)
+        #expect(try await audit.auditLog().first?.action == .moderationApproved)
+    }
+
+    @Test("A decision with no reason is refused and nothing is written")
+    func reasonIsRequired() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let report = try #require(viewModel.visibleReports.first)
+
+        let didRecord = await viewModel.decide(.escalate, for: report, reason: "   ")
+
+        #expect(didRecord == false)
+        #expect(viewModel.reasonError != nil)
+        #expect(try await store.report(id: report.id)?.status == .pending, "the report is untouched")
+        #expect(try await audit.auditLog().isEmpty)
+    }
+
+    @Test("Every string comes from the catalogue")
+    func copyIsLocalised() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        #expect(viewModel.title == L10n.adminModerationTitle.string)
+        #expect(viewModel.reasonLabel == L10n.adminModerationReasonLabel.string)
+        #expect(ModerationDecision.remove.title == L10n.adminModerationRemove.string)
+        #expect(ReportReason.spam.title == L10n.adminReportReasonSpam.string)
+        #expect(ReportStatus.removed.title == L10n.adminReportStatusRemoved.string)
+    }
+}
+
+
+// MARK: - Audit log screen
+
+@Suite("Audit log screen (F12)")
+@MainActor
+struct AuditLogViewModelTests {
+
+    private func seededEntries() -> [AuditEntry] {
+        [
+            AuditEntry(id: "e1", action: .roleChanged, actorName: "Shahad Ashoor",
+                       detail: "Omar Hassan: Student -> Tutor", createdAt: .now),
+            AuditEntry(id: "e2", action: .aiConfigChanged, actorName: "Shahad Ashoor",
+                       detail: "Daily limit 20 -> 50", createdAt: .now.addingTimeInterval(-60)),
+            AuditEntry(id: "e3", action: .accountSuspended, actorName: "Saleh Abdulla",
+                       detail: "Sara Ali: Suspended", createdAt: .now.addingTimeInterval(-120)),
+        ]
+    }
+
+    private func model() -> AuditLogViewModel {
+        AuditLogViewModel(audit: InMemoryAIConfigurationStore(auditLog: seededEntries()))
+    }
+
+    @Test("An empty trail loads to the empty state")
+    func emptyTrail() async {
+        let viewModel = AuditLogViewModel(audit: InMemoryAIConfigurationStore())
+        await viewModel.load()
+        #expect(viewModel.entries.isEmpty)
+        #expect(viewModel.visibleEntries.isEmpty)
+        #expect(viewModel.isFilteredEmpty == false, "an empty trail is not a filtered-empty trail")
+    }
+
+    @Test("Filtering by actor narrows the trail to that actor")
+    func filterByActor() async {
+        let viewModel = model()
+        await viewModel.load()
+        viewModel.actorFilter = "Saleh Abdulla"
+        #expect(viewModel.visibleEntries.count == 1)
+        let onlySaleh = viewModel.visibleEntries.allSatisfy { $0.actorName == "Saleh Abdulla" }
+        #expect(onlySaleh)
+
+        viewModel.actorFilter = nil
+        #expect(viewModel.visibleEntries.count == 3)
+    }
+
+    @Test("Filtering by action narrows the trail to that action")
+    func filterByAction() async {
+        let viewModel = model()
+        await viewModel.load()
+        viewModel.actionFilter = .roleChanged
+        #expect(viewModel.visibleEntries.count == 1)
+        #expect(viewModel.visibleEntries.first?.action == .roleChanged)
+    }
+
+    @Test("Search matches the actor, the action title and the detail text")
+    func search() async {
+        let viewModel = model()
+        await viewModel.load()
+
+        viewModel.query = "sara"
+        #expect(viewModel.visibleEntries.count == 1, "matches the detail text")
+
+        viewModel.query = "suspended"
+        #expect(viewModel.visibleEntries.count == 1, "matches the action title")
+
+        viewModel.query = "zzzz"
+        #expect(viewModel.visibleEntries.isEmpty)
+        #expect(viewModel.isFilteredEmpty)
+    }
+
+    @Test("The offered filters come from the data, not a fixed list")
+    func filtersComeFromData() async {
+        let viewModel = model()
+        await viewModel.load()
+        #expect(viewModel.actors == ["Saleh Abdulla", "Shahad Ashoor"])
+        #expect(viewModel.actions == [.aiConfigChanged, .roleChanged, .accountSuspended])
+    }
+
+    @Test("The export is a CSV header plus one line per visible entry")
+    func export() async {
+        let viewModel = model()
+        await viewModel.load()
+        viewModel.actionFilter = .roleChanged
+
+        let lines = viewModel.exportText.split(separator: "\n")
+        #expect(String(lines.first ?? "") == "Actor,Action,Detail,Timestamp")
+        #expect(lines.count == 2, "the header plus the one visible entry")
+        #expect(viewModel.exportText.contains("Shahad Ashoor"))
+        #expect(viewModel.exportText.contains("Omar Hassan: Student -> Tutor"))
+    }
+
+    @Test("Every string comes from the catalogue")
+    func copyIsLocalised() async {
+        let viewModel = model()
+        await viewModel.load()
+        #expect(viewModel.title == L10n.adminAuditLogTitle.string)
+        #expect(viewModel.allActorsTitle == L10n.adminAuditLogAllActors.string)
+        #expect(viewModel.exportFileName == L10n.adminAuditLogExportFileName.string)
+        #expect(viewModel.exportFileName.hasSuffix(".csv"))
+    }
+}
+
 }

@@ -20,7 +20,7 @@ git switch -c feat/Fxx-short-slug        # e.g. feat/F04-sm2-tuning
 bash tools/run-ios.sh                     # build + install + launch on the iPhone 17 simulator
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj \
   -scheme StudyForge -destination 'platform=iOS Simulator,name=iPhone 17' test
-# -> 697 tests in 111 suites pass. Keep it that way.
+# -> 723 tests in 117 suites pass. Keep it that way.
 ```
 
 ## 3. How the code is organised (the 60-second version)

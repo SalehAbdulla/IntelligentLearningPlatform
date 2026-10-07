@@ -652,6 +652,67 @@
 "admin.roleConfirm.body"     = "Their access changes immediately.";
 "admin.noMastery"            = "—";
 
+/* ── F12 Admin - audit log (K08) ────────────────────────────────────────── */
+"admin.auditLog.title"                = "Audit log";
+"admin.auditLog.searchPlaceholder"    = "Search the trail";
+"admin.auditLog.actors"               = "Actor";
+"admin.auditLog.actions"              = "Action";
+"admin.auditLog.allActors"            = "All actors";
+"admin.auditLog.allActions"           = "All actions";
+"admin.auditLog.emptyTitle"           = "No changes recorded yet";
+"admin.auditLog.emptyBody"            = "Administrative actions appear here as they happen, newest first.";
+"admin.auditLog.filteredEmptyTitle"   = "Nothing matches these filters";
+"admin.auditLog.filteredEmptyBody"    = "Clear the actor or action filter to see the rest of the trail.";
+"admin.auditLog.export"               = "Export CSV";
+"admin.auditLog.exportFileName"       = "studyforge-audit-log.csv";
+"admin.auditLog.appendOnly"           = "This trail is append-only. Entries cannot be edited or deleted, and it exports what the current filters select.";
+"admin.auditLog.entry"                = "%@ · %@";
+"admin.auditModerationApproved"       = "Report reviewed: content kept";
+"admin.auditModerationRemoved"        = "Report upheld: content removed";
+"admin.auditModerationEscalated"      = "Report escalated";
+
+/* ── F12 Admin - moderation queue (K04/K05) ─────────────────────────────── */
+"admin.moderation.title"              = "Moderation queue";
+"admin.moderation.emptyTitle"         = "Nothing to review";
+"admin.moderation.emptyBody"          = "Reports awaiting a decision will appear here.";
+"admin.moderation.filteredEmptyTitle" = "Nothing matches this filter";
+"admin.moderation.filteredEmptyBody"  = "Clear the reason filter, or show decided reports, to see more.";
+"admin.moderation.filterAll"          = "All reasons";
+"admin.moderation.contentLabel"       = "Reported content";
+"admin.moderation.reporterLabel"      = "Reported by";
+"admin.moderation.reasonLabel"        = "Reason";
+"admin.moderation.decideHeading"      = "Decision";
+"admin.moderation.reasonPlaceholder"  = "Why? This is recorded.";
+"admin.moderation.reasonRequired"     = "A reason is required.";
+"admin.moderation.showDecided"        = "Show decided reports";
+"admin.moderation.detailTitle"        = "Report detail";
+"admin.moderation.statusLabel"        = "Status";
+"admin.moderation.ageLabel"           = "Age";
+"admin.moderation.decisionLabel"      = "Decision reason";
+"admin.moderation.openCount"          = "%d awaiting review";
+"admin.moderation.reportedBy"         = "Reported by %@";
+"admin.moderation.ageToday"           = "Today";
+"admin.moderation.ageDays"            = "%d days ago";
+"admin.moderation.keep"               = "Keep content";
+"admin.moderation.keepBody"           = "The content stays visible and the report is closed.";
+"admin.moderation.remove"             = "Remove content";
+"admin.moderation.removeBody"         = "The content is taken down and the reporter is told.";
+"admin.moderation.escalate"           = "Escalate";
+"admin.moderation.escalateBody"       = "The report is sent for a second review before any action.";
+"admin.reportKind.summary"            = "Summary";
+"admin.reportKind.deck"               = "Flashcard deck";
+"admin.reportKind.quiz"               = "Quiz";
+"admin.reportKind.comment"            = "Comment";
+"admin.reportReason.spam"             = "Spam";
+"admin.reportReason.harassment"       = "Harassment";
+"admin.reportReason.misinformation"   = "Misinformation";
+"admin.reportReason.copyright"        = "Copyright";
+"admin.reportReason.other"            = "Other";
+"admin.reportStatus.pending"          = "Pending";
+"admin.reportStatus.approved"         = "Kept";
+"admin.reportStatus.removed"          = "Removed";
+"admin.reportStatus.escalated"        = "Escalated";
+
 /* ── F13 Subscription & Payments (L01–L10, B13) ─────────────────────────── */
 "subscription.title"              = "Subscription";
 "subscription.paywallTitle"       = "Choose your plan";
