@@ -8,10 +8,8 @@
 
 import SwiftUI
 
-// TODO(M4 · F04): Add VoiceOver support to the review screen. It has none today, so the card
-// side, the reveal action and the four rating buttons are unusable with VoiceOver.
-// Done when: the card front/back is announced, "reveal" is a labelled button, and each rating
-// button announces the interval it would set.
+// Accessibility: the card is one element (front or back) and acts as the reveal button, and each
+// rating button announces the interval it would set, so the four outcomes are distinguishable by ear.
 
 struct FlashcardReviewView: View {
 
@@ -88,6 +86,7 @@ struct FlashcardReviewView: View {
                     Image(systemName: "quote.opening")
                         .font(.sfCaption)
                         .foregroundStyle(ColorTokens.primary)
+                        .accessibilityHidden(true)
                     Text(citation)
                         .font(.sfCaption)
                         .foregroundStyle(ColorTokens.onPrimaryContainer)
@@ -108,6 +107,11 @@ struct FlashcardReviewView: View {
         .onTapGesture {
             if !viewModel.isShowingAnswer { viewModel.reveal() }
         }
+        // One element for the whole card, so the prompt and its citation are read together. While the
+        // answer is hidden the card is the reveal control, so it takes the button trait and says so.
+        .accessibilityElement(children: .combine)
+        .accessibilityHint(viewModel.isShowingAnswer ? "" : viewModel.tapToReveal)
+        .accessibilityAddTraits(viewModel.isShowingAnswer ? [] : .isButton)
     }
 
     private var ratingButtons: some View {
@@ -140,6 +144,9 @@ struct FlashcardReviewView: View {
             }
         }
         .buttonStyle(.plain)
+        // The label is the rating, the value is the interval it would set: "Good, 3 days".
+        .accessibilityLabel(viewModel.ratingTitle(rating))
+        .accessibilityValue(viewModel.intervalLabel(for: rating))
     }
 
     // MARK: Summary
@@ -151,6 +158,7 @@ struct FlashcardReviewView: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.sfDisplayL)
                 .foregroundStyle(ColorTokens.successText)
+                .accessibilityHidden(true)
 
             Text(viewModel.sessionTitle)
                 .font(.sfTitleM)
@@ -188,6 +196,7 @@ struct FlashcardReviewView: View {
                 .font(.sfBodyEmph)
                 .foregroundStyle(ColorTokens.textPrimary)
         }
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: Empty
