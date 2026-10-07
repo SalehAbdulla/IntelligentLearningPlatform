@@ -148,6 +148,14 @@ enum L10n: String, CaseIterable, Sendable {
     case homeCapabilitiesHeading = "home.capabilities.heading"
     case homeRoleLabel           = "home.role.label"
     case homePlanLabel           = "home.plan.label"
+
+    // MARK: Roles and plans
+    case sessionRoleStudent       = "session.role.student"
+    case sessionRoleTutor         = "session.role.tutor"
+    case sessionRoleAdmin         = "session.role.admin"
+    case sessionPlanFree          = "session.plan.free"
+    case sessionPlanPlus          = "session.plan.plus"
+    case sessionPlanPro           = "session.plan.pro"
     case homeTutorStudioLabel    = "home.tutorStudio.label"
     case homeStudyGroupsLabel    = "home.studyGroups.label"
     case homeAvailable           = "home.available"
