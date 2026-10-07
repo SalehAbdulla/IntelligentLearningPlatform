@@ -75,25 +75,42 @@ Group K (admin content management) is now feature-complete.
 - [ ] Section 3.1 interview date is `to be recorded`
 - [ ] Section 3.4 written approval for F15 (`pending`)
 - [ ] Section 17.3 usability test with 5 users plus a SUS score (planned, not run)
-- [ ] Appendix A, the 89 labelled P0 screen descriptions and mockups
+- [x] Appendix A, the labelled screen descriptions and mockups — `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` now covers all **106** screens (purpose, layout, named UI elements). The PNG exports into `mockups/figures/` are the only part left.
 - [ ] Figures at 150 dpi or more; figure list; table list; PDF export with embedded fonts and live links
 - [ ] Create `research/dossier.md` (missing; referenced by section 2 and `docs/01` P1-10)
 - [ ] Re-verify the section 2 market figures against their primary sources before submission
-- [ ] Reconcile the section 1 claim of 98 screens with the final Figma count
+- [x] Reconcile the section 1 claim of 98 screens with the final Figma count — reconciled to **106** in `DESIGN-DOCUMENT.md` §1 and §10.1, and in `README.md`
 
 ## 5. Figma Prototype, 10%, due 12 Nov 2026
 
+> **State verified against the live file on 8 Oct 2026.** 106 high-fidelity screens, 296 prototype connections, 98 screens with element-level hotspots, 16 named flow start points, zero dead ends.
+
 - [ ] P9-03/04 usability test with 5 users plus a SUS score
-- [ ] P9-06 frame-naming audit
-- [ ] P9-07 hotspot and link audit, zero dead ends
-- [ ] P9-08/09/10 overflow, content and consistency audits
-- [ ] P9-11/12 accessibility, dark mode and RTL frames
-- [ ] P9-14 export the `.fig`
-- [ ] P9-17 assemble the `.fig` plus `deliverables/prototype/figma-link.txt`
+- [x] P9-06 frame-naming audit, all 106 frames match `NN_ScreenName_FirstName_StudentID`
+- [x] P9-07 hotspot and link audit: 296 connections, 97 of 106 reachable by clicking, the other 9 are named flow start points, **zero dead ends**
+- [x] P9-08 overflow audit: every screen is a fixed 390×844 iOS frame, verified no text overflows its frame
+- [ ] P9-09/10 content and consistency audits (a second reader, per the doc 08 process)
+- [x] P9-11 accessibility and RTL frames: `138_Accessibility_LargeText_Example`, `139_RTL_Arabic_Example`
+- [ ] P9-12 dark-mode frame variants (the dark **variables** exist and are complete; no dark screens are drawn)
+- [x] P9-14 export the `.fig` into `deliverables/prototype/` — done 8 Oct 2026, 1.2 MB, verified as a real Figma export
+- [x] P9-17 assemble `deliverables/prototype/figma-link.txt` (the text document the brief requires). The `.fig` half is P9-14
 - [ ] P9-18/19 submit and `git tag prototype-v1`
-- [ ] Human only: Figma Share -> Anyone with the link -> Can view; File -> Save local copy into `deliverables/prototype/StudyForge.fig`
+- [ ] **Human only:** Figma Share -> Anyone with the link -> Can view; File -> Save local copy into `deliverables/prototype/StudyForge.fig`
+- [x] **NEW** Phase 1 mockups: 106 low-fidelity wireframes with numbered callouts and per-screen legend panels on Figma page 5, plus `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`
+- [x] **NEW** 15 per-feature flow diagrams on Figma page 2, each ending in its error/edge case
+- [x] **NEW** closed two coverage holes: F09 Group Revision Spaces had **zero** screens (88–94 now built and wired) and `57_Quiz_Submit_Confirm` was missing from the quiz flow
+
 
 ## 6. Sprints, 10%, individual (work-queue D, highest open risk)
+
+> **Ready-to-hand agent files for this section.** One per member, self-contained:
+> [M2 Mohammed](TODO-M2-mohammed.md) · [M3 Tasbeeh](TODO-M3-tasbeeh.md) ·
+> [M4 Shahad](TODO-M4-shahad.md). Each sets the member's git identity, requires a written
+> plan before any code, enforces **one commit per file** and a **push on completion**, and
+> requires **at least two of that member's features** to carry a real, tested, committed
+> change. Conflict prevention is enforced, not documented:
+> [doc 14](14-COLLEAGUE-AI-AGENT-PROMPTS.md) holds the disjoint file-lane map and
+> `bash tools/check-lane.sh M2|M3|M4` refuses a protected branch or an out-of-lane file.
 
 - [ ] M2, M3 and M4 still have zero authored commits (only Saleh appears in `git shortlog`)
 - [ ] Sprint-1 contribution logs are empty templates
