@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: the bell is decorative and hidden, the headings and body read as statements, and both
+// buttons are labelled controls with a 44 pt target.
+
 struct NotificationPermissionView: View {
 
     @State private var viewModel: NotificationPermissionViewModel
