@@ -15,6 +15,9 @@
 
 import SwiftUI
 
+// Accessibility: the export button and the actor/action filters are labelled, the type glyph is hidden, and
+// each log row reads as one element.
+
 struct AuditLogView: View {
 
     @State private var viewModel: AuditLogViewModel
