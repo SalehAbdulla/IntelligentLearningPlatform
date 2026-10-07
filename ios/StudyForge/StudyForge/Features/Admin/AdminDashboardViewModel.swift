@@ -86,6 +86,7 @@ final class AdminDashboardViewModel {
     var moderationTitle: String { L10n.adminModerationTitle.string }
     var auditLogTitle: String { L10n.adminAuditLogTitle.string }
     var taxonomyTitle: String { L10n.adminTaxonomyTitle.string }
+    var broadcastTitle: String { L10n.adminBroadcastTitle.string }
 
     func costUsedTitle(used: Int, limit: Int) -> String { L10n.adminCostUsed.string(used, limit) }
 
