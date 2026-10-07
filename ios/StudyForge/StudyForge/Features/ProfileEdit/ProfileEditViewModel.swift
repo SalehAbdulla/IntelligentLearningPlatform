@@ -69,7 +69,7 @@ final class ProfileEditViewModel {
     init(
         initialName: String,
         initialAcademic: AcademicProfile?,
-        catalogue: AcademicCatalogue = .placeholder,
+        catalogue: AcademicCatalogue = SeededCourseCatalogueStore.starter,
         auth: any AuthService,
         profile: any ProfileService
     ) {
