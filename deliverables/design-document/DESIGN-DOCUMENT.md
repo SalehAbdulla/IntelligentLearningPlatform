@@ -57,7 +57,7 @@ University students accumulate large volumes of unstructured study material (lec
 
 **StudyForge** turns any study material into summaries, flashcards, quizzes and a spaced-repetition plan, and closes the loop between them: **upload, generate, schedule, practise, measure, adapt**. It is an iPhone-first, bilingual (English and Arabic) application built on Apple's on-device intelligence where possible, so the core loop works offline and at no cloud cost, and every AI artefact carries a visible source citation.
 
-The design is documented end to end in this document: 4 user roles, 15 features, 98 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers.
+The design is documented end to end in this document: 4 user roles, 15 features, 106 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers.
 
 ## 2. Background research: the problem, who is affected, and why it matters
 
@@ -311,23 +311,26 @@ Every step above has at least one designed error or empty state, since the brief
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Login_Saleh_202300540` and `115_Admin_AIConfig_Shahad_202305767`. The current file holds **98 frames** across the feature groups below; the full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `115_Admin_AIConfig_Settings_Shahad_202305767`. The file holds **106 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **15 per-feature flow diagrams** on page `2 · Flow Overview`. The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A.
 
-| Group | Area | Owner | Frames |
-|---|---|---|---|
-| A | Onboarding & Auth | M1 | 01–10, 24 |
-| B | Profile & Settings | M1 | 11–18 |
-| C | Courses & Library | M1 | 24–34 |
-| D | AI Summaries | M2 | 35–41 |
-| E | Flashcards | M2 | 42–48 |
-| F | Quizzes | M2 | 51–59 |
-| G | Study Plan & Progress | M3 | 60–70 |
-| H | AI Study Companion (F15) | M2 + M3 | 73–78 |
-| I | Collaboration | M4 | 81–97 |
-| J | Tutor Content Studio | M2 | 99–105 |
-| K | Admin Content Management | M4 | 109–115 |
-| L | Subscription & Payments | M3 | 118–126 |
-| M | System, States & Feedback | M1 | 128–141 |
+| Group | Area | Owner | Frames | Count |
+|---|---|---|---|---|
+| A | Onboarding & Auth | M1 | 01–10 | 10 |
+| B | Profile & Settings | M1 | 11–18 | 8 |
+| C | Courses & Library | M1 | 24–31, 33–34 | 10 |
+| D | AI Summaries | M2 | 35–38, 41 | 5 |
+| E | Flashcards | M2 | 42–48 | 7 |
+| F | Quizzes | M2 | 51–59 | 9 |
+| G | Study Plan & Progress | M3 | 60–65, 68–70 | 9 |
+| H | AI Study Companion (F15) | M2 + M3 | 73–78 | 6 |
+| I | Collaboration | M4 | 81–86, 88–97 | 16 |
+| J | Tutor Content Studio | M2 | 99, 101–105 | 6 |
+| K | Admin Content Management | M4 | 109–112, 115 | 5 |
+| L | Subscription & Payments | M3 | 118, 120–122, 124–126 | 7 |
+| M | System, States & Feedback | M1 | 128, 129, 132–134, 138, 139, 141 | 8 |
+| | **Total** | | | **106** |
+
+Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21**. The per-screen purpose-and-layout descriptions, the coverage audit against all 15 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
@@ -594,7 +597,7 @@ Cited in Harvard style.
 
 ### Appendix A, screen inventory (labelled descriptions)
 
-The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` (98 frames across groups A to M). It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
+The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` (**106** frames across groups A to M between them) and from `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`, which carries the purpose-and-layout description for every screen alongside the numbered element legend printed on Figma page 5. It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
 
 ### Appendix B, full colour token tables
 
