@@ -167,7 +167,9 @@ struct PaymentView: View {
             } icon: {
                 Image(systemName: "checkmark.circle.fill")
             }
-            .foregroundStyle(ColorTokens.success)
+            // The `success` FILL hue is 2.5:1 on white, so it is not text-safe; the title uses the
+            // darkened `successText` (5.5:1), which carries the checkmark at an accessible contrast too.
+            .foregroundStyle(ColorTokens.successText)
 
             Text(viewModel.successBody)
                 .font(.sfCallout)
