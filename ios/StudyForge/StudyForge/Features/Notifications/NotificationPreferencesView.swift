@@ -8,13 +8,12 @@
 
 import SwiftUI
 
-// TODO(M1 · F14): Add a "Send a test reminder" action (a row that fires one local notification
-// immediately), so notifications can be demonstrated and verified on demand.
-// Done when: the action exists, goes through the `NotificationAuthorizer` seam, and a test
-// asserts a reminder is scheduled.
+// The "send a test reminder" row fires one local notification on demand, so notifications can be
+// demonstrated and verified without waiting for a scheduled session (docs/11 §6).
 
 // Accessibility: the per-type and quiet-hours controls are native `Toggle`s (name and on/off come for
-// free), and each quiet-hours picker announces its label and current value.
+// free), each quiet-hours picker announces its label and current value, and the test-reminder button
+// announces its outcome.
 
 struct NotificationPreferencesView: View {
 
@@ -23,9 +22,17 @@ struct NotificationPreferencesView: View {
 
     private let authorizer: any NotificationAuthorizer
 
-    init(store: any NotificationStore, authorizer: any NotificationAuthorizer) {
+    init(
+        store: any NotificationStore,
+        authorizer: any NotificationAuthorizer,
+        scheduler: any NotificationScheduler = InMemoryNotificationScheduler()
+    ) {
         self.authorizer = authorizer
-        _viewModel = State(initialValue: NotificationPreferencesViewModel(store: store))
+        _viewModel = State(initialValue: NotificationPreferencesViewModel(
+            store: store,
+            authorizer: authorizer,
+            scheduler: scheduler
+        ))
     }
 
     var body: some View {
@@ -37,6 +44,7 @@ struct NotificationPreferencesView: View {
 
                 perTypeToggles
                 quietHours
+                testReminder
 
                 Button(L10n.notificationPermissionEnable.string) { isPriming = true }
                     .font(.sfBodyEmph)
@@ -104,6 +112,53 @@ struct NotificationPreferencesView: View {
                     hourPicker(selection: $viewModel.quietEndHour)
                 }
                 .padding(.top, Spacing.s1)
+            }
+        }
+    }
+
+    // MARK: Test reminder
+
+    /// A row that fires one notification now, so the feature can be shown without waiting for a
+    /// scheduled session, and so the outcome is visible rather than guessed at.
+    private var testReminder: some View {
+        VStack(alignment: .leading, spacing: Spacing.s2) {
+            Button {
+                Task { await viewModel.sendTestReminder() }
+            } label: {
+                HStack(spacing: Spacing.s3) {
+                    Image(systemName: "bell.badge")
+                        .font(.sfBody)
+                        .foregroundStyle(ColorTokens.primary)
+                        .accessibilityHidden(true)
+
+                    Text(L10n.notificationTestReminder.string)
+                        .font(.sfBodyEmph)
+                        .foregroundStyle(ColorTokens.primary)
+
+                    Spacer(minLength: 0)
+
+                    if viewModel.isSendingTestReminder {
+                        ProgressView().controlSize(.small)
+                    }
+                }
+                .frame(maxWidth: .infinity, minHeight: Layout.minTouchTarget, alignment: .leading)
+            }
+            .buttonStyle(.plain)
+            .disabled(viewModel.isSendingTestReminder)
+
+            switch viewModel.testReminderOutcome {
+            case .idle:
+                EmptyView()
+            case .sent:
+                Text(L10n.notificationTestReminderSent.string)
+                    .font(.sfCaption)
+                    .foregroundStyle(ColorTokens.successText)
+                    .fixedSize(horizontal: false, vertical: true)
+            case .denied:
+                Text(L10n.notificationPermissionDenied.string)
+                    .font(.sfCaption)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
