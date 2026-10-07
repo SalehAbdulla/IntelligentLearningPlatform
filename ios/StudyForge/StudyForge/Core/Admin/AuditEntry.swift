@@ -40,6 +40,9 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
     /// A report was escalated for a second review (K04).
     case moderationEscalated
 
+    /// The subject and tag vocabulary changed (K06).
+    case taxonomyChanged
+
     var id: String { rawValue }
 
     var title: String {
@@ -50,6 +53,7 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
         case .moderationApproved: L10n.adminAuditModerationApproved.string
         case .moderationRemoved: L10n.adminAuditModerationRemoved.string
         case .moderationEscalated: L10n.adminAuditModerationEscalated.string
+        case .taxonomyChanged: L10n.adminAuditTaxonomyChanged.string
         }
     }
 
@@ -61,6 +65,7 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
         case .moderationApproved: "checkmark.seal"
         case .moderationRemoved: "trash"
         case .moderationEscalated: "arrow.up.circle"
+        case .taxonomyChanged: "tag"
         }
     }
 }
