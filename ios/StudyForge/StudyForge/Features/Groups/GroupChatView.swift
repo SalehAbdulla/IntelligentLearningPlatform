@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: each message row reads as one element and the send button is labelled; the scroll to a new
+// message answers to Reduce Motion.
+
 struct GroupChatView: View {
 
     @State private var viewModel: GroupChatViewModel
