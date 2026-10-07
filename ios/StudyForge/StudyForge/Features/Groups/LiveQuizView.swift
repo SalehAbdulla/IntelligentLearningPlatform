@@ -15,6 +15,9 @@
 
 import SwiftUI
 
+// Accessibility: the timer is one element that announces the time left, the decorative glyphs are hidden,
+// and each question, option and leaderboard row reads as one element.
+
 struct LiveQuizView: View {
 
     @State private var viewModel: LiveQuizViewModel
