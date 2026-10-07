@@ -171,6 +171,11 @@ final class AppContainer {
     /// honest rather than invented. Protocol-backed so previews can seed `PlatformUser.samples`.
     let adminDirectory: any AdminDirectoryStore
 
+    /// The moderation queue (F12, K04/K05). LOCAL-FIRST, like the other admin stores, so the queue is
+    /// demonstrable before a backend serves `reports`. Protocol-backed so screens can be previewed and
+    /// tested with `InMemoryModerationStore`.
+    let moderation: any ModerationStore
+
     /// The account's entitlement and payment receipts (F13). LOCAL-FIRST, like the other
     /// derived stores, so the paywall and the manage screen are demonstrable before a Tap
     /// account and a Blaze plan exist (docs/09 D22). Protocol-backed so screens can be
@@ -253,6 +258,7 @@ final class AppContainer {
         recentSearches: any RecentSearchStore = InMemoryRecentSearchStore(),
         aiConfigurations: any AIConfigurationStore = InMemoryAIConfigurationStore(),
         adminDirectory: any AdminDirectoryStore = InMemoryAdminDirectoryStore(),
+        moderation: any ModerationStore = InMemoryModerationStore(),
         // Defaulted so a preview or a test gets an in-memory entitlement store and a
         // simulated gateway — no disk, no network, no Firebase project.
         subscriptions: any SubscriptionStore = InMemorySubscriptionStore(),
@@ -282,6 +288,7 @@ final class AppContainer {
         self.recentSearches = recentSearches
         self.aiConfigurations = aiConfigurations
         self.adminDirectory = adminDirectory
+        self.moderation = moderation
         self.subscriptions = subscriptions
         // Development stays on the deterministic simulator, so the demo and CI never depend on
         // a deployed function or a Tap account. Staging uses Tap; production uses StoreKit (a
@@ -475,6 +482,7 @@ extension AppContainer {
             recentSearches: UserDefaultsRecentSearchStore(),
             aiConfigurations: FileAIConfigurationStore(),
             adminDirectory: FileAdminDirectoryStore(),
+            moderation: FileModerationStore(),
             // Real builds persist the entitlement on device. The gateway stays the simulated
             // one until a Tap account exists; swapping it is the one-line change `payments:`
             // exists for.
