@@ -34,7 +34,7 @@ struct ProfileSetupCompleteView: View {
 
     init(
         answers: ProfileSetupAnswers,
-        catalogue: AcademicCatalogue = .placeholder,
+        catalogue: AcademicCatalogue,
         onGoToDashboard: @escaping () -> Void
     ) {
         _viewModel = State(
@@ -129,7 +129,8 @@ struct ProfileSetupCompleteView: View {
             ),
             learningStyle: .readWrite,
             studyGoals: StudyGoals(weeklyStudyGoalHours: 12, targetGrade: .a)
-        )
+        ),
+        catalogue: SeededCourseCatalogueStore.starter
     ) {}
 }
 
@@ -139,6 +140,7 @@ struct ProfileSetupCompleteView: View {
     ProfileSetupCompleteView(
         answers: ProfileSetupAnswers(
             studyGoals: StudyGoals(weeklyStudyGoalHours: 8, targetGrade: .b)
-        )
+        ),
+        catalogue: SeededCourseCatalogueStore.starter
     ) {}
 }
