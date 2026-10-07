@@ -8,10 +8,8 @@
 
 import SwiftUI
 
-// TODO(M2 · F15): Add VoiceOver support. The suggested-question rows and the empty state are
-// unlabelled.
-// Done when: each suggestion is a labelled button and the empty state is announced as one
-// element.
+// Accessibility: the header reads as one element (subtitle and the scope chip) and the empty state is
+// announced as one statement. Each suggestion is already a button whose label is its own text.
 
 struct CoachHomeView: View {
 
@@ -74,6 +72,7 @@ struct CoachHomeView: View {
                 .padding(.vertical, Spacing.s2)
                 .background(ColorTokens.primaryContainer, in: Capsule())
         }
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: Ask bar
@@ -147,6 +146,7 @@ struct CoachHomeView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(Spacing.s4)
             .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.l))
+            .accessibilityElement(children: .combine)
         } else {
             VStack(alignment: .leading, spacing: Spacing.s2) {
                 ForEach(viewModel.threads) { thread in
