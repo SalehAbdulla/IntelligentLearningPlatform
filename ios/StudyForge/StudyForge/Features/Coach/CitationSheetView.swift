@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+// TODO(M2 · F15): Add VoiceOver support. Each citation row should read its source and page as
+// one element, so a student hears "page 14, Lecture 4" rather than disconnected fragments.
+// Done when: citation rows are combined and labelled.
+
 struct CitationSheetView: View {
 
     let citation: Citation

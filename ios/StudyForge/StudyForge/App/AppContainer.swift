@@ -283,9 +283,10 @@ final class AppContainer {
         self.aiConfigurations = aiConfigurations
         self.adminDirectory = adminDirectory
         self.subscriptions = subscriptions
-        // The gateway defaults to one that writes through THIS store, so an entitlement and
-        // its receipt can never end up in different places.
-        self.payments = payments ?? SimulatedTapGateway(store: subscriptions)
+        // Development stays on the deterministic simulator, so the demo and CI never depend on
+        // a deployed function or a Tap account. Staging uses Tap; production uses StoreKit (a
+        // real App Store release must). See `defaultGateway`.
+        self.payments = payments ?? Self.defaultGateway(environment: environment, store: subscriptions)
         self.courses = courses
         self.coach = coach
         self.retrieval = retrieval
@@ -481,6 +482,30 @@ extension AppContainer {
             courses: FileCourseStore(),
             coach: FileCoachStore()
         )
+    }
+
+    /// The gateway a build uses when none was injected.
+    ///
+    /// `.dev` (every Debug build, so the Simulator and CI) uses the deterministic simulator:
+    /// there is no deployed function and no Tap account yet, and the paywall must still demo.
+    /// `.staging` uses the real Tap Company flow (createCharge -> Tap hosted page -> webhook).
+    /// `.prod` uses StoreKit, because a real App Store release must (Apple Guideline 3.1.1).
+    private static func defaultGateway(
+        environment: AppEnvironment,
+        store: any SubscriptionStore
+    ) -> any PaymentGateway {
+        switch environment {
+        case .dev:
+            return SimulatedTapGateway(store: store)
+        case .staging:
+            return TapPaymentsGateway(
+                caller: FirebaseChargeCaller(),
+                store: FirestoreSubscriptionStore(),
+                launcher: SystemURLLauncher()
+            )
+        case .prod:
+            return StoreKitGateway(store: LiveStoreKitStore(), entitlements: store)
+        }
     }
 
     #if DEBUG

@@ -40,6 +40,11 @@ enum SubscriptionPlan: String, Codable, Sendable, CaseIterable {
     /// User-facing label. Part of the localisation debt recorded in
     /// `Core/Localisation/L10n.swift`: `AppRole.displayName` and this share the same
     /// problem — centralised but not yet routed through `Localizable.strings`.
+    //
+    // TODO(M1 · F01): Route AppRole.displayName and SubscriptionPlan.displayName through
+    // L10n / Localizable.strings instead of these literals, in English and Arabic.
+    // Done when: neither property returns a hard-coded string, the new keys exist in both
+    // .strings files, and `python3 tools/check-strings.py` passes.
     var displayName: String {
         switch self {
         case .free: "Free"

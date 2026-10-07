@@ -11,6 +11,11 @@
 //  seam a real sync swaps in behind — and until then the feature works with no Firebase project
 //  configured, which is the difference between a demonstrable bookmarks screen and an empty one.
 //
+// TODO(M4 · F10): Add a Firestore-backed `BookmarkStore` behind this protocol, matching
+// docs/05 §2.5 (`collections/{id}`, `bookmarks/{id}`, owner-only rules).
+// Done when: the implementation exists, `AppContainer` can select it, and a test proves a
+// collection round-trips through it.
+//
 
 import Foundation
 

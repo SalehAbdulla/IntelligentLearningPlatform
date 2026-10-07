@@ -32,17 +32,19 @@ The configuration is written and the rules are **verified against the emulator**
 | `firestore.indexes.json` | 10 composite indexes — no cold-query crashes | ✅ |
 | `storage.rules` | Owner-only paths plus shared-folder grants resolved from Firestore | ✅ 18 tests |
 | `rules-tests/` | Emulator suites, **negative tests first** | ✅ |
-| `functions/src/index.ts` | **Three** functions: `createCharge`, `tapWebhook`, `rollupDailyMetrics` | ⚠️ **skeleton — S3/S4** |
+| `functions/src/index.ts` | `createCharge` + `tapWebhook` (Tap Company, **implemented**) and `rollupDailyMetrics` (skeleton) | ✅ payments · ⚠️ rollup S4 |
 | `functions/.env.example` | Required secrets, documented; the real `.env` is gitignored | ✅ |
 
 Full schema, role model and rule rationale: [docs/05-DATA-MODEL-SECURITY.md](../docs/05-DATA-MODEL-SECURITY.md).
 
 ### ⚠️ Two honest limitations
 
-1. **The Cloud Functions are typed skeletons, not implementations.** The signatures,
-   the security decisions and the exact write-set are documented in the file, but the
-   Tap integration and the aggregation are Sprint S3/S4 work. Nothing here pretends
-   otherwise.
+1. **The Tap payment functions are implemented but not deployed.** `createCharge` and
+   `tapWebhook` are ported from a working Tap Company integration (Bearer `sk_` key,
+   `POST /v2/charges`, and `X-Tap-Signature` HMAC-SHA256 over the raw body). They compile
+   clean (`tsc`) but cannot deploy without the Blaze plan plus a budget alert and spend cap
+   (docs/04 §5) and Tap secret keys from a merchant account (docs/09 Q2/Q3).
+   `rollupDailyMetrics` remains a skeleton (Sprint S4). Nothing here pretends otherwise.
 2. **The Storage emulator prints a Java warning** on newer JDKs
    (`sun.misc.Unsafe::arrayBaseOffset` from protobuf). It is a deprecation notice from
    the emulator's own dependency, not a failure — all 18 Storage tests pass. If a future

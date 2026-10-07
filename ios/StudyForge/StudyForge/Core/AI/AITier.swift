@@ -111,6 +111,11 @@ enum AIUnavailableReason: String, Sendable, CaseIterable {
         }
     }
 
+    // TODO(M2 · F15): Implement the planned tier engine behind the existing `AIProvider` seam
+    // (`AIRouter`). Until it exists, `.notImplemented` is the honest state below.
+    // Done when: the engine conforms to `AIProvider`, is registered for its tier, and a router
+    // test proves it is chosen when it reports available.
+    //
     /// What happened, and what it means for the user's data.
     var message: String {
         switch self {

@@ -140,6 +140,11 @@ struct SignedInHomeView: View {
     /// The designed routes are the student home's quick-action tiles and tab bar (B05, F07),
     /// neither of which exists yet, so the placeholder home carries the link for now — the same
     /// reason it carries the profile link.
+    //
+    // TODO(M3 · F07): Replace this placeholder with the real student home (B05): greeting,
+    // today's plan, streak, and the quick-action tiles, then retire these ad-hoc links.
+    // Done when: 15_Home_Dashboard_Student is implemented and this file no longer explains
+    // itself as a placeholder.
     private var libraryLink: some View {
         NavigationLink {
             MaterialLibraryView(

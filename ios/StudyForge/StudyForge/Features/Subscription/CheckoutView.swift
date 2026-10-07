@@ -15,6 +15,10 @@
 
 import SwiftUI
 
+// TODO(M3 · F13): Add VoiceOver support. The order-summary rows and the pay button carry no
+// accessibility labels or values.
+// Done when: the rows are labelled and the pay button announces its processing state.
+
 struct CheckoutView: View {
 
     let container: AppContainer

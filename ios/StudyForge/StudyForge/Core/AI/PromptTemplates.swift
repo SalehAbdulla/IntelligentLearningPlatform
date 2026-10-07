@@ -19,6 +19,11 @@
 //  In S3 these strings move to Firestore so prompt quality can improve without an
 //  app release (docs/04 §4). They are constants for now, and the seam is this file.
 //
+// TODO(M2 · F15): Introduce a `PromptTemplateStore` protocol and a Firestore-backed
+// implementation so prompts update without an app release (docs/04 §4). Keep the static
+// templates as the default conformer. Done when: the store is injected, a fake store can
+// override a template in a test, and the default output is unchanged.
+//
 
 import Foundation
 
