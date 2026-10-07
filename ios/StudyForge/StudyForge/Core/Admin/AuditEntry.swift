@@ -31,6 +31,15 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
     /// An account was suspended or reactivated (K03).
     case accountSuspended
 
+    /// A report was decided in the content's favour, so the content stays (K04).
+    case moderationApproved
+
+    /// A report was upheld and the content was removed (K04).
+    case moderationRemoved
+
+    /// A report was escalated for a second review (K04).
+    case moderationEscalated
+
     var id: String { rawValue }
 
     var title: String {
@@ -38,6 +47,9 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
         case .aiConfigChanged: L10n.adminAuditConfigChanged.string
         case .roleChanged: L10n.adminAuditRoleChanged.string
         case .accountSuspended: L10n.adminAuditAccountChanged.string
+        case .moderationApproved: L10n.adminAuditModerationApproved.string
+        case .moderationRemoved: L10n.adminAuditModerationRemoved.string
+        case .moderationEscalated: L10n.adminAuditModerationEscalated.string
         }
     }
 
@@ -46,6 +58,9 @@ enum AuditAction: String, Sendable, CaseIterable, Codable, Identifiable {
         case .aiConfigChanged: "bolt.badge.clock"
         case .roleChanged: "person.badge.key"
         case .accountSuspended: "person.crop.circle.badge.xmark"
+        case .moderationApproved: "checkmark.seal"
+        case .moderationRemoved: "trash"
+        case .moderationEscalated: "arrow.up.circle"
         }
     }
 }
@@ -78,3 +93,36 @@ struct AuditEntry: Identifiable, Equatable, Sendable, Codable {
         self.createdAt = createdAt
     }
 }
+
+#if DEBUG
+extension AuditEntry {
+
+    /// A short, obviously-fake trail, for previews.
+    ///
+    /// DEBUG only, and never seeded on device: a real trail is written by real admin actions, and a
+    /// shipping build showing invented audit lines would undermine the whole point of a trail.
+    static let samples: [AuditEntry] = [
+        AuditEntry(
+            id: "a_3",
+            action: .roleChanged,
+            actorName: "Shahad Ashoor",
+            detail: "Omar Hassan: Student -> Tutor",
+            createdAt: .now.addingTimeInterval(-600)
+        ),
+        AuditEntry(
+            id: "a_2",
+            action: .aiConfigChanged,
+            actorName: "Shahad Ashoor",
+            detail: "Daily limit 20 -> 50",
+            createdAt: .now.addingTimeInterval(-3_600 * 4)
+        ),
+        AuditEntry(
+            id: "a_1",
+            action: .accountSuspended,
+            actorName: "Saleh Abdulla",
+            detail: "Sara Ali: Suspended",
+            createdAt: .now.addingTimeInterval(-86_400)
+        ),
+    ]
+}
+#endif
