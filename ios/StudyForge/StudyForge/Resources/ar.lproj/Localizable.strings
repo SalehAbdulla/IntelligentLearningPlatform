@@ -257,6 +257,10 @@
 "import.tagsHint"           = "افصل بينها بفواصل.";
 "import.submit"             = "إضافة إلى المكتبة";
 "import.submitting"         = "جارٍ الإضافة…";
+"import.duplicate.title"    = "موجود في مكتبتك بالفعل";
+"import.duplicate.body"     = "لقد استوردت %@ من قبل. هل تريد استبداله أم الاحتفاظ بالنسختين؟";
+"import.duplicate.replace"  = "استبدال";
+"import.duplicate.keepBoth" = "الاحتفاظ بالنسختين";
 "import.error.name"         = "أعطِ المادة عنوانًا.";
 "import.error.text"         = "الصق المادة أولًا.";
 "import.error.unreadable"   = "تعذّر فتح ذلك الملف.";
