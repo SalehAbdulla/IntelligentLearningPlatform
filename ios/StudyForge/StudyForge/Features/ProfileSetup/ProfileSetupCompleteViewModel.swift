@@ -36,7 +36,7 @@ final class ProfileSetupCompleteViewModel {
     /// exactly the drift `SFDetailRow` exists to prevent.
     let rows: [DetailRow]
 
-    init(answers: ProfileSetupAnswers, catalogue: AcademicCatalogue = .placeholder) {
+    init(answers: ProfileSetupAnswers, catalogue: AcademicCatalogue = SeededCourseCatalogueStore.starter) {
         var rows: [DetailRow] = []
 
         if let academic = answers.academic {

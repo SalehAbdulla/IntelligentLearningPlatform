@@ -108,6 +108,7 @@ struct RootView: View {
                         // so B04 summarises the whole profile rather than this session alone.
                         ProfileSetupFlowView(
                             profile: container.profile,
+                            catalogue: container.catalogue,
                             startingAt: debugProfileSetupStep
                                 ?? ProfileSetupStep.resumePoint(for: container.storedProfile),
                             answers: ProfileSetupAnswers(stored: container.storedProfile)

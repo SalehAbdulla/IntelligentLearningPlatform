@@ -101,6 +101,15 @@ final class AppContainer {
     /// as `auth`: the wizard is previewable and testable with no Firebase project.
     let profile: any ProfileService
 
+    /// Where the profile wizard's academic step gets its quick-picks (F01, and C01/F02's seam).
+    ///
+    /// The ONLY place the catalogue's source is chosen. Screens take an `AcademicCatalogue` value
+    /// and never ask where it came from, which is what makes replacing the seeded store with F02's
+    /// real one a change here rather than an edit at every call site. It has to be a store and not
+    /// a plain constant: the real source can never be a client value, because `courses/{courseId}`
+    /// is readable only by an enrolled student and the wizard runs before enrolment exists.
+    let courseCatalogue: any CourseCatalogueStore
+
     /// The student's materials (F02). LOCAL-FIRST, and the store owns where they live (D24): the
     /// app never uploads a source file, because the model that reads it runs here too.
     /// Protocol-backed so a screen can be previewed and tested with `InMemoryMaterialStore` and
@@ -238,6 +247,15 @@ final class AppContainer {
     /// `hasResolvedAuth` is, and because the DEBUG launch arguments need to.
     var profileStatus: ProfileStatus = .unknown
 
+    /// The academic step's quick-picks, resolved once at launch.
+    ///
+    /// A plain value rather than a `LoadState`, deliberately. The source is a local list today, so
+    /// a spinner would be theatre, and a screen that waited on it could not draw before it arrived
+    /// even though the form is answerable without it. `AcademicCatalogue.empty` is the honest
+    /// pre-answer state, and it keeps the year control usable, which is the one thing a student
+    /// cannot type around.
+    private(set) var catalogue: AcademicCatalogue = .empty
+
     /// The document the last `resolveProfile()` read, kept for the wizard.
     ///
     /// Two things need it and neither can ask for it again without a second round trip: the
@@ -257,6 +275,7 @@ final class AppContainer {
         firebaseSource: FirebaseConfigurationSource,
         auth: any AuthService,
         profile: any ProfileService,
+        courseCatalogue: any CourseCatalogueStore = SeededCourseCatalogueStore(),
         // Defaulted so a container built for a preview or a test needs no disk: see `materials`.
         materials: any MaterialStore = InMemoryMaterialStore(),
         summaries: any SummaryStore = InMemorySummaryStore(),
@@ -291,6 +310,7 @@ final class AppContainer {
         self.firebaseSource = firebaseSource
         self.auth = auth
         self.profile = profile
+        self.courseCatalogue = courseCatalogue
         self.materials = materials
         self.summaries = summaries
         self.ai = ai
@@ -336,6 +356,17 @@ final class AppContainer {
         ai.governor.limitOverride = configuration.dailyQuotaOverride
     }
 
+    /// Asks the catalogue store what the wizard's pickers should offer.
+    ///
+    /// Called once at launch, like `applyAIConfiguration`. A failure leaves `AcademicCatalogue.empty`
+    /// in place rather than surfacing an error: the catalogue is suggestions, both text pickers
+    /// accept typed input, and `empty` keeps the year control answerable, so there is nothing here
+    /// worth interrupting a student about. F02's real source is the first thing that could change
+    /// that, and it is a change inside this one function.
+    func loadCatalogue() async {
+        catalogue = (try? await courseCatalogue.catalogue()) ?? .empty
+    }
+
     /// Begins observing authentication state.
     ///
     /// Called once from the app's launch, not from an initialiser, so that a container
@@ -346,6 +377,10 @@ final class AppContainer {
         // The admin's AI settings are applied once at launch, so the FIRST generation of the session
         // already obeys the policy the panel last saved (F12, K07) rather than only the next one.
         Task { await applyAIConfiguration() }
+
+        // The wizard's quick-picks, resolved once for the same reason: the academic step should
+        // render with them already in hand rather than asking while the student is looking at it.
+        Task { await loadCatalogue() }
 
         let task = Task { [weak self] in
             guard let stream = self?.auth.stateChanges() else { return }
