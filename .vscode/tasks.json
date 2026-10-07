@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "iOS: run on simulator",
+      "detail": "Build, install and launch StudyForge on a simulator (boots it first)",
+      "type": "shell",
+      "command": "bash tools/run-ios.sh",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "iOS: build (simulator)",
+      "detail": "Compile only, no device needed",
+      "type": "shell",
+      "command": "xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "iOS: run unit tests",
+      "detail": "xcodebuild test on the iPhone 17 simulator",
+      "type": "shell",
+      "command": "xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge -destination 'platform=iOS Simulator,name=iPhone 17' test",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "iOS: open Device Hub",
+      "detail": "The Xcode 27 device UI. Simulator.app no longer exists.",
+      "type": "shell",
+      "command": "open -a /Applications/Xcode.app/Contents/Applications/DeviceHub.app",
+      "problemMatcher": []
+    },
+    {
+      "label": "iOS: clean build folder",
+      "type": "shell",
+      "command": "xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge clean",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}
