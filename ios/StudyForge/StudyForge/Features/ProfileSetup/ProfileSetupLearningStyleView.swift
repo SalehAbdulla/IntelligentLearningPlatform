@@ -11,6 +11,9 @@
 
 import SwiftUI
 
+// Accessibility: each question's heading reads as one element, and the animation goes through
+// `Motion.respecting` so Reduce Motion is honoured.
+
 struct ProfileSetupLearningStyleView: View {
 
     @State private var viewModel: ProfileSetupLearningStyleViewModel

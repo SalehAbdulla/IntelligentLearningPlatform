@@ -14,6 +14,9 @@
 
 import SwiftUI
 
+// Accessibility: the audience picker and the body field are labelled, the decorative glyph is hidden, and
+// each preview row reads as one element.
+
 struct BroadcastComposerView: View {
 
     @State private var viewModel: BroadcastComposerViewModel

@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+// Accessibility: the create button is labelled, and the join-code field announces its label and value.
+
 struct GroupListView: View {
 
     @State private var viewModel: GroupListViewModel

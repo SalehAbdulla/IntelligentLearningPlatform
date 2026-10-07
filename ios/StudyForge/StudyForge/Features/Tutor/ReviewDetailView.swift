@@ -16,6 +16,9 @@
 
 import SwiftUI
 
+// Accessibility: the draft and its source are stacked, not columned, so both stay legible at AX3+ (see the
+// note above); the draft section announces its heading and each decision is a labelled button.
+
 struct ReviewDetailView: View {
 
     let container: AppContainer

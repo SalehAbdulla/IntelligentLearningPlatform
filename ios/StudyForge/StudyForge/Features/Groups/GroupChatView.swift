@@ -8,9 +8,16 @@
 
 import SwiftUI
 
+// Accessibility: each message row reads as one element and the send button is labelled; the scroll to a new
+// message answers to Reduce Motion.
+
 struct GroupChatView: View {
 
     @State private var viewModel: GroupChatViewModel
+
+    /// The scroll-to-newest on send is a motion, so it is the one thing here that answers to Reduce
+    /// Motion: with it on, the list jumps to the newest message instead of gliding to it.
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     init(groupId: String, store: any GroupStore, me: String) {
         _viewModel = State(initialValue: GroupChatViewModel(groupId: groupId, store: store, me: me))
@@ -56,9 +63,13 @@ struct GroupChatView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .onChange(of: viewModel.messages.count) { _, _ in
-                    // A sent message should be visible without the student scrolling for it.
+                    // A sent message should be visible without the student scrolling for it. The scroll
+                    // is animated only when Reduce Motion is off; with it on, jumping to the newest
+                    // message is the point, and the glide is not.
                     if let last = viewModel.messages.last {
-                        withAnimation { proxy.scrollTo(last.id, anchor: .bottom) }
+                        withAnimation(reduceMotion ? nil : Motion.quick) {
+                            proxy.scrollTo(last.id, anchor: .bottom)
+                        }
                     }
                 }
             }

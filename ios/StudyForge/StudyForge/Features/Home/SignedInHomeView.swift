@@ -21,6 +21,10 @@
 
 import SwiftUI
 
+// Accessibility: the identity card reads as one statement, each capability row announces its label and
+// value, and every destination is a labelled `NavigationLink` with a 44 pt target, so the home reads as a
+// list of places to go rather than bare glyphs.
+
 struct SignedInHomeView: View {
 
     let container: AppContainer

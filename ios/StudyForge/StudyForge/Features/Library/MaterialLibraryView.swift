@@ -27,6 +27,10 @@
 
 import SwiftUI
 
+// Accessibility: each material row is one element ("title, source"), with the source glyph hidden, so a
+// VoiceOver pass reads statements rather than fragments. The summarise and make-cards buttons are named
+// by the action they perform, not by their icon.
+
 struct MaterialLibraryView: View {
 
     @State private var viewModel: MaterialLibraryViewModel

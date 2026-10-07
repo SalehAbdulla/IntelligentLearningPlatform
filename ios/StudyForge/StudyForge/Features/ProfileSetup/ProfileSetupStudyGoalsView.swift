@@ -15,6 +15,8 @@
 
 import SwiftUI
 
+// Accessibility: each question's heading reads as one element.
+
 struct ProfileSetupStudyGoalsView: View {
 
     @State private var viewModel: ProfileSetupStudyGoalsViewModel

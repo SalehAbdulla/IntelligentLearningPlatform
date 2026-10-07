@@ -9,6 +9,9 @@
 
 import SwiftUI
 
+// Accessibility: the create button is named, the empty state is one statement, and each collection is a
+// navigation link that reads its name, item count and offline badge together.
+
 struct CollectionListView: View {
 
     @State private var viewModel: CollectionListViewModel

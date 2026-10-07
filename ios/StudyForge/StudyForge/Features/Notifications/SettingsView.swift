@@ -21,6 +21,9 @@
 
 import SwiftUI
 
+// Accessibility: every row is a labelled `NavigationLink`, and sign-out is a labelled destructive button
+// that shows its working state instead of appearing inert.
+
 struct SettingsView: View {
 
     let container: AppContainer

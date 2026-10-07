@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: the add-resource button is labelled, the decorative glyphs are hidden, and each member row
+// reads as one element.
+
 struct GroupDetailView: View {
 
     @State private var viewModel: GroupDetailViewModel

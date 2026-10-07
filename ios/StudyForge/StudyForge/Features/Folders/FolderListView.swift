@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: the add button is named, the empty state is one statement, and each folder is a
+// navigation link that reads its name, member and item counts and its role chip together.
+
 struct FolderListView: View {
 
     @State private var viewModel: FolderListViewModel

@@ -9,6 +9,10 @@
 
 import SwiftUI
 
+// Accessibility: each bookmark row hides its source glyph and reads its title and saved date together; in
+// select-and-share mode the row is a toggle that announces whether it is chosen. The move sheet offers a
+// labelled button per destination.
+
 struct CollectionDetailView: View {
 
     @State private var viewModel: CollectionDetailViewModel
@@ -106,6 +110,9 @@ struct CollectionDetailView: View {
                 rowContent(bookmark)
             }
             .buttonStyle(.plain)
+            // In select-and-share mode the row is a toggle, so it has to say whether it is chosen; the
+            // checkmark that shows it on screen is decorative and hidden.
+            .accessibilityAddTraits(selection.contains(bookmark.id) ? .isSelected : [])
         } else {
             rowContent(bookmark)
                 .swipeActions(edge: .trailing) {

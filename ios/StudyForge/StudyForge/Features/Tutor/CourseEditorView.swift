@@ -14,6 +14,9 @@
 
 import SwiftUI
 
+// Accessibility: the colour swatches are labelled and announce their chosen state, the decorative glyphs
+// are hidden, and each field row reads as one element.
+
 struct CourseEditorView: View {
 
     let container: AppContainer
