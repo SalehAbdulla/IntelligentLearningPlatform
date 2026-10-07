@@ -708,4 +708,331 @@ struct AuditLogViewModelTests {
     }
 }
 
+
+// MARK: - Taxonomy store
+
+@Suite("Taxonomy store (F12)")
+struct TaxonomyStoreTests {
+
+    @Test("An untouched store is empty")
+    func emptyByDefault() async throws {
+        let store = InMemoryTaxonomyStore()
+        #expect(try await store.terms().isEmpty)
+    }
+
+    @Test("Save, read back, and replace rather than duplicate")
+    func saveReadsBack() async throws {
+        let store = InMemoryTaxonomyStore()
+        var term = TaxonomyTerm(name: "Biology", kind: .subject)
+        try await store.save(term)
+        #expect(try await store.terms().count == 1)
+
+        term.usageCount = 9
+        try await store.save(term)
+        #expect(try await store.terms().count == 1)
+        #expect(try await store.terms().first?.usageCount == 9)
+    }
+
+    @Test("Remove drops the term")
+    func remove() async throws {
+        let store = InMemoryTaxonomyStore(seededWith: TaxonomyTerm.samples)
+        let target = TaxonomyTerm.samples[0]
+        try await store.remove(id: target.id)
+        let remaining = try await store.terms()
+        #expect(remaining.contains { $0.id == target.id } == false)
+        #expect(remaining.count == TaxonomyTerm.samples.count - 1)
+    }
+
+    @Test("Terms come back ordered by kind, then sort index")
+    func ordering() async throws {
+        let store = InMemoryTaxonomyStore(seededWith: TaxonomyTerm.samples)
+        let kinds = try await store.terms().map(\.kind)
+        #expect(kinds.first == .subject)
+        #expect(kinds.last == .tag)
+    }
+
+    @Test("A forced failure surfaces as a storage error, and clearing restores success")
+    func forcedFailure() async throws {
+        let store = InMemoryTaxonomyStore(seededWith: TaxonomyTerm.samples)
+        await store.forceFailure(.storageFailed)
+        do {
+            _ = try await store.terms()
+            Issue.record("expected a storage error")
+        } catch {
+            #expect(error as? AdminError == .storageFailed)
+        }
+        await store.forceFailure(nil)
+        #expect(try await store.terms().isEmpty == false)
+    }
+}
+
+// MARK: - Taxonomy screen
+
+@Suite("Taxonomy screen (F12)")
+@MainActor
+struct TaxonomyManageViewModelTests {
+
+    private func model() -> (TaxonomyManageViewModel, InMemoryTaxonomyStore, InMemoryAIConfigurationStore) {
+        let store = InMemoryTaxonomyStore(seededWith: TaxonomyTerm.samples)
+        let audit = InMemoryAIConfigurationStore()
+        let viewModel = TaxonomyManageViewModel(store: store, audit: audit, actorName: "Shahad Ashoor")
+        return (viewModel, store, audit)
+    }
+
+    @Test("The default vocabulary is subjects, and adding one records it")
+    func addRecords() async throws {
+        let (viewModel, _, audit) = model()
+        await viewModel.load()
+        #expect(viewModel.kind == .subject)
+
+        viewModel.newName = "Chemistry"
+        #expect(await viewModel.add())
+
+        #expect(viewModel.visibleTerms.contains { $0.name == "Chemistry" })
+        #expect(viewModel.newName.isEmpty, "the field clears on success")
+        let trail = try await audit.auditLog()
+        #expect(trail.count == 1)
+        #expect(trail.first?.action == .taxonomyChanged)
+    }
+
+    @Test("An empty or duplicate name is refused, and nothing is written")
+    func refusesBadName() async throws {
+        let (viewModel, _, audit) = model()
+        await viewModel.load()
+
+        viewModel.newName = "   "
+        #expect(await viewModel.add() == false)
+        #expect(viewModel.formError != nil)
+
+        viewModel.newName = "biology"
+        #expect(await viewModel.add() == false, "case-insensitive duplicate of an existing subject")
+        #expect(try await audit.auditLog().isEmpty)
+    }
+
+    @Test("Rename changes the name and records it")
+    func renameRecords() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let term = try #require(viewModel.visibleTerms.first)
+
+        #expect(await viewModel.rename(term, to: "Life Sciences"))
+        #expect(try await store.terms().contains { $0.id == term.id && $0.name == "Life Sciences" })
+        #expect(try await audit.auditLog().first?.action == .taxonomyChanged)
+    }
+
+    @Test("Merge folds the counts into the target and removes the duplicate")
+    func mergeAddsCounts() async throws {
+        let (viewModel, store, _) = model()
+        await viewModel.load()
+        let bio = try #require(viewModel.visibleTerms.first { $0.name == "Bio" })
+        let biology = try #require(viewModel.visibleTerms.first { $0.name == "Biology" })
+
+        await viewModel.merge(bio, into: biology)
+
+        let merged = try await store.terms()
+        #expect(merged.contains { $0.id == bio.id } == false)
+        #expect(merged.first { $0.id == biology.id }?.usageCount == biology.usageCount + bio.usageCount)
+    }
+}
+
+
+// MARK: - Taxonomy screen, editing
+
+@Suite("Taxonomy screen, editing (F12)")
+@MainActor
+struct TaxonomyEditingTests {
+
+    private func model() -> (TaxonomyManageViewModel, InMemoryTaxonomyStore, InMemoryAIConfigurationStore) {
+        let store = InMemoryTaxonomyStore(seededWith: TaxonomyTerm.samples)
+        let audit = InMemoryAIConfigurationStore()
+        let viewModel = TaxonomyManageViewModel(store: store, audit: audit, actorName: "Shahad Ashoor")
+        return (viewModel, store, audit)
+    }
+
+    @Test("Delete removes the term and records it")
+    func deleteRecords() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        let term = try #require(viewModel.visibleTerms.first)
+
+        await viewModel.delete(term)
+
+        #expect(try await store.terms().contains { $0.id == term.id } == false)
+        #expect(try await audit.auditLog().first?.action == .taxonomyChanged)
+    }
+
+    @Test("Reorder persists the new order")
+    func reorder() async throws {
+        let (viewModel, store, _) = model()
+        await viewModel.load()
+        var ordered = viewModel.visibleTerms
+        ordered.swapAt(0, 2)
+
+        await viewModel.persistOrder(ordered)
+
+        let subjects = try await store.terms().filter { $0.kind == .subject }
+        #expect(subjects.map(\.name) == ["Mathematics", "Bio", "Biology"])
+    }
+
+    @Test("Switching kind shows the other vocabulary")
+    func switchingKind() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        viewModel.kind = .tag
+        let allTags = viewModel.visibleTerms.allSatisfy { $0.kind == .tag }
+        #expect(allTags)
+        #expect(viewModel.visibleTerms.count == 3, "three sample tags")
+    }
+
+    @Test("Every string comes from the catalogue")
+    func copyIsLocalised() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        #expect(viewModel.title == L10n.adminTaxonomyTitle.string)
+        #expect(viewModel.addButton == L10n.adminTaxonomyAdd.string)
+        #expect(TaxonomyKind.tag.title == L10n.adminTaxonomyKindTag.string)
+        #expect(AuditAction.taxonomyChanged.title == L10n.adminAuditTaxonomyChanged.string)
+    }
+}
+
+
+// MARK: - Broadcast store
+
+@Suite("Broadcast store (F12)")
+struct BroadcastStoreTests {
+
+    @Test("An untouched store has no announcements")
+    func emptyByDefault() async throws {
+        let store = InMemoryBroadcastStore()
+        #expect(try await store.broadcasts().isEmpty)
+    }
+
+    @Test("Save reads back, and replaces rather than duplicates")
+    func saveReadsBack() async throws {
+        let store = InMemoryBroadcastStore()
+        let broadcast = Broadcast(segment: .everyone, title: "Hi", message: "Body", isSent: true)
+        try await store.save(broadcast)
+        try await store.save(broadcast)
+        #expect(try await store.broadcasts().count == 1)
+    }
+
+    @Test("Announcements come back newest first")
+    func newestFirst() async throws {
+        let older = Broadcast(segment: .everyone, title: "Old", message: "a", createdAt: .now.addingTimeInterval(-600))
+        let newer = Broadcast(segment: .everyone, title: "New", message: "b", createdAt: .now)
+        let store = InMemoryBroadcastStore(seededWith: [older, newer])
+        #expect(try await store.broadcasts().map(\.title) == ["New", "Old"])
+    }
+
+    @Test("A forced failure surfaces as a storage error, and clearing restores success")
+    func forcedFailure() async throws {
+        let store = InMemoryBroadcastStore(seededWith: [Broadcast(segment: .everyone, title: "Hi", message: "b")])
+        await store.forceFailure(.storageFailed)
+        do {
+            _ = try await store.broadcasts()
+            Issue.record("expected a storage error")
+        } catch {
+            #expect(error as? AdminError == .storageFailed)
+        }
+        await store.forceFailure(nil)
+        #expect(try await store.broadcasts().isEmpty == false)
+    }
+}
+
+// MARK: - Broadcast composer
+
+@Suite("Broadcast composer (F12)")
+@MainActor
+struct BroadcastComposerViewModelTests {
+
+    private func model() -> (BroadcastComposerViewModel, InMemoryBroadcastStore, InMemoryAIConfigurationStore) {
+        let store = InMemoryBroadcastStore()
+        let audit = InMemoryAIConfigurationStore()
+        let directory = InMemoryAdminDirectoryStore(seededWith: PlatformUser.samples)
+        let viewModel = BroadcastComposerViewModel(
+            store: store,
+            audit: audit,
+            directory: directory,
+            actorName: "Shahad Ashoor"
+        )
+        return (viewModel, store, audit)
+    }
+
+    @Test("The audience size is derived from the roster")
+    func audienceSize() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+
+        viewModel.segment = .everyone
+        #expect(viewModel.audienceSize == PlatformUser.samples.count)
+
+        viewModel.segment = .tutors
+        #expect(viewModel.audienceSize == 1)
+
+        viewModel.segment = .students
+        #expect(viewModel.audienceSize == 2, "two sample students")
+
+        viewModel.segment = .atRiskStudents
+        #expect(viewModel.audienceSize == 1, "one sample student is at risk")
+    }
+
+    @Test("Sending records the announcement and the audit line, and clears the form")
+    func sendRecords() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        viewModel.segment = .students
+        viewModel.title = "Revision clinic"
+        viewModel.message = "Thursday at 4pm."
+
+        #expect(await viewModel.send())
+
+        let saved = try await store.broadcasts()
+        #expect(saved.count == 1)
+        #expect(saved.first?.isSent == true)
+        #expect(saved.first?.recipientCount == 2)
+        #expect(viewModel.title.isEmpty)
+        #expect(viewModel.sentConfirmation == "Revision clinic")
+        #expect(try await audit.auditLog().first?.action == .broadcastSent)
+    }
+
+    @Test("A scheduled announcement is not marked sent yet")
+    func scheduled() async throws {
+        let (viewModel, store, _) = model()
+        await viewModel.load()
+        viewModel.title = "Later"
+        viewModel.message = "Body"
+        viewModel.isScheduling = true
+        viewModel.scheduledAt = .now.addingTimeInterval(86_400)
+
+        #expect(await viewModel.send())
+
+        let saved = try await store.broadcasts()
+        #expect(saved.first?.isSent == false)
+        #expect(saved.first?.isScheduled == true)
+    }
+
+    @Test("An empty title, body or audience is refused and nothing is written")
+    func refusesEmpty() async throws {
+        let (viewModel, store, audit) = model()
+        await viewModel.load()
+        viewModel.title = ""
+        viewModel.message = ""
+
+        #expect(await viewModel.send() == false)
+        #expect(viewModel.formError != nil)
+        #expect(try await store.broadcasts().isEmpty)
+        #expect(try await audit.auditLog().isEmpty)
+    }
+
+    @Test("Every string comes from the catalogue")
+    func copyIsLocalised() async {
+        let (viewModel, _, _) = model()
+        await viewModel.load()
+        #expect(viewModel.navTitle == L10n.adminBroadcastTitle.string)
+        #expect(viewModel.sendButton == L10n.adminBroadcastSend.string)
+        #expect(AudienceSegment.tutors.title == L10n.adminBroadcastAudienceTutors.string)
+        #expect(AuditAction.broadcastSent.title == L10n.adminAuditBroadcastSent.string)
+    }
+}
+
 }

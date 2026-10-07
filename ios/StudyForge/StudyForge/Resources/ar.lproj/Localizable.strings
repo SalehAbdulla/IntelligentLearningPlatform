@@ -711,6 +711,60 @@
 "admin.reportStatus.approved"         = "تم الإبقاء";
 "admin.reportStatus.removed"          = "أُزيل";
 "admin.reportStatus.escalated"        = "مُصعَّد";
+"admin.auditTaxonomyChanged"          = "تغيّر التصنيف";
+
+/* ── F12 Admin - taxonomy management (K06) ──────────────────────────────── */
+"admin.taxonomy.title"          = "المواد والوسوم";
+"admin.taxonomy.kind.subject"   = "المواد";
+"admin.taxonomy.kind.tag"       = "الوسوم";
+"admin.taxonomy.add"            = "إضافة";
+"admin.taxonomy.addPlaceholder" = "اسم جديد";
+"admin.taxonomy.edit"           = "تعديل";
+"admin.taxonomy.rename"         = "إعادة تسمية";
+"admin.taxonomy.renameTitle"    = "إعادة تسمية '%@'";
+"admin.taxonomy.delete"         = "حذف";
+"admin.taxonomy.merge"          = "دمج في...";
+"admin.taxonomy.mergeTitle"     = "دمج في";
+"admin.taxonomy.mergeBody"      = "يدمج '%@' في المصطلح الذي تختاره. تُجمع الأعداد.";
+"admin.taxonomy.emptyTitle"     = "لا يوجد شيء بعد";
+"admin.taxonomy.emptyBody"      = "أضف أول مادة أو وسم لهذه المنصة.";
+"admin.taxonomy.usage"          = "%d عنصرًا";
+"admin.taxonomy.unused"         = "غير مستخدم";
+"admin.taxonomy.nameRequired"   = "الاسم مطلوب.";
+"admin.taxonomy.duplicate"      = "هذا الاسم مستخدم بالفعل.";
+
+/* ── F12 Admin - broadcast composer (K09) ───────────────────────────────── */
+"admin.auditBroadcastSent"            = "تم إرسال إعلان";
+"admin.broadcast.title"               = "إعلان جديد";
+"admin.broadcast.audienceLabel"       = "الجمهور";
+"admin.broadcast.titleLabel"          = "العنوان";
+"admin.broadcast.titlePlaceholder"    = "قصير ومحدد";
+"admin.broadcast.bodyLabel"           = "الرسالة";
+"admin.broadcast.bodyPlaceholder"     = "ما الذي يجب أن يعرفه الطلاب؟";
+"admin.broadcast.previewHeading"      = "معاينة";
+"admin.broadcast.previewNow"          = "الآن";
+"admin.broadcast.scheduleLabel"       = "الإرسال في";
+"admin.broadcast.scheduleToggle"      = "جدولة لوقت لاحق";
+"admin.broadcast.scheduleHint"        = "يغادر المحرر الآن ويُرسل في الوقت المحدد.";
+"admin.broadcast.send"                = "إرسال الإعلان";
+"admin.broadcast.confirmTitle"        = "إرسال هذا الإعلان؟";
+"admin.broadcast.confirmBody"         = "يُرسل '%@' إلى %d مستلمًا. لا يمكن التراجع.";
+"admin.broadcast.sentTitle"           = "تمت جدولة الإعلان";
+"admin.broadcast.recentHeading"       = "الإعلانات الأخيرة";
+"admin.broadcast.emptyRecent"         = "لم يُرسل شيء بعد.";
+"admin.broadcast.audienceSize"        = "%d مستلمًا";
+"admin.broadcast.recipients"          = "إلى %@ · %d مستلمًا";
+"admin.broadcast.required"            = "يُطلب عنوان ورسالة ومستلم واحد على الأقل.";
+"admin.broadcast.status.sent"         = "أُرسل";
+"admin.broadcast.status.scheduled"    = "مجدول";
+"admin.broadcast.audience.everyone"   = "الجميع";
+"admin.broadcast.audience.students"   = "كل الطلاب";
+"admin.broadcast.audience.atRisk"     = "الطلاب المعرّضون للخطر";
+"admin.broadcast.audience.tutors"     = "المدرسون";
+"admin.broadcast.audience.everyone.detail" = "كل حساب على المنصة.";
+"admin.broadcast.audience.students.detail" = "كل حساب بدور طالب.";
+"admin.broadcast.audience.atRisk.detail"   = "الطلاب الذين لم يسجّلوا الدخول منذ أسبوعين، أو إتقانهم أقل من النصف.";
+"admin.broadcast.audience.tutors.detail"   = "كل حساب بدور مدرّس.";
 
 
 /* ── F13 الاشتراك والمدفوعات (L01–L10, B13) ─────────────────────────────── */

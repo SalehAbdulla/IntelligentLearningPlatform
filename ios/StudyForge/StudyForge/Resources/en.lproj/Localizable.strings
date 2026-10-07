@@ -712,6 +712,60 @@
 "admin.reportStatus.approved"         = "Kept";
 "admin.reportStatus.removed"          = "Removed";
 "admin.reportStatus.escalated"        = "Escalated";
+"admin.auditTaxonomyChanged"          = "Taxonomy changed";
+
+/* ── F12 Admin - taxonomy management (K06) ──────────────────────────────── */
+"admin.taxonomy.title"          = "Subjects and tags";
+"admin.taxonomy.kind.subject"   = "Subjects";
+"admin.taxonomy.kind.tag"       = "Tags";
+"admin.taxonomy.add"            = "Add";
+"admin.taxonomy.addPlaceholder" = "New name";
+"admin.taxonomy.edit"           = "Edit";
+"admin.taxonomy.rename"         = "Rename";
+"admin.taxonomy.renameTitle"    = "Rename '%@'";
+"admin.taxonomy.delete"         = "Delete";
+"admin.taxonomy.merge"          = "Merge into...";
+"admin.taxonomy.mergeTitle"     = "Merge into";
+"admin.taxonomy.mergeBody"      = "Merges '%@' into the term you choose. The counts add up.";
+"admin.taxonomy.emptyTitle"     = "Nothing here yet";
+"admin.taxonomy.emptyBody"      = "Add the first subject or tag for this platform.";
+"admin.taxonomy.usage"          = "%d items";
+"admin.taxonomy.unused"         = "Unused";
+"admin.taxonomy.nameRequired"   = "A name is required.";
+"admin.taxonomy.duplicate"      = "That name is already in use.";
+
+/* ── F12 Admin - broadcast composer (K09) ───────────────────────────────── */
+"admin.auditBroadcastSent"            = "Announcement sent";
+"admin.broadcast.title"               = "New announcement";
+"admin.broadcast.audienceLabel"       = "Audience";
+"admin.broadcast.titleLabel"          = "Title";
+"admin.broadcast.titlePlaceholder"    = "Short and specific";
+"admin.broadcast.bodyLabel"           = "Message";
+"admin.broadcast.bodyPlaceholder"     = "What should students know?";
+"admin.broadcast.previewHeading"      = "Preview";
+"admin.broadcast.previewNow"          = "now";
+"admin.broadcast.scheduleLabel"       = "Send at";
+"admin.broadcast.scheduleToggle"      = "Schedule for later";
+"admin.broadcast.scheduleHint"        = "It leaves the composer now and goes out at the chosen time.";
+"admin.broadcast.send"                = "Send announcement";
+"admin.broadcast.confirmTitle"        = "Send this announcement?";
+"admin.broadcast.confirmBody"         = "'%@' goes to %d recipients. This cannot be undone.";
+"admin.broadcast.sentTitle"           = "Announcement queued";
+"admin.broadcast.recentHeading"       = "Recent announcements";
+"admin.broadcast.emptyRecent"         = "Nothing sent yet.";
+"admin.broadcast.audienceSize"        = "%d recipients";
+"admin.broadcast.recipients"          = "To %@ · %d recipients";
+"admin.broadcast.required"            = "A title, a message and at least one recipient are required.";
+"admin.broadcast.status.sent"         = "Sent";
+"admin.broadcast.status.scheduled"    = "Scheduled";
+"admin.broadcast.audience.everyone"   = "Everyone";
+"admin.broadcast.audience.students"   = "All students";
+"admin.broadcast.audience.atRisk"     = "Students at risk";
+"admin.broadcast.audience.tutors"     = "Tutors";
+"admin.broadcast.audience.everyone.detail" = "Every account on the platform.";
+"admin.broadcast.audience.students.detail" = "Every account with the student role.";
+"admin.broadcast.audience.atRisk.detail"   = "Students who have not signed in for a fortnight, or whose mastery is under half.";
+"admin.broadcast.audience.tutors.detail"   = "Every account with the tutor role.";
 
 /* ── F13 Subscription & Payments (L01–L10, B13) ─────────────────────────── */
 "subscription.title"              = "Subscription";
