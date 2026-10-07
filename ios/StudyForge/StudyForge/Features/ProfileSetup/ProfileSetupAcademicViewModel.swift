@@ -94,13 +94,22 @@ final class ProfileSetupAcademicViewModel {
     /// built so far.
     var stepLabel: String { ProfileSetupStep.academic.label }
 
-    /// Selected courses in CATALOGUE order, not selection order.
+    /// Selected courses: the catalogue's, in catalogue order, then any the student typed, in
+    /// alphabetical order.
     ///
     /// Two students who picked the same courses must produce the same array, or the write
     /// is not idempotent and every read has to sort before comparing. The chips are drawn
-    /// from this, so the display and the stored value agree as well.
+    /// from this, so the display and the stored value agree.
+    ///
+    /// A typed course is NOT dropped: it is how a student anywhere gets their own course list
+    /// into a product that has no institutional catalogue of its own. Its name is its id.
     var selectedCourses: [CourseOption] {
-        catalogue.courses.filter { selectedCourseIds.contains($0.id) }
+        let known = catalogue.courses.filter { selectedCourseIds.contains($0.id) }
+        let custom = selectedCourseIds
+            .filter { catalogue.course(for: $0) == nil }
+            .sorted()
+            .map { CourseOption(id: $0, name: $0) }
+        return known + custom
     }
 
     var isSubmitEnabled: Bool { !isSubmitting }
@@ -123,6 +132,24 @@ final class ProfileSetupAcademicViewModel {
             selectedCourseIds.remove(course.id)
         } else {
             selectedCourseIds.insert(course.id)
+        }
+        didEdit(.courses)
+    }
+
+    /// Adds a subject the catalogue does not know: how a student anywhere builds their own
+    /// course list. The typed name IS the stored id: with no institutional catalogue to key
+    /// against, the student's own words are the source of truth. A name that matches a known
+    /// course selects that course instead, so a near-duplicate is not created.
+    func addCustomCourse(_ raw: String) {
+        let name = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+
+        if let known = catalogue.courses.first(where: {
+            $0.name.caseInsensitiveCompare(name) == .orderedSame
+        }) {
+            selectedCourseIds.insert(known.id)
+        } else {
+            selectedCourseIds.insert(name)
         }
         didEdit(.courses)
     }

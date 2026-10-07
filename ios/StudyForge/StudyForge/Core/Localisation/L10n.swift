@@ -163,6 +163,8 @@ enum L10n: String, CaseIterable, Sendable {
     case profileAcademicYear                  = "profile.academic.year"
     case profileAcademicCourses               = "profile.academic.courses"
     case profileAcademicCoursesEmpty          = "profile.academic.coursesEmpty"
+    case profileAcademicAddCourse             = "profile.academic.addCourse"
+    case profileAcademicAddCoursePlaceholder  = "profile.academic.addCoursePlaceholder"
     case profileAcademicSubmitting            = "profile.academic.submitting"
     case profileAcademicErrorUniversity       = "profile.academic.error.university"
     case profileAcademicErrorMajor            = "profile.academic.error.major"
