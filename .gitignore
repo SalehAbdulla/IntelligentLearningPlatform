@@ -10,6 +10,10 @@ functions/.env
 serviceAccountKey.json
 **/serviceAccountKey.json
 
+# Per-machine physical-device build settings for tools/run-device.sh
+# (bundle identifier + Apple team id). Copy the .example file to set it up.
+tools/device.local.env
+
 # Firebase Admin SDK private keys. The console downloads these as
 # "<projectId>-firebase-adminsdk-<hash>.json", which the pattern above does NOT
 # match — so without this line, following Firebase's own instructions to

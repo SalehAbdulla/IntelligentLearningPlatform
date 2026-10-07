@@ -20,8 +20,18 @@ git switch -c feat/Fxx-short-slug        # e.g. feat/F04-sm2-tuning
 bash tools/run-ios.sh                     # build + install + launch on the iPhone 17 simulator
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj \
   -scheme StudyForge -destination 'platform=iOS Simulator,name=iPhone 17' test
-# -> 723 tests in 117 suites pass. Keep it that way.
+# -> 758 tests in 123 suites pass. Keep it that way.
 ```
+
+To run it on a **real iPhone** (better for haptics, notifications, camera and performance):
+
+```bash
+cp tools/device.local.env.example tools/device.local.env   # once per machine, then edit it
+git switch develop && git pull
+bash tools/run-device.sh                                   # build + install + launch
+```
+
+`run-device.sh` passes your bundle identifier and signing team as build settings on the command line, so the build always comes from the branch you are standing on. **Do not fork the Xcode project to add a signing team**: that kind of "device branch" drifts away from `develop`, and the phone quietly ends up running an old build.
 
 ## 3. How the code is organised (the 60-second version)
 
