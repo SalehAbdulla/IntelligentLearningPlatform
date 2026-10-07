@@ -145,12 +145,14 @@
 "profile.academic.title"                 = "Your studies";
 "profile.academic.subtitle"              = "This is how we file your material and shape your study plan. You can change it later.";
 "profile.academic.university"            = "University";
-"profile.academic.universityPlaceholder" = "Choose your university";
+"profile.academic.universityPlaceholder" = "Type or choose your university";
 "profile.academic.major"                 = "Major or programme";
 "profile.academic.majorHint"             = "The programme you are enrolled in";
 "profile.academic.year"                  = "Year of study";
 "profile.academic.courses"               = "Enrolled courses";
-"profile.academic.coursesEmpty"          = "Your course list isn't available yet. You can add your courses later.";
+"profile.academic.coursesEmpty"          = "Your course list will appear here. Add your own subject below.";
+"profile.academic.addCourse"             = "Add a subject";
+"profile.academic.addCoursePlaceholder"  = "Type a subject, then Done";
 "profile.academic.submitting"            = "Saving…";
 "profile.academic.error.university"      = "Choose your university.";
 "profile.academic.error.major"           = "Enter your major or programme.";
