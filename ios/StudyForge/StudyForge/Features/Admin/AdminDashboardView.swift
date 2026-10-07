@@ -151,9 +151,9 @@ struct AdminDashboardView: View {
                 manageRow(viewModel.aiTitle, "slider.horizontal.3")
             }
 
-            // The remaining admin surfaces are tracked as TODOs on the dashboard: the taxonomy manager
-            // (K06) and the broadcast composer (K09). The moderation queue (K04, with K05's decision
-            // panel) and the dedicated audit log (K08) now have their own screens, linked above.
+            // The remaining admin surface is tracked as a TODO on the dashboard: the broadcast
+            // composer (K09). The moderation queue (K04/K05), the audit log (K08) and the taxonomy
+            // manager (K06) now have their own screens, linked here.
             NavigationLink {
                 ModerationQueueView(
                     store: container.moderation,
@@ -162,6 +162,16 @@ struct AdminDashboardView: View {
                 )
             } label: {
                 manageRow(viewModel.moderationTitle, "exclamationmark.bubble")
+            }
+
+            NavigationLink {
+                TaxonomyManageView(
+                    store: container.taxonomy,
+                    audit: container.aiConfigurations,
+                    actorName: container.session?.displayName ?? ""
+                )
+            } label: {
+                manageRow(viewModel.taxonomyTitle, "tag")
             }
 
             NavigationLink {
