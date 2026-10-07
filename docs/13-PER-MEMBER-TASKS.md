@@ -2,6 +2,16 @@
 
 > Operational, tickable task list, one section per member. Derived from the allocation in [doc 10 §4](10-SPRINT-PLAN.md) and the ownership in [doc 02](02-FEATURE-LIST-OWNERSHIP.md). Every task below produces evidence a marker can **open**, because the Sprints component is assessed per person and the VIVA requires that every member can explain and demo any part.
 
+> **Ready-to-hand AI-agent handover.** One self-contained file per member — hand it whole
+> to an AI coding agent: [M2 Mohammed](TODO-M2-mohammed.md) ·
+> [M3 Tasbeeh](TODO-M3-tasbeeh.md) · [M4 Shahad](TODO-M4-shahad.md). Each sets the member's
+> git identity, requires a written plan before any code, enforces one commit per file and a
+> push on completion, and requires **at least two of that member's features** to carry a
+> real, tested, committed change. Each also pins an exact, **disjoint** file lane so three
+> agents can run at once without merge conflicts —
+> [doc 14](14-COLLEAGUE-AI-AGENT-PROMPTS.md) has the lane map, and
+> `bash tools/check-lane.sh M2|M3|M4` enforces it.
+
 **Why this file exists, stated plainly.** As of writing, every commit in this repository is authored by **M1**. The Sprints component (10%) is assessed **individually**, and the VIVA (60%, must pass) requires **every member** to explain and demonstrate parts of the app. With no attributed commits, **M2, M3 and M4 currently have no individual sprint evidence**, which is a real risk to both marks. This file, plus the per-member artefacts it points at, is the fix. Work started from here on is attributed; work already done by M1 stands as M1's and is not back-fillable.
 
 ---
