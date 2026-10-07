@@ -34,7 +34,7 @@ struct ProfileSetupAcademicView: View {
 
     init(
         profile: any ProfileService,
-        catalogue: AcademicCatalogue = .placeholder,
+        catalogue: AcademicCatalogue,
         onContinue: @escaping (AcademicProfile) -> Void
     ) {
         _viewModel = State(
@@ -251,7 +251,10 @@ struct ProfileSetupAcademicView: View {
 // MARK: - Previews
 
 #Preview("B01 Profile setup — academic") {
-    ProfileSetupAcademicView(profile: MockProfileService(latency: .zero)) { _ in }
+    ProfileSetupAcademicView(
+        profile: MockProfileService(latency: .zero),
+        catalogue: SeededCourseCatalogueStore.starter
+    ) { _ in }
 }
 
 #Preview("B01 Profile setup — save rejected") {
@@ -260,14 +263,17 @@ struct ProfileSetupAcademicView: View {
     let profile = MockProfileService(latency: .zero)
     profile.forceFailure(.writeRejected(reference: "profile-write-denied"))
 
-    return ProfileSetupAcademicView(profile: profile) { _ in }
+    return ProfileSetupAcademicView(
+        profile: profile,
+        catalogue: SeededCourseCatalogueStore.starter
+    ) { _ in }
 }
 
 #Preview("B01 Profile setup — empty catalogue") {
-    // Proves the screen degrades to an explanation instead of an empty row when the
-    // placeholder catalogue is replaced by the real, still-loading one in F02.
+    // Proves the screen degrades to an explanation instead of an empty row, which is the state a
+    // catalogue store that has not answered leaves the step in (`AcademicCatalogue.empty`).
     ProfileSetupAcademicView(
         profile: MockProfileService(latency: .zero),
-        catalogue: AcademicCatalogue(universities: [], years: [1, 2, 3, 4], courses: [])
+        catalogue: .empty
     ) { _ in }
 }
