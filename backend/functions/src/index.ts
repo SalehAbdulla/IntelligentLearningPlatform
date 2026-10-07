@@ -65,6 +65,8 @@ const TAP_API = 'https://api.tap.company/v2/charges';
 const TAP_SOURCE_ALL = 'src_all';
 /** BHD has THREE decimal places; Tap expects a decimal amount, not fils. */
 const TAP_CURRENCY = 'BHD';
+/** Bahrain VAT, mirroring `PaymentCatalogue.vatPercent` in the app. Baked into the price. */
+const VAT_PERCENT = 10;
 /** Where Tap sends the student back. Set TAP_REDIRECT_URL in the function env. */
 const TAP_RETURN_URL = process.env.TAP_REDIRECT_URL ?? 'https://studyforge.app/payment/return';
 /** Where Tap posts async status updates (this webhook). Set TAP_WEBHOOK_URL in the env. */
@@ -293,6 +295,8 @@ export const tapWebhook = onRequest(
           plan: planId,
           term,
           amountFils: expectedFils,
+          // The VAT portion inside the total, so the app's receipt adds up.
+          vatFils: Math.round((expectedFils * VAT_PERCENT) / (100 + VAT_PERCENT)),
           currency: TAP_CURRENCY,
           status: TAP_STATUS.captured,
           tapChargeId: chargeId,
