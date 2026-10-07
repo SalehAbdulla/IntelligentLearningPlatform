@@ -13,6 +13,9 @@ import SwiftUI
 // Done when: the action exists, goes through the `NotificationAuthorizer` seam, and a test
 // asserts a reminder is scheduled.
 
+// Accessibility: the per-type and quiet-hours controls are native `Toggle`s (name and on/off come for
+// free), and each quiet-hours picker announces its label and current value.
+
 struct NotificationPreferencesView: View {
 
     @State private var viewModel: NotificationPreferencesViewModel
