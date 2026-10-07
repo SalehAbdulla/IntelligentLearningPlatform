@@ -9,6 +9,9 @@
 
 import SwiftUI
 
+// Accessibility: the picker rows hide the checkmark glyph and announce the chosen collection, and the
+// "already saved" bookmark is labelled, so the selection is legible without sight of the tick.
+
 struct BookmarkSaveSheet: View {
 
     @State private var viewModel: BookmarkSaveViewModel
@@ -120,6 +123,12 @@ struct BookmarkSaveSheet: View {
                         collectionRow(collection)
                     }
                     .buttonStyle(.plain)
+                    // The row is a single-choice control, so its chosen state must be announced; the
+                    // checkmark that shows it on screen is decorative and hidden.
+                    .accessibilityAddTraits(
+                        viewModel.selectedCollectionId == collection.id && !viewModel.isCreatingNew
+                            ? .isSelected : []
+                    )
                 }
             }
         }

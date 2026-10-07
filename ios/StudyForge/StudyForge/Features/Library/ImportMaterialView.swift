@@ -9,6 +9,10 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+// Accessibility: the two source cards are `SFRadioCard`s (each announces its title, detail and chosen
+// state), every field is labelled by `SFTextField`, and the pasted-text area is a labelled text view, so
+// the sheet reads as a set of controls rather than a run of labels and boxes.
+
 struct ImportMaterialView: View {
 
     @State private var viewModel: ImportMaterialViewModel

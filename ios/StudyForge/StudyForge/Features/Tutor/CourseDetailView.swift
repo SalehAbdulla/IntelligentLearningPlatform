@@ -15,6 +15,9 @@
 
 import SwiftUI
 
+// Accessibility: each row combines its content, the decorative glyphs are hidden, and the cover-colour
+// picker announces the swatch it has chosen.
+
 struct CourseDetailView: View {
 
     let container: AppContainer

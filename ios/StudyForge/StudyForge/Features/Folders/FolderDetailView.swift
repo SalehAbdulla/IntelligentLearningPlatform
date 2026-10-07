@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+// Accessibility: item and member rows hide their decorative glyphs, the owner row's lock and the
+// per-member permission menu are labelled, and the add-item and add-member sheets are labelled fields
+// and a labelled segmented control.
+
 struct FolderDetailView: View {
 
     enum Tab: String, CaseIterable, Identifiable {

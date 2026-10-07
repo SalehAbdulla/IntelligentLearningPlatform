@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: the body field is labelled, the decorative glyphs are hidden, and each audience row
+// announces its label and chosen value.
+
 struct AnnouncementComposeView: View {
 
     let container: AppContainer

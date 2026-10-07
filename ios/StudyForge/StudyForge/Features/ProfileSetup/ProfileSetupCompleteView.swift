@@ -22,6 +22,8 @@
 
 import SwiftUI
 
+// Accessibility: the confirmation heading reads as one element and the celebratory glyph is hidden.
+
 struct ProfileSetupCompleteView: View {
 
     @State private var viewModel: ProfileSetupCompleteViewModel

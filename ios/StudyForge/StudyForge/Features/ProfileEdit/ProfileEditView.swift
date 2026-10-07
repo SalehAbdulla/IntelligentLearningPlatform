@@ -22,6 +22,9 @@
 
 import SwiftUI
 
+// Accessibility: each field is labelled (the university picker announces its value), the decorative glyphs
+// are hidden, and the sections read as one element.
+
 struct ProfileEditView: View {
 
     @State private var viewModel: ProfileEditViewModel

@@ -10,6 +10,8 @@
 
 import SwiftUI
 
+// Accessibility: each settings row reads as one element and the decorative glyph is hidden.
+
 struct AIAdminView: View {
 
     @State private var viewModel: AIAdminViewModel

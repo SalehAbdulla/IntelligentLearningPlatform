@@ -14,6 +14,9 @@
 
 import SwiftUI
 
+// Accessibility: the role filter is labelled, each user row reads as one element, and the decorative glyph
+// is hidden.
+
 struct AdminUsersView: View {
 
     @State private var viewModel: AdminUsersViewModel

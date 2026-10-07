@@ -19,6 +19,9 @@
 
 import SwiftUI
 
+// Accessibility: each page's heading reads as one element, the illustration is decorative and hidden, and
+// Skip carries a hint about what it does.
+
 struct OnboardingView: View {
 
     @State private var viewModel: OnboardingViewModel

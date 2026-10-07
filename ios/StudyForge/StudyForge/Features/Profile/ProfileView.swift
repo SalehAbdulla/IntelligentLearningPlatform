@@ -20,6 +20,9 @@
 
 import SwiftUI
 
+// Accessibility: the identity block and each grouped section read as one element, with the section headings
+// marked as headers and the decorative glyph hidden.
+
 struct ProfileView: View {
 
     let container: AppContainer

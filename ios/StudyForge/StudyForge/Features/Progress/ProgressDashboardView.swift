@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: each stat tile, weekly bar and weakness row is a single element, and the goal, subject
+// and topic rows combine their label with the value or the bar, so the dashboard reads as statements.
+
 struct ProgressDashboardView: View {
 
     @State private var viewModel: ProgressDashboardViewModel
@@ -207,6 +210,7 @@ struct ProgressDashboardView: View {
                                 .font(.sfBodyEmph)
                                 .foregroundStyle(topic.isWeak ? ColorTokens.warningText : ColorTokens.successText)
                         }
+                        .accessibilityElement(children: .combine)
                     }
                 }
             }
@@ -287,6 +291,8 @@ struct ProgressDashboardView: View {
                         ProgressView(value: subject.fraction)
                             .tint(ColorTokens.Subject.color(for: subject.subject))
                     }
+                    // Label and value read together with the bar, not as three separate stops.
+                    .accessibilityElement(children: .combine)
                 }
             }
         }

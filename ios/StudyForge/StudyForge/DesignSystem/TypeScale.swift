@@ -14,30 +14,38 @@ extension Font {
     // MARK: Scale
     //
     // Minimum body size is 17 pt. Nothing user-facing goes below 11 pt.
-    // All sizes scale with Dynamic Type up to AX5.
+    //
+    // Every token is built on a SYSTEM TEXT STYLE (`Font.system(_:weight:)`), never a fixed
+    // point size. That is the whole reason the ladder scales with Dynamic Type up to AX5, which
+    // docs/06 §1.2 requires. `Font.system(size:)` would render identically at the default
+    // setting and then stay put at accessibility sizes, silently breaking the promise.
+    //
+    // Each style below is pinned to the text style whose default matches the design ladder, so
+    // the default size is unchanged: largeTitle 34, title 28, title2 22, headline 17 (semibold),
+    // body 17, callout 16, subheadline 15, footnote 13, caption 12 (caption1).
 
     /// Splash, score rings, large numerals.
-    static let sfDisplayL = Font.system(size: 34, weight: .bold)
+    static let sfDisplayL = Font.system(.largeTitle, weight: .bold)
     /// Screen titles.
-    static let sfTitleL   = Font.system(size: 28, weight: .bold)
+    static let sfTitleL   = Font.system(.title, weight: .bold)
     /// Section headers and card titles.
-    static let sfTitleM   = Font.system(size: 22, weight: .semibold)
+    static let sfTitleM   = Font.system(.title2, weight: .semibold)
     /// List-row titles and tab labels.
-    static let sfTitleS   = Font.system(size: 17, weight: .semibold)
+    static let sfTitleS   = Font.system(.headline, weight: .semibold)
     /// Default body text.
-    static let sfBody     = Font.system(size: 17, weight: .regular)
+    static let sfBody     = Font.system(.body)
     /// Emphasis within body text.
-    static let sfBodyEmph = Font.system(size: 17, weight: .semibold)
+    static let sfBodyEmph = Font.system(.body, weight: .semibold)
     /// Secondary body text.
-    static let sfCallout  = Font.system(size: 16, weight: .regular)
+    static let sfCallout  = Font.system(.callout)
     /// Overlines and grouped-section headers.
-    static let sfSubhead  = Font.system(size: 15, weight: .semibold)
+    static let sfSubhead  = Font.system(.subheadline, weight: .semibold)
     /// Metadata and timestamps.
-    static let sfFootnote = Font.system(size: 13, weight: .regular)
+    static let sfFootnote = Font.system(.footnote)
     /// Chips and badges — never below this.
-    static let sfCaption  = Font.system(size: 12, weight: .regular)
+    static let sfCaption  = Font.system(.caption)
     /// OTP codes, invite codes and charge references.
-    static let sfMono     = Font.system(size: 15, weight: .regular, design: .monospaced)
+    static let sfMono     = Font.system(.subheadline, design: .monospaced)
 }
 
 /// Accessibility profiles that adjust typography without changing the scale ladder.
