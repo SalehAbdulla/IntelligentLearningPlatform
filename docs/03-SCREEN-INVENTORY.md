@@ -67,6 +67,15 @@ Group headings later in this document use the `{M1}` handle for brevity, expand 
 | `7 · M4, Collaboration & Admin` | M4 | Groups I, K |
 | `8 · States & Prototype Wiring` | all | Error / empty / loading / success tokens, RTL proof, connection map |
 
+**Build status, verified against the live file on 8 Oct 2026.** The file now holds **106 high-fidelity screens** on page `3 · Screens (all features)`, **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes`, **15 per-feature flow diagrams** on page `2 · Flow Overview`, and **296 prototype connections** with no dead ends. The page list above is the original 9-page plan; it was consolidated to 5 prototype pages plus the low-fi page, because the Figma plugin API cannot create NAVIGATE links across pages, so all screens must share one page for the prototype to work. Ownership is carried by the frame name and the cover table instead.
+
+Two gaps found and closed during this audit, both of which would have cost marks under *"all main features of the app are designed and linked based on your feature list"*:
+
+- **F09 Group Revision Spaces had no screens at all.** Frames `88`–`94` are now built, matching the inventory in §3 Group I, and wired into a complete live-quiz chain (`88 → 89 → 90 → 92 → 93 → 94`).
+- **`57_Quiz_Submit_Confirm` was missing.** The F05 flow in `DESIGN-DOCUMENT.md` §9 step 4 requires a confirmation before submitting with questions unanswered, but no frame existed. It is now built and wired between `54_Quiz_Take_MCQ` and `58_Quiz_Results_Scorecard`.
+
+The P1 remainder (89 frames in this inventory) is retained as the plan but is deliberately out of scope for the build, per the cut-line protocol in [doc 01 §14](01-ROADMAP-PHASES-TODOLIST.md). The exact list of unbuilt screen numbers is recorded in `deliverables/prototype/figma-link.txt` §9, and every one is a secondary, empty or state variant rather than a happy path.
+
 ---
 
 ## 2. Priority tiers and the realistic cut-line
