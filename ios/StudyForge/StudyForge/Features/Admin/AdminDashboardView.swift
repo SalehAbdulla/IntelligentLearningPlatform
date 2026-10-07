@@ -150,6 +150,12 @@ struct AdminDashboardView: View {
             } label: {
                 manageRow(viewModel.aiTitle, "slider.horizontal.3")
             }
+
+            // TODO(M4 · F12): Add the missing admin surfaces as rows into their own screens: the
+            // content moderation queue (K04, a Tier B "must operate" item), flagged reports (K05),
+            // taxonomy management (K06) and the broadcast composer (K09), each backed by a store
+            // the way `adminDirectory` backs K02.
+            // Done when: approving a report removes the content and records an audit line.
         }
     }
 
