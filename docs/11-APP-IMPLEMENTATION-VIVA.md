@@ -149,6 +149,11 @@ Every member carries one page mapping **feature → screens → source files →
 ## 6. Demonstration environment checklist
 
 - [ ] Primary demo device: physical iPhone, **Apple Intelligence enabled**, ≥80% battery
+- [ ] **The device build is installed in the hour before the demo**: `git switch develop && git pull && bash tools/run-device.sh`. It prints the commit it built, so this item is checkable rather than assumed
+- [ ] **The iPhone is unlocked** before you launch: iOS refuses to start an app on a locked device, and the runner reports that instead of failing the run
+- [ ] **Free provisioning is still valid**: a personal-team profile expires after **7 days**, so a build installed last week will not launch today. Rebuild; do not trust the copy already on the phone
+- [ ] Every demo account can **get past the profile wizard**. A fresh sign-up through the app can. An account created in the Firebase console starts with **no profile document**, which the app now bootstraps on its first save, so re-check each account after any reset rather than assuming it still works
+- [ ] The **Simulator fallback** is installed and current too, so a device failure is a switch rather than a rebuild (`bash tools/run-ios.sh`)
 - [ ] Secondary device for the live group quiz (two accounts, both signed in)
 - [ ] Both devices on the same network; phone hotspot as fallback
 - [ ] Four demo accounts verified: student · tutor · group · admin
