@@ -21,9 +21,8 @@
 
 import SwiftUI
 
-// TODO(M3 · F06): Add VoiceOver support. The session's subject, date and duration should read
-// as one labelled element.
-// Done when: the header is combined with a label that includes subject, day and time.
+// Accessibility: the header reads as one element naming the subject, the day and the time, and the
+// in-progress chip joins that announcement rather than trailing it as a separate fragment.
 
 struct StudySessionDetailView: View {
 
@@ -76,6 +75,14 @@ struct StudySessionDetailView: View {
                         .background(ColorTokens.primaryContainer, in: .capsule)
                 }
             }
+            // Subject, day and time in one announcement, so the sheet opens with the session itself
+            // rather than three disconnected fragments. The rows below carry the finer detail.
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(
+                session.isInProgress
+                    ? "\(session.subject), \(viewModel.inProgressTitle), \(scheduleText(session))"
+                    : "\(session.subject), \(scheduleText(session))"
+            )
 
             VStack(alignment: .leading, spacing: Spacing.s3) {
                 ForEach(viewModel.detailRows(for: session)) { row in
@@ -127,6 +134,11 @@ struct StudySessionDetailView: View {
                 .foregroundStyle(isDestructive ? ColorTokens.error : ColorTokens.primary)
                 .frame(minHeight: Layout.minTouchTarget)
         }
+    }
+
+    /// The session's day and time as one string, for the header's accessibility label.
+    private func scheduleText(_ session: StudySession) -> String {
+        session.scheduledAt.formatted(date: .abbreviated, time: .shortened)
     }
 }
 

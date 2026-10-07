@@ -13,11 +13,12 @@ Legend: `[ ]` open, `[x]` done.
 
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
+- [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
 
-## 1. In-code TODO markers (23 open)
+## 1. In-code TODO markers (15 open)
 
 Run `bash tools/todos.sh` for the live list; each line names its file and feature.
 
@@ -33,19 +34,12 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 
 - [ ] `PromptTemplates.swift:22` add a `PromptTemplateStore` protocol and a Firestore-backed implementation (F15)
 - [ ] `AITier.swift:114` implement the planned tier engine behind the `AIProvider` seam (F15)
-- [ ] `FlashcardGenerateView.swift:11` VoiceOver for the generating progress (F04)
 - [ ] `FlashcardReviewViewModel.swift:119` track "Hard" separately from "correct" in SM-2 (F04)
-- [ ] `CitationSheetView.swift:11` VoiceOver, each citation row reads its source and page (F15)
-- [ ] `CoachHomeView.swift:11` VoiceOver for the suggested questions and empty state (F15)
-- [ ] `QuizGenerateView.swift:11` VoiceOver for the type and count controls (F05)
 
 ### M3, Tasbeeh Saeed
 
 - [ ] `StudyPlan.swift:100` per-course exam-date capture feeding the planner (F06)
 - [ ] `SignedInHomeView.swift:144` replace the placeholder with the real student home B05 (F07)
-- [ ] `StudySessionDetailView.swift:24` VoiceOver for subject, date and duration (F06)
-- [ ] `CheckoutView.swift:18` VoiceOver for the order summary and pay button (F13)
-- [ ] `PlanCompareView.swift:17` VoiceOver for each plan card (F13)
 - [ ] `NotificationViewModelTests.swift:11` test quiet-hours suppression and a scheduled reminder (F14)
 - [ ] `backend/functions/src/index.ts:352` implement `rollupDailyMetrics` (F07)
 
@@ -54,7 +48,6 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 - [ ] `StudyGroup.swift:34` presence seam (`PresenceProvider`) (F09)
 - [ ] `LiveQuizSession.swift:16` reconnect and resync path for a disconnected player (F09)
 - [ ] `BookmarkStore.swift:14` Firestore-backed `BookmarkStore` (F10)
-- [ ] `FlashcardReviewView.swift:11` VoiceOver for the review screen (F04)
 
 ## 2. F12 admin (group K)
 

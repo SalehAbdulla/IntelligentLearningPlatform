@@ -14,9 +14,8 @@
 
 import SwiftUI
 
-// TODO(M3 · F13): Add VoiceOver support. Each plan card should read its name, price and
-// included features as one element.
-// Done when: each card is combined into a single labelled element.
+// Accessibility: this screen is a comparison table, not a row of cards, so each ROW is combined into a
+// single element a student swipes through, reading "AI generations, unlimited, 15, 15" per tier.
 
 struct PlanCompareView: View {
 
@@ -38,6 +37,7 @@ struct PlanCompareView: View {
                                 .foregroundStyle(ColorTokens.textPrimary)
                         }
                     }
+                    .accessibilityElement(children: .combine)
 
                     Divider()
 
@@ -87,6 +87,7 @@ struct PlanCompareView: View {
                     .foregroundStyle(ColorTokens.textPrimary)
             }
         }
+        .accessibilityElement(children: .combine)
     }
 
     /// `nil` means unlimited in the catalogue, which reads as "Unlimited" rather than "—".

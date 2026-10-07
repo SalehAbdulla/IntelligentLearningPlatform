@@ -8,10 +8,8 @@
 
 import SwiftUI
 
-// TODO(M2 · F04): Add VoiceOver support to this screen. The generating progress, the engine
-// badge and the card previews announce as raw text or nothing today.
-// Done when: the primary action exposes a value while generating, each preview card is one
-// labelled element, and a VoiceOver pass reads the screen sensibly.
+// Accessibility: the generating state and each preview card are single elements, and the source
+// rows hide their decorative icons, so a VoiceOver pass reads the screen as statements, not fragments.
 
 struct FlashcardGenerateView: View {
 
@@ -82,6 +80,7 @@ struct FlashcardGenerateView: View {
                             .font(.sfBody)
                             .foregroundStyle(ColorTokens.primary)
                             .frame(minWidth: Spacing.s6, alignment: .leading)
+                            .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: Spacing.s1) {
                             Text(material.title)
@@ -162,6 +161,8 @@ struct FlashcardGenerateView: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
         }
+        // The spinner and both lines are one announcement while the router works.
+        .accessibilityElement(children: .combine)
         .frame(maxWidth: .infinity)
         .padding(.top, Spacing.s10)
     }
@@ -189,6 +190,7 @@ struct FlashcardGenerateView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(Spacing.s3)
                     .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.m))
+                    .accessibilityElement(children: .combine)
                 }
             }
 
@@ -217,6 +219,7 @@ struct FlashcardGenerateView: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.sfDisplayL)
                 .foregroundStyle(ColorTokens.successText)
+                .accessibilityHidden(true)
 
             Text(viewModel.savedTitle)
                 .font(.sfTitleM)
