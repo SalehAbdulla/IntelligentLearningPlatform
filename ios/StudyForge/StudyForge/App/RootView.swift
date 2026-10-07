@@ -63,7 +63,7 @@ struct RootView: View {
     ///  · a DEBUG launch argument, so the wizard can be opened for a screenshot or a viva
     ///    without first registering and verifying an empty account:
     ///
-    ///        xcrun simctl launch <device> com.studyforge.app -seedProfileSetup
+    ///        xcrun simctl launch <device> com.saleh.studyforge -seedProfileSetup
     ///
     ///    with `-profileSetupStep N` to open on a later step. Compiled out of Release, so a
     ///    shipping build can never fabricate a profile-setup state — which matters here,
@@ -178,7 +178,7 @@ struct RootView: View {
 
     /// DEBUG-only: which step `-seedProfileSetup` should open on.
     ///
-    ///     xcrun simctl launch <device> com.studyforge.app -seedProfileSetup -profileSetupStep 2
+    ///     xcrun simctl launch <device> com.saleh.studyforge -seedProfileSetup -profileSetupStep 2
     ///
     /// 1-based, for the same reason `-onboardingPage` is: whoever types it is reading step
     /// numbers off a design. It exists because there is no tap automation in this
@@ -201,7 +201,7 @@ struct RootView: View {
 
     /// DEBUG-only: opens the onboarding pager on a given slide.
     ///
-    ///     xcrun simctl launch <device> com.studyforge.app -onboardingPage 2
+    ///     xcrun simctl launch <device> com.saleh.studyforge -onboardingPage 2
     ///
     /// Exists so a slide can be demonstrated or screenshotted without swiping — useful for
     /// a viva, and for checking a specific slide in Arabic or at AX5 without walking the
