@@ -276,6 +276,10 @@ enum L10n: String, CaseIterable, Sendable {
     case importErrorText          = "import.error.text"
     case importErrorUnreadable    = "import.error.unreadable"
     case importErrorNoText        = "import.error.noText"
+    case importDuplicateTitle     = "import.duplicate.title"
+    case importDuplicateBody      = "import.duplicate.body"
+    case importDuplicateReplace   = "import.duplicate.replace"
+    case importDuplicateKeepBoth  = "import.duplicate.keepBoth"
 
     // MARK: F03 Summary
     case summaryTitle            = "summary.title"

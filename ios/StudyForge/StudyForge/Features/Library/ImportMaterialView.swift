@@ -66,6 +66,26 @@ struct ImportMaterialView: View {
                 guard case .success(let urls) = result, let url = urls.first else { return }
                 Task { await importPDF(at: url) }
             }
+            .alert(
+                viewModel.duplicateTitle,
+                isPresented: duplicatePrompt,
+                presenting: viewModel.duplicate
+            ) { _ in
+                Button(viewModel.duplicateReplaceTitle) {
+                    Task { await viewModel.replaceDuplicate() }
+                }
+                Button(viewModel.duplicateKeepBothTitle) {
+                    Task { await viewModel.keepBoth() }
+                }
+                Button(L10n.commonCancel.string, role: .cancel) {
+                    viewModel.cancelDuplicate()
+                }
+            } message: { _ in
+                Text(viewModel.duplicateMessage)
+            }
+            .onChange(of: viewModel.didImport) { _, didImport in
+                if didImport { finishIfImported() }
+            }
         }
     }
 
@@ -187,14 +207,23 @@ struct ImportMaterialView: View {
 
     private func importPastedText() async {
         await viewModel.importPastedText()
-        finishIfImported()
     }
 
     private func importPDF(at url: URL) async {
         await viewModel.importPDF(at: url)
-        finishIfImported()
     }
 
+    /// Drives the duplicate alert off the view model, and clears the held import when it closes
+    /// without a choice.
+    private var duplicatePrompt: Binding<Bool> {
+        Binding(
+            get: { viewModel.isResolvingDuplicate },
+            set: { if !$0 { viewModel.cancelDuplicate() } }
+        )
+    }
+
+    /// Called once an import has actually landed (whether it was written straight away or after the
+    /// student answered the duplicate prompt), so the sheet closes and the library reloads either way.
     private func finishIfImported() {
         guard viewModel.didImport else { return }
         onImported()

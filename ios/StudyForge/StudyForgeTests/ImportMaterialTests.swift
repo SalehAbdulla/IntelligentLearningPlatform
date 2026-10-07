@@ -131,6 +131,74 @@ struct ImportMaterialTests {
         #expect(viewModel.didImport == false)
     }
 
+    // MARK: Duplicates
+
+    @Test("The same text twice asks, and Replace swaps the copy")
+    func duplicatePromptsAndReplaceSwaps() async {
+        let store = InMemoryMaterialStore()
+        let first = model(store: store)
+        first.title = "Lecture 4"
+        first.pastedText = "Normalisation removes redundancy."
+        await first.importPastedText()
+        #expect(first.didImport)
+
+        // The same body under a new title is still a duplicate of what is already in the library.
+        let second = model(store: store)
+        second.title = "Lecture 4 (updated)"
+        second.pastedText = "Normalisation removes redundancy."
+        await second.importPastedText()
+
+        #expect(second.isResolvingDuplicate, "a duplicate must prompt, not silently add a copy")
+        #expect(second.didImport == false)
+
+        await second.replaceDuplicate()
+
+        let all = try? await store.all()
+        #expect(second.didImport)
+        #expect(all?.count == 1)
+        #expect(all?.first?.title == "Lecture 4 (updated)")
+    }
+
+    @Test("Keep both adds the second copy alongside")
+    func duplicateKeepBothKeepsTwo() async {
+        let store = InMemoryMaterialStore()
+        let first = model(store: store)
+        first.title = "A"
+        first.pastedText = "same body"
+        await first.importPastedText()
+
+        let second = model(store: store)
+        second.title = "B"
+        second.pastedText = "same body"
+        await second.importPastedText()
+        #expect(second.isResolvingDuplicate)
+        await second.keepBoth()
+
+        let all = try? await store.all()
+        #expect(second.didImport)
+        #expect(all?.count == 2)
+    }
+
+    @Test("Cancelling the prompt imports nothing and changes nothing")
+    func duplicateCancelChangesNothing() async {
+        let store = InMemoryMaterialStore()
+        let first = model(store: store)
+        first.title = "A"
+        first.pastedText = "same body"
+        await first.importPastedText()
+
+        let second = model(store: store)
+        second.title = "B"
+        second.pastedText = "same body"
+        await second.importPastedText()
+        second.cancelDuplicate()
+
+        let all = try? await store.all()
+        #expect(second.isResolvingDuplicate == false)
+        #expect(second.didImport == false)
+        #expect(all?.count == 1)
+    }
+
     // MARK: Copy
 
     @Test("Every string comes from the catalogue")
