@@ -21,11 +21,12 @@ enum AppRole: String, Codable, Sendable, CaseIterable {
     case tutor
     case admin
 
+    /// The user-facing role name, from the catalogue so it follows the app's language.
     var displayName: String {
         switch self {
-        case .student: "Student"
-        case .tutor: "Tutor"
-        case .admin: "Admin"
+        case .student: L10n.sessionRoleStudent.string
+        case .tutor: L10n.sessionRoleTutor.string
+        case .admin: L10n.sessionRoleAdmin.string
         }
     }
 }
@@ -37,19 +38,12 @@ enum SubscriptionPlan: String, Codable, Sendable, CaseIterable {
     case plus
     case pro
 
-    /// User-facing label. Part of the localisation debt recorded in
-    /// `Core/Localisation/L10n.swift`: `AppRole.displayName` and this share the same
-    /// problem — centralised but not yet routed through `Localizable.strings`.
-    //
-    // TODO(M1 · F01): Route AppRole.displayName and SubscriptionPlan.displayName through
-    // L10n / Localizable.strings instead of these literals, in English and Arabic.
-    // Done when: neither property returns a hard-coded string, the new keys exist in both
-    // .strings files, and `python3 tools/check-strings.py` passes.
+    /// The user-facing plan name, from the catalogue so it follows the app's language.
     var displayName: String {
         switch self {
-        case .free: "Free"
-        case .plus: "Plus"
-        case .pro: "Pro"
+        case .free: L10n.sessionPlanFree.string
+        case .plus: L10n.sessionPlanPlus.string
+        case .pro: L10n.sessionPlanPro.string
         }
     }
 

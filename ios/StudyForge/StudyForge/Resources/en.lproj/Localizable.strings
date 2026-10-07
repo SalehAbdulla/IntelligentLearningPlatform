@@ -136,6 +136,12 @@
 "home.capabilities.heading"  = "Your access";
 "home.role.label"            = "Role";
 "home.plan.label"            = "Plan";
+"session.role.student"       = "Student";
+"session.role.tutor"         = "Tutor";
+"session.role.admin"         = "Admin";
+"session.plan.free"          = "Free";
+"session.plan.plus"          = "Plus";
+"session.plan.pro"           = "Pro";
 "home.tutorStudio.label"     = "Tutor studio";
 "home.studyGroups.label"     = "Study groups";
 "home.available"             = "Available";
