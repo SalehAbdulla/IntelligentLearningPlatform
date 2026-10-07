@@ -12,6 +12,15 @@
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
     },
     {
+      "label": "iOS: run on device",
+      "detail": "Build, install and launch StudyForge on a paired iPhone (needs tools/device.local.env)",
+      "type": "shell",
+      "command": "bash tools/run-device.sh",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
       "label": "iOS: build (simulator)",
       "detail": "Compile only, no device needed",
       "type": "shell",
