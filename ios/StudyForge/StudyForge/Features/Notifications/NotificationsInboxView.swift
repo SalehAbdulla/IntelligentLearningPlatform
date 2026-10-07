@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Accessibility: each row is one element whose value carries "unread", with the type icon and the unread
+// dot hidden as decorative, and the empty state is a single statement.
+
 struct NotificationsInboxView: View {
 
     @State private var viewModel: NotificationsInboxViewModel
