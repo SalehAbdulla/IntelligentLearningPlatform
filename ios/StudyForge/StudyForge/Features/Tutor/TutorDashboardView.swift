@@ -16,6 +16,9 @@
 
 import SwiftUI
 
+// Accessibility: each metric card and roster row reads as one element, the decorative glyph is hidden, and
+// the section list is a container of labelled rows.
+
 struct TutorDashboardView: View {
 
     let container: AppContainer
