@@ -283,14 +283,10 @@ final class AppContainer {
         self.aiConfigurations = aiConfigurations
         self.adminDirectory = adminDirectory
         self.subscriptions = subscriptions
-        // The gateway defaults to one that writes through THIS store, so an entitlement and
-        // its receipt can never end up in different places.
-        // TODO(M3 · F13): Implement the real gateway adapters and select one here.
-        // `TapPaymentsGateway` (the brief's Bahrain gateway) and `StoreKitGateway` (Apple 3.1.1
-        // compliance) are named in the docs but do not exist yet; only the simulated gateway does.
-        // Done when: at least one real adapter conforms to `PaymentGateway`, `AppContainer` can
-        // select it, and the paywall-to-receipt flow is verified against a sandbox account.
-        self.payments = payments ?? SimulatedTapGateway(store: subscriptions)
+        // Development stays on the deterministic simulator, so the demo and CI never depend on
+        // a deployed function or a Tap account. Staging and production use the real Tap flow
+        // (createCharge -> Tap hosted page -> webhook entitlement). See `defaultGateway`.
+        self.payments = payments ?? Self.defaultGateway(environment: environment, devStore: subscriptions)
         self.courses = courses
         self.coach = coach
         self.retrieval = retrieval
@@ -486,6 +482,28 @@ extension AppContainer {
             courses: FileCourseStore(),
             coach: FileCoachStore()
         )
+    }
+
+    /// The gateway a build uses when none was injected.
+    ///
+    /// `.dev` (every Debug build, so the Simulator and CI) uses the deterministic simulator:
+    /// there is no deployed function and no Tap account yet, and the paywall must still demo.
+    /// `.staging` and `.prod` use the real Tap Company flow, which the `createCharge` callable
+    /// and the Tap webhook drive end to end.
+    private static func defaultGateway(
+        environment: AppEnvironment,
+        devStore: any SubscriptionStore
+    ) -> any PaymentGateway {
+        switch environment {
+        case .dev:
+            return SimulatedTapGateway(store: devStore)
+        case .staging, .prod:
+            return TapPaymentsGateway(
+                caller: FirebaseChargeCaller(),
+                store: FirestoreSubscriptionStore(),
+                launcher: SystemURLLauncher()
+            )
+        }
     }
 
     #if DEBUG
