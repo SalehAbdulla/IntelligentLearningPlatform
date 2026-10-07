@@ -48,7 +48,7 @@ struct ProfileSetupFlowView: View {
     ///     summarises the whole profile rather than only this session's steps.
     init(
         profile: any ProfileService,
-        catalogue: AcademicCatalogue = .placeholder,
+        catalogue: AcademicCatalogue,
         startingAt step: ProfileSetupStep = .first,
         answers: ProfileSetupAnswers = .empty,
         onFinish: @escaping () -> Void
@@ -94,12 +94,16 @@ struct ProfileSetupFlowView: View {
 // MARK: - Previews
 
 #Preview("Profile wizard — from the first step") {
-    ProfileSetupFlowView(profile: MockProfileService(latency: .zero)) {}
+    ProfileSetupFlowView(
+        profile: MockProfileService(latency: .zero),
+        catalogue: SeededCourseCatalogueStore.starter
+    ) {}
 }
 
 #Preview("Profile wizard — on the learning-style step") {
     ProfileSetupFlowView(
         profile: MockProfileService(latency: .zero),
+        catalogue: SeededCourseCatalogueStore.starter,
         startingAt: .learningStyle
     ) {}
 }
@@ -109,6 +113,7 @@ struct ProfileSetupFlowView: View {
     // waiting: it is shown once the step saves.
     ProfileSetupFlowView(
         profile: MockProfileService(latency: .zero),
+        catalogue: SeededCourseCatalogueStore.starter,
         startingAt: .studyGoals
     ) {}
 }

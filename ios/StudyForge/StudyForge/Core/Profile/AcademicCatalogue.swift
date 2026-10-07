@@ -21,17 +21,19 @@
 //
 //  So F01 carries the list, and C01 (`24_Courses_List`, feature F02) replaces it with the
 //  real source once a course exists to read. The catalogue is INJECTED rather than
-//  referenced statically so that replacement is a change at one call site.
+//  referenced statically so that replacement is a change at one call site: the source is
+//  `CourseCatalogueStore`, resolved once in `AppContainer.loadCatalogue()`.
 //
 //  The ids below are the ones the security-rules fixtures and the data-model examples
 //  already use (`c_101`, `c_104`, `cs201`), deliberately — so the app, the rules tests
 //  and docs/05 agree about what a course id looks like instead of each inventing one.
 //
-//  NOT INCLUDED ON PURPOSE: `IT8108` / "Programming". Those were supplied as one
-//  student's real values, and it is unresolved whether "Programming" is the major and
-//  IT8108 a course code or the two are a course's title and code. Seeding a guess here
-//  would propagate into the app, the fixtures and the docs at once, so it stays out
-//  until somebody confirms it. See docs/09 §2, the open question recorded for the wizard.
+//  `IT8108` IS seeded now, and the note above predates that being settled. It began as an open
+//  question: whether "Programming" is the major and IT8108 a course code, or the two are one
+//  course's title and code. It was answered rather than guessed (programming is the MAJOR, so the
+//  course is offered by its code, because nobody has supplied its title), and docs/09 §3 records
+//  it. Where a title is still missing the rule is unchanged: a course is shown by its code rather
+//  than by an invented name.
 //
 
 import Foundation
@@ -72,32 +74,18 @@ struct AcademicCatalogue: Sendable, Equatable {
     /// a suggestion: a student may add subjects the list does not carry.
     var courses: [CourseOption]
 
-    // TODO(M1 · F02): Replace this scaffolding with the student's real enrolled courses.
-    // Done when: the catalogue is loaded from F02's store at its single injection point,
-    // `AcademicCatalogue.placeholder` is no longer referenced by a product screen, and a
-    // test covers the enrolled path.
-    //
-    /// The placeholder catalogue. See the note above: this is F01 scaffolding, not data.
+    /// The catalogue before, or instead of, an answer from `CourseCatalogueStore`.
     ///
-    /// `IT8108` is the one real course id here. It was confirmed rather than invented:
-    /// the student is enrolled in IT8108, and "Programming" is their MAJOR — so the course
-    /// is offered by its code, because nobody has supplied its title. Showing the code is
-    /// honest and is what a timetable shows; inventing a title would put a made-up course
-    /// name in front of a marker as though it were real. C01 replaces this list with the
-    /// catalogue, titles included (docs/09 §3, Q10).
-    static let placeholder = AcademicCatalogue(
-        universities: [
-            "Bahrain Polytechnic",
-            "University of Bahrain",
-        ],
-        years: [1, 2, 3, 4],
-        courses: [
-            CourseOption(id: "IT8108", name: "IT8108"),
-            CourseOption(id: "c_101", name: "Introduction to Programming"),
-            CourseOption(id: "c_104", name: "Data Structures"),
-            CourseOption(id: "cs201", name: "Databases"),
-        ]
-    )
+    /// `years` is populated even here, and that is the load-bearing part. The year picker's
+    /// options come from the catalogue, so an empty range would leave the student unable to
+    /// answer the step at all, which is a worse outcome than a stale one. The other two lists
+    /// are empty on purpose, because both of those pickers accept typed input: a catalogue that
+    /// has not arrived costs the student quick-picks, never an answer.
+    ///
+    /// This is the state a failed or still-running store leaves behind. The wizard must not be
+    /// able to dead-end on a source it cannot read, which is the same principle the profile gate
+    /// records for its own read (`AppContainer.resolveProfile`).
+    static let empty = AcademicCatalogue(universities: [], years: [1, 2, 3, 4], courses: [])
 
     func course(for id: String) -> CourseOption? {
         courses.first { $0.id == id }
