@@ -1,9 +1,12 @@
 /**
  * StudyForge — Cloud Functions
  *
- * ⚠️ STATUS: SKELETON. These are typed signatures with the security-critical
- * decisions documented, but the Tap Payments and aggregation bodies are NOT
- * implemented. That is Sprint S3 work — see docs/10-SPRINT-PLAN.md §4.
+ * STATUS: the Tap payment surface (createCharge, tapWebhook) is IMPLEMENTED, ported from a
+ * working Tap integration (the `beyond` project) so the endpoints, the charge payload, the
+ * status set and the X-Tap-Signature HMAC verification match a real deployment. It is NOT
+ * deployed: that needs the Blaze plan plus a budget alert and spend cap (docs/04 §5) and the
+ * Tap secret keys from a Tap merchant account (docs/09 Q2/Q3). `rollupDailyMetrics` is still
+ * a skeleton (Sprint S4 work, see docs/10-SPRINT-PLAN.md §4).
  *
  * WHY THIS SURFACE IS DELIBERATELY TINY
  * -------------------------------------
@@ -25,6 +28,8 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { defineSecret } from 'firebase-functions/params';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getAuth } from 'firebase-admin/auth';
+import { createHmac, timingSafeEqual } from 'node:crypto';
 
 initializeApp();
 
@@ -36,6 +41,8 @@ const db = getFirestore();
 /** Secrets live only in the function environment — never in the app bundle. */
 const TAP_SECRET_KEY = defineSecret('TAP_SECRET_KEY');
 const TAP_WEBHOOK_SECRET = defineSecret('TAP_WEBHOOK_SECRET');
+/** Optional merchant id (TAP_MERCHANT_ID); Tap uses it to attribute the charge. */
+const TAP_MERCHANT_ID = defineSecret('TAP_MERCHANT_ID');
 
 // TODO(M1 · backend): Two prerequisites this surface cannot satisfy on its own.
 //   1. Add an `onUserCreate` Auth trigger that writes the `role` custom claim. The role model
@@ -52,6 +59,49 @@ const PLANS: Record<string, { monthly: number; annual: number }> = {
   pro: { monthly: 4900, annual: 49000 },
 };
 
+/** Tap REST base. The trailing slash on create matters (ported from the `beyond` integration). */
+const TAP_API = 'https://api.tap.company/v2/charges';
+/** Tap hosted payment page: the student pays on Tap's page, then Tap redirects back. */
+const TAP_SOURCE_ALL = 'src_all';
+/** BHD has THREE decimal places; Tap expects a decimal amount, not fils. */
+const TAP_CURRENCY = 'BHD';
+/** Where Tap sends the student back. Set TAP_REDIRECT_URL in the function env. */
+const TAP_RETURN_URL = process.env.TAP_REDIRECT_URL ?? 'https://studyforge.app/payment/return';
+/** Where Tap posts async status updates (this webhook). Set TAP_WEBHOOK_URL in the env. */
+const TAP_WEBHOOK_URL = process.env.TAP_WEBHOOK_URL ?? '';
+
+/** The Tap charge statuses, so a webhook for any of them is handled knowingly. */
+const TAP_STATUS = {
+  initiated: 'INITIATED',
+  captured: 'CAPTURED',
+} as const;
+
+/** Fils to a Tap BHD amount with three decimals: 1900 -> 1.9 (serialised as "1.900" by Tap). */
+function filsToBhd(fils: number): number {
+  return Number((fils / 1000).toFixed(3));
+}
+
+/** One month or one year after `start`, by calendar. In step with the app's periodEnd. */
+function periodEnd(term: 'monthly' | 'annual', start: Date): Date {
+  const end = new Date(start);
+  if (term === 'annual') end.setUTCFullYear(end.getUTCFullYear() + 1);
+  else end.setUTCMonth(end.getUTCMonth() + 1);
+  return end;
+}
+
+/**
+ * Verifies Tap's `X-Tap-Signature` header: HMAC-SHA256 of the RAW request body with the
+ * webhook secret, hex-encoded, compared in constant time. Ported from the working `beyond`
+ * verification, which is the only thing standing between a stranger and a free Pro plan.
+ */
+function verifyTapSignature(rawBody: string, header: string | undefined, secret: string): boolean {
+  if (!header || !secret) return false;
+  const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
+  const a = Buffer.from(expected, 'utf8');
+  const b = Buffer.from(header, 'utf8');
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
 // ═════════════ 1. createCharge — keeps the secret key server-side ═════════════
 
 /**
@@ -62,7 +112,7 @@ const PLANS: Record<string, { monthly: number; annual: number }> = {
  * because the server recomputes what is actually owed.
  */
 export const createCharge = onCall(
-  { secrets: [TAP_SECRET_KEY] },
+  { secrets: [TAP_SECRET_KEY, TAP_MERCHANT_ID] },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) {
@@ -87,13 +137,70 @@ export const createCharge = onCall(
     const idempotencyKey =
       `${uid}:${planId}:${term}:${new Date().toISOString().slice(0, 10)}`;
 
-    // TODO(M3 · F13): POST to Tap /v2/charges with TAP_SECRET_KEY.value(), the
-    //           server-resolved `amount`, currency "BHD", and `idempotencyKey`.
-    //           Return { tapChargeId, redirectURL }.
-    throw new HttpsError(
-      'unimplemented',
-      `createCharge not implemented yet (order ${idempotencyKey}, amount ${amount} fils)`,
+    // POST to Tap. The amount is resolved HERE from PLANS, so a tampered price in the app is
+    // ignored. Ported from the working `beyond` Tap integration (goSell hosted page): Tap wants
+    // BHD as a decimal with three places, not fils.
+    const tapBody = {
+      amount: filsToBhd(amount),
+      currency: TAP_CURRENCY,
+      customer_initiated: true,
+      threeDSecure: true,
+      save_card: false,
+      description: `StudyForge ${planId} (${term})`,
+      metadata: { uid, planId, term, idempotencyKey },
+      reference: { order: idempotencyKey, transaction: uid },
+      merchant: TAP_MERCHANT_ID.value() ? { id: TAP_MERCHANT_ID.value() } : undefined,
+      customer: request.auth?.token?.email
+        ? { email: String(request.auth.token.email) }
+        : undefined,
+      source: { id: TAP_SOURCE_ALL },
+      post: TAP_WEBHOOK_URL ? { url: TAP_WEBHOOK_URL } : undefined,
+      redirect: { url: TAP_RETURN_URL },
+    };
+
+    const tapResponse = await fetch(`${TAP_API}/`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${TAP_SECRET_KEY.value()}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(tapBody),
+    });
+    const charge = (await tapResponse.json()) as {
+      id?: string;
+      status?: string;
+      redirect?: { url?: string };
+      transaction?: { url?: string };
+      errors?: unknown;
+    };
+    if (!tapResponse.ok || charge.errors) {
+      throw new HttpsError('internal', `Tap charge failed (HTTP ${tapResponse.status}).`);
+    }
+
+    // Record the attempt, keyed by the Tap charge id, so the webhook can match it and a later
+    // restore can read the outcome.
+    await db.collection('payments').doc(String(charge.id)).set(
+      {
+        uid,
+        plan: planId,
+        term,
+        amountFils: amount,
+        currency: TAP_CURRENCY,
+        status: charge.status ?? TAP_STATUS.initiated,
+        tapChargeId: charge.id,
+        idempotencyKey,
+        redirectURL: charge.redirect?.url ?? charge.transaction?.url ?? null,
+        createdAt: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
     );
+
+    return {
+      tapChargeId: charge.id,
+      redirectURL: charge.redirect?.url ?? charge.transaction?.url ?? null,
+      status: charge.status ?? null,
+    };
   },
 );
 
@@ -116,19 +223,110 @@ export const tapWebhook = onRequest(
       return;
     }
 
-    // TODO(M3 · F13):
-    //  1. verifySignature(req, TAP_WEBHOOK_SECRET.value())        -> 401 if invalid
-    //  2. read charge id, amount, currency, status and our orderId
-    //  3. RE-RESOLVE the expected amount from PLANS and reject the payload if it
-    //     disagrees with what we charged
-    //  4. idempotently write (keyed on tapChargeId so a retry is harmless):
-    //       payments/{paymentId}  { uid, amount, currency, status, tapChargeId }
-    //       subscriptions/{uid}   { plan, status, periodStart, periodEnd, ... }
-    //       auditLog/{id}         append-only record of the entitlement change
-    //       auth.setCustomUserClaims(uid, { plan })   <- mirrored into the token
-    //  5. respond 200 only after the writes commit, so Tap retries on failure
+    // 1. Verify the X-Tap-Signature HMAC-SHA256 over the RAW body. Fail closed: no valid
+    //    signature, no entitlement, ever.
+    const raw = req.rawBody?.toString('utf8') ?? '';
+    const signature = req.get('X-Tap-Signature') ?? undefined;
+    if (!verifyTapSignature(raw, signature, TAP_WEBHOOK_SECRET.value())) {
+      res.status(401).send('Invalid signature');
+      return;
+    }
 
-    res.status(501).send('tapWebhook not implemented');
+    // 2. Parse and read the charge.
+    let payload: {
+      id?: string;
+      status?: string;
+      amount?: number;
+      currency?: string;
+      metadata?: { uid?: string; planId?: string; term?: string };
+    };
+    try {
+      payload = JSON.parse(raw);
+    } catch {
+      res.status(400).send('Malformed JSON');
+      return;
+    }
+
+    const chargeId = String(payload.id ?? '');
+    if (!chargeId) {
+      res.status(400).send('Missing charge id');
+      return;
+    }
+
+    // 3. Only a CAPTURED charge grants an entitlement. Anything else is acknowledged and ignored
+    //    (Tap retries are cheap; we answer inside the 2-second window).
+    if (payload.status !== TAP_STATUS.captured) {
+      res.status(200).send('ignored');
+      return;
+    }
+
+    const meta = payload.metadata ?? {};
+    const uid = meta.uid;
+    const planId = meta.planId;
+    const term = meta.term === 'annual' ? 'annual' : 'monthly';
+    if (!uid || !planId || !PLANS[planId]) {
+      res.status(400).send('Missing order metadata');
+      return;
+    }
+
+    // 4. RE-RESOLVE the amount from PLANS and reject a payload that disagrees, so a tampered
+    //    notification cannot buy Pro for one fils.
+    const expectedFils = PLANS[planId]![term];
+    if (Number(payload.amount) !== filsToBhd(expectedFils) || payload.currency !== TAP_CURRENCY) {
+      res.status(409).send('Amount mismatch');
+      return;
+    }
+
+    // 5. Idempotent write, keyed on the charge id, then mirror the plan into a custom claim.
+    const now = new Date();
+    const end = periodEnd(term, now);
+
+    await db.runTransaction(async (tx) => {
+      const payRef = db.collection('payments').doc(chargeId);
+      const snap = await tx.get(payRef);
+      if (snap.exists && snap.get('status') === TAP_STATUS.captured) return; // already granted
+
+      tx.set(
+        payRef,
+        {
+          uid,
+          plan: planId,
+          term,
+          amountFils: expectedFils,
+          currency: TAP_CURRENCY,
+          status: TAP_STATUS.captured,
+          tapChargeId: chargeId,
+          paidAt: now,
+        },
+        { merge: true },
+      );
+      tx.set(
+        db.collection('subscriptions').doc(uid),
+        {
+          plan: planId,
+          status: 'active',
+          periodStart: now,
+          periodEnd: end,
+          tapChargeId: chargeId,
+          autoRenews: true,
+          updatedAt: now,
+        },
+        { merge: true },
+      );
+      tx.set(db.collection('auditLog').doc(), {
+        actor: 'tap-webhook',
+        action: 'entitlement.granted',
+        uid,
+        plan: planId,
+        tapChargeId: chargeId,
+        at: now,
+      });
+    });
+
+    await getAuth().setCustomUserClaims(uid, { plan: planId });
+
+    // 6. 200 only after the writes commit, so Tap retries on a failure.
+    res.status(200).send('ok');
   },
 );
 
