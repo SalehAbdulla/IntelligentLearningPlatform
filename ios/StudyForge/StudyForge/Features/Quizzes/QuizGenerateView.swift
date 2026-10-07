@@ -8,10 +8,9 @@
 
 import SwiftUI
 
-// TODO(M2 · F05): Add VoiceOver support. The type and count controls and the generate button
-// have no labels or values today.
-// Done when: each control is labelled, the button announces its working state, and the screen
-// reads sensibly under VoiceOver.
+// Accessibility: the segmented controls and toggle carry their labels from their components, the
+// generating state and each question preview are single elements, and the source rows hide their
+// decorative icons, so a VoiceOver pass reads the config and the review sensibly.
 
 struct QuizGenerateView: View {
 
@@ -82,6 +81,7 @@ struct QuizGenerateView: View {
                             .font(.sfBody)
                             .foregroundStyle(ColorTokens.primary)
                             .frame(minWidth: Spacing.s6, alignment: .leading)
+                            .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: Spacing.s1) {
                             Text(material.title)
@@ -171,6 +171,8 @@ struct QuizGenerateView: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
         }
+        // The spinner and both lines are one announcement while the router works.
+        .accessibilityElement(children: .combine)
         .frame(maxWidth: .infinity)
         .padding(.top, Spacing.s10)
     }
@@ -197,6 +199,7 @@ struct QuizGenerateView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(Spacing.s3)
                     .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.m))
+                    .accessibilityElement(children: .combine)
                 }
             }
 
@@ -225,6 +228,7 @@ struct QuizGenerateView: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.sfDisplayL)
                 .foregroundStyle(ColorTokens.successText)
+                .accessibilityHidden(true)
 
             Text(viewModel.savedTitle)
                 .font(.sfTitleM)

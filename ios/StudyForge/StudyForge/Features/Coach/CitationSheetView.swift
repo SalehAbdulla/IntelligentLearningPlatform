@@ -8,9 +8,8 @@
 
 import SwiftUI
 
-// TODO(M2 · F15): Add VoiceOver support. Each citation row should read its source and page as
-// one element, so a student hears "page 14, Lecture 4" rather than disconnected fragments.
-// Done when: citation rows are combined and labelled.
+// Accessibility: the source header and the passage are each one element, so a student hears
+// "Lecture 4, page 14, 71% relevant" and then the passage, not a run of disconnected fragments.
 
 struct CitationSheetView: View {
 
@@ -37,6 +36,7 @@ struct CitationSheetView: View {
                             .font(.sfFootnote)
                             .foregroundStyle(ColorTokens.textTertiary)
                     }
+                    .accessibilityElement(children: .combine)
 
                     VStack(alignment: .leading, spacing: Spacing.s2) {
                         Text(L10n.coachPassage.string)
@@ -51,6 +51,7 @@ struct CitationSheetView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(Spacing.s4)
                     .background(ColorTokens.primaryContainer, in: .rect(cornerRadius: Radius.l))
+                    .accessibilityElement(children: .combine)
                 }
                 .padding(Layout.screenMargin)
                 .frame(maxWidth: Layout.maxContentWidth, alignment: .leading)
