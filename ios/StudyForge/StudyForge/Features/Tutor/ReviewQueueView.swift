@@ -15,6 +15,8 @@
 
 import SwiftUI
 
+// Accessibility: each queue card reads as one element and the list acts as a container of labelled rows.
+
 struct ReviewQueueView: View {
 
     let container: AppContainer
