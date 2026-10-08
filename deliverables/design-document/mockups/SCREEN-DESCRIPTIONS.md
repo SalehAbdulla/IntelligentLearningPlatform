@@ -271,14 +271,18 @@ Every one of the 15 features has at least three screens, and the counts below su
 
 ## A.16 Where the exportable figures come from
 
-The 106 wireframes and the 15 flow diagrams are the figures for Design Document section 10 and section 9. To export them:
+**Status: exported, 8 October 2026.** The 106 wireframes and the 15 flow diagrams are the figures for Design Document section 10 and section 9, and they have been exported from the live Figma file through the Figma MCP server, not by hand:
 
-1. Open the Figma file at the shared link in `deliverables/prototype/figma-link.txt`.
-2. Page `5 · Low-Fi Wireframes` — select the spec groups and export each `Wire_…` frame at **2× PNG**.
-3. Page `2 · Flow Overview` — export each `FLOW_Fnn_…` frame at **2× PNG**.
-4. Place the exports in `deliverables/design-document/mockups/figures/` and reference them from the document as Figures 10.1 onwards, in screen-number order.
+1. **106 wireframe frames** at 2× PNG into `figures/`, named exactly as the Figma frames are (`LF_01_Splash_Logo_Saleh_202300540.png` and so on, one per screen). Each export is the frame plus its legend panel, so the numbered callouts and the element legend stay with the drawing. 1720 × 1920 px each.
+2. **15 flow diagram frames** at 2× PNG into the same directory, named `FLOW_Fnn_…png`, one per feature.
+3. **Supplementary exports** that are page furniture rather than figures: `LF_00_PageHeader_StudyForge.png` and `F00_FlowDiagrams_Header_StudyForge.png`.
+4. **The navigation map, the states panel, the design system sheet, the glass reference and the cover** are exported into `../figures/`, because they belong to sections 10, 11 and 12 rather than to the mockups appendix.
 
-The high-fidelity, interactive version is the same file's page `3 · Screens (all features)`; it is delivered as the Project Prototype, not as document figures, so the document stays a **low-fidelity** mockups section as the brief intends.
+Figure numbering: the 15 flows are Figures 9.1 to 9.15, the states panel is Figure 10.1, the 106 wireframes are Figures 10.2 to 10.107 in screen order (indexed in `DESIGN-DOCUMENT.md` §10.4), the navigation map is Figure 11.1, and the design system and glass sheets are Figures 12.1 and 12.2. The complete list, with statuses, is the document's "List of figures".
+
+The exports are counted and checked by `bash tools/check-submission.sh`, and the measurements behind them are recorded in `../../prototype/figma-audit.md`.
+
+The high-fidelity, interactive version is the same file's page `3 · Screens (all features)`; it is delivered as the Project Prototype, not as document figures, so the document stays a **low-fidelity** mockups section as the brief intends. Page `6 · Dark Mode Variants (P9-12)` holds the 106 dark variants, which are also prototype evidence rather than document figures.
 
 
 
