@@ -119,9 +119,27 @@ before an ordinary owner commit: it catches a stray edit to a member's feature f
 exit 1) while leaving the owner's own files green. `--allow-protected` is the only argument that
 also permits `main`/`develop`.
 
-The values above are the **intent**; the command in §11.1 is the **source of truth**. Run it
-before you rely on any of this, and if it prints something else, the configuration has drifted
-and this section is wrong.
+**Verified live on 8 Oct 2026**, with the §11.1 command, on both branches:
+
+```
+main     pr_required=true enforce_admins=false force_push=false deletions=false
+develop  pr_required=true enforce_admins=false force_push=false deletions=false
+```
+
+The check was run before the handover because the configuration had drifted from this section's
+claim: `enforce_admins` was still **`true`**, which left the owner as protected as anyone else
+and would have rejected the owner hotfix path below with `GH006`. It was corrected with the
+surgical endpoint, which changes nothing but that one field:
+
+```bash
+gh api -X DELETE repos/SalehAbdulla/IntelligentLearningPlatform/branches/main/protection/enforce_admins
+gh api -X DELETE repos/SalehAbdulla/IntelligentLearningPlatform/branches/develop/protection/enforce_admins
+```
+
+Before that change was applied, the collaborator list was checked (`gh api
+repos/{owner}/{repo}/collaborators`): **no teammate account has admin**, so the exemption
+exempts the owner alone. If the §11.1 command prints anything else at any point, the
+configuration has drifted and this section is wrong.
 
 **Emergency procedure.** A broken `main` can be fixed directly by the owner (the exemption is
 already in place):
