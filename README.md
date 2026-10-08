@@ -2,6 +2,10 @@
 
 **Turn any material into mastery.**
 
+> **Contributing to this project? Read [`CONTRIBUTING.md`](CONTRIBUTING.md) first.** It is
+> the full guide: setup, the git rules, your file lane, code conventions, testing, the
+> evidence that is actually marked, troubleshooting, and VIVA readiness.
+
 | | |
 |---|---|
 | **Module** | IT8108, Project Design Document & Prototype |
@@ -66,6 +70,7 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 
 | Doc | Contents |
 |---|---|
+| [**CONTRIBUTING.md**](CONTRIBUTING.md) | **Start here to contribute.** Setup, git rules, your file lane, conventions, testing, evidence, troubleshooting, VIVA |
 | [00, Master Plan](docs/00-MASTER-PLAN.md) | Decoded spec, assessment-driven priorities, product identity, roles, innovation |
 | [01, Roadmap, Phases & Todolist](docs/01-ROADMAP-PHASES-TODOLIST.md) | Sprint-structured roadmap with dated gates + tickable task list, **the guide & roadmap** |
 | [02, Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 15 features, 4 developers, developer/tester matrix, advanced feature |
@@ -79,6 +84,9 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 | [10, Sprint Plan](docs/10-SPRINT-PLAN.md) | The **individual 10%**: sprint cadence, per-member tasks, contribution evidence |
 | [11, App Implementation & VIVA](docs/11-APP-IMPLEMENTATION-VIVA.md) | The **60% must-pass**: MVP scope, demo script, VIVA prep, must-pass risk control |
 | [12, Git Workflow](docs/12-GIT-WORKFLOW.md) | **Branches, per-file commits, PRs**, the tutor's stated requirement, plus `tools/commit.sh` |
+| [13, Per-Member Tasks](docs/13-PER-MEMBER-TASKS.md) | Tickable task list per member, plus turnkey first-commit starter briefs |
+| [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so three agents can work at once without conflicts |
+| [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
 
 ---
 
@@ -104,7 +112,7 @@ IntelligentLearningPlatform/
 │   ├── rules-tests/                 emulator suites, negative tests first
 │   └── functions/                   createCharge · tapWebhook · rollupDailyMetrics
 │
-├── docs/                        planning set (00–13), start at README
+├── docs/                        planning set (00–14), start at README
 │
 ├── deliverables/
 │   ├── design-document/         10%, PDF source + low-fidelity mockups
@@ -145,7 +153,7 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 | iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: F01 to F15 implemented; builds and passes 723 unit tests |
 | Sprints (individual) | 10% | 🟨 in progress: continuous commit evidence on `feat/*` branches |
 | Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/` |
-| Prototype (Figma) | 10% | 🟨 in progress: 98 frames built, see `deliverables/prototype/figma-link.txt` |
+| Prototype (Figma) | 10% | 🟨 in progress: **106 screens built** and **interactive** (296 prototype connections, no dead ends); Phase 1 low-fi mockups (**106 wireframes**) and **15 flow diagrams** built. See `deliverables/prototype/figma-link.txt` |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 

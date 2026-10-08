@@ -97,7 +97,7 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P1-07` Obtain **written approval for the F15 advanced feature** and record it in [doc 02 §5](02-FEATURE-LIST-OWNERSHIP.md)
 - [ ] `P1-08` Write the problem statement: who is affected, why it matters, scale
 - [ ] `P1-09` Write app purpose, goals and intended impact + **measurable** success metrics
-- [ ] `P1-10` Compile everything into `research/dossier.md` with a Harvard reference list
+- [x] `P1-10` Compile everything into `research/dossier.md` with a Harvard reference list — done 8 Oct 2026 (problem evidence, 13 cited sources, SDG mapping, competitor teardown, change log, road-map coverage; the still-unverified market figures are listed as open rather than asserted)
 
 **Tutor interview question bank** (the rubric requires *"questions asked AND summary of responses"*):
 

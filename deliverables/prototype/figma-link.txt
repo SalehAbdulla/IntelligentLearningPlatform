@@ -1,114 +1,211 @@
-StudyForge, Figma prototype link
-=================================
+StudyForge, Figma prototype submission
+=====================================
 
-Shared view link : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv  (StudyForge)
-Owner account    : 202300540@student.polytechnic.bh, Figma Education plan
-Link permission  : ⚠️ SET IN FIGMA, Share -> "Anyone with the link" -> "Can view"
-Starting frame   : 01_Splash_Logo_Saleh_202300540
-File version     : .fig export pending
-Exported on      : <date>
+Phase 2 (Prototyping). The brief requires BOTH the interactive file and the
+shared URL, delivered in a text document. This is that document.
 
-Build status, COMPLETE
------------------------
-Built end-to-end via the Figma MCP server (Cline) on the Education plan.
+1. Shared view link
+-------------------
+URL               : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv
+Share link saved  : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv/StudyForge?node-id=1-3&t=rqKjdg6ZET7BpeIv-1
+File name         : StudyForge
+Owner account     : 202300540@student.polytechnic.bh  (Figma Education plan)
+Link permission   : SET IN FIGMA. Confirm with Share -> "Anyone with the link" ->
+                    "Can view", then open the link in a PRIVATE browser window to
+                    verify every page and prototype link is visible without signing in.
+Starting frame    : 01_Splash_Logo_Saleh_202300540
 
-Pages
-  0 · Cover & Legend              team table, page index, legend
-  1 · Design System               colour (Light + Dark), type, spacing, radius, components
-                                  + "Glass & Depth" section (frosted-surface tokens)
-  2 · Flow Overview               navigation map + the core learning loop
-  3 · Screens (all features)      98 frames, every feature group A–M
-  4 · States & Prototype Wiring   error / empty / loading / success kits, RTL + AX3 proof
+2. The interactive file (.fig)
+------------------------------
+Deliverable       : deliverables/prototype/StudyForge.fig
+Status            : DONE. Exported from the Figma desktop app on 8 Oct 2026, 01:15.
+Size              : 1,201,229 bytes (1.2 MB)
+Verified contents : canvas.fig (1,195,619 bytes), thumbnail.png, meta.json, images/
+Note              : the .fig is excluded from git by .gitignore
+                    (deliverables/**/*.fig) because it is submitted through the
+                    portal, not through the repository. Keep the file itself safe:
+                    re-export it after any further Figma edit, so the .fig and the
+                    shared link show the same revision.
 
-Visual language, Apple-style glassmorphism (applied to all 98 screens)
-  Backdrop   soft near-white canvas (F5F6FB -> FFFFFF -> F8F7FC) with three
-             restrained glows in one cool family (blue / sky / teal) at 24% alpha,
-             heavily blurred so the canvas still reads as neutral, not a rainbow.
-  Surfaces   translucent white + BACKGROUND_BLUR + 1px hairline light border
-             (glass/border) + dual drop shadow + inner light edge for the
-             "lit edge" that makes glass read on a light canvas.
-  Tokens     glass/surface · glass/strong · glass/border · glass/tint
-             (colour variables, Light + Dark modes)
-  Effects    Glass/panel · Glass/card · Glass/bar · Glass/blob (effect styles)
-  Rules      full-width top/bottom bars -> Glass/bar; large cards -> Glass/panel;
-             small chips/rows -> Glass/card; dividers stay hairline; any backdrop
-             rect >= 90% of the screen is folded into the screen gradient.
+3. How to run the prototype
+---------------------------
+Open the shared link, press Play (Present), then follow the four chains below.
+Every screen is a real Figma frame, and every interaction below is a real
+prototype connection, not a static image.
 
-Palette, Apple system colours, purple removed
-  The first pass used an indigo/violet brand palette, and on a light canvas it read
-  as the generic AI gradient (indigo + violet + pink). The accent is now Apple's own
-  button blue, and the two subject accents were renamed and recoloured:
-    primary             #4F46E5 -> #0062CC Light   (Apple's #007AFF is 4.0:1 on white
-                        and #0071E3 only 4.02:1 on the tinted canvas; `primary` is
-                        used as text in 26 places, so #0062CC was chosen for 5.80:1
-                        on white and 4.97:1 on the most tinted canvas point)
-    primaryContainer    #E0E7FF -> #E1F0FF
-    onPrimaryContainer  #312E81 -> #00427A          (8.8:1 on primaryContainer)
-    glass/tint          #4F46E5 -> #0062CC
-    bg/blob1..3         indigo / violet / sky -> blue #0062CC / sky #32ADE6 / teal #30B0C7
-    bg/a, bg/b          indigo tint + pink -> neutral cool (#EDF3FB / #E9F2F6)
-    subject/indigo      -> subject/blue  #0062CC
-    subject/violet      -> subject/mint  #00C7BE
-  All 510 purple fills were variable-bound and this was fixed in the token layer,
-  so all 98 screens updated at once; zero purple fills were hardcoded. Verified by
-  re-scanning every fill on every frame: 0 purple-family fills remain.
-  The three backdrop glows were also dropped from 100% to 24% alpha. They are solid
-  ellipses whose softness comes only from a 150px layer blur, so at full alpha a
-  glow dumps roughly 28% chroma into the canvas and reads as tinted wallpaper. At
-  24% the measured backdrop is #E7EEF9 / #FCFCFE / #F5F8F9, i.e. near-neutral glass.
-  Dark-mode values were moved to match (primary #0A84FF, 5.1:1 on #0B1220).
-  Text-safe semantic variants, added to fix a measured WCAG AA failure:
-    secondaryText #0F766E / accentText #C2410C / warningText #B45309  (Light)
-    secondaryText #5EEAD4 / accentText #FDBA74 / warningText #FCD34D  (Dark)
-  Five dashboard statistics used secondary/accent/warning as TEXT at 1.8:1 to 2.8:1,
-  below even the 3:1 large-text bar. They now bind the *Text variants, and the bare
-  secondary/accent/warning variables stay fill-only. The same swap was applied to the
-  ten text labels in the iOS app that used a fill hue as text.
+Chain 1, onboarding to home
+  01 Splash -> 02 Onboarding -> 03 -> 04 -> 05 Sign up -> 06 OTP verify ->
+  10 Role select -> 11 Academic -> 12 Learning style -> 13 Study goals ->
+  14 Complete -> 15 Home dashboard
 
-Contrast & legibility (measured from rendered pixels, not eyeballed)
-  Moving to a light canvas creates one specific risk: text that was white for
-  a dark background becomes white-on-white. All 1,304 text nodes across the 98
-  frames were audited for exactly that, and it found two, both on
-  01_Splash_Logo, and both now fixed.
-  Fixed, 01_Splash_Logo: the wordmark and tagline were filled with the
-  `surface` token, i.e. white, because the original splash sat on a dark
-  branded background. Once the canvas went light they disappeared entirely,
-  measured 1.17:1 and 1.12:1 with zero dark glyph pixels in either region.
-  They now use textPrimary (17.4:1) and textSecondary (7.4:1), both AA/AAA.
-  Every text layer is token-bound, so a palette change propagates everywhere.
-  Fixed, screens 01-10: the glass pass added three blurred `blob` glows per
-  screen, but those ten frames kept their original decorative `Ellipse` glows
-  as well (named "Ellipse", so the blob cleanup did not match them). Six glows
-  made them read noticeably heavier than the other 88. The 30 duplicates were
-  removed; every frame now carries exactly three glows, and 01-10 match the
-  rest of the prototype pixel-for-pixel (same near-neutral backdrop, current
-  sampled values are in the palette note above).
+Chain 2, upload to generated artefact
+  15 Home -> 26 Upload source picker -> 27 Compress -> 28 OCR -> 29 Success ->
+  34 Generate action sheet -> 35 Summary configure -> 36 Generating ->
+  37 Result -> 38 Citation source sheet -> 33 Material viewer
 
-Screens built (98), by group and owner
-  A Onboarding & Auth         01–10     M1 Saleh
-  B Profile & Settings        11–18     M1 Saleh
-  C Courses & Library         24–34     M1 Saleh
-  M System, States & Feedback 128–141   M1 Saleh
-  D AI Summaries              35–41     M2 Mohammed
-  E Flashcards                42–48     M2 Mohammed
-  F Quizzes                   51–59     M2 Mohammed
-  J Tutor Content Studio      99–105    M2 Mohammed
-  G Study Plan & Progress     60–70     M3 Tasbeeh
-  L Subscription & Payments   118–126   M3 Tasbeeh
-  H AI Study Companion (F15)  73–78     M2 + M3
-  I Collaboration             81–97     M4 Shahad
-  K Admin Content Management  109–115   M4 Shahad
+Chain 3, quiz to adaptive re-plan
+  15 Home -> 52 Quiz configure -> 53 Generating -> 54 Take MCQ ->
+  55 Feedback (correct) -> 56 Feedback (incorrect) -> 57 Submit confirm ->
+  58 Scorecard -> 59 Review -> 69 Progress dashboard -> 70 Weakness radar ->
+  60 Plan wizard -> 65 Calendar -> 68 Session detail
 
-Prototype wiring, interactive ON_CLICK links across:
-  onboarding -> home · upload -> summary -> cards · quiz -> feedback -> results ·
-  flashcard review loop · plan wizard -> calendar · coach -> citation sheet ·
-  folders · bookmarks · tutor studio · admin · paywall -> receipt
+Chain 4, paywall to entitlement
+  10 Role select -> 118 Paywall -> 120 Order summary (BHD, VAT 10%) ->
+  121 Method select -> 122 Card entry -> 124 Processing -> 125 Receipt.
+  Failure branch: 124 -> 126 Failed/retry -> 121 Try another method -> 124.
 
-Notes
-  - Frame naming follows NN_ScreenName_FirstName_StudentID exactly (brief requirement).
-  - Light + Dark variable modes are defined; screens are built in Light.
-  - The Figma API does not allow NAVIGATE links across pages, so all screens share
-    page 3; ownership is carried by the frame name and the cover table.
+Also walk: the group space live quiz (88 -> 89 -> 90 -> 92 -> 93 -> 94),
+the Coach companion (73 -> 74 -> 75 -> 76), and the tutor review queue
+(99 -> 104 -> 105).
 
-Verification: open the link in a private browser window and confirm all
-frames and prototype links are visible without signing in.
+4. What is actually in the file
+--------------------------------
+Page 0 - Cover & Legend            team table, page index, legend
+Page 1 - Design System             38 colour variables (Light + Dark modes),
+                                   spacing and radius variables, 11 text styles,
+                                   4 glass effect styles, plus a Glass & Depth
+                                   reference frame
+Page 2 - Flow Overview             global navigation map + 15 per-feature flow
+                                   diagrams (F01-F15), each ending in the error
+                                   or edge case the flow must survive
+Page 3 - Screens (all features)    106 high-fidelity screens, every feature
+                                   group A-M. This is the interactive prototype
+Page 4 - States & Prototype Wiring state/error/loading/success kits, RTL and
+                                   accessibility proof
+Page 5 - Low-Fi Wireframes         106 low-fidelity wireframes, one per screen,
+                                   each paired with a legend panel that names its
+                                   UI elements and states what each one does.
+                                   Retained because Phase 1 (Mockups) needs it.
+Page 6 - Dark Mode Variants        106 dark-mode variants, one per screen, each a
+                                   clone of its light screen with the Dark mode of
+                                   the Color variable collection set explicitly.
+                                   Closes P9-12. Page 3 is untouched, so the 106
+                                   prototype frames keep their audited names.
+
+Screens built (106), by group and owner
+  A Onboarding & Auth           01-10      M1 Saleh
+  B Profile & Settings          11-18      M1 Saleh
+  C Courses & Library           24-34      M1 Saleh
+  M System, States & Feedback   128-141    M1 Saleh
+  D AI Summaries                35-41      M2 Mohammed
+  E Flashcards                  42-48      M2 Mohammed
+  F Quizzes                     51-59      M2 Mohammed
+  J Tutor Content Studio        99-105     M2 Mohammed
+  G Study Plan & Progress       60-70      M3 Tasbeeh
+  L Subscription & Payments     118-126    M3 Tasbeeh
+  H AI Study Companion (F15)    73-78      M2 + M3
+  I Collaboration               81-97      M4 Shahad
+  K Admin Content Management    109-115    M4 Shahad
+
+5. Prototype wiring, what is actually connected
+-----------------------------------------------
+This was rebuilt at element level. Earlier the file held a linear "click
+anywhere, go to the next screen" chain, which is not an interactive prototype.
+That was removed and replaced with real hotspots.
+
+  Prototype connections in the file : 296
+  Screens with element-level hotspots : 98 of 106
+    (the hotspot is attached to the actual button, tab item, list row or
+     modal action that a user would tap, not to the screen background)
+  Screens that are deliberately tap-anywhere : 8
+    27, 28, 124  processing states, tap to continue
+    46           flashcard front, the whole card is the flip target
+    59           review list, tap to go back
+    128          notification inbox, tap to dismiss
+    138, 139     accessibility and RTL proof frames
+  Named prototype flow start points : 16
+
+Navigation model implemented:
+  - a 5-item student tab bar (Home, Library, Study, Progress, Profile) that
+    switches tabs and is wired on every screen that has one
+  - every primary action has its own destination (Next, Continue, Generate,
+    Save, Join, Pay, Submit, Approve, Publish)
+  - list rows open their detail screen
+  - modals have both a confirming path and a dismissal path
+  - a loading to success transition per AI feature (36-37, 44-45, 53-54, 64-65)
+  - an error to retry to recovery loop on 30, 41, 126 and 134
+  - Smart Animate on the high-impact changes: the flashcard flip 46-47, the
+    generating to result transitions, the payment processing to receipt, and
+    tab switches
+
+Click reachability: 97 of 106 screens are reachable by clicking alone. The
+remaining 9 (24, 30, 41, 77, 78, 88, 126, 133, 134) are state, error and
+secondary screens that a user reaches only in a specific situation; each one is
+a named flow start point so it is directly reachable in the prototype player.
+No screen is a dead end.
+
+6. Frame naming
+---------------
+Every frame follows the brief's rule exactly:
+
+    NN_ScreenName_FirstName_StudentID
+
+Examples: 03_Onboarding_HowItWorks_Saleh_202300540,
+          57_Quiz_Submit_Confirm_Mohammed_202401702,
+          93_GroupSpace_SharedQuiz_Live_Shahad_202305767,
+          124_Payment_Processing_Tasbeeh_202300549
+
+Low-fidelity frames use the prefix LF_, Wire_ and Legend_ so they can never be
+confused with a prototype screen.
+
+7. Visual language
+------------------
+Apple-style glassmorphism on a soft near-white canvas. Translucent white
+surfaces with a background blur, a 1px hairline light border, a dual drop
+shadow and an inner light edge. Palette built on the Apple system-blue family;
+brand blue #0062CC was chosen over Apple's #007AFF because #007AFF measures
+4.0:1 on white and `primary` is used as text in 26 places, whereas #0062CC
+measures 5.80:1. A complete light and dark mode is defined, and as of 8 Oct 2026
+the dark mode is also *drawn*: 106 dark variants on page 6.
+
+Correction for accuracy, measured on 8 Oct 2026: inside each screen, the
+surfaces, cards, text and decorative blobs are variable-bound (48 of 49 nodes
+on a typical screen), so a token change propagates through all of them. The one
+exception is the **root frame's background gradient**, which is a fixed light
+gradient rather than a variable, so switching the variable mode alone would
+leave light text on a light canvas. That is why each dark variant on page 6 also
+gets the dark canvas gradient (bg/a #0B1220 to bg/b #10233A) applied to the
+clone. An earlier revision of this document claimed that *all* fills are
+variable-bound, which was not accurate at the frame level.
+
+8. Accessibility and legibility
+-------------------------------
+Every text node is token-bound and contrast was measured from rendered pixels,
+not estimated. Fill-only semantic colours (secondary, accent, warning) are never
+used as text; text-safe variants (secondaryText, accentText, warningText) are
+used instead, each clearing WCAG AA. Large-text proof is a built frame (138) and
+right-to-left Arabic proof is a built frame (139).
+
+9. Remaining manual steps before submission
+-------------------------------------------
+  [ ] Figma -> Share -> "Anyone with the link" -> "Can view", then verify in a
+      private browser window that all pages and prototype links are visible
+      without signing in
+  [x] Figma -> File -> Save local copy... -> deliverables/prototype/StudyForge.fig
+      (done 8 Oct 2026, 1.2 MB, verified as a real Figma export)
+  [x] Export the 106 wireframes and 15 flow diagrams at 2x PNG into
+      deliverables/design-document/mockups/figures/ (done 8 Oct 2026 by script
+      through the Figma MCP server: 121 PNGs, 1720 x 1920 px each, plus the
+      navigation map, the states panel, the design system sheet, the glass
+      reference and the cover in deliverables/design-document/figures/)
+  [x] Dark-mode screen variants (done 8 Oct 2026: 106 variants on Figma page 6,
+      measured in deliverables/prototype/figma-audit.md, with two rendered
+      proofs in deliverables/prototype/dark-mode-proof/)
+  [ ] Usability test with 5 users and a SUS score (docs/01 P9-03/04)
+  [ ] Re-export StudyForge.fig if the Figma file changes after this revision,
+      so the .fig and the shared link match. This now includes the dark-mode
+      page: the .fig current on disk predates page 6
+  [ ] The Design Document PDF export (figures and lists are ready, the PDF
+      toolchain is not on this machine)
+
+The audited numbers behind this document, with what was and was not measured, are
+recorded in deliverables/prototype/figma-audit.md. `bash tools/check-submission.sh`
+re-checks every item above and refuses to pass while one is open.
+
+Known P1 gaps, retained deliberately under the cut-line protocol in
+docs/01-ROADMAP-PHASES-TODOLIST.md section 14: 19-23, 32, 39, 40, 49, 50, 66,
+67, 71, 72, 79, 80, 87, 98, 100, 106-108, 113, 114, 116, 117, 119, 123, 127,
+130, 131, 135-137, 140. Every one is a secondary state, an empty state or a
+P1 variant, not a happy path, and every one of the 15 features already has its
+happy path built and linked.
+

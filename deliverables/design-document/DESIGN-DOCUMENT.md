@@ -23,11 +23,13 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 | **SDGs** | SDG 4 (Quality Education) · SDG 9 (Industry, Innovation & Infrastructure) · SDG 10 (Reduced Inequalities) |
 | **Design Document due** | 22 October 2026, 23:55 |
 | **Prototype (Figma) due** | 12 November 2026, 23:55 |
-| **Document version** | 1.0 (Gate 1 draft) |
+| **Document version** | 1.2 (Gate 1 draft: figure and table lists, all figures except the two that need the app or a competitor's product captured) |
 
 > The app name and logo appear in the header of every page and on the Figma cover, per the identity requirement.
 
 ## Table of contents
+
+List of figures · List of tables
 
 1. Executive summary
 2. Background research: the problem, who is affected, and why it matters
@@ -51,13 +53,76 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 
 ---
 
+## List of figures
+
+Every figure is numbered by the section it belongs to. The `figures/` and
+`mockups/figures/` paths are relative to this document, and each PNG was exported at 2× from
+the Figma file (see §10.1). Statuses are honest: a figure marked ⬜ does not exist yet. The
+gate script `tools/check-submission.sh` checks that both lists exist, that the artwork resolves
+and that the PDF is present, but it does not read these status cells, so an open ⬜ here is a
+commitment to the marker rather than a gate the script enforces.
+
+| Figure | Caption | File | Status |
+|---|---|---|---|
+| Cover | StudyForge cover, as built in Figma | [figures/00_Cover_StudyForge.png](figures/00_Cover_StudyForge.png) | ✅ |
+| 4.1 | Competitor teardown, screenshots of each product | ⬜ to capture | ⬜ pending |
+| 5.1 | The core learning loop: upload, generate, schedule, practise, measure, adapt | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
+| 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png) | ✅ exported |
+| 9.1 to 9.15 | The 15 per-feature flow diagrams (F01 to F15), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F15` | ✅ exported |
+| 10.1 | The cross-cutting state set (loading, empty, error, offline, success) | [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png) | ✅ exported |
+| 10.2 to 10.107 | The 106 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_141` | ✅ exported |
+| 11.1 | The global navigation map | [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png) | ✅ exported |
+| 11.2 | The core learning loop, restated in the navigation context (same artwork as Figure 5.1) | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
+| 12.1 | The design system sheet: colour variables, type ramp, spacing, radius, elevation | [figures/01_DesignSystem_Saleh_202300540.png](figures/01_DesignSystem_Saleh_202300540.png) | ✅ exported |
+| 12.2 | The glass and depth reference: blur, hairline border, dual shadow, inner light edge | [figures/02_GlassAndDepth_Saleh_202300540.png](figures/02_GlassAndDepth_Saleh_202300540.png) | ✅ exported |
+| 13.1 | A provenance citation chip and confidence band on a generated quiz answer | ⬜ to capture from the app | ⬜ pending |
+| 14.1 | The system architecture: app, backend, AI tiers | [mockups/figures/ARCH_SystemArchitecture_StudyForge.png](mockups/figures/ARCH_SystemArchitecture_StudyForge.png) | ✅ exported |
+| 14.2 | The AI router decision tree | [mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png](mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png) | ✅ exported |
+
+Figure resolution: every exported wireframe is 1720 × 1920 px and every flow diagram is at
+least 2160 px on its long edge, so each clears 150 dpi at any printed width up to 11.4 inches
+(the requirement in the export checklist). The four system diagrams drawn on 8 Oct 2026
+(Figures 5.1, 8.1, 14.1 and 14.2) were exported at the same 2× scale, 2160 px wide. The
+per-screen figure index is §10.4.
+
+## List of tables
+
+| Table | Caption |
+|---|---|
+| 2.1 | The SDG alignment, one contribution per goal |
+| 3.1 | The interview record (date, location, attendees) |
+| 3.2 | The tutor answers and what changed in the design as a result |
+| 4.1 | The competitor teardown, with the gap StudyForge exploits |
+| 5.1 | Goals mapped to a measurable success metric and a target |
+| 6.1 | The four user roles, their exclusive capabilities and their home screen |
+| 7.1 | The master feature list (feature name, main task, user, sub-tasks or steps, developer, tester) |
+| 8.1 | The retrieval-augmented generation pipeline, step by step |
+| 9.1 | Every feature expanded into its ordered sub-tasks and steps |
+| 10.1 | The 106 screens grouped by feature area, with the owning member |
+| 10.2 | The labelled-element standard, worked example (student home) |
+| 10.3 | The screens that implement each feature, with a one-line purpose each |
+| 10.4 | The figure index for the 106 wireframes |
+| 11.1 | The five-tab spine and what each tab holds per role |
+| 12.1 | The light-mode colour tokens with their measured contrast ratios |
+| 13.1 | The ten innovations, each with its problem, idea, feasibility and evidence |
+| 14.1 | The three AI tiers and when each is used |
+| 15.1 | The accessibility requirements, the target and how each is verified |
+| 17.1 | The four test levels, the method and the evidence each produces |
+| 19.1 | The light-mode colour tokens in full (appendix) |
+| 19.2 | The dark-mode colour tokens on #0B1220 (appendix) |
+
+The title-page metadata block above is part of the front matter and is deliberately not
+numbered.
+
+---
+
 ## 1. Executive summary
 
 University students accumulate large volumes of unstructured study material (lecture slides, PDFs, photographs of whiteboards) but have no systematic way to convert it into the active-recall practice that research shows produces durable learning. The default behaviour, rereading and highlighting, is among the least effective techniques available, yet it remains the most common.
 
 **StudyForge** turns any study material into summaries, flashcards, quizzes and a spaced-repetition plan, and closes the loop between them: **upload, generate, schedule, practise, measure, adapt**. It is an iPhone-first, bilingual (English and Arabic) application built on Apple's on-device intelligence where possible, so the core loop works offline and at no cloud cost, and every AI artefact carries a visible source citation.
 
-The design is documented end to end in this document: 4 user roles, 15 features, 98 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers.
+The design is documented end to end in this document: 4 user roles, 15 features, 106 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers.
 
 ## 2. Background research: the problem, who is affected, and why it matters
 
@@ -89,11 +154,15 @@ This is where the module's **SDG 10 (Reduced Inequalities)** alignment becomes c
 | **SDG 9, Industry, Innovation & Infrastructure** | On-device AI plus offline-first architecture means quality tools that work on low-quality or intermittent connectivity. |
 | **SDG 10, Reduced Inequalities** | Bilingual English and Arabic with full RTL, dyslexia-friendly typography, a free tier that is genuinely useful rather than crippled, offline mode, and accessibility-first design. |
 
+*Table 2.1, the SDG alignment, one contribution per goal.*
+
 ### 2.3 Why now
 
 On-device language models shipped to consumer phones in the last platform cycle, which means grounded, private generation can run without a server bill. That changes the economics: a student app can summarise and generate cards on the device, at zero marginal cost, and only escalate to the cloud when a task genuinely needs more reasoning or multimodal input. StudyForge is designed around exactly that shift. Locally, Bahrain's push toward digital payments and infrastructure (Resolution No. 43) and the region's rapid adoption of mobile learning make this a well-timed context rather than a speculative one.
 
 > **Note for the final export:** the market-context figures in this section should be refreshed against the cited reports immediately before submission, and any figure that cannot be verified should be removed rather than approximated. The learning-science findings above are stable and peer-reviewed.
+
+**Evidence base for this section.** Every claim above is traced to its source, each design consequence is recorded, and the market figures that are still unverified are listed, in [`research/dossier.md`](../../research/dossier.md) sections 1, 2 and 6. Section 4 of that file is the stage-by-stage competitor coverage behind the "one closed loop" claim.
 
 ## 3. Tutor interview: questions asked and summary of responses
 
@@ -109,6 +178,8 @@ On-device language models shipped to consumer phones in the last platform cycle,
 | Attendee | Haetham Alhaddad (module coordinator) |
 | Format | Semi-structured, ~20 minutes |
 | Notes and recording | `research/interviews/` |
+
+*Table 3.1, the interview record (date, location, attendees).*
 
 ### 3.2 Questions asked
 
@@ -138,6 +209,8 @@ On-device language models shipped to consumer phones in the last platform cycle,
 | 9 | *pending* | *pending* |
 | 10 | *pending* | *pending* |
 
+*Table 3.2, the tutor answers and what changed in the design as a result.*
+
 ### 3.4 Written approval of the advanced feature (F15)
 
 Requested in question 3. Status: **pending**. On receipt, store the written approval in `research/interviews/` and record the date and the approver here.
@@ -155,7 +228,11 @@ Requested in question 3. Status: **pending**. On receipt, store the written appr
 | **ChatGPT / Gemini apps** | Broad general capability | Not grounded in *your* course material, no structure, no provenance, no revision scheduling |
 | **Studocu / Course Hero** | Shared notes at scale | Paywalled, legal grey areas, no personal generation |
 
-*Figure 4.1, competitor teardown, screenshots to be captured and captioned at export.*
+*Table 4.1, the competitor teardown, with the gap StudyForge exploits.*
+
+The stage-by-stage coverage behind the "one closed loop" claim, with the reasoning per competitor and the limits of that claim, is compiled in `research/dossier.md` section 3.
+
+*Figure 4.1, competitor teardown screenshots of Quizlet, Anki, NotebookLM, Notion, ChatGPT and Studocu. Status: ⬜ not yet captured, listed as an open figure in the List of figures.*
 
 ### 4.2 The competitive edge: one closed loop
 
@@ -194,7 +271,9 @@ StudyForge exists to remove the manual work between "I have study material" and 
 | Offline capability | Core loop (browse, review cards, take a cached quiz) works with the radio off | fully functional offline |
 | Reliability | Golden-path demo (upload to review) completes twice in a row | 2 of 2 |
 
-*Figure 5.1, the core learning loop (upload, generate, schedule, practise, measure, adapt), also shown in §11.*
+*Table 5.1, goals mapped to a measurable success metric and a target.*
+
+*Figure 5.1, the core learning loop (upload, generate, schedule, practise, measure, adapt), repeated as Figure 11.2: [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png). The loop closes, because what is measured and adapted shapes the next upload.*
 
 ## 6. User roles and personas
 
@@ -206,6 +285,8 @@ The brief requires at least three user roles. StudyForge defines **four**, and e
 | 2 | **Tutor / Teacher** | "Give my cohort good material and see who is struggling." | Create courses, publish official material, review and edit AI-generated content before students see it, cohort analytics, gradebook export, announcements | `Home_Dashboard_Tutor` | `tutor@studyforge.demo` |
 | 3 | **Study Group Member** (owner and member sub-roles) | "Revise together without losing my own notes." | Shared-folder CRUD, invite by code or link, per-member permissions (view, comment, edit), group revision spaces, live group quizzes, group leaderboard | `Home_Dashboard_Group` | `group@studyforge.demo` |
 | 4 | **Admin** | "Keep the platform correct, safe and compliant." | User and role management, moderation queue, flagged-content reports, taxonomy management, AI prompt-template and quota configuration, audit log, broadcast notifications | `Home_Dashboard_Admin` | `admin@studyforge.demo` |
+
+*Table 6.1, the four user roles, their exclusive capabilities and their home screen.*
 
 > **Design note.** *Study Group Member* is modelled as a capability set layered on top of Student, not a separate account type. One person, one account, multiple contexts. This is the correct real-world model, it avoids a confusing re-sign-up, and it still yields four rubric-compliant roles. Roles are stored in Firestore at `users/{uid}.role` and mirrored into **Firebase Auth custom claims** (`role`, `plan`, `groupIds`), so security rules enforce access server-side, the client never decides who can read what.
 
@@ -277,11 +358,13 @@ It combines four capabilities that most student projects do not attempt together
 | Adaptation | Quiz attempts write `topicMastery`; the companion reads it to propose a study path and to adjust the explanation level. |
 | Degradation | If on-device intelligence is unavailable, the app explains why and offers the cloud path (`80_Coach_OnDeviceUnavailable_Fallback`) instead of failing silently. |
 
+*Table 8.1, the retrieval-augmented generation pipeline, step by step.*
+
 ### 8.3 Contracts and error handling
 
 `RetrievalService` and `CoachPlanningService` are protocols, so the retrieval implementation and the planner can each be swapped or unit-tested in isolation. Edge cases handled explicitly: no relevant chunk found (say so), on-device model unavailable (fallback screen), very long answers (chunked streaming), a cited material deleted (the citation degrades gracefully), and a low-confidence response (flagged for the student).
 
-*Figure 8.1, the RAG pipeline (index, retrieve, ground, answer, adapt).*
+*Figure 8.1, the RAG pipeline (index, retrieve, ground, answer, adapt): [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png). The six steps are the rows of Table 8.1, drawn with the constraint that keeps them honest: vectors stay on the device, the prompt is built only from retrieved chunks, and a response is cited.*
 
 ## 9. Feature flows
 
@@ -305,29 +388,56 @@ Each feature is broken into an ordered set of steps (the brief's "sub-tasks or i
 | F14 Notifications | 1 Server event or local schedule fires, 2 relevance and quiet-hours filter, 3 deliver FCM or local notification, 4 tap deep-links to the screen, 5 inbox history, 6 preferences respected |
 | F15 Companion | 1 Ask a question, 2 embed the query on-device, 3 retrieve top-k chunks, 4 build a grounded prompt, 5 router picks a tier, 6 streamed answer with citations, 7 tap citation to source, 8 adjust explanation level, 9 request a study path, 10 capture feedback |
 
+*Table 9.1, every feature expanded into its ordered sub-tasks and steps.*
+
 Every step above has at least one designed error or empty state, since the brief requires error and feedback states. Representative examples: F05, the timer expiring auto-submits; F04, rating a card then closing early saves partially; F08, an expired invite code shows a recovery action; F13, a declined card and a 3-D Secure timeout both resolve to a clear next step.
+
+**Figures 9.1 to 9.15, one flow diagram per feature.** Each diagram is drawn on Figma page `2 · Flow Overview`, named `FLOW_Fnn_…` with its owner, and exported at 2× into `deliverables/design-document/mockups/figures/`. Every diagram ends with the error or edge case the flow must survive, which is how the brief's error and feedback requirement is evidenced per feature.
+
+| Figure | Feature | Diagram file |
+|---|---|---|
+| 9.1 | F01 Authentication and role onboarding | [FLOW_F01_Authentication_Role_Onboarding_Saleh.png](mockups/figures/FLOW_F01_Authentication_Role_Onboarding_Saleh.png) |
+| 9.2 | F02 Material upload and library | [FLOW_F02_Material_Upload_Library_Saleh.png](mockups/figures/FLOW_F02_Material_Upload_Library_Saleh.png) |
+| 9.3 | F03 AI summary and notes | [FLOW_F03_AI_Summary_Notes_Mohammed.png](mockups/figures/FLOW_F03_AI_Summary_Notes_Mohammed.png) |
+| 9.4 | F04 Flashcards and spaced repetition | [FLOW_F04_Flashcards_Spaced_Repetition_Mohammed.png](mockups/figures/FLOW_F04_Flashcards_Spaced_Repetition_Mohammed.png) |
+| 9.5 | F05 Quiz generation and analytics | [FLOW_F05_Quiz_Generation_Analytics_Mohammed.png](mockups/figures/FLOW_F05_Quiz_Generation_Analytics_Mohammed.png) |
+| 9.6 | F06 Study plan and adaptive re-planning | [FLOW_F06_Study_Plan_Adaptive_Re_planning_Tasbeeh.png](mockups/figures/FLOW_F06_Study_Plan_Adaptive_Re_planning_Tasbeeh.png) |
+| 9.7 | F07 Progress tracking | [FLOW_F07_Progress_Tracking_Tasbeeh.png](mockups/figures/FLOW_F07_Progress_Tracking_Tasbeeh.png) |
+| 9.8 | F08 Shared study folders | [FLOW_F08_Shared_Study_Folders_Shahad.png](mockups/figures/FLOW_F08_Shared_Study_Folders_Shahad.png) |
+| 9.9 | F09 Group revision spaces | [FLOW_F09_Group_Revision_Spaces_Shahad.png](mockups/figures/FLOW_F09_Group_Revision_Spaces_Shahad.png) |
+| 9.10 | F10 Resource bookmarking | [FLOW_F10_Resource_Bookmarking_Shahad.png](mockups/figures/FLOW_F10_Resource_Bookmarking_Shahad.png) |
+| 9.11 | F11 Tutor content studio | [FLOW_F11_Tutor_Content_Studio_Mohammed.png](mockups/figures/FLOW_F11_Tutor_Content_Studio_Mohammed.png) |
+| 9.12 | F12 Admin content management | [FLOW_F12_Admin_Content_Management_Shahad.png](mockups/figures/FLOW_F12_Admin_Content_Management_Shahad.png) |
+| 9.13 | F13 Subscription and payments | [FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png](mockups/figures/FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png) |
+| 9.14 | F14 Notifications and reminders | [FLOW_F14_Notifications_Reminders_Saleh.png](mockups/figures/FLOW_F14_Notifications_Reminders_Saleh.png) |
+| 9.15 | F15 AI study companion (advanced) | [FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png](mockups/figures/FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png) |
 
 ## 10. Low-fidelity mockups
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Login_Saleh_202300540` and `115_Admin_AIConfig_Shahad_202305767`. The current file holds **98 frames** across the feature groups below; the full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `115_Admin_AIConfig_Settings_Shahad_202305767`. The file holds **106 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **15 per-feature flow diagrams** on page `2 · Flow Overview`. The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (121 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
 
-| Group | Area | Owner | Frames |
-|---|---|---|---|
-| A | Onboarding & Auth | M1 | 01–10, 24 |
-| B | Profile & Settings | M1 | 11–18 |
-| C | Courses & Library | M1 | 24–34 |
-| D | AI Summaries | M2 | 35–41 |
-| E | Flashcards | M2 | 42–48 |
-| F | Quizzes | M2 | 51–59 |
-| G | Study Plan & Progress | M3 | 60–70 |
-| H | AI Study Companion (F15) | M2 + M3 | 73–78 |
-| I | Collaboration | M4 | 81–97 |
-| J | Tutor Content Studio | M2 | 99–105 |
-| K | Admin Content Management | M4 | 109–115 |
-| L | Subscription & Payments | M3 | 118–126 |
-| M | System, States & Feedback | M1 | 128–141 |
+| Group | Area | Owner | Frames | Count |
+|---|---|---|---|---|
+| A | Onboarding & Auth | M1 | 01–10 | 10 |
+| B | Profile & Settings | M1 | 11–18 | 8 |
+| C | Courses & Library | M1 | 24–31, 33–34 | 10 |
+| D | AI Summaries | M2 | 35–38, 41 | 5 |
+| E | Flashcards | M2 | 42–48 | 7 |
+| F | Quizzes | M2 | 51–59 | 9 |
+| G | Study Plan & Progress | M3 | 60–65, 68–70 | 9 |
+| H | AI Study Companion (F15) | M2 + M3 | 73–78 | 6 |
+| I | Collaboration | M4 | 81–86, 88–97 | 16 |
+| J | Tutor Content Studio | M2 | 99, 101–105 | 6 |
+| K | Admin Content Management | M4 | 109–112, 115 | 5 |
+| L | Subscription & Payments | M3 | 118, 120–122, 124–126 | 7 |
+| M | System, States & Feedback | M1 | 128, 129, 132–134, 138, 139, 141 | 8 |
+| | **Total** | | | **106** |
+
+*Table 10.1, the 106 screens grouped by feature area, with the owning member.*
+
+Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21**. The per-screen purpose-and-layout descriptions, the coverage audit against all 15 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
@@ -348,6 +458,8 @@ Every screen is described in the same three-part form, so a marker can check tha
 | Quiz tile | Action tile | Opens quiz config (F05) |
 | Plan tile | Action tile | Opens the study-plan view (F06) |
 | Bottom tab bar | Navigation | Home, Library, Coach, Practise, Plan |
+
+*Table 10.2, the labelled-element standard, worked example (student home).*
 
 **States.** Default, loading (skeleton), empty (new user with no material), offline banner, error with retry.
 
@@ -372,9 +484,133 @@ Every other screen follows this template. The per-feature tables below list the 
 | F15 Companion | H01–H06 | Coach chat, citation sheet, explanation level, study path, feedback |
 | States (all) | M01–M14 | Loading, empty, offline, error, quota, success, permission denied |
 
+*Table 10.3, the screens that implement each feature, with a one-line purpose each.*
+
 ### 10.3 Error and feedback states
 
 The brief requires success, error and feedback states. A dedicated state set exists for every screen: loading skeleton, empty, offline, server error with retry, quota exceeded, invalid input (inline), permission denied, payment declined, and success confirmations with undo where destructive. These are designed once as components (`Figure 10.1`) and applied consistently.
+
+*Figure 10.1, the cross-cutting state set as built, exported from Figma page `4 · States & Prototype Wiring`: [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png).*
+
+### 10.4 Figure index, the 106 wireframes
+
+Figures 10.2 to 10.107 are the 106 wireframes, numbered in screen order. Each figure is the
+Figma frame for that screen, exported at 2×, and contains the greyscale wireframe with its
+numbered callout badges beside the legend panel that names every element and its function.
+The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
+
+| Figure | Screen | Wireframe file |
+|---|---|---|
+| 10.2 | `01` | [LF_01_Splash_Logo_Saleh_202300540.png](mockups/figures/LF_01_Splash_Logo_Saleh_202300540.png) |
+| 10.3 | `02` | [LF_02_Onboarding_ValueProp_Saleh_202300540.png](mockups/figures/LF_02_Onboarding_ValueProp_Saleh_202300540.png) |
+| 10.4 | `03` | [LF_03_Onboarding_HowItWorks_Saleh_202300540.png](mockups/figures/LF_03_Onboarding_HowItWorks_Saleh_202300540.png) |
+| 10.5 | `04` | [LF_04_Onboarding_AIPrivacy_Saleh_202300540.png](mockups/figures/LF_04_Onboarding_AIPrivacy_Saleh_202300540.png) |
+| 10.6 | `05` | [LF_05_SignUp_Email_Saleh_202300540.png](mockups/figures/LF_05_SignUp_Email_Saleh_202300540.png) |
+| 10.7 | `06` | [LF_06_SignUp_OTP_Verify_Saleh_202300540.png](mockups/figures/LF_06_SignUp_OTP_Verify_Saleh_202300540.png) |
+| 10.8 | `07` | [LF_07_Login_Saleh_202300540.png](mockups/figures/LF_07_Login_Saleh_202300540.png) |
+| 10.9 | `08` | [LF_08_ForgotPassword_Request_Saleh_202300540.png](mockups/figures/LF_08_ForgotPassword_Request_Saleh_202300540.png) |
+| 10.10 | `09` | [LF_09_ForgotPassword_Confirm_Saleh_202300540.png](mockups/figures/LF_09_ForgotPassword_Confirm_Saleh_202300540.png) |
+| 10.11 | `10` | [LF_10_RoleSelect_Saleh_202300540.png](mockups/figures/LF_10_RoleSelect_Saleh_202300540.png) |
+| 10.12 | `11` | [LF_11_ProfileSetup_Academic_Saleh_202300540.png](mockups/figures/LF_11_ProfileSetup_Academic_Saleh_202300540.png) |
+| 10.13 | `12` | [LF_12_ProfileSetup_LearningStyle_Saleh_202300540.png](mockups/figures/LF_12_ProfileSetup_LearningStyle_Saleh_202300540.png) |
+| 10.14 | `13` | [LF_13_ProfileSetup_StudyGoals_Saleh_202300540.png](mockups/figures/LF_13_ProfileSetup_StudyGoals_Saleh_202300540.png) |
+| 10.15 | `14` | [LF_14_ProfileSetup_Complete_Saleh_202300540.png](mockups/figures/LF_14_ProfileSetup_Complete_Saleh_202300540.png) |
+| 10.16 | `15` | [LF_15_Home_Dashboard_Student_Saleh_202300540.png](mockups/figures/LF_15_Home_Dashboard_Student_Saleh_202300540.png) |
+| 10.17 | `16` | [LF_16_Profile_View_Saleh_202300540.png](mockups/figures/LF_16_Profile_View_Saleh_202300540.png) |
+| 10.18 | `17` | [LF_17_Profile_Edit_Saleh_202300540.png](mockups/figures/LF_17_Profile_Edit_Saleh_202300540.png) |
+| 10.19 | `18` | [LF_18_Settings_Main_Saleh_202300540.png](mockups/figures/LF_18_Settings_Main_Saleh_202300540.png) |
+| 10.20 | `24` | [LF_24_Courses_List_Saleh_202300540.png](mockups/figures/LF_24_Courses_List_Saleh_202300540.png) |
+| 10.21 | `25` | [LF_25_Course_Detail_Saleh_202300540.png](mockups/figures/LF_25_Course_Detail_Saleh_202300540.png) |
+| 10.22 | `26` | [LF_26_MaterialUpload_SourcePicker_Saleh_202300540.png](mockups/figures/LF_26_MaterialUpload_SourcePicker_Saleh_202300540.png) |
+| 10.23 | `27` | [LF_27_MaterialUpload_Compress_Progress_Saleh_202300540.png](mockups/figures/LF_27_MaterialUpload_Compress_Progress_Saleh_202300540.png) |
+| 10.24 | `28` | [LF_28_MaterialUpload_Processing_OCR_Saleh_202300540.png](mockups/figures/LF_28_MaterialUpload_Processing_OCR_Saleh_202300540.png) |
+| 10.25 | `29` | [LF_29_MaterialUpload_Success_Saleh_202300540.png](mockups/figures/LF_29_MaterialUpload_Success_Saleh_202300540.png) |
+| 10.26 | `30` | [LF_30_MaterialUpload_Error_UnsupportedFormat_Saleh_202300540.png](mockups/figures/LF_30_MaterialUpload_Error_UnsupportedFormat_Saleh_202300540.png) |
+| 10.27 | `31` | [LF_31_Library_Materials_List_Saleh_202300540.png](mockups/figures/LF_31_Library_Materials_List_Saleh_202300540.png) |
+| 10.28 | `33` | [LF_33_Material_Detail_Viewer_Saleh_202300540.png](mockups/figures/LF_33_Material_Detail_Viewer_Saleh_202300540.png) |
+| 10.29 | `34` | [LF_34_Material_GenerateActionSheet_Saleh_202300540.png](mockups/figures/LF_34_Material_GenerateActionSheet_Saleh_202300540.png) |
+| 10.30 | `35` | [LF_35_Summary_Configure_Mohammed_202401702.png](mockups/figures/LF_35_Summary_Configure_Mohammed_202401702.png) |
+| 10.31 | `36` | [LF_36_Summary_Generating_Mohammed_202401702.png](mockups/figures/LF_36_Summary_Generating_Mohammed_202401702.png) |
+| 10.32 | `37` | [LF_37_Summary_Result_Mohammed_202401702.png](mockups/figures/LF_37_Summary_Result_Mohammed_202401702.png) |
+| 10.33 | `38` | [LF_38_Summary_Provenance_Citation_Mohammed_202401702.png](mockups/figures/LF_38_Summary_Provenance_Citation_Mohammed_202401702.png) |
+| 10.34 | `41` | [LF_41_Summary_Error_QuotaExceeded_Mohammed_202401702.png](mockups/figures/LF_41_Summary_Error_QuotaExceeded_Mohammed_202401702.png) |
+| 10.35 | `42` | [LF_42_Decks_List_Mohammed_202401702.png](mockups/figures/LF_42_Decks_List_Mohammed_202401702.png) |
+| 10.36 | `43` | [LF_43_Flashcards_Generate_Config_Mohammed_202401702.png](mockups/figures/LF_43_Flashcards_Generate_Config_Mohammed_202401702.png) |
+| 10.37 | `44` | [LF_44_Flashcards_Generating_Mohammed_202401702.png](mockups/figures/LF_44_Flashcards_Generating_Mohammed_202401702.png) |
+| 10.38 | `45` | [LF_45_Deck_Detail_Mohammed_202401702.png](mockups/figures/LF_45_Deck_Detail_Mohammed_202401702.png) |
+| 10.39 | `46` | [LF_46_Flashcard_Review_Front_Mohammed_202401702.png](mockups/figures/LF_46_Flashcard_Review_Front_Mohammed_202401702.png) |
+| 10.40 | `47` | [LF_47_Flashcard_Review_Back_Rate_Mohammed_202401702.png](mockups/figures/LF_47_Flashcard_Review_Back_Rate_Mohammed_202401702.png) |
+| 10.41 | `48` | [LF_48_Flashcard_Session_Summary_Mohammed_202401702.png](mockups/figures/LF_48_Flashcard_Session_Summary_Mohammed_202401702.png) |
+| 10.42 | `51` | [LF_51_Quizzes_List_Mohammed_202401702.png](mockups/figures/LF_51_Quizzes_List_Mohammed_202401702.png) |
+| 10.43 | `52` | [LF_52_Quiz_Generate_Config_Mohammed_202401702.png](mockups/figures/LF_52_Quiz_Generate_Config_Mohammed_202401702.png) |
+| 10.44 | `53` | [LF_53_Quiz_Generating_Mohammed_202401702.png](mockups/figures/LF_53_Quiz_Generating_Mohammed_202401702.png) |
+| 10.45 | `54` | [LF_54_Quiz_Take_MCQ_Mohammed_202401702.png](mockups/figures/LF_54_Quiz_Take_MCQ_Mohammed_202401702.png) |
+| 10.46 | `55` | [LF_55_Quiz_Feedback_Correct_Mohammed_202401702.png](mockups/figures/LF_55_Quiz_Feedback_Correct_Mohammed_202401702.png) |
+| 10.47 | `56` | [LF_56_Quiz_Feedback_Incorrect_Mohammed_202401702.png](mockups/figures/LF_56_Quiz_Feedback_Incorrect_Mohammed_202401702.png) |
+| 10.48 | `57` | [LF_57_Quiz_Submit_Confirm_Mohammed_202401702.png](mockups/figures/LF_57_Quiz_Submit_Confirm_Mohammed_202401702.png) |
+| 10.49 | `58` | [LF_58_Quiz_Results_Scorecard_Mohammed_202401702.png](mockups/figures/LF_58_Quiz_Results_Scorecard_Mohammed_202401702.png) |
+| 10.50 | `59` | [LF_59_Quiz_Review_Answers_Explanations_Mohammed_202401702.png](mockups/figures/LF_59_Quiz_Review_Answers_Explanations_Mohammed_202401702.png) |
+| 10.51 | `60` | [LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549.png](mockups/figures/LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549.png) |
+| 10.52 | `61` | [LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202300549.png](mockups/figures/LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202300549.png) |
+| 10.53 | `62` | [LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549.png](mockups/figures/LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549.png) |
+| 10.54 | `63` | [LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549.png](mockups/figures/LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549.png) |
+| 10.55 | `64` | [LF_64_StudyPlan_Generating_Tasbeeh_202300549.png](mockups/figures/LF_64_StudyPlan_Generating_Tasbeeh_202300549.png) |
+| 10.56 | `65` | [LF_65_StudyPlan_Calendar_Week_Tasbeeh_202300549.png](mockups/figures/LF_65_StudyPlan_Calendar_Week_Tasbeeh_202300549.png) |
+| 10.57 | `68` | [LF_68_StudyPlan_Session_Detail_Tasbeeh_202300549.png](mockups/figures/LF_68_StudyPlan_Session_Detail_Tasbeeh_202300549.png) |
+| 10.58 | `69` | [LF_69_Progress_Dashboard_Tasbeeh_202300549.png](mockups/figures/LF_69_Progress_Dashboard_Tasbeeh_202300549.png) |
+| 10.59 | `70` | [LF_70_Progress_WeaknessRadar_Tasbeeh_202300549.png](mockups/figures/LF_70_Progress_WeaknessRadar_Tasbeeh_202300549.png) |
+| 10.60 | `73` | [LF_73_Coach_Home_Mohammed_202401702.png](mockups/figures/LF_73_Coach_Home_Mohammed_202401702.png) |
+| 10.61 | `74` | [LF_74_Coach_Chat_Conversation_Mohammed_202401702.png](mockups/figures/LF_74_Coach_Chat_Conversation_Mohammed_202401702.png) |
+| 10.62 | `75` | [LF_75_Coach_ExplainLevel_Toggle_Mohammed_202401702.png](mockups/figures/LF_75_Coach_ExplainLevel_Toggle_Mohammed_202401702.png) |
+| 10.63 | `76` | [LF_76_Coach_Citation_SourceSheet_Mohammed_202401702.png](mockups/figures/LF_76_Coach_Citation_SourceSheet_Mohammed_202401702.png) |
+| 10.64 | `77` | [LF_77_Coach_StudyPath_Recommended_Tasbeeh_202300549.png](mockups/figures/LF_77_Coach_StudyPath_Recommended_Tasbeeh_202300549.png) |
+| 10.65 | `78` | [LF_78_Coach_QuizMe_Voice_Tasbeeh_202300549.png](mockups/figures/LF_78_Coach_QuizMe_Voice_Tasbeeh_202300549.png) |
+| 10.66 | `81` | [LF_81_Folder_Shared_List_Shahad_202305767.png](mockups/figures/LF_81_Folder_Shared_List_Shahad_202305767.png) |
+| 10.67 | `82` | [LF_82_Folder_Detail_Shahad_202305767.png](mockups/figures/LF_82_Folder_Detail_Shahad_202305767.png) |
+| 10.68 | `83` | [LF_83_Folder_Create_Edit_Shahad_202305767.png](mockups/figures/LF_83_Folder_Create_Edit_Shahad_202305767.png) |
+| 10.69 | `84` | [LF_84_Folder_Invite_Members_Shahad_202305767.png](mockups/figures/LF_84_Folder_Invite_Members_Shahad_202305767.png) |
+| 10.70 | `85` | [LF_85_Folder_InviteCode_Share_Shahad_202305767.png](mockups/figures/LF_85_Folder_InviteCode_Share_Shahad_202305767.png) |
+| 10.71 | `86` | [LF_86_Folder_MemberPermissions_Shahad_202305767.png](mockups/figures/LF_86_Folder_MemberPermissions_Shahad_202305767.png) |
+| 10.72 | `88` | [LF_88_GroupSpace_List_Shahad_202305767.png](mockups/figures/LF_88_GroupSpace_List_Shahad_202305767.png) |
+| 10.73 | `89` | [LF_89_GroupSpace_JoinByCode_Shahad_202305767.png](mockups/figures/LF_89_GroupSpace_JoinByCode_Shahad_202305767.png) |
+| 10.74 | `90` | [LF_90_GroupSpace_Detail_Board_Shahad_202305767.png](mockups/figures/LF_90_GroupSpace_Detail_Board_Shahad_202305767.png) |
+| 10.75 | `91` | [LF_91_GroupSpace_Chat_Shahad_202305767.png](mockups/figures/LF_91_GroupSpace_Chat_Shahad_202305767.png) |
+| 10.76 | `92` | [LF_92_GroupSpace_SharedQuiz_Lobby_Shahad_202305767.png](mockups/figures/LF_92_GroupSpace_SharedQuiz_Lobby_Shahad_202305767.png) |
+| 10.77 | `93` | [LF_93_GroupSpace_SharedQuiz_Live_Shahad_202305767.png](mockups/figures/LF_93_GroupSpace_SharedQuiz_Live_Shahad_202305767.png) |
+| 10.78 | `94` | [LF_94_GroupSpace_Quiz_Results_Leaderboard_Shahad_202305767.png](mockups/figures/LF_94_GroupSpace_Quiz_Results_Leaderboard_Shahad_202305767.png) |
+| 10.79 | `95` | [LF_95_Bookmarks_Collections_Shahad_202305767.png](mockups/figures/LF_95_Bookmarks_Collections_Shahad_202305767.png) |
+| 10.80 | `96` | [LF_96_Bookmark_Collection_Detail_Shahad_202305767.png](mockups/figures/LF_96_Bookmark_Collection_Detail_Shahad_202305767.png) |
+| 10.81 | `97` | [LF_97_Bookmark_Save_Sheet_Shahad_202305767.png](mockups/figures/LF_97_Bookmark_Save_Sheet_Shahad_202305767.png) |
+| 10.82 | `99` | [LF_99_Home_Dashboard_Tutor_Mohammed_202401702.png](mockups/figures/LF_99_Home_Dashboard_Tutor_Mohammed_202401702.png) |
+| 10.83 | `101` | [LF_101_Tutor_Course_Create_Edit_Mohammed_202401702.png](mockups/figures/LF_101_Tutor_Course_Create_Edit_Mohammed_202401702.png) |
+| 10.84 | `102` | [LF_102_Tutor_Course_Roster_Mohammed_202401702.png](mockups/figures/LF_102_Tutor_Course_Roster_Mohammed_202401702.png) |
+| 10.85 | `103` | [LF_103_Tutor_Material_Publish_Mohammed_202401702.png](mockups/figures/LF_103_Tutor_Material_Publish_Mohammed_202401702.png) |
+| 10.86 | `104` | [LF_104_Tutor_AI_Content_ReviewQueue_Mohammed_202401702.png](mockups/figures/LF_104_Tutor_AI_Content_ReviewQueue_Mohammed_202401702.png) |
+| 10.87 | `105` | [LF_105_Tutor_AI_Content_EditApprove_Mohammed_202401702.png](mockups/figures/LF_105_Tutor_AI_Content_EditApprove_Mohammed_202401702.png) |
+| 10.88 | `109` | [LF_109_Home_Dashboard_Admin_Shahad_202305767.png](mockups/figures/LF_109_Home_Dashboard_Admin_Shahad_202305767.png) |
+| 10.89 | `110` | [LF_110_Admin_Users_List_Shahad_202305767.png](mockups/figures/LF_110_Admin_Users_List_Shahad_202305767.png) |
+| 10.90 | `111` | [LF_111_Admin_User_Detail_Shahad_202305767.png](mockups/figures/LF_111_Admin_User_Detail_Shahad_202305767.png) |
+| 10.91 | `112` | [LF_112_Admin_Moderation_Queue_Shahad_202305767.png](mockups/figures/LF_112_Admin_Moderation_Queue_Shahad_202305767.png) |
+| 10.92 | `115` | [LF_115_Admin_AIConfig_Settings_Shahad_202305767.png](mockups/figures/LF_115_Admin_AIConfig_Settings_Shahad_202305767.png) |
+| 10.93 | `118` | [LF_118_Paywall_Plans_Tasbeeh_202300549.png](mockups/figures/LF_118_Paywall_Plans_Tasbeeh_202300549.png) |
+| 10.94 | `120` | [LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202300549.png](mockups/figures/LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202300549.png) |
+| 10.95 | `121` | [LF_121_Payment_Method_Select_Tasbeeh_202300549.png](mockups/figures/LF_121_Payment_Method_Select_Tasbeeh_202300549.png) |
+| 10.96 | `122` | [LF_122_Payment_Card_Entry_Tasbeeh_202300549.png](mockups/figures/LF_122_Payment_Card_Entry_Tasbeeh_202300549.png) |
+| 10.97 | `124` | [LF_124_Payment_Processing_Tasbeeh_202300549.png](mockups/figures/LF_124_Payment_Processing_Tasbeeh_202300549.png) |
+| 10.98 | `125` | [LF_125_Payment_Success_Receipt_Tasbeeh_202300549.png](mockups/figures/LF_125_Payment_Success_Receipt_Tasbeeh_202300549.png) |
+| 10.99 | `126` | [LF_126_Payment_Failed_Retry_Tasbeeh_202300549.png](mockups/figures/LF_126_Payment_Failed_Retry_Tasbeeh_202300549.png) |
+| 10.100 | `128` | [LF_128_Notifications_Inbox_Saleh_202300540.png](mockups/figures/LF_128_Notifications_Inbox_Saleh_202300540.png) |
+| 10.101 | `129` | [LF_129_Notification_Permission_Request_Saleh_202300540.png](mockups/figures/LF_129_Notification_Permission_Request_Saleh_202300540.png) |
+| 10.102 | `132` | [LF_132_Global_Search_Saleh_202300540.png](mockups/figures/LF_132_Global_Search_Saleh_202300540.png) |
+| 10.103 | `133` | [LF_133_Error_NoInternet_OfflineBanner_Saleh_202300540.png](mockups/figures/LF_133_Error_NoInternet_OfflineBanner_Saleh_202300540.png) |
+| 10.104 | `134` | [LF_134_Error_Server_Retry_Saleh_202300540.png](mockups/figures/LF_134_Error_Server_Retry_Saleh_202300540.png) |
+| 10.105 | `138` | [LF_138_Accessibility_LargeText_Example_Saleh_202300540.png](mockups/figures/LF_138_Accessibility_LargeText_Example_Saleh_202300540.png) |
+| 10.106 | `139` | [LF_139_RTL_Arabic_Example_Saleh_202300540.png](mockups/figures/LF_139_RTL_Arabic_Example_Saleh_202300540.png) |
+| 10.107 | `141` | [LF_141_Logout_Confirm_Saleh_202300540.png](mockups/figures/LF_141_Logout_Confirm_Saleh_202300540.png) |
+
+*Table 10.4, the figure index for the 106 wireframes, in screen order.*
+
+Two further exports are page furniture rather than figures and carry no number: `LF_00_PageHeader_StudyForge.png` (the header on the wireframe page) and `F00_FlowDiagrams_Header_StudyForge.png` (the header on the flow diagrams page).
 
 ## 11. Navigation map
 
@@ -388,6 +624,8 @@ StudyForge uses a persistent **5-tab spine**, with role-specific tab contents. N
 | Practise | Flashcards, quizzes, revision | Cohort analytics | Audit log |
 | Plan | Study plan, progress, settings | Gradebook export | Taxonomy, settings |
 
+*Table 11.1, the five-tab spine and what each tab holds per role.*
+
 The global flow, shown in full on Figma page `2 · Flow Overview`:
 
 ```
@@ -400,7 +638,7 @@ Each feature is independently reachable from its tab; every modal is dismissible
 every list has an empty state with a primary action.
 ```
 
-*Figure 11.1, the global navigation map. Figure 11.2, the core learning loop.*
+*Figure 11.1, the global navigation map, exported from Figma page `2 · Flow Overview`: [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png). Figure 11.2, the core learning loop, restated here: [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png), the same artwork as Figure 5.1.*
 
 ## 12. Design system
 
@@ -424,6 +662,8 @@ The palette is built on the **Apple system-blue family** rather than a bespoke g
 | `error` | `#DC2626` | Destructive, incorrect answers | 4.8:1, AA |
 | `textPrimary` / `textSecondary` / `textTertiary` | `#0F172A` / `#475569` / `#94A3B8` | Body / supporting / disabled only | 17.9:1 / 7.6:1 / 2.6:1 (not for text) |
 
+*Table 12.1, the light-mode colour tokens with their measured contrast ratios.*
+
 **The rule most teams get wrong:** the saturated hues (`accent`, `secondary`, `warning`) are *fill* colours, not text colours. Where the hue itself carries text, the paired `*Text` token is used instead, a change made specifically to fix a measured AA failure on five dashboard statistics. Full light and dark values, with contrast ratios, are in Appendix B. Eight subject colours (blue, teal, rose, amber, mint, cyan, lime, slate) tag courses and calendar blocks, deliberately excluding violet and pink.
 
 ### 12.2 Typography
@@ -441,6 +681,10 @@ SF Pro (the system font), so Dynamic Type and Arabic glyph shaping come free, wi
 
 Actions, input controls, containment, data display and learning-specific components (flashcard, quiz option row, due-count badge, mastery dot, provenance citation chip, confidence band, streak flame, subject tag, calendar block, AI engine badge, timer ring). Each defines default, pressed, disabled and loading states. Icons are SF Symbols exclusively.
 
+*Figure 12.1, the design system sheet as built in Figma (colour variables, type ramp, spacing, radius, elevation): [figures/01_DesignSystem_Saleh_202300540.png](figures/01_DesignSystem_Saleh_202300540.png).*
+
+*Figure 12.2, the glass and depth reference (background blur, hairline border, dual shadow, inner light edge): [figures/02_GlassAndDepth_Saleh_202300540.png](figures/02_GlassAndDepth_Saleh_202300540.png).*
+
 ## 13. Innovation
 
 Ten concrete, feasible, user-focused innovations, each stated as **Problem, Idea, Feasibility, Evidence**, because markers reward relevance, feasibility and added value, and vague "AI-powered" claims score zero. Items 1 to 3 are the headline claims.
@@ -448,7 +692,7 @@ Ten concrete, feasible, user-focused innovations, each stated as **Problem, Idea
 | # | Innovation | Problem | Idea | Feasibility | Evidence |
 |---|---|---|---|---|---|
 | 1 | **Hybrid 3-tier AI router** | Cloud AI is costly, slow and leaks data; on-device AI is limited | Route each task to on-device, cloud free tier or a server function by a cost, latency and quality policy | `FoundationModels` (iOS 26+) behind an `AIProvider` protocol with swappable conformers | §14, screens `115`, `80` |
-| 2 | **Provenance-tagged generation** | AI can hallucinate quiz answers, an academic-integrity risk | Every summary line, card and answer carries a source citation and confidence band; one tap jumps to the page | The extraction pipeline retains page and character offsets | §2, F03/F05, `figure 13.1` |
+| 2 | **Provenance-tagged generation** | AI can hallucinate quiz answers, an academic-integrity risk | Every summary line, card and answer carries a source citation and confidence band; one tap jumps to the page | The extraction pipeline retains page and character offsets | §2, F03/F05, Figure 13.1 |
 | 3 | **Learning-style-adaptive output** | One format does not suit every learner | One material, four output shapes (Visual, Verbal, Read-Write, Kinesthetic) plus accessibility profiles | Prompt templates stored in Firestore, changeable with no app update | `12_ProfileSetup_LearningStyle` |
 | 4 | **Weakness radar to auto-replanned plan** | Competitors stop at "here is your score" | Quiz failures rewrite the revision calendar | Quiz attempts write `topicMastery`; the planner reads it | F05, F06, G-15 |
 | 5 | **AI cost governor** | A free tier is only viable if the cost is bounded | Per-user daily budget, content-hash response caching, honest quota UX | SHA-256 of extracted text as the cache key | F03, `aiUsage` |
@@ -458,7 +702,9 @@ Ten concrete, feasible, user-focused innovations, each stated as **Problem, Idea
 | 9 | **Live group revision arena** | The brief says only "possible collaboration" | Synchronous competitive revision with a real-time leaderboard | Firestore realtime listeners, no extra service or cost | F09, I-10 to I-17 |
 | 10 | **Payment abstraction with an ethics note** | Apple Guideline 3.1.1 conflicts with a third-party gateway | One `PaymentGateway` protocol implemented by both Tap and StoreKit, with the conflict documented | Two thin adapters behind one protocol | §16, F13 |
 
-*Figure 13.1, a provenance citation chip and confidence band on a generated quiz answer.*
+*Table 13.1, the ten innovations, each with its problem, idea, feasibility and evidence.*
+
+*Figure 13.1, a provenance citation chip and confidence band on a generated quiz answer. Status: ⬜ not yet captured; the component itself is built in the app (F03 and F05) and the same treatment is visible on the summary result screen `37` and the quiz review screen `59`.*
 
 ## 14. Technical architecture
 
@@ -487,9 +733,13 @@ iOS 26+ · SwiftUI · Swift 6 · Xcode 27
 | T1 | Firebase AI Logic (Gemini free tier) | $0 | Multimodal OCR fallback, longer context, stronger reasoning |
 | T2 | Cloud Function proxy | free allowance | Long documents (chunk and merge), server-side moderation |
 
+*Table 14.1, the three AI tiers and when each is used.*
+
 The router picks a tier per call from signals: task type, `SystemLanguageModel.availability`, device capability, network reachability, remaining daily budget, content size, and whether multimodal input is required. Routing policy is admin-configurable at screen `115`. If on-device is unavailable, the app degrades to the cloud path with a clear explanation rather than failing.
 
 **Why this is engineering, not decoration:** it makes the product free (T0 covers most calls), it makes it work offline, and it is honest about failure. Every commercial AI app faces this same cost, quality and privacy trade-off.
+
+*Figure 14.1, the system architecture (app, backend, AI tiers): [mockups/figures/ARCH_SystemArchitecture_StudyForge.png](mockups/figures/ARCH_SystemArchitecture_StudyForge.png), the five layers of §14.2 with the three tiers of Table 14.1. Figure 14.2, the AI router decision tree: [mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png](mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png), the same policy §14.3 describes in prose, drawn as the sequence of questions the router asks on every call.*
 
 ### 14.4 Cost model
 
@@ -498,8 +748,6 @@ Every service sits inside a free tier. Firestore (50K reads, 20K writes per day)
 ### 14.5 Security model
 
 Authorisation is **server-enforced**. Roles and entitlement live in Firebase Auth **custom claims** (`role`, `plan`, `groupIds`) and are mirrored in Firestore at `users/{uid}`. Firestore and Storage rules are **deny-by-default** and role-based: a student cannot read another student's material, a non-tutor cannot write the review queue, and a client cannot modify its own subscription. `users/{uid}` updates are gated by an explicit **field allowlist**, so a field added in a later sprint is not client-writable until it is named. Money-touching collections (`subscriptions`, `payments`, `promoCodes`) are Cloud-Function-write-only; the client never writes them. Vectors and extraction text stay on the device; only derived artefacts sync. The rule sets are covered by emulator tests including negative cases.
-
-*Figure 14.1, the system architecture. Figure 14.2, the AI router decision tree.*
 
 ## 15. Accessibility and inclusiveness
 
@@ -516,6 +764,8 @@ Accessibility is where SDG 10 becomes real, and where LO1 (UI and UX best practi
 | Language | Full English and Arabic with true RTL | `layoutDirection` support plus RTL proof screens; no hard-coded strings |
 | Reading load | Plain language, 8th-grade reading level on errors | Copy review pass; plain-language error strings |
 | Dyslexia-friendly option | Increased line height and letter spacing | A setting that changes typography without changing the size ladder |
+
+*Table 15.1, the accessibility requirements, the target and how each is verified.*
 
 ## 16. Professional ethics and compliance
 
@@ -556,6 +806,8 @@ Testing is planned at four levels, and the brief's tester column is honoured by 
 | Integration | Each feature's happy path and its error states on a real device or simulator | Scripted manual test logs, tester not the developer | Test logs in `research/testing/` |
 | Usability | The golden path with 5 real students | Semi-structured test, System Usability Scale score | Usability report, §17.3 |
 
+*Table 17.1, the four test levels, the method and the evidence each produces.*
+
 ### 17.2 Acceptance criteria, worked example (F04 Flashcards)
 
 1. Generating from a material with at least 200 words produces 10 to 20 cards, each with a source citation.
@@ -590,11 +842,17 @@ Cited in Harvard style.
 
 > **Verification note.** The learning-science references above are stable, peer-reviewed sources and are cited for their established findings. Any local market or regulatory figure used in §2 must be re-checked against its primary source immediately before submission; Bahrain's Resolution No. 43 on digital payments is cited as local context and its exact reference should be confirmed against the official gazette.
 
+**Where these references come from.** The compiled evidence base sits beside this document as
+[`research/dossier.md`](../../research/dossier.md): it carries the source behind every claim
+in §2 and §4, the SDG mapping with a source per row, the change log from evidence to design,
+and the list of market figures that are still unverified. Nothing in this section is
+upgraded on the way in from the dossier.
+
 ## 19. Appendix
 
 ### Appendix A, screen inventory (labelled descriptions)
 
-The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` (98 frames across groups A to M). It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
+The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` (**106** frames across groups A to M between them) and from `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`, which carries the purpose-and-layout description for every screen alongside the numbered element legend printed on Figma page 5. It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
 
 ### Appendix B, full colour token tables
 
@@ -617,6 +875,8 @@ The complete per-screen inventory, with a purpose, labelled UI elements and elem
 | textSecondary | #475569 | 7.6:1 | AAA |
 | textTertiary | #94A3B8 | 2.6:1 | not for text |
 
+*Table 19.1, the light-mode colour tokens in full (appendix).*
+
 **Dark mode.**
 
 | Token | Hex | Contrast on #0B1220 | WCAG |
@@ -628,6 +888,8 @@ The complete per-screen inventory, with a purpose, labelled UI elements and elem
 | successText | #6EE7B7 | 8.6:1 | AA |
 | textPrimary | #F1F5F9 | 16.9:1 | AAA |
 | textSecondary | #CBD5E1 | 11.2:1 | AAA |
+
+*Table 19.2, the dark-mode colour tokens on #0B1220 (appendix).*
 
 ### Appendix C, traceability matrix
 

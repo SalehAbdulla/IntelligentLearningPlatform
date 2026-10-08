@@ -12,6 +12,11 @@
 #   bash tools/commit.sh --push <path> "<message>"
 #   bash tools/commit.sh --multi <path> "<message>" [<path> "<message>" ...]
 #   bash tools/commit.sh --push --multi <p1> "<m1>" <p2> "<m2>"
+#   bash tools/commit.sh --owner --push <path> "<message>"      # owner hotfix only
+#
+# --owner is for the repository owner (M1) alone, and only for a hotfix that cannot wait
+# for a pull request. It permits a commit on main/develop with a printed warning. It does
+# NOT relax rules 2, 3 and 6, and it changes nothing for M2, M3 and M4. See docs/12 §3.1.
 #
 # Examples:
 #   bash tools/commit.sh docs/12-GIT-WORKFLOW.md "docs: add the branch and commit workflow"
@@ -23,11 +28,13 @@ cd "$(git rev-parse --show-toplevel)"
 
 PUSH=0
 MULTI=0
+OWNER=0
 ARGS=()
 for a in "$@"; do
   case "$a" in
     --push)  PUSH=1 ;;
     --multi) MULTI=1 ;;
+    --owner) OWNER=1 ;;
     *)       ARGS+=("$a") ;;
   esac
 done
@@ -40,8 +47,16 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
 # ── rule 1: never commit straight to a protected branch ──────────────────
 if [[ "$BRANCH" == "main" || "$BRANCH" == "develop" ]]; then
-  die "refusing to commit directly to '$BRANCH'.
-    Create a branch first:  bash tools/new-branch.sh feat/F04-sm2-scheduling"
+  if [[ "$OWNER" -eq 1 ]]; then
+    warn "OWNER BYPASS: committing directly to '$BRANCH'."
+    warn "  A pull request is still required for M2, M3 and M4. This exemption is yours"
+    warn "  alone (docs/12 §3.1, docs/09 D26). Prefer a branch and a PR for anything that"
+    warn "  is not a hotfix — you cannot force-push your way out of a bad commit here."
+  else
+    die "refusing to commit directly to '$BRANCH'.
+    Create a branch first:  bash tools/new-branch.sh feat/F04-sm2-scheduling
+    Owner hotfix, you are M1:  bash tools/commit.sh --owner <path> \"<message>\""
+  fi
 fi
 
 # ── rule 3: the message must be a meaningful Conventional Commit ─────────

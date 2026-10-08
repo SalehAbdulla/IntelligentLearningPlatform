@@ -77,11 +77,85 @@ release/sprint-3
 | 7 | **`main` must always build and run** | It is the demo line; a red `main` is the day's top priority |
 | 8 | **Delete your branch after merge** | Keeps the branch list readable |
 
-### 3.1 Enforcement, and why rules 1 and 8 needed it
+### 3.1 Enforcement, and the one deliberate exemption
 
-Setting branch protection without `enforce_admins` turned out to be **advisory, not real**: the repository owner could still push straight to `main`, because GitHub lets admins bypass protection by default. The rule existed on paper and was silently bypassable in practice.
+Branch protection without `enforce_admins` was **advisory, not real**: a member could still
+push straight to a protected branch, so the rule existed on paper only. Pull requests are what
+produce the review evidence the Sprints and LO3 marks are read from, so the **PR requirement is
+enforced for every member account**, and it is verified below.
 
-**Fixed:** protection on both `main` and `develop` now has **`enforce_admins: true`**, so the golden rules apply to everyone, including whoever owns the repository. Verified by attempting a direct push:
+**The repository owner is exempt from admin enforcement on purpose** (decided 8 Oct 2026).
+There is one manager on this project, who already merges every PR; locking the manager out of
+their own integration branch buys the team nothing. `enforce_admins` is therefore **off**, so
+the owner may push directly, while every other account still has to go through a pull request.
+
+| Setting | `main` | `develop` |
+|---|---|---|
+| Pull request required before merging | ✅ all members | ✅ all members |
+| Admin enforcement (`enforce_admins`) | ❌ off, owner exempt by decision | ❌ off, owner exempt by decision |
+| Force-push blocked | ✅ | ✅ |
+| Branch deletion blocked | ✅ | ✅ |
+
+What the exemption does **not** change:
+
+- **The conventions, by default.** `tools/commit.sh` and `tools/check-lane.sh` still refuse
+  `main`/`develop` for every account, the owner included. The exemption is **not silent**: the
+  owner gets past those two guards only by asking for it —
+  `bash tools/commit.sh --owner <path> "<message>"` or
+  `bash tools/check-lane.sh owner --allow-protected` — and both print a warning naming this
+  decision before they do anything. A member running either command is refused exactly as
+  before, and neither flag relaxes the one-file-per-commit, Conventional-Commit or
+  secret-scanning rules.
+- **The members.** Their pushes to `main`/`develop` are still rejected:
+  `GH006: Changes must be made through a pull request`.
+- **The normal path.** Every feature, including the owner's own, still goes through a branch and
+  a PR. The exemption buys exactly one thing: an owner-side hotfix path for a broken `main`.
+
+**The owner's lane, without any bypass.** `bash tools/check-lane.sh owner` runs the same guard
+against the owner's lane — the project level (`docs/`, `deliverables/`, `tools/`, `research/`,
+`CONTRIBUTING.md`, `README.md`, `.github/`, `.vscode/`) plus the F01/F02/F14 app areas — and
+still refuses `backend/` and the `.xcodeproj`. It is the flag-free form, so it is the one to run
+before an ordinary owner commit: it catches a stray edit to a member's feature file (OUT OF LANE,
+exit 1) while leaving the owner's own files green. `--allow-protected` is the only argument that
+also permits `main`/`develop`.
+
+**Verified live on 8 Oct 2026**, with the §11.1 command, on both branches:
+
+```
+main     pr_required=true enforce_admins=false force_push=false deletions=false
+develop  pr_required=true enforce_admins=false force_push=false deletions=false
+```
+
+The check was run before the handover because the configuration had drifted from this section's
+claim: `enforce_admins` was still **`true`**, which left the owner as protected as anyone else
+and would have rejected the owner hotfix path below with `GH006`. It was corrected with the
+surgical endpoint, which changes nothing but that one field:
+
+```bash
+gh api -X DELETE repos/SalehAbdulla/IntelligentLearningPlatform/branches/main/protection/enforce_admins
+gh api -X DELETE repos/SalehAbdulla/IntelligentLearningPlatform/branches/develop/protection/enforce_admins
+```
+
+Before that change was applied, the collaborator list was checked (`gh api
+repos/{owner}/{repo}/collaborators`): **no teammate account has admin**, so the exemption
+exempts the owner alone. If the §11.1 command prints anything else at any point, the
+configuration has drifted and this section is wrong.
+
+**Emergency procedure.** A broken `main` can be fixed directly by the owner (the exemption is
+already in place):
+
+```bash
+bash tools/check-lane.sh owner --allow-protected   # prints OWNER BYPASS, then checks the lane
+bash tools/commit.sh --owner --push <path> "<message>"
+```
+
+Record what happened and why in the decision log. A member still needs a PR,
+so if `develop` is broken and no reviewer is reachable, escalate to the owner rather than
+disabling anything.
+
+> **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. That is why the
+> PR requirement stays enforced for the members whose work is assessed, and why the guards live
+> in executable tools (`tools/commit.sh`, `tools/check-lane.sh`) as well as in settings.
 
 ```
 remote: error: GH006: Protected branch update failed for refs/heads/develop.
@@ -89,16 +163,9 @@ remote: - Changes must be made through a pull request.
  ! [remote rejected] develop -> develop (protected branch hook declined)
 ```
 
-| Setting | `main` | `develop` |
-|---|---|---|
-| Pull request required before merging | ✅ | ✅ |
-| Admin enforcement (`enforce_admins`) | ✅ | ✅ |
-| Force-push blocked | ✅ | ✅ |
-| Branch deletion blocked | ✅ | ✅ |
-
-**Emergency procedure**, if a broken `main` must be fixed and no PR is possible, a repository admin may *temporarily* disable admin enforcement in **Settings → Branches**, push the fix, and **re-enable it immediately**. Record what happened in the decision log. This should be rare, and the fact that it requires disabling a guard is the point.
-
-> **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. This is the same reasoning behind `tools/commit.sh`, enforcement beats documentation.
+That test was run from a **member account** (while admin enforcement was still on) and it is the
+expected result for every member today, because the PR requirement is unchanged. The owner is the
+one exception, by the 8 Oct 2026 decision above.
 
 ---
 
@@ -326,25 +393,42 @@ If the first command returns a thin list, that sprint's individual mark is thin,
 | # | Item | Status |
 |---|---|---|
 | 1 | `develop` branch created from `main` and pushed | ✅ done |
-| 2 | Branch protection on **`main`**: PR required, force-push blocked, deletion blocked, **admin-enforced** | ✅ done |
-| 3 | Branch protection on **`develop`**: PR required, force-push blocked, deletion blocked, **admin-enforced** | ✅ done |
+| 2 | Branch protection on **`main`**: PR required for members, force-push blocked, deletion blocked. Admin enforcement **off**: the owner is deliberately exempt (8 Oct 2026) | ✅ done |
+| 3 | Branch protection on **`develop`**: PR required for members, force-push blocked, deletion blocked. Admin enforcement **off**: the owner is deliberately exempt (8 Oct 2026) | ✅ done |
 | 4 | `.github/PULL_REQUEST_TEMPLATE.md` committed | ✅ done |
 | 5 | `tools/commit.sh` + `tools/new-branch.sh` committed, executable and behaviour-tested | ✅ done |
 | 6 | Full cycle demonstrated end to end (branch → per-file commits → PR → merge) | ✅ [PR #1](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/1) |
-| 7 | Direct push to a protected branch **verified to be rejected** | ✅ tested, `GH006: Changes must be made through a pull request` |
+| 7 | Direct push to a protected branch **verified to be rejected from a member account** | ✅ tested, `GH006: Changes must be made through a pull request` |
 | 8 | Every member sets `git config user.name` / `user.email` and confirms with `git shortlog -sn` | 🟨 **M1 ✅ done** (`.mailmap` committed, 4 aliases → 1). **M2, M3, M4 ⬜**, convention in [§12](#12-author-identities) |
 | 9 | Every member practises the cycle once on a throwaway branch | ⬜ **each member, S0** |
 
 ### 11.1 Verify the setup
 
 ```bash
-# Both branches are protected AND admin-enforced (both must print true)
+# What each branch actually enforces right now, from the API
 for b in main develop; do
   printf '%-8s ' "$b"
   gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/$b/protection \
-    --jq '"pr_required=\(.required_pull_request_reviews != null) enforce_admins=\(.enforce_admins.enabled) force_push=\(.allow_force_pushes.enabled)"'
+    --jq '"pr_required=\(.required_pull_request_reviews != null) enforce_admins=\(.enforce_admins.enabled) force_push=\(.allow_force_pushes.enabled) deletions=\(.allow_deletions.enabled)"'
 done
+```
 
+Expected after the 8 Oct 2026 decision: `pr_required=true enforce_admins=false force_push=false deletions=false`.
+
+- `pr_required=true` is what keeps the review trail for the members.
+- `enforce_admins=false` is the owner exemption, deliberate: the owner may push directly, and
+  `git push origin develop` from a **member** account still returns
+  `GH006: Changes must be made through a pull request`.
+- `force_push=false` and `deletions=false` apply to everyone, the owner included.
+
+If the API returns **404**, the protection is implemented as a **ruleset** rather than classic
+branch protection, and the equivalent read is:
+
+```bash
+gh api repos/SalehAbdulla/IntelligentLearningPlatform/rulesets
+```
+
+```bash
 # Everyone is committing under their own name, not a shared one
 git shortlog -sn --all
 ```

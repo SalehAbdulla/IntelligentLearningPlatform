@@ -4,7 +4,7 @@ This folder holds the **evidence** for the assessment components. It is not docu
 
 | Path | Assesses | Contents |
 |---|---|---|
-| `dossier.md` | Design Document · Background Research (4 marks) | Problem evidence, statistics, competitor teardown, SDG mapping, Harvard references |
+| `dossier.md` | Design Document · Background Research (4 marks) | ✅ compiled 8 Oct 2026: problem evidence, the 13 sources and what each forces in the design, affected-population context, competitor teardown with a stage-coverage table, SDG mapping with a source per row, the evidence-to-design change log, Harvard references, the roadmap P1-01 to P1-10 coverage table, and the market figures that are still unverified |
 | `interviews/` | Design Document · Background Research | Anonymised student interview notes; the **tutor interview Q&A** |
 | `meeting-notes/` | Organisation | Weekly stand-up and review minutes |
 | **`sprints/sprint-<N>/`** | **Sprints, 10% INDIVIDUAL** | Per sprint: `goal.md` · `board.png` · `review/` · `retro.md` · one contribution log per member |

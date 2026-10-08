@@ -72,6 +72,23 @@ Rubric area c. This is where the most marks are available, so it gets the most s
 | c10 | *"meaningful UI labelling"* | Consistent terminology ("deck", "material", "session", "Coach") across every screen, both documents and the app. | M4 | ⬜ |
 | c11 | *"overall neatness/professionalism"* | Aligned frames, consistent gaps, no overlapping elements, ordered frame numbering, consistent titles. | M1 | ⬜ |
 
+**Status update, 8 Oct 2026 (verified against the live file):** every row above is now
+backed by something a marker can open.
+
+| Row | Status | Evidence now in place |
+|---|---|---|
+| c1 | ✅ | 15 per-feature flow diagrams on Figma page `2 · Flow Overview`, each ending in its error/edge case, plus a grouped frame set per feature |
+| c2 | ✅ | 106 frames; every feature has 3–16 screens (`SCREEN-DESCRIPTIONS.md` §A.15) |
+| c3 | ✅ | `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.2–§A.14: purpose **and** layout for all 106 screens |
+| c4 | ✅ | Numbered callout badges on every wireframe, mapped to a legend panel that gives each element's **type** and **function** |
+| c5 | ✅ | Figma page `5 · Low-Fi Wireframes`, greyscale, generated from the same geometry as the prototype |
+| c6 | ✅ | Coverage audit §A.15, navigation map + 15 flow diagrams, labelled elements, descriptions |
+| c7 | ✅ | §A.15 gives frames-per-developer: M1 36, M2 31, M3 18, M4 21 |
+| c8 | ✅ | 15 flow diagrams + the navigation map; modal vs pushed distinction documented in doc 03 §5 |
+| c9 | ✅ | One shared 4 pt grid, ≥44 pt targets, one primary action per screen |
+| c10 | ✅ | Terminology is consistent across mockups, prototype and app ("deck", "material", "session", "Coach") |
+| c11 | ✅ | Greyscale only, consistent gaps, ordered numbering, no overlapping elements |
+
 **Low-fi vs hi-fi, state this explicitly in the document so the marker sees we understood the distinction:**
 
 > *"Low-fidelity wireframes (structure, hierarchy and labels only, greyscale, no imagery) are presented in this document in accordance with the brief's Mockups requirement. The high-fidelity, fully interactive version is delivered separately as the Figma Project Prototype."*
