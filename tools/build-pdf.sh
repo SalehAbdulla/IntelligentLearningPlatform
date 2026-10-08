@@ -28,8 +28,9 @@
 #   error rather than a silent degradation.
 #
 # HONEST LIMIT, stated rather than hidden: Chromium's command-line printer cannot add page
-#   numbers or running headers. If the marker wants them, print from the generated HTML
-#   instead (the script prints the exact command), which gives "Page X of Y" footers.
+#   numbers or running headers, and a CSS position:fixed header repeated unreliably when it
+#   was measured (two of three test pages), so it is not used. Re-run with --html <dir> and
+#   print the generated HTML from a browser to get "Page X of Y" and a running header.
 
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
