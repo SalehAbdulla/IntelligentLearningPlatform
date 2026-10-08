@@ -28,7 +28,7 @@ modes are predictable and both are expensive:
 
 | Failure mode | Defence |
 |---|---|
-| An agent commits to `main` or `develop` | GitHub **rejects a member push** (a pull request is required), `tools/commit.sh` refuses locally, `tools/check-lane.sh` refuses locally. The **owner account is deliberately exempt** from the server check, so for the owner the two local guards are the only defence: never disable them, and never let an agent push straight to `develop` |
+| An agent commits to `main` or `develop` | GitHub **rejects a member push** (a pull request is required), `tools/commit.sh` refuses locally, `tools/check-lane.sh` refuses locally. The **owner account is deliberately exempt** from the server check, so for the owner the two local guards are the only defence: never disable them, never let an agent push straight to `develop`, and treat `--owner` / `owner --allow-protected` as hotfix-only flags — an agent prompt must never contain them |
 | An agent edits another member's file, causing a merge conflict | **A disjoint file lane per member**, enforced by `tools/check-lane.sh` |
 
 ### Verified: the lanes do not overlap
@@ -91,6 +91,7 @@ the shared file from their diffs entirely.
 | Tool | What it does |
 |---|---|
 | `tools/check-lane.sh M2\|M3\|M4` | **New.** Refuses protected branches and out-of-lane files; prints a per-file verdict. Run before every commit and push |
+| `tools/check-lane.sh owner [--allow-protected]` | **Owner only.** The same guard for M1's lane (the project level plus F01/F02/F14). Members never need it, and none of you can use it: it refuses a member's app file just as `check-lane.sh M2` refuses `docs/`. The `--allow-protected` form is the owner's documented, loudly-printed hotfix path ([doc 12 §3.1](12-GIT-WORKFLOW.md)) |
 | `tools/new-branch.sh feat/Fxx-slug` | Creates a correctly named branch from `develop` and pushes it |
 | `tools/commit.sh [--push] [--multi]` | One file per commit, Conventional Commits, refuses `main`/`develop` |
 | `tools/todos.sh` | Lists every in-code TODO grouped by owner |
