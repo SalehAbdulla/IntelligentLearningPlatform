@@ -187,7 +187,7 @@ The brief requires that **every member can present and explain any part of the a
 | draw.io / Excalidraw | ⬜ | The 15 feature flow diagrams |
 | Figma "Contrast" plugin | ⬜ | Verify the §1.1 table in the actual file |
 | Task tracker (GitHub Projects / Notion) | ⬜ | Mirrors the [roadmap](01-ROADMAP-PHASES-TODOLIST.md) |
-| Git + GitHub repo | ✅ repo exists | Enable branch protection on `main` |
+| Git + GitHub repo | ✅ repo exists; PR required on `main` and `develop` | Members land work only through a PR; the owner is deliberately exempt from admin enforcement (8 Oct 2026) |
 
 ---
 
