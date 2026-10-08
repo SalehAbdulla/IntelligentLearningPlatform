@@ -23,7 +23,7 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 | **SDGs** | SDG 4 (Quality Education) · SDG 9 (Industry, Innovation & Infrastructure) · SDG 10 (Reduced Inequalities) |
 | **Design Document due** | 22 October 2026, 23:55 |
 | **Prototype (Figma) due** | 12 November 2026, 23:55 |
-| **Document version** | 1.1 (Gate 1 draft, figure and table lists added; mockup figures exported) |
+| **Document version** | 1.2 (Gate 1 draft: figure and table lists, all figures except the two that need the app or a competitor's product captured) |
 
 > The app name and logo appear in the header of every page and on the Figma cover, per the identity requirement.
 
@@ -57,29 +57,33 @@ List of figures · List of tables
 
 Every figure is numbered by the section it belongs to. The `figures/` and
 `mockups/figures/` paths are relative to this document, and each PNG was exported at 2× from
-the Figma file (see §10.1). Statuses are honest: a figure marked ⬜ does not exist yet, and
-the gate script `tools/check-submission.sh` refuses to pass while one is open.
+the Figma file (see §10.1). Statuses are honest: a figure marked ⬜ does not exist yet. The
+gate script `tools/check-submission.sh` checks that both lists exist, that the artwork resolves
+and that the PDF is present, but it does not read these status cells, so an open ⬜ here is a
+commitment to the marker rather than a gate the script enforces.
 
 | Figure | Caption | File | Status |
 |---|---|---|---|
 | Cover | StudyForge cover, as built in Figma | [figures/00_Cover_StudyForge.png](figures/00_Cover_StudyForge.png) | ✅ |
 | 4.1 | Competitor teardown, screenshots of each product | ⬜ to capture | ⬜ pending |
-| 5.1 | The core learning loop: upload, generate, schedule, practise, measure, adapt | ⬜ to draw | ⬜ pending |
-| 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | ⬜ to draw | ⬜ pending |
+| 5.1 | The core learning loop: upload, generate, schedule, practise, measure, adapt | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
+| 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png) | ✅ exported |
 | 9.1 to 9.15 | The 15 per-feature flow diagrams (F01 to F15), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F15` | ✅ exported |
 | 10.1 | The cross-cutting state set (loading, empty, error, offline, success) | [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png) | ✅ exported |
 | 10.2 to 10.107 | The 106 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_141` | ✅ exported |
 | 11.1 | The global navigation map | [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png) | ✅ exported |
-| 11.2 | The core learning loop, restated in the navigation context (same artwork as Figure 5.1) | ⬜ to draw | ⬜ pending |
+| 11.2 | The core learning loop, restated in the navigation context (same artwork as Figure 5.1) | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
 | 12.1 | The design system sheet: colour variables, type ramp, spacing, radius, elevation | [figures/01_DesignSystem_Saleh_202300540.png](figures/01_DesignSystem_Saleh_202300540.png) | ✅ exported |
 | 12.2 | The glass and depth reference: blur, hairline border, dual shadow, inner light edge | [figures/02_GlassAndDepth_Saleh_202300540.png](figures/02_GlassAndDepth_Saleh_202300540.png) | ✅ exported |
 | 13.1 | A provenance citation chip and confidence band on a generated quiz answer | ⬜ to capture from the app | ⬜ pending |
-| 14.1 | The system architecture: app, backend, AI tiers | ⬜ to draw | ⬜ pending |
-| 14.2 | The AI router decision tree | ⬜ to draw | ⬜ pending |
+| 14.1 | The system architecture: app, backend, AI tiers | [mockups/figures/ARCH_SystemArchitecture_StudyForge.png](mockups/figures/ARCH_SystemArchitecture_StudyForge.png) | ✅ exported |
+| 14.2 | The AI router decision tree | [mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png](mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png) | ✅ exported |
 
 Figure resolution: every exported wireframe is 1720 × 1920 px and every flow diagram is at
 least 2160 px on its long edge, so each clears 150 dpi at any printed width up to 11.4 inches
-(the requirement in the export checklist). The per-screen figure index is §10.4.
+(the requirement in the export checklist). The four system diagrams drawn on 8 Oct 2026
+(Figures 5.1, 8.1, 14.1 and 14.2) were exported at the same 2× scale, 2160 px wide. The
+per-screen figure index is §10.4.
 
 ## List of tables
 
@@ -269,7 +273,7 @@ StudyForge exists to remove the manual work between "I have study material" and 
 
 *Table 5.1, goals mapped to a measurable success metric and a target.*
 
-*Figure 5.1, the core learning loop (upload, generate, schedule, practise, measure, adapt), repeated as Figure 11.2. Status: ⬜ the loop diagram itself is not drawn yet; the six stages are stated in §11 and the wiring is visible in the navigation map (Figure 11.1).*
+*Figure 5.1, the core learning loop (upload, generate, schedule, practise, measure, adapt), repeated as Figure 11.2: [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png). The loop closes, because what is measured and adapted shapes the next upload.*
 
 ## 6. User roles and personas
 
@@ -360,7 +364,7 @@ It combines four capabilities that most student projects do not attempt together
 
 `RetrievalService` and `CoachPlanningService` are protocols, so the retrieval implementation and the planner can each be swapped or unit-tested in isolation. Edge cases handled explicitly: no relevant chunk found (say so), on-device model unavailable (fallback screen), very long answers (chunked streaming), a cited material deleted (the citation degrades gracefully), and a low-confidence response (flagged for the student).
 
-*Figure 8.1, the RAG pipeline (index, retrieve, ground, answer, adapt). Status: ⬜ not yet drawn; the pipeline is fully specified in Table 8.1 and in §14.3.*
+*Figure 8.1, the RAG pipeline (index, retrieve, ground, answer, adapt): [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png). The six steps are the rows of Table 8.1, drawn with the constraint that keeps them honest: vectors stay on the device, the prompt is built only from retrieved chunks, and a response is cited.*
 
 ## 9. Feature flows
 
@@ -634,7 +638,7 @@ Each feature is independently reachable from its tab; every modal is dismissible
 every list has an empty state with a primary action.
 ```
 
-*Figure 11.1, the global navigation map, exported from Figma page `2 · Flow Overview`: [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png). Figure 11.2, the core learning loop, restated here. Status: ⬜ Figure 11.2 not yet drawn, same open item as Figure 5.1.*
+*Figure 11.1, the global navigation map, exported from Figma page `2 · Flow Overview`: [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png). Figure 11.2, the core learning loop, restated here: [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png), the same artwork as Figure 5.1.*
 
 ## 12. Design system
 
@@ -735,7 +739,7 @@ The router picks a tier per call from signals: task type, `SystemLanguageModel.a
 
 **Why this is engineering, not decoration:** it makes the product free (T0 covers most calls), it makes it work offline, and it is honest about failure. Every commercial AI app faces this same cost, quality and privacy trade-off.
 
-*Figure 14.1, the system architecture (app, backend, AI tiers). Figure 14.2, the AI router decision tree. Status: ⬜ both are described in full in §14.2 and §14.3 but the diagrams are not drawn yet, so they are the two open items in this section.*
+*Figure 14.1, the system architecture (app, backend, AI tiers): [mockups/figures/ARCH_SystemArchitecture_StudyForge.png](mockups/figures/ARCH_SystemArchitecture_StudyForge.png), the five layers of §14.2 with the three tiers of Table 14.1. Figure 14.2, the AI router decision tree: [mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png](mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png), the same policy §14.3 describes in prose, drawn as the sequence of questions the router asks on every call.*
 
 ### 14.4 Cost model
 
