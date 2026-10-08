@@ -98,20 +98,40 @@ the owner may push directly, while every other account still has to go through a
 
 What the exemption does **not** change:
 
-- **The conventions.** `tools/commit.sh` and `tools/check-lane.sh` still refuse to work on
-  `main`/`develop` for every account, the owner included. A direct push by the owner means
-  committing with plain `git`, deliberately, and saying so in the message.
+- **The conventions, by default.** `tools/commit.sh` and `tools/check-lane.sh` still refuse
+  `main`/`develop` for every account, the owner included. The exemption is **not silent**: the
+  owner gets past those two guards only by asking for it —
+  `bash tools/commit.sh --owner <path> "<message>"` or
+  `bash tools/check-lane.sh owner --allow-protected` — and both print a warning naming this
+  decision before they do anything. A member running either command is refused exactly as
+  before, and neither flag relaxes the one-file-per-commit, Conventional-Commit or
+  secret-scanning rules.
 - **The members.** Their pushes to `main`/`develop` are still rejected:
   `GH006: Changes must be made through a pull request`.
 - **The normal path.** Every feature, including the owner's own, still goes through a branch and
   a PR. The exemption buys exactly one thing: an owner-side hotfix path for a broken `main`.
+
+**The owner's lane, without any bypass.** `bash tools/check-lane.sh owner` runs the same guard
+against the owner's lane — the project level (`docs/`, `deliverables/`, `tools/`, `research/`,
+`CONTRIBUTING.md`, `README.md`, `.github/`, `.vscode/`) plus the F01/F02/F14 app areas — and
+still refuses `backend/` and the `.xcodeproj`. It is the flag-free form, so it is the one to run
+before an ordinary owner commit: it catches a stray edit to a member's feature file (OUT OF LANE,
+exit 1) while leaving the owner's own files green. `--allow-protected` is the only argument that
+also permits `main`/`develop`.
 
 The values above are the **intent**; the command in §11.1 is the **source of truth**. Run it
 before you rely on any of this, and if it prints something else, the configuration has drifted
 and this section is wrong.
 
 **Emergency procedure.** A broken `main` can be fixed directly by the owner (the exemption is
-already in place). Record what happened and why in the decision log. A member still needs a PR,
+already in place):
+
+```bash
+bash tools/check-lane.sh owner --allow-protected   # prints OWNER BYPASS, then checks the lane
+bash tools/commit.sh --owner --push <path> "<message>"
+```
+
+Record what happened and why in the decision log. A member still needs a PR,
 so if `develop` is broken and no reviewer is reachable, escalate to the owner rather than
 disabling anything.
 
