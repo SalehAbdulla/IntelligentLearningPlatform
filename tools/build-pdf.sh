@@ -130,9 +130,10 @@ appendix = ''
 if figs:
     appendix = (
         '<h1 id="appendix-a">Appendix A. Figure appendix</h1>\n'
-        '<p class="note">Every exported figure, one per page, in the order the List of figures '
-        'groups them. The caption repeats the exact repository path, so any page here can be '
-        'matched to the entry in the List of figures and to the file drawn in Figma.</p>\n'
+        '<p class="note">Every exported figure, one per page: the document figures first, then '
+        'the mockup exports, each group in filename order. The caption repeats the exact '
+        'repository path, so any page here can be matched to the entry in the List of figures '
+        'and to the file drawn in Figma.</p>\n'
         + '\n'.join(figs) + '\n')
 
 # Point the document's own figure paths at the appendix instead of at a file:// path that
