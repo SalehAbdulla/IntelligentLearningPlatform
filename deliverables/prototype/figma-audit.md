@@ -51,6 +51,32 @@ Stated so the gap is not mistaken for a pass:
 | The 5-user usability test and its SUS score | Requires real participants, so it cannot be measured from the file | Open in `docs/TODOLIST.md` sections 4 and 5 |
 | The "Anyone with the link, Can view" permission | A Figma account setting, not a property of the file | Open in `docs/TODOLIST.md` section 5 and `figma-link.txt` section 9 |
 
+## How to re-run this audit
+
+The measurements above come from read-only Figma Plugin API scripts, driven through the Figma
+MCP server by `tools/figma-cli.js`, which is committed so the numbers can be reproduced rather
+than believed:
+
+```bash
+# the pages, with their child counts (lazy loading means a page must be loaded first)
+node tools/figma-cli.js pages uzTHnydXGeZSmImS5k2cLv
+
+# any Figma MCP tool, eg the exported PNG of one frame
+echo '{"fileKey":"uzTHnydXGeZSmImS5k2cLv","nodeId":"1:2948","defaultFormat":"png","defaultScale":2}' > /tmp/args.json
+node tools/figma-cli.js call uzTHnydXGeZSmImS5k2cLv download_assets /tmp/args.json
+
+# a read-only measurement script (Plugin API code in a file, `return` for output)
+node tools/figma-cli.js script uzTHnydXGeZSmImS5k2cLv /tmp/scan.js "measure the frames"
+
+# re-export every figure named in a TSV list of <kind>\t<nodeId>\t<frameName>
+node tools/figma-cli.js export uzTHnydXGeZSmImS5k2cLv deliverables/design-document/mockups/figures /tmp/export_list.tsv
+```
+
+The same tool produced the 121 document figures and the 106 dark-mode variants (the clone
+scripts were one-off Plugin API code, run through the `script` mode). The tool holds no
+credentials: it uses the OAuth token that `mcp-remote` already stored for the signed-in Figma
+account, so it acts as that user.
+
 ## How the dark variants were produced
 
 The Dark variables already existed and were complete, but the screens were only drawn in
