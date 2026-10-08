@@ -339,7 +339,10 @@ bash tools/new-branch.sh feat/F04-hard-grade-tracking   # creates from up-to-dat
 > request.` The **repository owner is deliberately exempt** from admin enforcement (decided
 > 8 Oct 2026, because there is a single manager who merges every PR), so the owner may push
 > directly. That exemption applies to nobody else, and the owner still uses a branch and a PR
-> for every normal change. Details: [doc 12 §3.1](docs/12-GIT-WORKFLOW.md).
+> for every normal change. It is never silent either: the owner's short forms are
+> `bash tools/commit.sh --owner …` and `bash tools/check-lane.sh owner --allow-protected`, both
+> of which print the decision they are acting under. Details:
+> [doc 12 §3.1](docs/12-GIT-WORKFLOW.md).
 
 ### 5.2 One file per commit
 
@@ -500,6 +503,7 @@ bash tools/run-device.sh --list       # list paired devices
 | Command | Checks | When to run |
 |---|---|---|
 | `bash tools/check-lane.sh M2` | branch protection + file lane | **before every commit and push** |
+| `bash tools/check-lane.sh owner [--allow-protected]` | the same guard for M1's lane — the project level plus F01/F02/F14; `--allow-protected` adds `main`/`develop` and prints `OWNER BYPASS` | owner only, before an owner commit |
 | `bash tools/todos.sh` | open in-code TODOs by owner | after finishing a TODO |
 | `python3 tools/check-strings.py` | English/Arabic key parity (910 keys × 2) | after touching any `.strings` |
 | `python3 tools/verify-docs.py` | doc links, screen inventory, ownership integrity | after touching `docs/` |
