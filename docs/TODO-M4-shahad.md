@@ -12,6 +12,29 @@
 
 ---
 
+## 0.0 First, two minutes of setup — you cannot push until this is done
+
+**Your GitHub invitation is still pending** (checked 8 Oct 2026: `shaahaadhani43-debug` has not
+accepted yet, while Tasbeeh has). Until you accept it you cannot clone, branch, commit or open
+the pull request that your own Sprints evidence is read from. Accept the invitation email for
+`SalehAbdulla/IntelligentLearningPlatform`, or ask Saleh to re-send it from Settings,
+Collaborators. Then confirm you are in:
+
+```bash
+gh auth status                        # or: git config --global user.name / user.email
+git clone https://github.com/SalehAbdulla/IntelligentLearningPlatform.git
+cd IntelligentLearningPlatform
+git config user.name "Shahad Ashoor"           # your own identity, not the owner's
+git config user.email "<your github email>"
+python3 tools/verify-docs.py          # proves the clone is complete
+```
+
+Your access is **write**, deliberately: a pull request is required on `main` and `develop` for
+every member, and only the repository owner is exempt from admin enforcement
+([doc 12 §3.1](12-GIT-WORKFLOW.md)).
+
+---
+
 ## 0. THE TWO RULES THAT KEEP US OUT OF CONFLICT — read this before anything
 
 Three members will run AI agents against this repository **at the same time**. Two
