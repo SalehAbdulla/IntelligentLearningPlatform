@@ -1,12 +1,36 @@
 # Design Document deliverables
 
-Place the exported PDF here at Gate 1.
+The exported PDF is built from the Markdown source in this folder, not assembled by hand.
 
-- `DESIGN-DOCUMENT.md`             the assembled source of the document (all 19 sections), exported to PDF
-- StudyForge-Design-Document.pdf   (submitted 21 Oct)
-- `mockups/`                       ✅ the low-fidelity mockups deliverable: `SCREEN-DESCRIPTIONS.md` (purpose, layout and named UI elements for all 106 screens) + `figures/` with the **121 exported 2× PNGs** (106 wireframes, 15 flow diagrams)
-- `figures/`                       ✅ the document figures that are not mockups: the Figma cover, the cross-cutting states panel, the design system sheet and the glass reference
-- StudyForge-Design-Document.pdf   ⬜ **still to produce.** Everything the PDF needs is in place (numbered figures and tables, the figure and table lists, 150 dpi artwork); the export itself needs a Markdown-to-PDF toolchain, which this machine does not have. `bash tools/check-submission.sh` keeps this item open until the PDF exists
+- `DESIGN-DOCUMENT.md`               the source of truth for the document (all 19 sections)
+- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 158 pages, its Appendix A carries every one of the 128 figures one per page at print resolution, fonts embedded by the browser, links live. It is **gitignored on purpose** (`.gitignore` line 79: the PDF goes through the portal, not git), which is exactly why the build is a script: the PDF is reproducible from the Markdown on any machine, and the tool is what gets reviewed here
+- `mockups/`                         ✅ the low-fidelity mockups deliverable: `SCREEN-DESCRIPTIONS.md` (purpose, layout and named UI elements for all 106 screens) + `figures/` with the **124 exported 2× PNGs** (106 wireframes, 15 flow diagrams, 2 page headers, the navigation map)
+- `figures/`                         ✅ the document figures that are not mockups: the Figma cover, the design system sheet, the glass reference and the cross-cutting states panel
+
+## Rebuilding the PDF
+
+```bash
+bash tools/build-pdf.sh                # the submission export, with Appendix A
+bash tools/build-pdf.sh --text-only    # body only, no appendix: a fast draft
+bash tools/build-pdf.sh --html /tmp/dd # keep the print-ready HTML too (see the gap below)
+```
+
+The pipeline is Markdown → HTML (`markdown-it` via `npx`, so the first run needs network) →
+print stylesheet (A4, table rules, no orphaned headings) → headless Chromium (Brave, Chrome,
+Chromium or Edge). Figures are downscaled with `sips` to a 1600 px long edge, which is never
+below ~180 dpi at the largest size the page allows. The script verifies what it produced:
+page count, JPEG figure streams, links, file size, and (when `pdftotext` is installed) that
+page 1 names the app and that the last page carries a figure caption.
+
+**Rebuild it after every change to `DESIGN-DOCUMENT.md`.** The document is still waiting on the
+tutor interview, the usability section and the figures its own List of figures marks as
+to-draw; a PDF exported before those land is stale evidence rather than a finished one.
+
+**Known gap.** Chromium's command-line printer cannot add page numbers or a running header, and
+a CSS `position: fixed` header repeats unreliably (measured: it appeared on two of three test
+pages, so it was not used). If the marker wants page numbers, or the "app name in the header of
+every page" the document's own cover note promises, run the build with `--html <dir>` and print
+`<dir>/index.html` from a browser with "Headers and footers" switched on.
 
 `DESIGN-DOCUMENT.md` is the single source of truth for the submitted PDF, assembled from
-`../../../docs/` (which remains the working planning set). Export to PDF and copy it here at Gate 1.
+`../../../docs/` (which remains the working planning set).
