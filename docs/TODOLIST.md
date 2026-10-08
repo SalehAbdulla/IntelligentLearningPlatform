@@ -76,14 +76,14 @@ Group K (admin content management) is now feature-complete.
 - [ ] Section 3.4 written approval for F15 (`pending`)
 - [ ] Section 17.3 usability test with 5 users plus a SUS score (planned, not run)
 - [x] Appendix A, the labelled screen descriptions and mockups — `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` now covers all **106** screens (purpose, layout, named UI elements). The PNG exports into `mockups/figures/` are the only part left.
-- [ ] Figures at 150 dpi or more; figure list; table list; PDF export with embedded fonts and live links
-- [ ] Create `research/dossier.md` (missing; referenced by section 2 and `docs/01` P1-10)
+- [ ] PDF export with embedded fonts and live links. **Partly cleared on 8 Oct 2026:** the exported figures (121 PNGs at 2×, smallest 1720 px wide, so every figure clears 150 dpi), the figure list (`DESIGN-DOCUMENT.md` "List of figures", including the §10.4 per-screen index) and the table list ("List of tables", 21 tables, every caption numbered) are done. **What is left is the PDF itself**, which needs a toolchain this machine does not have
+- [x] Create `research/dossier.md` (missing; referenced by section 2 and `docs/01` P1-10). **Done:** the dossier now carries the problem evidence, the 13 sources with what each forces in the design, the affected-population context, the competitor teardown with a stage-coverage table, the SDG mapping with a source per row, the change log from evidence to design, the Harvard list, and the roadmap P1-01 to P1-10 coverage table. It also lists the market figures that are still unverified, so nothing is silently asserted
 - [ ] Re-verify the section 2 market figures against their primary sources before submission
 - [x] Reconcile the section 1 claim of 98 screens with the final Figma count — reconciled to **106** in `DESIGN-DOCUMENT.md` §1 and §10.1, and in `README.md`
 
 ## 5. Figma Prototype, 10%, due 12 Nov 2026
 
-> **State verified against the live file on 8 Oct 2026.** 106 high-fidelity screens, 296 prototype connections, 98 screens with element-level hotspots, 16 named flow start points, zero dead ends.
+> **State verified against the live file on 8 Oct 2026, and re-measured the same day.** 106 high-fidelity screens, every one exactly 390 × 844 and named to the brief's rule; **296 prototype reactions**, 97 distinct destination screens, and the 9 screens that are never a click target (`24`, `30`, `41`, `77`, `78`, `88`, `126`, `133`, `134`) are all named flow start points, so no screen is a dead end. Also in the file: **106 low-fidelity wireframes**, **15 per-feature flow diagrams**, and **106 dark-mode variants**. The measurements, and what was deliberately not measured, are recorded in `deliverables/prototype/figma-audit.md`
 
 - [ ] P9-03/04 usability test with 5 users plus a SUS score
 - [x] P9-06 frame-naming audit, all 106 frames match `NN_ScreenName_FirstName_StudentID`
@@ -91,7 +91,7 @@ Group K (admin content management) is now feature-complete.
 - [x] P9-08 overflow audit: every screen is a fixed 390×844 iOS frame, verified no text overflows its frame
 - [ ] P9-09/10 content and consistency audits (a second reader, per the doc 08 process)
 - [x] P9-11 accessibility and RTL frames: `138_Accessibility_LargeText_Example`, `139_RTL_Arabic_Example`
-- [ ] P9-12 dark-mode frame variants (the dark **variables** exist and are complete; no dark screens are drawn)
+- [x] P9-12 dark-mode frame variants. **Done 8 Oct 2026:** Figma page `6 · Dark Mode Variants (P9-12)` holds **106** variants, one per screen, each with the `Dark` mode of the `Color` variable collection set explicitly and the dark canvas gradient applied to the clone, so no light text sits on a light canvas. Page 3 is untouched. Measured in `deliverables/prototype/figma-audit.md`; two rendered proofs in `deliverables/prototype/dark-mode-proof/`
 - [x] P9-14 export the `.fig` into `deliverables/prototype/` — done 8 Oct 2026, 1.2 MB, verified as a real Figma export
 - [x] P9-17 assemble `deliverables/prototype/figma-link.txt` (the text document the brief requires). The `.fig` half is P9-14
 - [ ] P9-18/19 submit and `git tag prototype-v1`
