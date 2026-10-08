@@ -37,7 +37,7 @@ P9-12 dark mode variants: PASS
 | **P9-11** | Accessibility and RTL proof frames | `138_Accessibility_LargeText_Example_Saleh_202300540` and `139_RTL_Arabic_Example_Saleh_202300540` both exist | ✅ PASS |
 | **P9-12** | Dark-mode screen variants | Figma page `6 · Dark Mode Variants (P9-12)` holds **106** variants, one per screen, and **106 of 106** carry the `Dark` mode of the `Color` variable collection set explicitly | ✅ PASS |
 | **Mockups** | 106 low-fidelity wireframes | Figma page `5 · Low-Fi Wireframes` holds **106** wireframe frames (107 children including the page header), each with its numbered callouts and legend panel | ✅ PASS |
-| **Flow diagrams** | 15 per-feature flows | Figma page `2 · Flow Overview` holds **15** `FLOW_Fnn_…` diagrams plus the global navigation map | ✅ PASS |
+| **Flow diagrams** | 15 per-feature flows | Figma page `2 · Flow Overview` holds **15** `FLOW_Fnn_…` diagrams plus the global navigation map, and (added 8 Oct 2026, after the audit) the four system diagrams of Figures 5.1, 8.1, 14.1 and 14.2 | ✅ PASS |
 | **Figures** | 2× PNG exports for the document | **121** exports (106 wireframes + 15 flow diagrams) at 1720 × 1920 px and larger, plus the navigation map, the states panel, the design system sheet, the glass reference and the cover | ✅ PASS |
 
 ## What this audit does not cover
