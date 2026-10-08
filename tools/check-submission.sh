@@ -118,8 +118,10 @@ print(w if f else 0)
   fi
   if [ ! -f deliverables/design-document/StudyForge-Design-Document.pdf ]; then
     note "the PDF export is missing: deliverables/design-document/StudyForge-Design-Document.pdf"
-    note "this machine has no PDF toolchain, so the PDF is a human step"
+    note "build it with: bash tools/build-pdf.sh   (Markdown -> HTML -> headless Chromium)"
     rc=1
+  else
+    note "the PDF exists; rebuild it with bash tools/build-pdf.sh after any edit to the Markdown"
   fi
   return $rc
 }
