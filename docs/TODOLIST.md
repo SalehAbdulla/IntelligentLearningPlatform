@@ -7,6 +7,8 @@
 
 Legend: `[ ]` open, `[x]` done.
 
+> **Gate:** `bash tools/check-submission.sh` turns sections 4 and 5 below into a gate. It exits non-zero while any item there is open, it re-checks the evidence behind every ticked box (an empty tick still fails), it refuses to pass if a new item has no registered check, and it runs `verify-docs.py` and `check-strings.py` as well. Current state: **16 of 26 items cleared, 10 open, 9 of those human-only.**
+
 ---
 
 ## 0. Done recently (context, not work)
