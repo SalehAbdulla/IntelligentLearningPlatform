@@ -28,7 +28,7 @@ modes are predictable and both are expensive:
 
 | Failure mode | Defence |
 |---|---|
-| An agent commits to `main` or `develop` | GitHub branch protection with `enforce_admins: true` **rejects** the push; `tools/commit.sh` refuses locally; `tools/check-lane.sh` refuses locally |
+| An agent commits to `main` or `develop` | GitHub **rejects a member push** (a pull request is required), `tools/commit.sh` refuses locally, `tools/check-lane.sh` refuses locally. The **owner account is deliberately exempt** from the server check, so for the owner the two local guards are the only defence: never disable them, and never let an agent push straight to `develop` |
 | An agent edits another member's file, causing a merge conflict | **A disjoint file lane per member**, enforced by `tools/check-lane.sh` |
 
 ### Verified: the lanes do not overlap
