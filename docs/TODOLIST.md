@@ -112,7 +112,8 @@ Group K (admin content management) is now feature-complete.
 > requires **at least two of that member's features** to carry a real, tested, committed
 > change. Conflict prevention is enforced, not documented:
 > [doc 14](14-COLLEAGUE-AI-AGENT-PROMPTS.md) holds the disjoint file-lane map and
-> `bash tools/check-lane.sh M2|M3|M4` refuses a protected branch or an out-of-lane file.
+> `bash tools/check-lane.sh M2|M3|M4` refuses a protected branch or an out-of-lane file, and
+> `bash tools/check-lane.sh owner` does the same for M1's project-level lane.
 
 - [ ] M2, M3 and M4 still have zero authored commits (only Saleh appears in `git shortlog`)
 - [ ] Sprint-1 contribution logs are empty templates
