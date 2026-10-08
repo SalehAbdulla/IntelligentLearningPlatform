@@ -17,8 +17,8 @@
 Three members will run AI agents against this repository **at the same time**. Two
 things must never happen, because both cost the team marks and hours:
 
-1. **Working on `main` or `develop`.** Both are protected with `enforce_admins`, so a
-   direct push is *rejected by GitHub*. Work on a branch of your own, always.
+1. **Working on `main` or `develop`.** Both require a pull request, so a direct push from
+   your account is *rejected by GitHub*. Work on a branch of your own, always.
 2. **Editing a file that belongs to someone else.** That is what produces merge
    conflicts. Your lane below is exact, and there is a script that enforces it.
 
