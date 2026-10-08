@@ -32,6 +32,7 @@ P9-12 dark mode variants: PASS
 | **P9-06** | Every frame named `NN_ScreenName_FirstName_StudentID` | **106 of 106** frames match the rule, 0 violations | ✅ PASS |
 | **P9-06b** | Authorship visible per member | Saleh `202300540` 36 · Mohammed `202401702` 31 · Tasbeeh `202300549` 18 · Shahad `202305767` 21 (sum 106) | ✅ PASS |
 | **P9-07** | Prototype wiring, no dead ends | **296** reactions across the screens, **97** distinct destination frames, 9 frames that are never a click target: `24`, `30`, `41`, `77`, `78`, `88`, `126`, `133`, `134`, every one of them a named flow start point | ✅ PASS |
+| **P9-07b** | Hotspot placement | **98** screens carry their hotspots on real elements (buttons, tab items, list rows, modal actions) and **8** are deliberately tap-anywhere: `27`, `28`, `46`, `59`, `124`, `128`, `138`, `139`. No screen has zero reactions, so nothing is a dead end | ✅ PASS |
 | **P9-08** | Every screen is a fixed iOS frame | **106 of 106** frames measure exactly **390 × 844** | ✅ PASS |
 | **P9-11** | Accessibility and RTL proof frames | `138_Accessibility_LargeText_Example_Saleh_202300540` and `139_RTL_Arabic_Example_Saleh_202300540` both exist | ✅ PASS |
 | **P9-12** | Dark-mode screen variants | Figma page `6 · Dark Mode Variants (P9-12)` holds **106** variants, one per screen, and **106 of 106** carry the `Dark` mode of the `Color` variable collection set explicitly | ✅ PASS |
