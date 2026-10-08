@@ -76,6 +76,11 @@ Page 5 - Low-Fi Wireframes         106 low-fidelity wireframes, one per screen,
                                    each paired with a legend panel that names its
                                    UI elements and states what each one does.
                                    Retained because Phase 1 (Mockups) needs it.
+Page 6 - Dark Mode Variants        106 dark-mode variants, one per screen, each a
+                                   clone of its light screen with the Dark mode of
+                                   the Color variable collection set explicitly.
+                                   Closes P9-12. Page 3 is untouched, so the 106
+                                   prototype frames keep their audited names.
 
 Screens built (106), by group and owner
   A Onboarding & Auth           01-10      M1 Saleh
@@ -150,8 +155,18 @@ surfaces with a background blur, a 1px hairline light border, a dual drop
 shadow and an inner light edge. Palette built on the Apple system-blue family;
 brand blue #0062CC was chosen over Apple's #007AFF because #007AFF measures
 4.0:1 on white and `primary` is used as text in 26 places, whereas #0062CC
-measures 5.80:1. All fills are variable-bound, so a palette change propagates
-through every screen at once. A complete light and dark mode is defined.
+measures 5.80:1. A complete light and dark mode is defined, and as of 8 Oct 2026
+the dark mode is also *drawn*: 106 dark variants on page 6.
+
+Correction for accuracy, measured on 8 Oct 2026: inside each screen, the
+surfaces, cards, text and decorative blobs are variable-bound (48 of 49 nodes
+on a typical screen), so a token change propagates through all of them. The one
+exception is the **root frame's background gradient**, which is a fixed light
+gradient rather than a variable, so switching the variable mode alone would
+leave light text on a light canvas. That is why each dark variant on page 6 also
+gets the dark canvas gradient (bg/a #0B1220 to bg/b #10233A) applied to the
+clone. An earlier revision of this document claimed that *all* fills are
+variable-bound, which was not accurate at the frame level.
 
 8. Accessibility and legibility
 -------------------------------
@@ -168,12 +183,24 @@ right-to-left Arabic proof is a built frame (139).
       without signing in
   [x] Figma -> File -> Save local copy... -> deliverables/prototype/StudyForge.fig
       (done 8 Oct 2026, 1.2 MB, verified as a real Figma export)
-  [ ] Export the 106 wireframes and 15 flow diagrams at 2x PNG into
-      deliverables/design-document/mockups/figures/ (see
-      deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md section A.16)
+  [x] Export the 106 wireframes and 15 flow diagrams at 2x PNG into
+      deliverables/design-document/mockups/figures/ (done 8 Oct 2026 by script
+      through the Figma MCP server: 121 PNGs, 1720 x 1920 px each, plus the
+      navigation map, the states panel, the design system sheet, the glass
+      reference and the cover in deliverables/design-document/figures/)
+  [x] Dark-mode screen variants (done 8 Oct 2026: 106 variants on Figma page 6,
+      measured in deliverables/prototype/figma-audit.md, with two rendered
+      proofs in deliverables/prototype/dark-mode-proof/)
   [ ] Usability test with 5 users and a SUS score (docs/01 P9-03/04)
   [ ] Re-export StudyForge.fig if the Figma file changes after this revision,
-      so the .fig and the shared link match
+      so the .fig and the shared link match. This now includes the dark-mode
+      page: the .fig current on disk predates page 6
+  [ ] The Design Document PDF export (figures and lists are ready, the PDF
+      toolchain is not on this machine)
+
+The audited numbers behind this document, with what was and was not measured, are
+recorded in deliverables/prototype/figma-audit.md. `bash tools/check-submission.sh`
+re-checks every item above and refuses to pass while one is open.
 
 Known P1 gaps, retained deliberately under the cut-line protocol in
 docs/01-ROADMAP-PHASES-TODOLIST.md section 14: 19-23, 32, 39, 40, 49, 50, 66,
