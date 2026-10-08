@@ -334,9 +334,12 @@ feat/F09-presence-seam            docs(F06)-plan-wizard-flow
 bash tools/new-branch.sh feat/F04-hard-grade-tracking   # creates from up-to-date develop and pushes
 ```
 
-> ⚠️ **Both `main` and `develop` are protected with `enforce_admins: true`.** A direct push
-> is rejected by GitHub, including for the repository owner. Verified:
-> `GH006: Changes must be made through a pull request.`
+> ⚠️ **Both `main` and `develop` require a pull request.** A direct push from a **member
+> account** is rejected by GitHub. Verified: `GH006: Changes must be made through a pull
+> request.` The **repository owner is deliberately exempt** from admin enforcement (decided
+> 8 Oct 2026, because there is a single manager who merges every PR), so the owner may push
+> directly. That exemption applies to nobody else, and the owner still uses a branch and a PR
+> for every normal change. Details: [doc 12 §3.1](docs/12-GIT-WORKFLOW.md).
 
 ### 5.2 One file per commit
 
@@ -845,7 +848,9 @@ function"* — and "the AI wrote it" fails a must-pass component.
 ### Git
 
 **"remote: error: GH006: Protected branch update failed"**
-You are trying to push to `main` or `develop`. Branch protection is working as designed.
+You are trying to push to `main` or `develop`, and you are a member account. The pull-request
+requirement is working as designed: branch and open a PR instead. The repository owner is the
+only exempt account, and only for a hotfix.
 ```bash
 git switch -c feat/Fxx-your-slug          # branch from where you are
 git push -u origin feat/Fxx-your-slug
