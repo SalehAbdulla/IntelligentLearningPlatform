@@ -7,7 +7,7 @@ Phase 1 (Mockups, 8 marks, the largest single rubric block).
 | File | Contents |
 |---|---|
 | `SCREEN-DESCRIPTIONS.md` | **The written half.** Purpose, layout and named key UI elements for all **106** screens, grouped by feature (A–M), plus the coverage audit, the state-coverage audit and the export instructions. |
-| `figures/` | ✅ **the exported 2× PNGs**: 106 wireframes plus the 15 flow diagrams (121 files), written 8 Oct 2026 and verified against the live file. Each wireframe is 1720 × 1920 px, so it clears 150 dpi. The navigation map, the states panel, the design system sheet, the glass reference and the cover are in `../design-document/figures/` |
+| `figures/` | ✅ **the exported 2× PNGs**: 106 wireframes, the 15 flow diagrams, the four system diagrams drawn 8 Oct 2026 (the core learning loop, the RAG pipeline, the system architecture and the AI router decision tree), the navigation map and the two page headers (128 files). Each wireframe is 1720 × 1920 px and the diagrams are 2160 px wide, so they clear 150 dpi. The states panel, the design system sheet, the glass reference and the cover are in `../design-document/figures/` |
 
 ## Where the mockups themselves live
 
