@@ -37,7 +37,7 @@ Rubric area b.
 | # | Rubric bullet (verbatim) | Evidence | Owner | Status |
 |---|---|---|---|---|
 | b1 | *"Submit a structured feature list."* | Design Doc §7 → the master table. [`02-FEATURE-LIST-OWNERSHIP.md` §4](02-FEATURE-LIST-OWNERSHIP.md). | M3 | ⬜ |
-| b2 | *"Name of Feature"* | Master table column *Feature*, F01–F15. | M3 | ⬜ |
+| b2 | *"Name of Feature"* | Master table column *Feature*, F01–F17. | M3 | ⬜ |
 | b3 | *"Main Task: What is the feature trying to accomplish from the user's perspective?"* | Master table column *Main task*, all 15 written from the user's perspective. | M3 | ⬜ |
 | b4 | *"User: Who is the intended user for this feature"* | Master table column *Role*, 4 distinct roles used across the set. | M3 | ⬜ |
 | b5 | *"Sub-Tasks/Steps: Describe a brief flow or individual steps"* | Design Doc §7 → the expanded sub-task table. [`02 §6`](02-FEATURE-LIST-OWNERSHIP.md). | M3 | ⬜ |
@@ -45,7 +45,7 @@ Rubric area b.
 | b7 | *"Tester: Another team member responsible for testing"* | Master table column *Tester* **and** the rotation matrix [`02 §7`](02-FEATURE-LIST-OWNERSHIP.md) proving tester ≠ developer. | M4 | ⬜ |
 | b8 | *"Use a clear, structured table or bullet-point format"* | The tables are used as-is in the PDF. | M3 | ⬜ |
 | b9 | *"Use at least three user roles."* | **Four**: Student · Tutor/Teacher · Study Group Member · Admin. [`00 §7`](00-MASTER-PLAN.md). | M1 | ⬜ |
-| b10 | *"Every student must be responsible for at least two features as a developer."* | Workload-balance table [`02 §3`](02-FEATURE-LIST-OWNERSHIP.md), every member owns **3** (M3 owns 2 + the advanced feature). | M1 | ⬜ |
+| b10 | *"Every student must be responsible for at least two features as a developer."* | Workload-balance table [`02 §3`](02-FEATURE-LIST-OWNERSHIP.md): every member owns **2–4** (M2 and M3 also co-own the advanced feature), the minimum is 2, and M5's two are both net-new. | M1 | ⬜ |
 | b11 | *"the workload should be fairly distributed between team members."* | `02 §3` balance table + the explicit rationale for why frame count is not the fairness metric. | M1 | ⬜ |
 | b12 | *"include at least one advanced feature agreed upon with the tutor, such as LLM integration, maps, group chats, or real-time multiplayer."* | **F15 AI Study Companion** (RAG + adaptive coach). Spec at [`02 §5`](02-FEATURE-LIST-OWNERSHIP.md). **⚠️ requires written tutor approval** | M2 | ⬜ |
 | b13 | *"The advanced feature should be assigned to one or a maximum of two developers."* | F15 → **M2 + M3**, with the ownership split and interface contracts documented. | M2 | ⬜ |
@@ -66,7 +66,7 @@ Rubric area c. This is where the most marks are available, so it gets the most s
 | c4 | *"Identify and label all UI elements, such as buttons, inputs, and labels, and explain their function."* | Every screen's description **names** each element (in bold) **and** states what it does, e.g. *"**Generate** primary button, runs the grounded generation with the chosen settings"*. | all | ⬜ |
 | c5 | *"You may use any software or method… paper sketches scanned, Draw.io, Figma, or Canva."* | **Figma (low-fidelity mode)**, same file as the prototype, so the low-fi and hi-fi stay in sync by construction. Framed as a deliberate efficiency choice. | M2 | ⬜ |
 | c6 | *"should include all necessary screens, show clear navigation or screen flow, label UI elements clearly, and include written screen descriptions"* | Coverage audit against doc 03 · navigation map (doc 03 §5) · labelled elements · descriptions. | M4 | ⬜ |
-| c7 | *"coverage of assigned features"* | All 15 features covered; the [frame-count-by-owner table](03-SCREEN-INVENTORY.md) proves each member covered their own features. | M4 | ⬜ |
+| c7 | *"coverage of assigned features"* | All 17 features covered; the [frame-count-by-owner table](03-SCREEN-INVENTORY.md) proves each member covered their own features. | M4 | ⬜ |
 | c8 | *"clarity of screen flow"* | 15 feature flow diagrams + the global navigation map + the modal/push distinction documented. | M3 | ⬜ |
 | c9 | *"usability of layout"* | Design system ([doc 06](06-DESIGN-SYSTEM.md)) applied consistently: 4 pt grid, 16 pt margins, ≥44 pt targets, one primary action per screen. | M1 | ⬜ |
 | c10 | *"meaningful UI labelling"* | Consistent terminology ("deck", "material", "session", "Coach") across every screen, both documents and the app. | M4 | ⬜ |
@@ -134,11 +134,11 @@ Rubric area e.
 
 | # | Rubric bullet (verbatim) | Evidence | Owner | Status |
 |---|---|---|---|---|
-| p1 | *"All main features of the app are designed and linked based on your feature list."* | All 15 features from [doc 02 §4](02-FEATURE-LIST-OWNERSHIP.md) have frames in [doc 03](03-SCREEN-INVENTORY.md) and are reachable by clicking. Traceability matrix in the appendix. | M2 | ⬜ |
+| p1 | *"All main features of the app are designed and linked based on your feature list."* | All 17 features from [doc 02 §4](02-FEATURE-LIST-OWNERSHIP.md) have frames in [doc 03](03-SCREEN-INVENTORY.md) and are reachable by clicking. Traceability matrix in the appendix. | M2 | ⬜ |
 | p2 | *"Interactive links between screens simulate taps, button presses, and navigation."* | Every item on the [doc 03 §6 wiring checklist](03-SCREEN-INVENTORY.md) verified by a click-through of the whole prototype. 4 end-to-end chains explicitly tested. | M4 | ⬜ |
 | p3 | *"A clearly structured prototype reflects real-world app behavior and layout."* | Role-based tab bars · modal vs push distinction · iOS-native nav bars and sheets · realistic content (no lorem ipsum) · realistic Arabic + English data. | M3 | ⬜ |
 | p4 | *"Visual consistency is maintained in terms of color themes, fonts, and UI elements."* | Figma **variables** bound to every component ([doc 06](06-DESIGN-SYSTEM.md)) so consistency is mechanically enforced, not eyeballed. Verified on the light *and* dark variants. | M1 | ⬜ |
-| p5 | *"Screen organization is consistent in the prototype, and all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."* | Naming rule `NN_ScreenName_FirstName_StudentID` applied to all 141 frames + one Figma page per owner + a naming audit pass. **⚠️ stated rubric line** | M4 | ⬜ |
+| p5 | *"Screen organization is consistent in the prototype, and all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."* | Naming rule `NN_ScreenName_FirstName_StudentID` applied to all 154 frames + one Figma page per owner + a naming audit pass. **⚠️ stated rubric line** | M4 | ⬜ |
 | p6 | *"Submit the interactive prototype file using a Figma file (.fig) alongside the shared link."* | `deliverables/prototype/StudyForge.fig` **and** `deliverables/prototype/figma-link.txt` (URL + "Anyone with the link can view" verified in a private window). **⚠️ both required** | M4 | ⬜ |
 | p7 | *"It is encouraged that your prototype is tested thoroughly by team members and real users to gather feedback."* | Usability test with **5 real users**, 4 scripted tasks, think-aloud, SUS score, findings + applied fixes documented in Design Doc §17. | M4 | ⬜ |
 
@@ -186,7 +186,7 @@ Rubric area e.
 
 | # | Requirement | Evidence | Owner | Status |
 |---|---|---|---|---|
-| app1 | All 15 features present and functional in the app | Tier A demo-solid; Tier B functional ([doc 11 §2](11-APP-IMPLEMENTATION-VIVA.md)) | all | ⬜ |
+| app1 | All 17 features present and functional in the app | Tier A demo-solid; Tier B functional ([doc 11 §2](11-APP-IMPLEMENTATION-VIVA.md)) | all | ⬜ |
 | app2 | Runs on a **physical device** | Demo device with Apple Intelligence enabled | M1 | ⬜ |
 | app3 | Loading, empty, error and offline states implemented | Screen recordings of each state | all | ⬜ |
 | app4 | Real Firebase backend with server-enforced rules | Emulator rules tests passing, including negative tests | M1 | ⬜ |
@@ -233,7 +233,7 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 - [ ] Every ⬜ row in §2–§7 above is now ✅, or consciously accepted as a lost mark
 - [ ] Tutor interview **questions AND responses** are in the document
 - [ ] Written tutor approval for the F15 advanced feature is recorded
-- [ ] Every one of the 15 features has all seven required columns populated
+- [ ] Every one of the 17 features has all seven required columns populated
 - [ ] Workload balance is stated, not just implied
 - [ ] All 89 P0 screens exist in low fidelity, described and labelled
 - [ ] 15 feature flow diagrams + 1 global navigation map
@@ -246,7 +246,7 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 
 ### Gate 2 · Prototype (before 11 Nov)
 
-- [ ] All 15 features designed and **reachable by clicking**
+- [ ] All 17 features designed and **reachable by clicking**
 - [ ] Every hotspot clicked at least once (no dead ends)
 - [ ] 4 end-to-end chains work: onboarding→home · upload→summary→folder · quiz→results→re-plan · paywall→receipt
 - [ ] Every frame named `NN_ScreenName_FirstName_StudentID`, audited
