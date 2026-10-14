@@ -99,18 +99,20 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P1-09` Write app purpose, goals and intended impact + **measurable** success metrics
 - [x] `P1-10` Compile everything into `research/dossier.md` with a Harvard reference list — done 8 Oct 2026 (problem evidence, 13 cited sources, SDG mapping, competitor teardown, change log, road-map coverage; the still-unverified market figures are listed as open rather than asserted)
 
-**Tutor interview question bank** (the rubric requires *"questions asked AND summary of responses"*):
+**Tutor interview question bank** (the rubric requires *"questions asked AND summary of responses"*, and the interview guidelines add a **transcript** and a **summary** as graded parts). Ten core questions, ordered by rubric weight, each mapped to the rubric bullet it serves, plus three buffer questions. The full wording, the asker per question and the 15-minute timing plan live in `deliverables/design-document/DESIGN-DOCUMENT.md` section 3.2, and the transcript template and capture sheet live in [`research/interviews/README.md`](../research/interviews/README.md).
 
-1. Which part of the brief do you consider the highest-risk for our team, AI accuracy, scope, or the payments integration?
-2. What would make you say this project earned full Innovation marks?
-3. Do you approve our proposed advanced feature (F15: RAG-based AI Study Companion with adaptive study paths)? Is that "advanced" enough, or should we stretch further?
-4. How much emphasis should the design document place on engineering architecture versus visual design?
-5. For the Figma prototype, do you expect every error/empty state, or only the main flows?
-6. Is there a preferred balance between feature breadth (15 features) and depth (fewer, richer features)?
-7. Any specific references or frameworks you'd like to see applied (e.g. Nielsen's heuristics, WCAG 2.2)?
-8. What causes groups to lose marks in your experience?
-9. Is a working SwiftUI app alongside the Figma prototype viewed positively, neutrally, or as scope creep?
-10. Any constraints we should respect regarding student data collection in our user testing?
+1. **Advanced feature approval (asked first).** Our advanced feature is F15, an AI helper that answers only from the student's own uploaded files and then builds a study plan. Two of us will build it. Is it advanced enough, is it fine that two of us share it, and can we have that in writing today? Is F09, the live group quiz room, acceptable instead if not?
+2. **Mockup coverage (8 of the 20 marks).** Every screen, or only the main screens of each feature? Do the error, empty, loading and no-internet screens each need their own labelled screen?
+3. **How accurate the AI must be.** Is our plan enough (answers only from the student's file, shows where each answer came from, says how sure it is, a tutor checks AI content first, and no AI marking of real coursework), or must we also measure and report the accuracy?
+4. **Number of features.** 15 features across 4 roles means 3 or 4 each, against a minimum of 2. Is 15 right, or fewer features with more detail?
+5. **Finished screens in Phase 1.** Phase 1 asks for low-fidelity mockups but allows Figma, and our document shows finished high-fidelity screens. Could that cost us mockup marks?
+6. **Payment, which the brief never mentions.** Is the F13 paid subscription a good extra idea, or outside the brief and better left as a note for future work?
+7. **What proves an innovation.** Does each innovation need a screen or a piece of code, or is a written explanation enough?
+8. **User roles.** Study Group Member is not a separate account in our design, a student joins a group and then gets the group features. Does that still count as 4 roles?
+9. **Transcript and summary format.** Word for word and complete? Inside the main document or in an appendix? May we quote the answers directly?
+10. **Usability testing.** We plan 5 classmates and a standard questionnaire (SUS). What permission and privacy rules do you need, and should we avoid asking them to upload their real study files?
+
+**Buffers, if time remains:** whether a working iPhone app next to the Figma prototype is seen as a plus or as too much, the sprint dates and whether the final demo is live on a real device, and how much of the Tap against Apple payment conflict the document should explain.
 
 **Exit gate:** dossier written · interview recorded · advanced feature approved in writing.
 
