@@ -225,7 +225,7 @@ The exhaustive element-by-element legend for every one of the 106 screens is pri
 
 ## A.15 Coverage audit
 
-Every one of the 15 features has at least three screens, and the counts below sum to the 106 frames in the file.
+Every one of the 17 features has at least three screens. Fifteen of them are drawn today, and the counts below sum to the 106 frames in the file; groups **N** (F16, frames 142–147) and **O** (F17, frames 148–154) are inventoried and pending, adding 13 frames.
 
 | Group | Area | Owner | Screens | Frames |
 |---|---|---|---|---|
