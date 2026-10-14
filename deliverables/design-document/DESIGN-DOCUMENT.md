@@ -17,7 +17,7 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 | **Tagline** | Turn any material into mastery. |
 | **Client brief** | Project Brief 2, Intelligent Learning Platform |
 | **Module** | IT8108, Bahrain Polytechnic, Year 3 |
-| **Team (4 members)** | Saleh Abdulla (202300540) · Mohammed Almadhoon (202401702) · Tasbeeh Saeed (202300549) · Shahad Ashoor (202305767) |
+| **Team (5 members)** | Saleh Abdulla (202300540) · Mohammed Almadhoon (202401702) · Tasbeeh Saeed (202300549) · Shahad Ashoor (202305767) · Fatema Ghareeb (202304804) |
 | **Tutors** | Haetham Alhaddad (Coordinator) · Ghassan AlShajjar |
 | **Platform** | iOS 26.0+ · SwiftUI · Swift 6 · Xcode 27 · Firebase (Spark, no-cost tier) |
 | **SDGs** | SDG 4 (Quality Education) · SDG 9 (Industry, Innovation & Infrastructure) · SDG 10 (Reduced Inequalities) |
@@ -68,7 +68,7 @@ commitment to the marker rather than a gate the script enforces.
 | 4.1 | Competitor teardown, screenshots of each product | ⬜ to capture | ⬜ pending |
 | 5.1 | The core learning loop: upload, generate, schedule, practise, measure, adapt | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
 | 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png) | ✅ exported |
-| 9.1 to 9.15 | The 15 per-feature flow diagrams (F01 to F15), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F15` | ✅ exported |
+| 9.1 to 9.17 | The 17 per-feature flow diagrams (F01 to F17), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F17` (`FLOW_F16` and `FLOW_F17` are drawn with the groups N and O frames) | 🔶 15 of 17 exported |
 | 10.1 | The cross-cutting state set (loading, empty, error, offline, success) | [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png) | ✅ exported |
 | 10.2 to 10.107 | The 106 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_141` | ✅ exported |
 | 11.1 | The global navigation map | [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png) | ✅ exported |
@@ -123,7 +123,7 @@ University students accumulate large volumes of unstructured study material (lec
 
 **StudyForge** turns any study material into summaries, flashcards, quizzes and a spaced-repetition plan, and closes the loop between them: **upload, generate, schedule, practise, measure, adapt**. It is an iPhone-first, bilingual (English and Arabic) application built on Apple's on-device intelligence where possible, so the core loop works offline and at no cloud cost, and every AI artefact carries a visible source citation.
 
-The design is documented end to end in this document: 4 user roles, 15 features, 106 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers.
+The design is documented end to end in this document: 4 user roles, 17 features, 106 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan; the **106 built screens** are those already drawn in Figma, and the 13 frames of groups N and O — F16 and F17 — are inventoried and drawn next.)
 
 ## 2. Background research: the problem, who is affected, and why it matters
 
@@ -178,7 +178,7 @@ On-device language models shipped to consumer phones in the last platform cycle,
 | Slot | 15 minutes, allocated by the tutor |
 | Interviewer(s) | Saleh Abdulla (M1), Mohammed Almadhoon (M2), Shahad Ashoor (M4), **three members ask**, as the guidelines require |
 | Attendee | Haetham Alhaddad (module coordinator) |
-| Group attendance | All four members present, the guidelines require **at least four** for the interview to go ahead |
+| Group attendance | All five members present, the guidelines require **at least four** for the interview to go ahead |
 | Scribe | Tasbeeh Saeed (M3), writing the answers live in case the recording is unclear |
 | Format | Semi-structured, ten questions in a fixed priority order, plus three buffer questions |
 | Notes and recording | Verbatim transcript, capture sheet and the written F15 approval, all in `research/interviews/` |
@@ -195,7 +195,7 @@ Ten questions, in plain words, so they can be read out exactly as they stand. Th
 | 1 | "Our advanced feature is F15. It is an AI helper that answers only from the student's own uploaded files, and then builds a study plan. Two of us will build it. The brief says the advanced feature must be agreed with you and built by one or two students. Is F15 advanced enough, and is it fine that two of us share it? Can we have your approval in writing today? If F15 is not advanced enough, would F09, the live group quiz room, be acceptable instead?" | Features List: *"Include one approved advanced feature assigned to one or two developers."* | M2 |
 | 2 | "Mockups are worth 8 of the 20 marks. We have 106 screens, and every screen has a written description and labelled buttons and fields. To get full marks, do we show every screen, or only the main screens of each feature? Do the error, empty, loading and no-internet screens each need their own labelled screen?" | Mockups: *"Include all required screens and clear navigation flow"* and *"Label key UI elements clearly."* | M4 |
 | 3 | "The brief asks how uploaded files become accurate study material. Our plan is: the AI answers only from the student's own file, it shows which part of the file each answer came from, it tells the student how sure it is, and a tutor can check AI content before students see it. We never let AI mark real coursework. Is that what you expect, or do you also want us to measure and report how accurate the AI is?" | Background Research: the real-world problem and why it matters. Innovation: *"relevance, feasibility, and added value."* | M2 |
-| 4 | "We have 15 features across 4 user roles, so each of us builds 3 or 4 features, and the minimum is 2. Is 15 the right number, or would you prefer fewer features with more detail in each one?" | Features List: *"Each student must develop at least two features"* and the workload-balance clause. Mockups: coverage. | M4 |
+| 4 | "We have 17 features across 4 user roles, so each of us builds 2 to 4 features, and the minimum is 2. Is 17 the right number, or would you prefer fewer features with more detail in each one?" | Features List: *"Each student must develop at least two features"* and the workload-balance clause. Mockups: coverage. | M4 |
 | 5 | "Phase 1 asks for low-fidelity mockups, but the brief says we may use Figma. Our document shows finished, high-fidelity Figma screens. Could showing finished screens cost us mockup marks, or is it fine as long as we cover every screen and label everything?" | Mockups: *"Submit low-fidelity mockups for assigned features."* | M4 |
 | 6 | "Brief 2 does not mention payment at all. We added a paid subscription (F13) using Tap, and we wrote down that the App Store would require Apple's own payment system instead. Is that a good extra idea, or is it outside the brief and better left as a note for future work?" | Innovation: *"meaningful enhancement of the selected brief"* and *"relevance."* | M2 |
 | 7 | "Innovation is marked on whether the idea is relevant, realistic and adds value. Our main ideas are: the AI runs on the phone first and only uses the cloud when needed, every AI answer shows its source, the app finds weak topics and rebuilds the study plan, and full Arabic right to left with easy-to-read fonts for dyslexia. For full marks, does each idea need a screen or a piece of code to prove it, or is a written explanation enough?" | Innovation: *"Demonstrate original, user-focused improvements"* and *"feasibility."* | M1 |
@@ -343,13 +343,15 @@ The brief requires a structured feature list with name, user role, main task, fl
 | F10 | Resource Bookmarking & Collections | Student | Save anything for later and actually revisit it | Bookmark from any screen → choose or create collection → offline cache → collection view → resume via deep link | M4 | M3 |
 | F11 | Tutor Content Studio | Tutor | Publish and manage course material for a cohort | Create course → roster → publish material → AI review queue → approve, edit or reject → cohort progress → announcement → gradebook export | M2 | M4 |
 | F12 | Admin Content Management & Moderation | Admin | Keep content correct, safe and compliant | Admin KPIs → user list → user detail (role change or suspend) → moderation queue → flagged reports → taxonomy → AI config → audit log | M4 | M2 |
-| F13 | Subscription & Payments | Student | Buy and manage a premium tier securely | Paywall → plan select → compare → order summary (BHD) → Tap card or BenefitPay → processing → server-side verification → entitlement → receipt → manage | M3 | M2 |
+| F13 | Subscription & Payments | Student | Buy and manage a premium tier securely | Paywall → plan select → compare → order summary (BHD) → Tap card or BenefitPay → processing → server-side verification → entitlement → receipt → manage | M3 | M5 |
 | F14 | Notifications & Reminders | All | Bring the user back at exactly the right moment | Server event or local schedule → relevance and quiet-hours filter → FCM push or local notification → tap → deep link → inbox → preferences | M1 | M3 |
 | F15 | **ADVANCED** · AI Study Companion (RAG and Adaptive Coach) | Student | Ask anything grounded in your own materials and receive a personalised study path | Ask → on-device embedding search over own library → grounded answer with citation chips → adjust explanation level → recommended study path → rate response | **M2 + M3** | M1 |
+| F16 | Admin-Moderated Group Chat | Admin, Study Group Member | Talk to a study group inside a chat an admin moderates and is always present in | Open group chat → admin presence banner → post and read messages → moderator pins an announcement → hide, delete or flag any message with a reason → tombstone shown → action written to the audit log | M5 | M4 |
+| F17 | Active Recall Space (Anki-style spaced repetition) | Student | Review everything due across every deck in one place, the way Anki does | Recall Space home → due-today counts by card state → filter by deck or tag → session → flip → rate Again/Hard/Good/Easy with the next interval shown → learning steps graduate the card → summary → retention, heatmap and streak | M5 | M2 |
 
-**Workload balance:** every member owns at least three features (M1: 3, M2: 4 plus shared F15, M3: 3 plus shared F15, M4: 4), comfortably above the rubric minimum of two per student. **Advanced feature:** F15, co-owned by M2 and M3, whose feature areas are deliberately disjoint so neither can block the other.
+**Workload balance:** every member owns at least two features (M1: 3, M2: 4 plus shared F15, M3: 3 plus shared F15, M4: 4, M5: 2), meeting the rubric minimum of two per student. M5's two are both **net-new** — a new module, 13 new frames, new rules and new tests each — and she also carries a three-feature testing rotation, so effort is balanced even though feature count is not; the full frames-and-testers view is in [doc 02 §3](../../docs/02-FEATURE-LIST-OWNERSHIP.md). **Advanced feature:** F15, co-owned by M2 and M3, whose feature areas are deliberately disjoint so neither can block the other.
 
-**Sub-tasks and edge cases.** Each of the 15 features is expanded into an ordered sub-task list with explicit edge cases and error handling, and the Firestore collections it touches. These expansions are what the prototype's error and feedback states are built from. The full expansion is maintained in `docs/02-FEATURE-LIST-OWNERSHIP.md` §6 and is reproduced feature by feature alongside the mockups in §10.
+**Sub-tasks and edge cases.** Each of the 17 features is expanded into an ordered sub-task list with explicit edge cases and error handling, and the Firestore collections it touches. These expansions are what the prototype's error and feedback states are built from. The full expansion is maintained in `docs/02-FEATURE-LIST-OWNERSHIP.md` §6 and is reproduced feature by feature alongside the mockups in §10.
 
 *Table 7.1, the master feature list (required columns: feature name, main task, user, sub-tasks/steps, developer, tester).*
 
@@ -406,6 +408,8 @@ Each feature is broken into an ordered set of steps (the brief's "sub-tasks or i
 | F13 Payments | 1 Paywall, 2 select plan, 3 order summary in BHD with VAT, 4 choose method, 5 Tap card or BenefitPay, 6 processing, 7 server-side verification via webhook, 8 entitlement written, 9 receipt, 10 manage or cancel |
 | F14 Notifications | 1 Server event or local schedule fires, 2 relevance and quiet-hours filter, 3 deliver FCM or local notification, 4 tap deep-links to the screen, 5 inbox history, 6 preferences respected |
 | F15 Companion | 1 Ask a question, 2 embed the query on-device, 3 retrieve top-k chunks, 4 build a grounded prompt, 5 router picks a tier, 6 streamed answer with citations, 7 tap citation to source, 8 adjust explanation level, 9 request a study path, 10 capture feedback |
+| F16 Moderated chat | 1 Open the group chat, 2 admin presence banner and shield badge render, 3 post and read messages, 4 moderator pins an announcement, 5 long-press a message, 6 choose hide/delete/pin/flag, 7 capture a reason, 8 tombstone replaces the body, 9 the action is written to the append-only audit log |
+| F17 Recall Space | 1 Open the Recall Space, 2 build the due-today queue across every deck, 3 show counts by card state, 4 optionally filter by deck or tag, 5 start the session, 6 reveal, 7 rate with the next interval shown, 8 learning steps graduate the card, 9 session summary, 10 retention, heatmap and streak update |
 
 *Table 9.1, every feature expanded into its ordered sub-tasks and steps.*
 
@@ -430,12 +434,14 @@ Every step above has at least one designed error or empty state, since the brief
 | 9.13 | F13 Subscription and payments | [FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png](mockups/figures/FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png) |
 | 9.14 | F14 Notifications and reminders | [FLOW_F14_Notifications_Reminders_Saleh.png](mockups/figures/FLOW_F14_Notifications_Reminders_Saleh.png) |
 | 9.15 | F15 AI study companion (advanced) | [FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png](mockups/figures/FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png) |
+| 9.16 | F16 Admin-moderated group chat | `FLOW_F16_Moderated_Group_Chat_Fatema.png` *(drawn with the group N frames)* |
+| 9.17 | F17 Active recall space | `FLOW_F17_Active_Recall_Space_Fatema.png` *(drawn with the group O frames)* |
 
 ## 10. Low-fidelity mockups
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `115_Admin_AIConfig_Settings_Shahad_202305767`. The file holds **106 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **15 per-feature flow diagrams** on page `2 · Flow Overview`. The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (121 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `115_Admin_AIConfig_Settings_Shahad_202305767`. The file holds **106 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (15 exported so far). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (121 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
@@ -456,7 +462,16 @@ The prototype is built in a single Figma file with one **page per owner**, so au
 
 *Table 10.1, the 106 screens grouped by feature area, with the owning member.*
 
-Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21**. The per-screen purpose-and-layout descriptions, the coverage audit against all 15 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
+**Pending build (added 14 Oct 2026).** The two features added with the fifth member add **13 further frames**, inventoried in [doc 03 §3](../../docs/03-SCREEN-INVENTORY.md) and drawn next:
+
+| Group | Area | Owner | Frames | Count |
+|---|---|---|---|---|
+| N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
+| O | Active Recall Space (F17) | M5 | 148–154 | 7 |
+
+They are listed here rather than in Table 10.1 so that the **106** above stays an accurate count of what is actually drawn, and the 154-frame inventory remains the full plan.
+
+Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21** built, plus **M5 Fatema 13** pending. The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
@@ -501,6 +516,8 @@ Every other screen follows this template. The per-feature tables below list the 
 | F13 Payments | L01–L09 | Paywall, plan compare, order summary, method, processing, receipt |
 | F14 Notifications | B06–B09, M | Preferences, inbox, notification detail, permission states |
 | F15 Companion | H01–H06 | Coach chat, citation sheet, explanation level, study path, feedback |
+| F16 Moderated chat | N01–N06 | Moderator presence banner, message action sheet, tombstone, reason sheet, slow-mode notice, audit row |
+| F17 Recall Space | O01–O07 | Due-today queue, session front and back, daily limits, stats, deck filter, empty state |
 | States (all) | M01–M14 | Loading, empty, offline, error, quota, success, permission denied |
 
 *Table 10.3, the screens that implement each feature, with a one-line purpose each.*
