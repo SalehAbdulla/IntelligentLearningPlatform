@@ -21,6 +21,9 @@ Legend: `[ ]` open, `[x]` done.
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
+- [x] **Fifth member added** — **M5 Fatema Ghareeb** `202304804` fills the brief's default fifth seat, so the four-member deviation D16 is closed. Features went **15 → 17**, frames **141 → 154**, the lane map **47 → 49 files across four member lanes**. Recorded in [doc 02 §2.1](02-FEATURE-LIST-OWNERSHIP.md), [doc 03 §3](03-SCREEN-INVENTORY.md) and [doc 09 D27](09-RISKS-OPEN-QUESTIONS.md)
+- [x] **F16 and F17 specified end to end** — **F16 Admin-Moderated Group Chat** (the admin is always in the space, enforced in `firestore.rules`) and **F17 Active Recall Space** (Anki-style: one cross-deck queue, learning steps, daily limits, maturity states). Added to the feature list, the screen inventory (groups N and O, frames 142–154), the test rotation, the rubric matrix and the graded Design Document
+- [x] **F16/F17 core implemented, tested and pushed** — `feat/F16-moderated-group-chat` (**16 tests**) and `feat/F17-recall-space` (**29 tests**), both building clean and both awaiting review into `develop`. Scaffolded by M1; **M5 owns, extends and finishes them**, with the remaining work marked as `TODO(M5 · F16|F17)` in the code
 
 ## 1. In-code TODO markers (13 open)
 
@@ -115,7 +118,7 @@ Group K (admin content management) is now feature-complete.
 > `bash tools/check-lane.sh M2|M3|M4` refuses a protected branch or an out-of-lane file, and
 > `bash tools/check-lane.sh owner` does the same for M1's project-level lane.
 
-- [ ] M2, M3 and M4 still have zero authored commits (only Saleh appears in `git shortlog`)
+- [ ] M2, M3, M4 and M5 still have zero authored commits (only Saleh appears in `git shortlog`). The F16/F17 scaffolding on `feat/F16-moderated-group-chat` and `feat/F17-recall-space` is **M1's**, deliberately: M1's task is "split the codebase so others can own it". **M5 must review, extend, test and commit those features under her own identity** before they count as hers
 - [ ] Sprint-1 contribution logs are empty templates
 - [ ] Missing artefacts: `research/testing/`, `research/reviews/`, `research/meeting-notes/`, `research/demo/` (`research/interviews/` now exists, with the interview pack, transcript template and capture sheet, and still needs the recorded transcript and the written F15 approval)
 - [ ] Sprint review recording, `board.png`, `retro.md`
