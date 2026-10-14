@@ -57,7 +57,8 @@ if not contig:
 if dups:
     FAIL.append("duplicate frame numbers")
 
-# every frame must end in an owner handle {M1}..{M4}; {M5} must be gone
+# every frame must end in an owner handle {M1}..{M5}. M5 is a real member since
+# 14 Oct 2026 (Fatema Ghareeb), so the handle is expected, not forbidden.
 handles = [re.search(r"\{(M\d)\}$", r[2]) for r in rows]
 badh = [(r[0], r[2]) for r, h in zip(rows, handles) if not h]
 print("   frames without handle :", badh or "none")
@@ -68,8 +69,10 @@ own = collections.Counter(h.group(1) for h in handles if h)
 print("   frames per owner      :", dict(sorted(own.items())), "| sum:", sum(own.values()))
 if sum(own.values()) != len(rows):
     FAIL.append("per-owner frame sum mismatch")
-if "M5" in own:
-    FAIL.append("{M5} handle still present in frames")
+unknown_owner = sorted(set(own) - {"M1", "M2", "M3", "M4", "M5"})
+print("   unknown owner handles :", unknown_owner or "none")
+if unknown_owner:
+    FAIL.append("unknown frame owner handle(s): %s" % unknown_owner)
 
 # ─────────────────────────────────────────────────────────── 3. feature ownership
 feat = open("docs/02-FEATURE-LIST-OWNERSHIP.md", encoding="utf-8").read()
@@ -82,8 +85,8 @@ seen = [f for f, _, _ in master]
 print("3. master-table rows     :", len(master))
 dupf = [x for x, c in collections.Counter(seen).items() if c > 1]
 print("   duplicate feature IDs :", dupf or "none")
-expected = ["F%02d" % i for i in range(1, 16)]
-print("   F01..F15 present      :", seen == expected)
+expected = ["F%02d" % i for i in range(1, 18)]
+print("   F01..F17 present      :", seen == expected)
 if seen != expected:
     FAIL.append("feature IDs incomplete or reordered: %s" % seen)
 if dupf:
@@ -111,8 +114,10 @@ if under:
 
 # ownership must agree between doc 02 (master table) and doc 03 (frame handles)
 GROUP_OWNER = {"A": "M1", "B": "M1", "C": "M1", "D": "M2", "E": "M2", "F": "M2",
-               "G": "M3", "I": "M4", "J": "M2", "K": "M4", "L": "M3", "M": "M1"}
+               "G": "M3", "I": "M4", "J": "M2", "K": "M4", "L": "M3", "M": "M1",
+               "N": "M5", "O": "M5"}
 # group H is the co-owned advanced feature: its frames are tagged {M2}
+# groups N and O are M5's two features, F16 (moderated group chat) and F17 (active recall space)
 mismatch = []
 for grp_id, h in zip([r[0] for r in rows], handles):
     if not h:
@@ -124,18 +129,39 @@ print("   group/owner agreement :", "yes" if not mismatch else mismatch)
 if mismatch:
     FAIL.append("frame owner disagrees with its group owner")
 
-# ─────────────────────────────────────────────────────────── 4. stale references
+# ─────────────────────────────────────────────── 4. member roster sanity
+# M5 is a real member since 14 Oct 2026 (Fatema Ghareeb, 202304804), so a mention of M5 is
+# no longer stale in itself. What IS stale is a sentence that still asserts the fifth SEAT is
+# empty or removed WITHOUT framing that historically — those sentences were true between
+# 28 Sep and 14 Oct and must now read as history, not as the current state.
+#
+# The phrases are deliberately narrow. A bare "removed"/"deleted" is NOT evidence of a stale
+# seat: F16 legitimately describes a moderator deleting a message, and F12 a suspended user.
+STALE_M5 = ("has been removed", "was removed", "remove m5", "removed m5", "m5 is gone",
+            "no m5", "without m5", "unfilled", "vacant", "fifth seat is empty",
+            "seat is empty", "empty seat", "fifth member is absent")
+FRAMED = ("former", "resolved", "redistribut", "distribut", "history", "histor",
+          "14 oct", "joined", "filled", "brief's default", "brief's own default",
+          "between 28 sep")
 stale_found = []
 for f in ["README.md"] + sorted(glob.glob("docs/*.md")):
     for l in open(f, encoding="utf-8").read().splitlines():
         low = l.lower()
-        # a mention of M5 is only acceptable if the same line frames it historically
-        if "m5" in low and not any(k in low for k in (
-                "former", "resolved", "redistribut", "distribut", "removed")):
-            stale_found.append((f, l.strip()[:90]))
+        if "m5" in low and any(k in low for k in STALE_M5):
+            if not any(k in low for k in FRAMED):
+                stale_found.append((f, l.strip()[:90]))
 print("4. stale M5 references   :", stale_found if stale_found else "none")
 if stale_found:
     FAIL.append("stale M5 reference")
+
+# the roster must actually name the fifth member, in doc 02 and in the README
+roster = open("docs/02-FEATURE-LIST-OWNERSHIP.md", encoding="utf-8").read()
+readme = open("README.md", encoding="utf-8").read()
+missing_m5 = [n for n, t in (("docs/02", roster), ("README.md", readme))
+              if "Fatema Ghareeb" not in t or "202304804" not in t]
+print("   roster names M5       :", "yes" if not missing_m5 else "missing in %s" % missing_m5)
+if missing_m5:
+    FAIL.append("the fifth member is not named in the roster: %s" % missing_m5)
 
 print()
 print("VERDICT:", "ALL CHECKS PASSED" if not FAIL else "FAILURES: %s" % FAIL)
