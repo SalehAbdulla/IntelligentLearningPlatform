@@ -58,7 +58,7 @@ struct GroupModerationTests {
     func aMemberHidingIsRefused() {
         var moderation = state()
 
-        #expect(throws: ModerationError.notTheModerator) {
+        #expect(throws: ChatModerationError.notTheModerator) {
             try moderation.apply(.hide, to: "m1", reason: .spam, by: "student-9", at: now)
         }
         #expect(moderation.isHidden("m1") == false)
@@ -139,11 +139,11 @@ struct GroupModerationTests {
     func otherReasonNeedsANote() {
         var moderation = state()
 
-        #expect(throws: ModerationError.reasonRequiresNote) {
+        #expect(throws: ChatModerationError.reasonRequiresNote) {
             try moderation.apply(.hide, to: "m1", reason: .other, by: moderator.id, at: now)
         }
         // Whitespace is not a note.
-        #expect(throws: ModerationError.reasonRequiresNote) {
+        #expect(throws: ChatModerationError.reasonRequiresNote) {
             try moderation.apply(.hide, to: "m1", reason: .other, note: "   ",
                                  by: moderator.id, at: now)
         }
