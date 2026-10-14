@@ -33,7 +33,7 @@ benefit, because a change to a screen changes its wireframe too.
 
 | Rubric point | Where |
 |---|---|
-| Coverage of assigned features | All 15 features, 106 frames; per-owner counts in `SCREEN-DESCRIPTIONS.md` §A.15 |
+| Coverage of assigned features | All 17 features (106 frames built; groups N and O — F16 and F17, 13 frames — inventoried and pending); per-owner counts in `SCREEN-DESCRIPTIONS.md` §A.15 |
 | All necessary screens | 13 groups A–M, listed in §A.15 |
 | Clear navigation / screen flow | 15 per-feature flow diagrams + the global navigation map on Figma page 2 |
 | Label UI elements clearly | Numbered callout badges on every wireframe, mapped to the legend panel beside it |
