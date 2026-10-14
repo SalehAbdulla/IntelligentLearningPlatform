@@ -73,7 +73,7 @@ Group K (admin content management) is now feature-complete.
 
 ## 4. Design Document, 10%, due 22 Oct 2026 (work-queue C)
 
-- [ ] Section 3.2/3.3 tutor-interview responses and "what changed" (blocked on the interview)
+- [ ] Section 3.3 tutor-interview responses and "what changed" (blocked on the interview; the questions in section 3.2 are finalised and mapped to the rubric bullets, and the transcript template is in `research/interviews/README.md`)
 - [ ] Section 3.1 interview date is `to be recorded`
 - [ ] Section 3.4 written approval for F15 (`pending`)
 - [ ] Section 17.3 usability test with 5 users plus a SUS score (planned, not run)
@@ -117,7 +117,7 @@ Group K (admin content management) is now feature-complete.
 
 - [ ] M2, M3 and M4 still have zero authored commits (only Saleh appears in `git shortlog`)
 - [ ] Sprint-1 contribution logs are empty templates
-- [ ] Missing artefacts: `research/testing/`, `research/reviews/`, `research/meeting-notes/`, `research/interviews/`, `research/demo/`
+- [ ] Missing artefacts: `research/testing/`, `research/reviews/`, `research/meeting-notes/`, `research/demo/` (`research/interviews/` now exists, with the interview pack, transcript template and capture sheet, and still needs the recorded transcript and the written F15 approval)
 - [ ] Sprint review recording, `board.png`, `retro.md`
 - [ ] Keep the per-member cheat sheets current
 - [ ] Each member: set the local git identity, confirm `.mailmap`, claim a feature, make a real change, write a test log
