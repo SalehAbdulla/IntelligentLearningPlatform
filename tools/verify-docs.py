@@ -36,7 +36,7 @@ if bad:
 
 # ─────────────────────────────────────────────────────────── 2. screen inventory
 inv = open("docs/03-SCREEN-INVENTORY.md", encoding="utf-8").read()
-rows = re.findall(r"^\| ([A-M]\d{2}) \| `(\d{2,3})_([^`]+)` \| ([^|]*)\| (P\d) \|", inv, re.M)
+rows = re.findall(r"^\| ([A-O]\d{2}) \| `(\d{2,3})_([^`]+)` \| ([^|]*)\| (P\d) \|", inv, re.M)
 nums = sorted(int(n) for _, n, *_ in rows)
 tiers = collections.Counter(r[4] for r in rows)
 print("2. frames listed         :", len(rows))
