@@ -349,7 +349,7 @@ git stash && git stash pop                    # park work temporarily
 | Assessed component | What git gives the marker |
 |---|---|
 | **Sprints (10%, individual)** | Commits per author over time · branches per member · PRs authored and reviewed · daily-push pattern showing continuous progress |
-| **iOS App (60%, must pass)** | `main` always builds · feature branches map to the 15 features · `git log --grep="F04"` traces a feature end to end |
+| **iOS App (60%, must pass)** | `main` always builds · feature branches map to the 17 features · `git log --grep="F04"` traces a feature end to end |
 | **VIVA** | Point at a branch, show the commits, open the diff, the work is provable in seconds |
 | **LO3 (professional standards)** | Conventional Commits, conventional branching, PR templates, no secrets in history |
 
@@ -482,6 +482,7 @@ git config --local user.email "<studentID>@student.polytechnic.bh"
 | M2 | Mohammed Almadhoon | `202401702` |
 | M3 | Tasbeeh Saeed | `202300549` |
 | M4 | Shahad Ashoor | `202305767` |
+| M5 | Fatema Ghareeb | `202304804` |
 
 ### Why a `.mailmap` exists
 
