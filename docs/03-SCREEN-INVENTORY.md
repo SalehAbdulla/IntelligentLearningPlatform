@@ -83,11 +83,11 @@ The P1 remainder (89 frames in this inventory) is retained as the plan but is de
 
 ## 2. Priority tiers and the realistic cut-line
 
-141 frames across 15 features is the full inventory. **At this component's 10% weight, that is far too much to build.** The realistic target is the **coverage floor** below.
+154 frames across 17 features is the full inventory. **At this component's 10% weight, that is far too much to build.** The realistic target is the **coverage floor** below.
 
 | Tier | Frames | Meaning | Commitment at 10% weight |
 |---|---|---|---|
-| **Coverage floor** | **~55** | Every one of the 15 features' happy path, fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
+| **Coverage floor** | **~55** | Every one of the 17 features' happy path, fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
 | **P0, full happy path** | **89** | The coverage floor plus secondary paths within each feature | **Target** |
 | **P1, states & kits** | **51** | Error / empty / loading / success states, permission screens, component boards, accessibility proof | Only if the app is on track |
 | **P2, stretch** | **1** | Voice-quiz variant | Cut |
