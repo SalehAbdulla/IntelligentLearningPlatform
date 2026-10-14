@@ -91,7 +91,8 @@ per-screen figure index is §10.4.
 |---|---|
 | 2.1 | The SDG alignment, one contribution per goal |
 | 3.1 | The interview record (date, location, attendees) |
-| 3.2 | The tutor answers and what changed in the design as a result |
+| 3.2 | The ten interview questions, the rubric bullet each one serves, and who asks it |
+| 3.3 | The tutor answers and what changed in the design as a result |
 | 4.1 | The competitor teardown, with the gap StudyForge exploits |
 | 5.1 | Goals mapped to a measurable success metric and a target |
 | 6.1 | The four user roles, their exclusive capabilities and their home screen |
@@ -166,54 +167,72 @@ On-device language models shipped to consumer phones in the last platform cycle,
 
 ## 3. Tutor interview: questions asked and summary of responses
 
-> ⚠️ **Status: the interview is booked but has not yet taken place.** The questions below are finalised. The response summary (§3.2) and "what changed" (§3.3) must be completed immediately after the interview, and the rubric requires both halves, so **this section must not be submitted without the responses.** It is structured so that filling it in takes minutes.
+> ⚠️ **Status: the interview is booked but has not yet taken place.** The questions below are finalised, ordered by rubric weight, and each one is mapped to the rubric bullet it serves, so nothing asked is wasted. The rubric requires **both** halves, the questions asked *and* the summary of responses, and the interview guidelines make the transcript and the summary graded parts in their own right, so **this section must not be submitted without them.** §3.2 holds the questions, §3.3 holds the summary and what changed, and the verbatim transcript, the capture sheet and the written F15 approval live in `research/interviews/` (see its `README.md` for the transcript template). It is structured so that filling it in takes minutes.
 
 ### 3.1 Interview record
 
 | Field | Value |
 |---|---|
 | Date | *to be recorded* |
-| Location | *Bahrain Polytechnic, within class time (as the brief requires)* |
-| Interviewer(s) | Mohammed Almadhoon (M2), Shahad Ashoor (M4) |
+| Location | *Bahrain Polytechnic, in the group's allocated section, second session of the week (as the interview guidelines require)* |
+| Slot | 15 minutes, allocated by the tutor |
+| Interviewer(s) | Saleh Abdulla (M1), Mohammed Almadhoon (M2), Shahad Ashoor (M4), **three members ask**, as the guidelines require |
 | Attendee | Haetham Alhaddad (module coordinator) |
-| Format | Semi-structured, ~20 minutes |
-| Notes and recording | `research/interviews/` |
+| Group attendance | All four members present, the guidelines require **at least four** for the interview to go ahead |
+| Scribe | Tasbeeh Saeed (M3), writing the answers live in case the recording is unclear |
+| Format | Semi-structured, ten questions in a fixed priority order, plus three buffer questions |
+| Notes and recording | Verbatim transcript, capture sheet and the written F15 approval, all in `research/interviews/` |
+| Consent | Recording permission is asked, and the answer is written into the transcript before the first question |
 
 *Table 3.1, the interview record (date, location, attendees).*
 
 ### 3.2 Questions asked
 
-1. Which part of the brief do you consider the highest-risk for our team: AI accuracy, scope, or the payments integration?
-2. What would make you say this project earned full Innovation marks?
-3. Do you approve our proposed advanced feature (F15: a RAG-based AI Study Companion with adaptive study paths)? Is that "advanced" enough, or should we stretch further?
-4. How much emphasis should the design document place on engineering architecture versus visual design?
-5. For the Figma prototype, do you expect every error and empty state, or only the main flows?
-6. Is there a preferred balance between feature breadth (15 features) and depth (fewer, richer features)?
-7. Are there specific references or frameworks you would like to see applied (for example Nielsen's heuristics, or WCAG 2.2)?
-8. What causes groups to lose marks in your experience?
-9. Is a working SwiftUI app alongside the Figma prototype viewed positively, neutrally, or as scope creep?
-10. Are there constraints we should respect regarding student data collection in our user testing?
+Ten questions, in plain words, so they can be read out exactly as they stand. The order is deliberate: the questions that move the most marks, and the one that needs a written answer, come first, so a shortened slot still protects them. Three members ask, as the guidelines require, and the rubric bullet each question serves is named, so nothing asked is wasted. Full wording, timings and the buffer questions are in `research/interviews/README.md`.
+
+| # | Question | Rubric bullet it serves | Asked by |
+|---|---|---|---|
+| 1 | "Our advanced feature is F15. It is an AI helper that answers only from the student's own uploaded files, and then builds a study plan. Two of us will build it. The brief says the advanced feature must be agreed with you and built by one or two students. Is F15 advanced enough, and is it fine that two of us share it? Can we have your approval in writing today? If F15 is not advanced enough, would F09, the live group quiz room, be acceptable instead?" | Features List: *"Include one approved advanced feature assigned to one or two developers."* | M2 |
+| 2 | "Mockups are worth 8 of the 20 marks. We have 106 screens, and every screen has a written description and labelled buttons and fields. To get full marks, do we show every screen, or only the main screens of each feature? Do the error, empty, loading and no-internet screens each need their own labelled screen?" | Mockups: *"Include all required screens and clear navigation flow"* and *"Label key UI elements clearly."* | M4 |
+| 3 | "The brief asks how uploaded files become accurate study material. Our plan is: the AI answers only from the student's own file, it shows which part of the file each answer came from, it tells the student how sure it is, and a tutor can check AI content before students see it. We never let AI mark real coursework. Is that what you expect, or do you also want us to measure and report how accurate the AI is?" | Background Research: the real-world problem and why it matters. Innovation: *"relevance, feasibility, and added value."* | M2 |
+| 4 | "We have 15 features across 4 user roles, so each of us builds 3 or 4 features, and the minimum is 2. Is 15 the right number, or would you prefer fewer features with more detail in each one?" | Features List: *"Each student must develop at least two features"* and the workload-balance clause. Mockups: coverage. | M4 |
+| 5 | "Phase 1 asks for low-fidelity mockups, but the brief says we may use Figma. Our document shows finished, high-fidelity Figma screens. Could showing finished screens cost us mockup marks, or is it fine as long as we cover every screen and label everything?" | Mockups: *"Submit low-fidelity mockups for assigned features."* | M4 |
+| 6 | "Brief 2 does not mention payment at all. We added a paid subscription (F13) using Tap, and we wrote down that the App Store would require Apple's own payment system instead. Is that a good extra idea, or is it outside the brief and better left as a note for future work?" | Innovation: *"meaningful enhancement of the selected brief"* and *"relevance."* | M2 |
+| 7 | "Innovation is marked on whether the idea is relevant, realistic and adds value. Our main ideas are: the AI runs on the phone first and only uses the cloud when needed, every AI answer shows its source, the app finds weak topics and rebuilds the study plan, and full Arabic right to left with easy-to-read fonts for dyslexia. For full marks, does each idea need a screen or a piece of code to prove it, or is a written explanation enough?" | Innovation: *"Demonstrate original, user-focused improvements"* and *"feasibility."* | M1 |
+| 8 | "The brief lists Study Group Member as a role. In our design it is not a separate account: a student joins a group and then gets the group features. Does that still count as 4 roles for the rubric?" | Features List: *"Use at least three user roles."* | M2 |
+| 9 | "The transcript and the summary are graded parts of the document. Do you want the transcript word for word and complete? Should it go inside the main document or in an appendix? May we quote your answers directly?" | Background Research: *"Include questions asked and summary of responses."* Document Organization: structure and consistency. | M4 |
+| 10 | "We plan to test the app with 5 classmates and give them a standard usability questionnaire, the SUS. What permission and privacy rules do you need from us, and should we avoid asking them to upload their real study files?" | Background Research: supporting research. Mockups: usability of layout. | M1 |
+
+*Table 3.2, the ten interview questions, the rubric bullet each one serves, and who asks it.*
+
+**Buffer questions**, asked only if time remains after question 10. They resolve assumptions the document currently states rather than asks:
+
+1. "Is a working SwiftUI app alongside the Figma prototype viewed positively as feasibility evidence, neutrally, or as scope creep?"
+2. "Sprint boundaries and the final demonstration date are not published in the brief. May we set five two-week sprints aligned to the 22 October and 12 November gates, and is the final demonstration live on a device?"
+3. "How much of the Tap against Apple In-App Purchase conflict should the document carry: one paragraph, or a full migration path?"
+
+**Timing plan for the 15 minutes.** Consent and framing 0:00 to 0:45 · Q1 0:45 to 2:30 · Q2 2:30 to 4:15 · Q3 4:15 to 5:45 · Q4 5:45 to 7:00 · Q5 7:00 to 8:15 · Q6 8:15 to 9:30 · Q7 9:30 to 10:30 · Q8 10:30 to 11:30 · Q9 11:30 to 12:30 · Q10 12:30 to 13:30 · buffers and closing 13:30 to 15:00. Q1 is asked first and is not sacrificed, because the rubric needs that approval in writing.
 
 ### 3.3 Summary of responses and impact on the design
 
-| # | Summary of response | What changed in the design as a result |
-|---|---|---|
-| 1 | *pending* | *pending* |
-| 2 | *pending* | *pending* |
-| 3 | *pending* | *pending* |
-| 4 | *pending* | *pending* |
-| 5 | *pending* | *pending* |
-| 6 | *pending* | *pending* |
-| 7 | *pending* | *pending* |
-| 8 | *pending* | *pending* |
-| 9 | *pending* | *pending* |
-| 10 | *pending* | *pending* |
+| # | Question topic | Summary of response | What changed in the design as a result |
+|---|---|---|---|
+| 1 | Advanced feature F15 approval | *pending* | *pending* |
+| 2 | Mockup coverage and labelled states | *pending* | *pending* |
+| 3 | Accuracy standard for generated resources | *pending* | *pending* |
+| 4 | Feature breadth against depth | *pending* | *pending* |
+| 5 | Low-fidelity against high-fidelity in Phase 1 | *pending* | *pending* |
+| 6 | Monetisation beyond the brief | *pending* | *pending* |
+| 7 | Evidence required for the Innovation marks | *pending* | *pending* |
+| 8 | Study Group Member as a role | *pending* | *pending* |
+| 9 | Transcript and summary format and placement | *pending* | *pending* |
+| 10 | Usability-testing consent and data | *pending* | *pending* |
 
-*Table 3.2, the tutor answers and what changed in the design as a result.*
+*Table 3.3, the tutor answers and what changed in the design as a result.*
 
 ### 3.4 Written approval of the advanced feature (F15)
 
-Requested in question 3. Status: **pending**. On receipt, store the written approval in `research/interviews/` and record the date and the approver here.
+Requested in question 1, which is asked first for exactly this reason. Status: **pending**. On receipt, store the written approval in `research/interviews/f15-advanced-feature-approval.md` and record the date and the approver here. If the tutor judges F15 is not advanced enough, F09 (live group revision arena) is the prepared substitute and is promoted in its place.
 
 ## 4. Competitive analysis
 
