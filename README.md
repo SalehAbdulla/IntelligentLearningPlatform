@@ -52,7 +52,7 @@
 
 ## Team
 
-**4 members, group size approved by the tutor.** (The brief's default is 5; the tutor has confirmed 4 is acceptable for this group.)
+**5 members — the brief's own default.** (Between 28 Sep and 14 Oct the group ran with four, which the tutor approved; on 14 Oct 2026 Fatema Ghareeb joined and filled the fifth seat, so the group now matches the brief exactly.)
 
 | Handle | Name | Student ID | Team role | Features owned | Frame suffix |
 |---|---|---|---|---|---|
@@ -60,8 +60,9 @@
 | **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` |
 | **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` |
 | **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` |
+| **M5** | **Fatema Ghareeb** | `202304804` | Collaboration & Recall lead | **F16**, **F17** | `Fatema_202304804` |
 
-All placeholder names have been replaced. The former M5 workstream (F11/F12/F13) was redistributed by adjacency, see [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
+All placeholder names have been replaced. The workstream of the **then-empty** fifth seat (F11/F12/F13) was redistributed by adjacency and **stays** redistributed; M5 owns the two features added with her, F16 and F17. See [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
 
 
 ---
@@ -73,8 +74,8 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 | [**CONTRIBUTING.md**](CONTRIBUTING.md) | **Start here to contribute.** Setup, git rules, your file lane, conventions, testing, evidence, troubleshooting, VIVA |
 | [00, Master Plan](docs/00-MASTER-PLAN.md) | Decoded spec, assessment-driven priorities, product identity, roles, innovation |
 | [01, Roadmap, Phases & Todolist](docs/01-ROADMAP-PHASES-TODOLIST.md) | Sprint-structured roadmap with dated gates + tickable task list, **the guide & roadmap** |
-| [02, Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 15 features, 4 developers, developer/tester matrix, advanced feature |
-| [03, Screen Inventory](docs/03-SCREEN-INVENTORY.md) | 141 screens, Figma frame naming rule, prototype cut-line |
+| [02, Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 17 features, 5 developers, developer/tester matrix, advanced feature |
+| [03, Screen Inventory](docs/03-SCREEN-INVENTORY.md) | 154 screens, Figma frame naming rule, prototype cut-line |
 | [04, Tech Architecture & Cost](docs/04-TECH-ARCHITECTURE-COST.md) | SwiftUI + Firebase + Tap Payments + 3-tier AI, $0 cost model |
 | [05, Data Model & Security](docs/05-DATA-MODEL-SECURITY.md) | Firestore/Storage schema, roles, security-rules strategy |
 | [06, Design System](docs/06-DESIGN-SYSTEM.md) | Colour, type, spacing, components, UI/UX principle mapping |
@@ -86,8 +87,8 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 | [12, Git Workflow](docs/12-GIT-WORKFLOW.md) | **Branches, per-file commits, PRs**, the tutor's stated requirement, plus `tools/commit.sh` |
 | [13, Per-Member Tasks](docs/13-PER-MEMBER-TASKS.md) | Tickable task list per member, plus turnkey first-commit starter briefs |
 | [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so three agents can work at once without conflicts |
-| [15, Project Briefing](docs/15-PROJECT-BRIEFING.md) | **Plain-language summary in three parts:** what the project is about, the 15 features, and the interview questions. Start here for interview prep or VIVA revision |
-| [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
+| [15, Project Briefing](docs/15-PROJECT-BRIEFING.md) | **Plain-language summary in three parts:** what the project is about, the 17 features, and the interview questions. Start here for interview prep or VIVA revision |
+| [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) · [TODO M5](docs/TODO-M5-fatema.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
 
 ---
 
