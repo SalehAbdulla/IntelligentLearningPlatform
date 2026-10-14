@@ -169,5 +169,5 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 - ✅ Tech stack + $0 cost model researched and confirmed
 - ✅ App name, tagline, logo direction, palette proposed
 - ⬜ App identity frozen
-- ✅ Team names/IDs inserted, 4 members, group size approved by the tutor
+- ✅ Team names/IDs inserted, 5 members, the brief's own default group size
 - ⬜ Cline agent skills installed
