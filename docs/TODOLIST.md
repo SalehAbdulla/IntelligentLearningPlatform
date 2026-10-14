@@ -16,7 +16,7 @@ Legend: `[ ]` open, `[x]` done.
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
-- [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver recorded on every product screen (F01-F15); Reduce Motion honoured where it animates; the one fill-hue-as-text contrast defect fixed
+- [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver recorded on every product screen (F01-F17); Reduce Motion honoured where it animates; the one fill-hue-as-text contrast defect fixed
 - [x] Backend: `onUserCreate` claims trigger and `rollupDailyMetrics` implemented (typechecked)
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
