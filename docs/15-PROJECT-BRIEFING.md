@@ -1,7 +1,7 @@
 # 15, Project Briefing
 
 > **Plain-language summary of the whole project**, in three parts: what the project is about,
-> the 15 features, and the questions to ask the tutor in the group interview.
+> the 17 features, and the questions to ask the tutor in the group interview.
 > Written to be read out loud, not to impress. Use it for interview prep and VIVA revision.
 > Sources: [00 Master Plan](00-MASTER-PLAN.md) · [02 Feature List](02-FEATURE-LIST-OWNERSHIP.md) ·
 > [08 Rubric Matrix](08-RUBRIC-COVERAGE-MATRIX.md) · [research/interviews](../research/interviews/README.md).
@@ -12,7 +12,7 @@
 | **Tagline** | Turn any material into mastery |
 | **Module** | IT8108, Project Design Document & Prototype |
 | **Client brief** | Project Brief 2, Intelligent Learning Platform |
-| **Team** | 4 members, group size approved by the tutor |
+| **Team** | 5 members, the brief's own default group size |
 | **Platform** | iPhone app (SwiftUI) plus a Figma prototype |
 | **SDGs** | SDG 4 Quality Education · SDG 9 Industry, Innovation and Infrastructure · SDG 10 Reduced Inequalities |
 
@@ -124,17 +124,17 @@ So the working app is the most important deliverable, and Figma is not.
 
 ---
 
-## 2. The features (F01 to F15)
+## 2. The features (F01 to F17)
 
 ### 2.1 The full list
 
 | # | Feature name | Who uses it | What it does | Built by | Tested by |
 |---|---|---|---|---|---|
-| **F01** | Authentication & Role-Based Onboarding | Everyone | Sign up, verify your email, pick your role, and land on the right home screen for that role | M1 | M4 |
+| **F01** | Authentication & Role-Based Onboarding | Everyone | Sign up, verify your email, pick your role, and land on the right home screen for that role | M1 | M5 |
 | **F02** | Material Upload & Course Library | Student, Tutor | Turn a PDF, photo, scan or link into a library item you can search, tag and open offline | M1 | M3 |
 | **F03** | AI Summary & Notes Generation | Student | Get an accurate summary of your file with key points and a glossary, and see where each part came from | M2 | M1 |
 | **F04** | Flashcard Generation & Spaced Repetition | Student | Turn your file into flashcards, then review them with the app deciding when each card comes back | M2 | M4 |
-| **F05** | Quiz Generation & Attempt Analytics | Student, Tutor | Make a quiz from your material, answer it, get a score, and see which topics you are weak in | M2 | M4 |
+| **F05** | Quiz Generation & Attempt Analytics | Student, Tutor | Make a quiz from your material, answer it, get a score, and see which topics you are weak in | M2 | M5 |
 | **F06** | Study Plan Scheduling & Adaptive Re-planning | Student | Get a revision calendar that fits your exam dates, and fixes itself when you miss a session | M3 | M2 |
 | **F07** | Progress Tracking & Analytics | Student, Tutor | See your streak, mastery, time studied, and a weakness radar over time | M3 | M1 |
 | **F08** | Shared Study Folders | Study Group Member | Share resources with your group, with real permissions: view, comment or edit | M4 | M3 |
@@ -142,11 +142,13 @@ So the working app is the most important deliverable, and Figma is not.
 | **F10** | Resource Bookmarking & Collections | Student | Save anything for later into collections, and actually find it again | M4 | M3 |
 | **F11** | Tutor Content Studio | Tutor | Publish course material, check AI content before students see it, and see who is behind | M2 | M4 |
 | **F12** | Admin Content Management & Moderation | Admin | Manage users and roles, handle reports, manage tags, and read the audit log | M4 | M2 |
-| **F13** | Subscription & Payments | Student | Buy and manage a paid plan securely, in Bahraini dinar, with a receipt | M3 | M2 |
+| **F13** | Subscription & Payments | Student | Buy and manage a paid plan securely, in Bahraini dinar, with a receipt | M3 | M5 |
 | **F14** | Notifications & Reminders | Everyone | Nudge you at the right moment, for example when a flashcard is due, and respect quiet hours | M1 | M3 |
 | **F15** | **AI Study Companion (the ADVANCED feature)** | Student | Ask questions about your own material, get answers with sources, change how simple the explanation is, and get a recommended study path | **M2 + M3** | M1 |
+| **F16** | **Admin-Moderated Group Chat** | Admin, Study Group Member | Chat with your study group in a room an admin moderates and is **always present in**, so anything unsafe can be removed with a reason | M5 | M4 |
+| **F17** | **Active Recall Space (Anki-style)** | Student | Review everything due across **every** deck in one place, with learning steps and daily limits, exactly like Anki | M5 | M2 |
 
-*Table 15.1, the 15 features with their user, purpose, developer and tester.*
+*Table 15.1, the 17 features with their user, purpose, developer and tester.*
 
 ### 2.2 The same list, one line each
 
@@ -199,7 +201,7 @@ asks for, in writing.
 |---|---|
 | When | Second session of this week, in the section the group is allocated to |
 | Length | 15 minutes |
-| Who must attend | At least 4 members, or the interview does not go ahead and the group must use office hours |
+| Who must attend | At least 4 members, or the interview does not go ahead and the group must use office hours. **The group is now 5, so all five attend and three ask** |
 | Who asks | 2 to 3 members. Ours are M1, M2 and M4 |
 | Who writes | One member takes notes, because the recording may be unclear |
 | Graded parts | The **transcript** and the **summary** are graded parts of the Design Document |
@@ -216,7 +218,7 @@ in our design.
 | 1 | "Our advanced feature is F15. It is an AI helper that answers only from the student's own uploaded files, and then builds a study plan. Two of us will build it. The brief says the advanced feature must be agreed with you and built by one or two students. Is F15 advanced enough, and is it fine that two of us share it? Can we have your approval in writing today? If F15 is not advanced enough, would F09, the live group quiz room, be acceptable instead?" | Features List: *"Include one approved advanced feature assigned to one or two developers."* | M2 |
 | 2 | "Mockups are worth 8 of the 20 marks. We have 106 screens, and every screen has a written description and labelled buttons and fields. To get full marks, do we show every screen, or only the main screens of each feature? Do the error, empty, loading and no-internet screens each need their own labelled screen?" | Mockups: *"Include all required screens and clear navigation flow"* and *"Label key UI elements clearly."* | M4 |
 | 3 | "The brief asks how uploaded files become accurate study material. Our plan is: the AI answers only from the student's own file, it shows which part of the file each answer came from, it tells the student how sure it is, and a tutor can check AI content before students see it. We never let AI mark real coursework. Is that what you expect, or do you also want us to measure and report how accurate the AI is?" | Background Research: the real-world problem and why it matters. Innovation: *"relevance, feasibility, and added value."* | M2 |
-| 4 | "We have 15 features across 4 user roles, so each of us builds 3 or 4 features, and the minimum is 2. Is 15 the right number, or would you prefer fewer features with more detail in each one?" | Features List: *"Each student must develop at least two features"* and the workload-balance clause. Mockups: coverage. | M4 |
+| 4 | "We have 17 features across 4 user roles, so each of us builds 2 to 4 features, and the minimum is 2. Is 17 the right number, or would you prefer fewer features with more detail in each one?" | Features List: *"Each student must develop at least two features"* and the workload-balance clause. Mockups: coverage. | M4 |
 | 5 | "Phase 1 asks for low-fidelity mockups, but the brief says we may use Figma. Our document shows finished, high-fidelity Figma screens. Could showing finished screens cost us mockup marks, or is it fine as long as we cover every screen and label everything?" | Mockups: *"Submit low-fidelity mockups for assigned features."* | M4 |
 
 | 6 | "Brief 2 does not mention payment at all. We added a paid subscription (F13) using Tap, and we wrote down that the App Store would require Apple's own payment system instead. Is that a good extra idea, or is it outside the brief and better left as a note for future work?" | Innovation: *"meaningful enhancement of the selected brief"* and *"relevance."* | M2 |
@@ -267,7 +269,7 @@ Q1 is asked first and is never sacrificed, because the rubric needs that approva
 
 ### 3.6 On the day
 
-- [ ] Confirm the slot and that **4 members** will be there
+- [ ] Confirm the slot and that **5 members** will be there
 - [ ] Print Table 15.2, with the timing plan on it
 - [ ] Ask permission to record **before** the first question
 - [ ] One member writes the answers down as a backup to the recording
