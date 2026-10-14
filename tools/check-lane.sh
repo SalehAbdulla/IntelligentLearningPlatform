@@ -22,6 +22,7 @@
 #   bash tools/check-lane.sh M2        # Mohammed
 #   bash tools/check-lane.sh M3        # Tasbeeh
 #   bash tools/check-lane.sh M4        # Shahad
+#   bash tools/check-lane.sh M5        # Fatema
 #   bash tools/check-lane.sh owner                        # M1: the project-level lane + F01/F02/F14
 #   bash tools/check-lane.sh owner --allow-protected      # M1 hotfix: also permits main/develop
 #
@@ -44,16 +45,16 @@ ALLOW_PROTECTED=0
 for arg in "$@"; do
   case "$arg" in
     --allow-protected) ALLOW_PROTECTED=1 ;;
-    M1|M2|M3|M4|owner|OWNER) MEMBER="$arg" ;;
+    M1|M2|M3|M4|M5|owner|OWNER) MEMBER="$arg" ;;
     *) red "unknown argument '$arg'"; exit 2 ;;
   esac
 done
 
 case "$MEMBER" in
   M1|owner|OWNER) MEMBER=owner ;;
-  M2|M3|M4) ;;
-  *) red "usage: bash tools/check-lane.sh M2|M3|M4|owner [--allow-protected]"
-     printf "  M2|M3|M4            a member's lane, protected branches refused\n"
+  M2|M3|M4|M5) ;;
+  *) red "usage: bash tools/check-lane.sh M2|M3|M4|M5|owner [--allow-protected]"
+     printf "  M2|M3|M4|M5        a member's lane, protected branches refused\n"
      printf '  owner               M1: the project-level lane plus F01/F02/F14 files\n'
      printf '  owner --allow-protected  also permits main/develop, for an owner hotfix\n'
      exit 2 ;;
@@ -197,6 +198,30 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Features/Folders/"
         "ios/StudyForge/StudyForge/Features/Bookmarks/"
         "ios/StudyForge/StudyForge/Features/Admin/"
+        "ios/StudyForge/StudyForgeTests/"
+      ) ;;
+  M5) NAME="Fatema Ghareeb"; ID=202304804; WHO=fatema
+      FEATURES="F16 F17"
+      BRANCH_RE='^feat/F(16|17)-'
+      # F16 (moderated group chat) extends F09's group chat, which M4 owns. To keep the two
+      # lanes disjoint the boundary is drawn by FILE, not by directory: M4 keeps every F09
+      # group-space and live-quiz file, and M5 takes exactly the two chat files plus its own
+      # `Moderation/` and `Recall/` subdirectories.
+      #
+      # WHY THE TWO CHAT FILES MOVE TO M5
+      #   `GroupChatView.swift` and `GroupChatViewModel.swift` existed in the base tree but
+      #   appeared in NO member's TOUCH list, so no member could modify them at all (the
+      #   guard's NEW rule only accepts files that do not yet exist). F16 is the feature that
+      #   has to change them, so they are now owned, by M5.
+      TOUCH=(
+        "ios/StudyForge/StudyForge/Features/Groups/GroupChatView.swift"
+        "ios/StudyForge/StudyForge/Features/Groups/GroupChatViewModel.swift"
+      )
+      NEW=(
+        "ios/StudyForge/StudyForge/Core/Groups/Moderation/"
+        "ios/StudyForge/StudyForge/Core/Recall/"
+        "ios/StudyForge/StudyForge/Features/Groups/Moderation/"
+        "ios/StudyForge/StudyForge/Features/Recall/"
         "ios/StudyForge/StudyForgeTests/"
       ) ;;
 esac
