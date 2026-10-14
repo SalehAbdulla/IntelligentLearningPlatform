@@ -57,7 +57,7 @@ pass in the 60% App Implementation & Demonstration.
 | **Backend** | ~95% declarative Firebase config + 3 small Cloud Functions. No server of ours runs. | `backend/` |
 | **Everything else** | Planning docs, research/evidence, deliverables, tooling. Project-level. | `docs/`, `research/`, `deliverables/`, `tools/` |
 
-### 1.4 The 15 features
+### 1.4 The 17 features
 
 | Owner | Features |
 |---|---|
@@ -65,6 +65,7 @@ pass in the 60% App Implementation & Demonstration.
 | **M2** Mohammed Almadhoon `202401702` | F03 Summary · F04 Flashcards · F05 Quiz · F11 Tutor Studio · F15 Companion (co) |
 | **M3** Tasbeeh Saeed `202300549` | F06 Study Plan · F07 Progress · F13 Payments · F15 Companion (co) |
 | **M4** Shahad Ashoor `202305767` | F08 Folders · F09 Group Spaces · F10 Bookmarks · F12 Admin |
+| **M5** Fatema Ghareeb `202304804` | F16 Admin-Moderated Group Chat · F17 Active Recall Space |
 
 Full detail, including who tests what: `docs/02-FEATURE-LIST-OWNERSHIP.md`.
 
@@ -109,6 +110,7 @@ git config --local user.email "202401702@student.polytechnic.bh"
 | M2 | Mohammed Almadhoon | `202401702` | `202401702@student.polytechnic.bh` |
 | M3 | Tasbeeh Saeed | `202300549` | `202300549@student.polytechnic.bh` |
 | M4 | Shahad Ashoor | `202305767` | `202305767@student.polytechnic.bh` |
+| M5 | Fatema Ghareeb | `202304804` | `202304804@student.polytechnic.bh` |
 
 > **Never** commit under someone else's identity, and **never** push another member's
 > work under your own name. Both are treated as fabrication.
@@ -192,41 +194,55 @@ gh pr merge --merge --delete-branch
 
 ### 3.1 Your features (and the ≥2 rule)
 
-The brief requires every developer to own **at least two features**. Each of us owns three
-or more:
+The brief requires every developer to own **at least two features**. Every member meets it, and four of the five own three or more:
 
 | Member | Develops | Primary tester for |
 |---|---|---|
 | **M1** Saleh | F01, F02, F14 | F03, F07, F09, F15 |
-| **M2** Mohammed | F03, F04, F05, F11, F15 (co) | F06, F12, F13 |
+| **M2** Mohammed | F03, F04, F05, F11, F15 (co) | F06, F12, F17 |
 | **M3** Tasbeeh | F06, F07, F13, F15 (co) | F02, F08, F10, F14 |
-| **M4** Shahad | F08, F09, F10, F12 | F01, F04, F05, F11 |
+| **M4** Shahad | F08, F09, F10, F12 | F04, F11, F16 |
+| **M5** Fatema | F16, F17 | F01, F05, F13 |
 
 **Nobody tests a feature they developed.** For every feature the developer, the primary
 tester and the secondary tester are three different people, so each feature is read
 independently by at least three members. Log those tests in `research/testing/`.
 
+**M5 owns two features rather than three, and that is deliberate.** She joined on 14 Oct
+2026 and both of her features are **net-new** — each brings its own Swift module, its own
+Figma frame group, its own security rules and its own tests, so there is no existing code to
+inherit. She also carries a full three-feature testing rotation (F01, F05, F13). Feature
+count alone understates the load; `docs/02` §3 carries the frames-and-testers view that makes
+the balance auditable.
+
 The rotation matrix is `docs/02-FEATURE-LIST-OWNERSHIP.md` §7.
 
 ### 3.2 Your file lane — this is what prevents merge conflicts
 
-Three members may be running AI agents at the same time. To make that safe, **every file
-belongs to exactly one lane**, and the three lanes are verified disjoint: **47 files
-across the three modify-lanes, zero claimed by two members.**
+Four members may be running AI agents at the same time. To make that safe, **every file
+belongs to exactly one lane**, and the lanes are verified disjoint: **49 files
+across the four member modify-lanes, zero claimed by two members.**
 
 **Run this before every commit and push:**
 
 ```bash
-bash tools/check-lane.sh M2      # or M3 / M4
+bash tools/check-lane.sh M2      # or M3 / M4 / M5
 ```
 
 It refuses `main`/`develop`, lists every file your branch would change, and classifies
 each as **yours**, **new (yours)**, **SHARED**, or **OUT OF LANE / FORBIDDEN**.
 
-| | M2 Mohammed | M3 Tasbeeh | M4 Shahad |
-|---|---|---|---|
-| **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` |
-| **Owns** | `Core/AI/`, `Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `Core/Admin/AIConfiguration.swift` | `Core/{Planning,Payments}/`, `Features/{StudyPlan,Progress,Subscription}/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift` | `Core/{Groups,Bookmarks,Folders}/`, `Features/{Groups,Folders,Bookmarks,Admin}/` |
+| | M2 Mohammed | M3 Tasbeeh | M4 Shahad | M5 Fatema |
+|---|---|---|---|---|
+| **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` | `feat/F16-*` `F17-*` |
+| **Owns** | `Core/AI/`, `Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `Core/Admin/AIConfiguration.swift` | `Core/{Planning,Payments}/`, `Features/{StudyPlan,Progress,Subscription}/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift` | `Core/{Groups,Bookmarks,Folders}/`, `Features/{Folders,Bookmarks,Admin}/` | `Features/Groups/GroupChat{View,ViewModel}.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+
+> **The one boundary inside `Core/Groups/` and `Features/Groups/`.** M4 owns the F09
+> group-space and live-quiz files at the top level; **M5 owns only the `Moderation/`
+> subdirectory and the two chat files** (`GroupChatView.swift`,
+> `GroupChatViewModel.swift`). Before 14 Oct those two chat files appeared in no member's
+> lane at all, so nobody could modify them — F16 is the feature that needs them, so M5 owns
+> them now.
 
 | Path | Owner |
 |---|---|
@@ -234,7 +250,8 @@ each as **yours**, **new (yours)**, **SHARED**, or **OUT OF LANE / FORBIDDEN**.
 | `ios/StudyForge/StudyForge.xcodeproj/` | **nobody, ever** |
 
 Full lane detail: `docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md` §2, and your own handover file
-(`docs/TODO-M2-mohammed.md`, `docs/TODO-M3-tasbeeh.md`, `docs/TODO-M4-shahad.md`).
+(`docs/TODO-M2-mohammed.md`, `docs/TODO-M3-tasbeeh.md`, `docs/TODO-M4-shahad.md`,
+`docs/TODO-M5-fatema.md`).
 
 ### 3.3 The three shared files
 
