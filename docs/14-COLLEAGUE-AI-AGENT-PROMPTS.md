@@ -9,6 +9,7 @@
 | **Mohammed Almadhoon** | M2 | `202401702` | [TODO-M2-mohammed.md](TODO-M2-mohammed.md) | F03 · F04 · F05 · F11 · F15 (co) |
 | **Tasbeeh Saeed** | M3 | `202300549` | [TODO-M3-tasbeeh.md](TODO-M3-tasbeeh.md) | F06 · F07 · F13 · F15 (co) |
 | **Shahad Ashoor** | M4 | `202305767` | [TODO-M4-shahad.md](TODO-M4-shahad.md) | F08 · F09 · F10 · F12 |
+| **Fatema Ghareeb** | M5 | `202304804` | [TODO-M5-fatema.md](TODO-M5-fatema.md) | F16 · F17 |
 
 M1 (Saleh Abdulla, `202300540`) owns F01, F02 and F14 plus the cross-cutting document and
 Figma work, and is not covered by these files.
@@ -17,13 +18,14 @@ Figma work, and is not covered by these files.
 **VIVA (60%) must be passed by every member**, and as of 8 Oct 2026 every commit in this
 repository is authored by M1. Each handover file states a **hard acceptance criterion**:
 *at least two of that member's features must carry a real, tested, committed change under
-their own git identity.*
+their own git identity.* M5's file was added on **14 Oct 2026**, the day Fatema joined and
+filled the brief's default fifth seat.
 
 ---
 
 ## 1. The conflict problem, and how it is solved
 
-Three members will run agents against this repository **at the same time**. Two failure
+Four members will run agents against this repository **at the same time**. Two failure
 modes are predictable and both are expensive:
 
 | Failure mode | Defence |
@@ -33,16 +35,16 @@ modes are predictable and both are expensive:
 
 ### Verified: the lanes do not overlap
 
-**47 files** are reachable across the three members' *modify* lanes, and **zero of them is
-claimed by two members.** The three lanes were checked programmatically:
+**49 files** are reachable across the four members' *modify* lanes, and **zero of them is
+claimed by two members.** The four lanes were checked programmatically:
 
 ```
-TOUCH files            M2 14 · M3 15 · M4 18   (47 total)
+TOUCH files            M2 14 · M3 15 · M4 18 · M5 2   (49 total)
 claimed by two members : none
 also declared SHARED   : none
 ```
 
-`tools/check-lane.sh M2|M3|M4` re-checks this on every commit and push, from the member's
+`tools/check-lane.sh M2|M3|M4|M5` re-checks this on every commit and push, from the member's
 own side:
 
 | Situation | Result |
@@ -66,21 +68,28 @@ repository. The guard forbids touching the `.xcodeproj` regardless.
 
 ## 2. The lane map at a glance
 
-| | M2 Mohammed | M3 Tasbeeh | M4 Shahad |
-|---|---|---|---|
-| **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` |
-| **Owns** | `Core/AI/`, `Features/Flashcards/`, `Features/Summaries/`, `Features/Quizzes/`, `Features/Tutor/`, `Core/Admin/AIConfiguration.swift` | `Core/Planning/`, `Core/Payments/`, `Features/StudyPlan/`, `Features/Progress/`, `Features/Subscription/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift` | `Core/Groups/`, `Core/Bookmarks/`, `Core/Folders/`, `Features/Groups/`, `Features/Folders/`, `Features/Bookmarks/`, `Features/Admin/` |
-| **May add new files in** | `…/Core/AI/`, `…/Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `StudyForgeTests/` | `…/Core/{Planning,Payments}/`, `…/Features/{StudyPlan,Progress,Subscription}/`, `StudyForgeTests/` | `…/Core/{Groups,Bookmarks,Folders}/`, `…/Features/{Groups,Folders,Bookmarks,Admin}/`, `StudyForgeTests/` |
-| **Primary tester for** | F06, F12, F13 | F02, F08, F10, F14 | F01, F04, F05, F11 |
-| **May touch, with care** | `AppContainer.swift`, `en/ar Localizable.strings` | same | same |
-| **Off limits to all** | `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`, `README.md`, `.mailmap`, `*.xcodeproj` | | |
+| | M2 Mohammed | M3 Tasbeeh | M4 Shahad | M5 Fatema |
+|---|---|---|---|---|
+| **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` | `feat/F16-*` `F17-*` |
+| **Owns** | `Core/AI/`, `Features/Flashcards/`, `Features/Summaries/`, `Features/Quizzes/`, `Features/Tutor/`, `Core/Admin/AIConfiguration.swift` | `Core/Planning/`, `Core/Payments/`, `Features/StudyPlan/`, `Features/Progress/`, `Features/Subscription/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift` | `Core/Groups/` (top level), `Core/Bookmarks/`, `Core/Folders/`, `Features/Groups/` (top level), `Features/Folders/`, `Features/Bookmarks/`, `Features/Admin/` | `Features/Groups/GroupChatView.swift`, `Features/Groups/GroupChatViewModel.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+| **May add new files in** | `…/Core/AI/`, `…/Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `StudyForgeTests/` | `…/Core/{Planning,Payments}/`, `…/Features/{StudyPlan,Progress,Subscription}/`, `StudyForgeTests/` | `…/Core/{Groups,Bookmarks,Folders}/`, `…/Features/{Folders,Bookmarks,Admin}/`, `StudyForgeTests/` | `…/Core/Groups/Moderation/`, `…/Core/Recall/`, `…/Features/Groups/Moderation/`, `…/Features/Recall/`, `StudyForgeTests/` |
+| **Primary tester for** | F06, F12, F17 | F02, F08, F10, F14 | F04, F11, F16 | F01, F05, F13 |
+| **May touch, with care** | `AppContainer.swift`, `en/ar Localizable.strings` | same | same | same |
+| **Off limits to all** | `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`, `README.md`, `.mailmap`, `*.xcodeproj` | | | |
 
-**Shared files** (all three members, 1–2 line edits only, rebase before pushing):
+> **The one shared directory, and how it stays safe.** `Core/Groups/` and `Features/Groups/`
+> are split by *file*, not by directory: **M4 owns the F09 group-space and live-quiz files at
+> the top level, and M5 owns only the `Moderation/` subdirectory plus the two chat files.**
+> This is the one place where two members' prefixes meet, and it is deliberate — F16 extends
+> F09's chat. Before 14 Oct `GroupChatView.swift` and `GroupChatViewModel.swift` were in **no
+> member's lane at all**, so nobody could modify them; they are now M5's.
+
+**Shared files** (all four members, 1–2 line edits only, rebase before pushing):
 `App/AppContainer.swift` · `Resources/en.lproj/Localizable.strings` ·
 `Resources/ar.lproj/Localizable.strings`
 
 Only **M4 genuinely needs** a shared file — one line in `AppContainer` to select the
-Firestore bookmark store. The M2 and M3 handover files instruct the agent to prefer a
+Firestore bookmark store. The M2, M3 and M5 handover files instruct the agent to prefer a
 default-valued parameter so the container does not need to change at all, which removes
 the shared file from their diffs entirely.
 
@@ -106,13 +115,14 @@ the shared file from their diffs entirely.
 # nobody should have committed to main or develop directly
 git log --oneline origin/develop -10
 
-# all four members must now appear, not just Saleh
+# all five members must now appear, not just Saleh
 git shortlog -sne --all
 
 # each member's own commits
 git log --author="Mohammed" --oneline
 git log --author="Tasbeeh"   --oneline
 git log --author="Shahad"    --oneline
+git log --author="Fatema"    --oneline
 
 # the per-member TODO count should have dropped from 3/3/3
 bash tools/todos.sh
