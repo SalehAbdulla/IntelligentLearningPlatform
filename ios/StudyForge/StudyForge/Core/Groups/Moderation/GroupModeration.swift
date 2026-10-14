@@ -115,7 +115,12 @@ struct ModerationAction: Identifiable, Equatable, Sendable, Codable {
 }
 
 /// A moderation action that was refused, in the app's own vocabulary.
-enum ModerationError: Error, Equatable {
+///
+/// Named `ChatModerationError` rather than `ModerationError` because that name is already taken:
+/// `Core/Admin/ModerationStore.swift` declares `typealias ModerationError = AdminError` for F12's
+/// content-report queue. Two different concerns — reporting content to an admin, and a moderator
+/// acting inside a group chat — and they must not share a name.
+enum ChatModerationError: Error, Equatable {
     /// The person attempting the action is not the moderator.
     case notTheModerator
     /// A reason of `other` with no note explains nothing, so it is refused rather than stored.
@@ -186,12 +191,12 @@ struct ChatModerationState: Equatable, Sendable, Codable {
         at now: Date = .now
     ) throws -> ModerationAction {
         guard ModerationPolicy.mayModerate(uid: uid, state: self) else {
-            throw ModerationError.notTheModerator
+            throw ChatModerationError.notTheModerator
         }
 
         let trimmed = note?.trimmingCharacters(in: .whitespacesAndNewlines)
         if ModerationPolicy.requiresNote(reason: reason), trimmed?.isEmpty != false {
-            throw ModerationError.reasonRequiresNote
+            throw ChatModerationError.reasonRequiresNote
         }
 
         let action = ModerationAction(
