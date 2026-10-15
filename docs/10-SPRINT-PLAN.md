@@ -80,6 +80,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M2** Mohammed | **F03** summary generation (tier 0 + tier 1) + **F04** flashcard generation with `@Generable` | Two features merged, prompt-eval notes |
 | **M3** Tasbeeh | **F06** plan-wizard skeleton + **F07** activity-event writes; app-wide `LoadState` handling | Two skeletons, loading/empty/error states |
 | **M4** Shahad | Figma P0 frames for groups A, C, D, E; **F10** bookmarking | Frames named per the rule, one merged feature |
+| **M5** Fatema | *Joined 14 Oct, mid-sprint.* Git identity + `.mailmap` confirmed; reads F09's chat and F04's SM-2 engine to plan F16/F17; authors the first **F17** model files | First authored commits, a written plan, lane verified with `check-lane.sh M5` |
 
 ### S2 · Assessment engine (19 Oct – 1 Nov), *Design Document due 22 Oct*
 
@@ -89,6 +90,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M2** Mohammed | **F05** quiz generation + attempts + `topicMastery` writes; **F11** tutor review queue | Two features merged, test logs |
 | **M3** Tasbeeh | **F06** adaptive re-planning + **F07** dashboard + weakness radar | Merged features, re-plan recording |
 | **M4** Shahad | **F08** shared folders; Figma P0 for groups F, G, I; usability-test plan; Design Document assembly support | Merged feature, frames, test plan, doc sections |
+| **M5** Fatema | **F17** Recall Space: cross-deck queue, learning steps, daily limits, session + tests; **F16** moderator model and the "cannot be removed" rules; Figma groups **N** and **O** | Two features merged, 13 frames named `Fatema_202304804`, test logs |
 
 ### S3 · Collaboration & monetisation (2 Nov – 15 Nov), *Prototype due 12 Nov*
 
@@ -98,6 +100,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M2** Mohammed | **F09** group-quiz generation; **F15** RAG index (chunking + `NLEmbedding` + retrieval) | Merged PRs, retrieval-accuracy log |
 | **M3** Tasbeeh | **F13** Tap payments: SDK, order build, Cloud Function `createCharge`, webhook verification, entitlements | Sandbox payment recording, function logs |
 | **M4** Shahad | **F09** live-quiz UI + leaderboard; **F12** moderation queue; **Figma wiring + `.fig` export + submission** | Merged PRs, submitted prototype |
+| **M5** Fatema | **F16** moderation screens: presence banner, action sheet, tombstone, reason sheet, audit row; chat integration | Merged PRs, F16 test log |
 
 ### S4 · Intelligence & polish (16 Nov – 29 Nov)
 
@@ -107,6 +110,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M2** Mohammed | **F15** coach UI, citation sheet, explain-level toggle, prompt templates in Firestore; AI quality review | Merged PRs, before/after prompt eval |
 | **M3** Tasbeeh | AI cost governor, `aiCache`, admin AI-config screen; Instruments performance pass | Merged PRs, Instruments captures |
 | **M4** Shahad | RTL Arabic, accessibility (VoiceOver / AX5 / contrast), dark mode, taxonomy management | Accessibility report, RTL capture |
+| **M5** Fatema | **F17** stats (retention, maturity split, heatmap, streak) and the daily-limits UI; **F16** offline queue for moderation actions | Merged PRs, recordings |
 
 ### S5 · Hardening & VIVA (30 Nov – 13 Dec)
 
@@ -116,6 +120,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M2** Mohammed | AI accuracy review across all generated artefacts; regression of F03/F04/F05/F11/F15 | Accuracy report, test log |
 | **M3** Tasbeeh | Performance and stability pass; crash-free verification via Crashlytics; regression of F06/F07/F13 | Stability report, test log |
 | **M4** Shahad | VIVA deck, demo script, **recorded walkthrough of every feature**, rehearsal coordination | Deck, script, recordings |
+| **M5** Fatema | Regression of **F16/F17**; the **testing rotation** logs for F01, F05, F13; recorded walkthrough of her own two features | Test logs, recorded walkthrough |
 
 > **Every member must appear in every sprint.** A blank cell is a lost individual mark, and it is visible to the marker.
 

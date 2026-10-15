@@ -37,6 +37,7 @@ NN_ScreenName_FirstName_StudentID
 | `{M2}` | Mohammed Almadhoon | `Mohammed_202401702` |
 | `{M3}` | Tasbeeh Saeed | `Tasbeeh_202300549` |
 | `{M4}` | Shahad Ashoor | `Shahad_202305767` |
+| `{M5}` | Fatema Ghareeb | `Fatema_202304804` |
 
 **Worked examples using the real roster**
 
@@ -48,9 +49,11 @@ NN_ScreenName_FirstName_StudentID
 65_StudyPlan_Calendar_Week_Tasbeeh_202300549
 93_GroupSpace_SharedQuiz_Live_Shahad_202305767
 115_Admin_AIConfig_Settings_Shahad_202305767
+143_GroupChat_Message_Moderation_Menu_Fatema_202304804
+150_RecallSpace_Session_Back_Rate_Fatema_202304804
 ```
 
-Group headings later in this document use the `{M1}` handle for brevity, expand it using the table above before creating the frame in Figma. **Every one of the 141 frames must carry a real name and student ID**, because the brief states: *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."*
+Group headings later in this document use the `{M1}` handle for brevity, expand it using the table above before creating the frame in Figma. **Every one of the 154 frames must carry a real name and student ID**, because the brief states: *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."*
 
 
 **Figma file structure**, one **Page** per owner, so the file stays navigable and the marker can see authorship instantly:
@@ -67,15 +70,24 @@ Group headings later in this document use the `{M1}` handle for brevity, expand 
 | `7 · M4, Collaboration & Admin` | M4 | Groups I, K |
 | `8 · States & Prototype Wiring` | all | Error / empty / loading / success tokens, RTL proof, connection map |
 
+**Build status, verified against the live file on 8 Oct 2026.** The file now holds **106 high-fidelity screens** on page `3 · Screens (all features)`, **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes`, **15 per-feature flow diagrams** on page `2 · Flow Overview`, and **296 prototype connections** with no dead ends. The page list above is the original 9-page plan; it was consolidated to 5 prototype pages plus the low-fi page, because the Figma plugin API cannot create NAVIGATE links across pages, so all screens must share one page for the prototype to work. Ownership is carried by the frame name and the cover table instead.
+
+Two gaps found and closed during this audit, both of which would have cost marks under *"all main features of the app are designed and linked based on your feature list"*:
+
+- **F09 Group Revision Spaces had no screens at all.** Frames `88`–`94` are now built, matching the inventory in §3 Group I, and wired into a complete live-quiz chain (`88 → 89 → 90 → 92 → 93 → 94`).
+- **`57_Quiz_Submit_Confirm` was missing.** The F05 flow in `DESIGN-DOCUMENT.md` §9 step 4 requires a confirmation before submitting with questions unanswered, but no frame existed. It is now built and wired between `54_Quiz_Take_MCQ` and `58_Quiz_Results_Scorecard`.
+
+The P1 remainder (89 frames in this inventory) is retained as the plan but is deliberately out of scope for the build, per the cut-line protocol in [doc 01 §14](01-ROADMAP-PHASES-TODOLIST.md). The exact list of unbuilt screen numbers is recorded in `deliverables/prototype/figma-link.txt` §9, and every one is a secondary, empty or state variant rather than a happy path.
+
 ---
 
 ## 2. Priority tiers and the realistic cut-line
 
-141 frames across 15 features is the full inventory. **At this component's 10% weight, that is far too much to build.** The realistic target is the **coverage floor** below.
+154 frames across 17 features is the full inventory. **At this component's 10% weight, that is far too much to build.** The realistic target is the **coverage floor** below.
 
 | Tier | Frames | Meaning | Commitment at 10% weight |
 |---|---|---|---|
-| **Coverage floor** | **~55** | Every one of the 15 features' happy path, fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
+| **Coverage floor** | **~55** | Every one of the 17 features' happy path, fully linked, correctly named. The minimum that satisfies *"all main features designed and linked"* | ⛔ **Non-negotiable** |
 | **P0, full happy path** | **89** | The coverage floor plus secondary paths within each feature | **Target** |
 | **P1, states & kits** | **51** | Error / empty / loading / success states, permission screens, component boards, accessibility proof | Only if the app is on track |
 | **P2, stretch** | **1** | Voice-quiz variant | Cut |
@@ -302,6 +314,29 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | M13 | `140_Home_Dashboard_Group_{M1}` | F09 | P1 | **Group-member home variant**: upcoming group sessions, group activity feed, shared-folder shortcuts, group leaderboard position. |
 | M14 | `141_Logout_Confirm_{M1}` | F01 | P1 | **Confirmation dialog** with "keep offline copies?" option, preventing accidental data-loss surprises. |
 
+### Group N, Admin-Moderated Group Chat · owner **M5, Fatema** · F16
+
+| ID | Frame | F | Tier | Purpose & key labelled elements |
+|---|---|---|---|---|
+| N01 | `142_GroupChat_Moderator_Presence_Banner_{M5}` | F16 | P0 | **Persistent moderator banner** across the top of the chat: the admin's avatar with a **shield badge**, "Moderated by <name> · always in this space", and the plain-language reason the moderator cannot be removed. This is the literal *"admin always there"* requirement made visible. |
+| N02 | `143_GroupChat_Message_Moderation_Menu_{M5}` | F16 | P0 | **Long-press action sheet** on any message: **Hide for everyone**, **Delete**, **Pin to board**, **Flag to admin**, each naming its own consequence. Rendered only for the moderator. |
+| N03 | `144_GroupChat_Hidden_Message_Placeholder_{M5}` | F16 | P0 | **Tombstone**: the message body is replaced by "Removed by a moderator", with the **reason** and a **who / when** line, so the room never silently loses history. |
+| N04 | `145_GroupChat_Moderation_Reason_Sheet_{M5}` | F16 | P1 | **Reason capture** before the action commits: a short reason list (spam / off-topic / unsafe / other) plus optional free text, and the **audit-log disclosure** that the action is recorded. |
+| N05 | `146_GroupChat_SlowMode_Muted_Notice_{M5}` | F16 | P1 | **Member-side notice**: "Slow mode is on — you can post again in 30 s", and the muted variant. Explains the restriction rather than failing silently. |
+| N06 | `147_GroupChat_Moderation_Audit_Entry_{M5}` | F16 | P1 | **The audit-log row** this action writes: moderator, target message, action, reason, timestamp. Append-only, so it can never be rewritten. |
+
+### Group O, Active Recall Space (Anki-style) · owner **M5, Fatema** · F17
+
+| ID | Frame | F | Tier | Purpose & key labelled elements |
+|---|---|---|---|---|
+| O01 | `148_RecallSpace_Home_DueToday_{M5}` | F17 | P0 | **One queue across every deck**: due-today total, **state counters** (new / learning / young / mature), **Start** primary, and the next due time when nothing is due. |
+| O02 | `149_RecallSpace_Session_Front_{M5}` | F17 | P0 | **Card front** with the **deck name** and a **state chip**, progress (7 / 20), reveal hint, and close-with-progress-saved. |
+| O03 | `150_RecallSpace_Session_Back_Rate_{M5}` | F17 | P0 | **Answer face** + explanation, **four rating buttons** (Again / Hard / Good / Easy) each showing the **next interval** the SM-2 engine would write, including the sub-day **learning-step** intervals. |
+| O04 | `151_RecallSpace_Daily_Limits_{M5}` | F17 | P1 | **Deck options**: new cards / day, maximum reviews / day, learning steps (1m → 10m), and the graduate interval. Anki's settings, in the app's own vocabulary. |
+| O05 | `152_RecallSpace_Stats_{M5}` | F17 | P1 | **Retention and maturity**: the mature / young split, true-retention percentage, review **heatmap** and **streak**. |
+| O06 | `153_RecallSpace_Filter_By_Deck_{M5}` | F17 | P1 | **Scope the queue** to one deck or tag without leaving the Recall Space, with the filtered due count shown live. |
+| O07 | `154_RecallSpace_EmptyState_{M5}` | F17 | P0 | **Nothing due**: the next due time, the streak preserved, and a link to browse decks. Also demonstrates the offline-first story. |
+
 ---
 
 ## 4. Frame count by owner (prototype workload proof)
@@ -321,14 +356,17 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | K | Admin Content Management | M4 | F12 | 9 | 4 | 5 | 0 |
 | L | Subscription & Payments | M3 | F13 | 10 | 7 | 3 | 0 |
 | M | System, Notifications & States | M1 | F14 | 14 | 5 | 9 | 0 |
-| | | | **Total** | **141** | **89** | **51** | **1** |
+| N | Admin-Moderated Group Chat | M5 | F16 | 6 | 3 | 3 | 0 |
+| O | Active Recall Space (Anki-style) | M5 | F17 | 7 | 4 | 3 | 0 |
+| | | | **Total** | **154** | **96** | **57** | **1** |
 
-Per-owner totals (**141** frames across **4** members): **M1, Saleh = 48** · **M2, Mohammed = 41** · **M3, Tasbeeh = 25** · **M4, Shahad = 27**.
+Per-owner totals (**154** frames across **5** members): **M1, Saleh = 48** · **M2, Mohammed = 41** · **M3, Tasbeeh = 25** · **M4, Shahad = 27** · **M5, Fatema = 13**.
 
-Breakdown: M2's 41 = D(7) + E(9) + F(9) + J(10) + 6 of the 8 advanced-feature frames; M3's 25 = G(13) + L(10) + 2 of the 8 advanced-feature frames (the advanced feature is shared, so its frames split 6/2 to M2/M3).
+Breakdown: M2's 41 = D(7) + E(9) + F(9) + J(10) + 6 of the 8 advanced-feature frames; M3's 25 = G(13) + L(10) + 2 of the 8 advanced-feature frames (the advanced feature is shared, so its frames split 6/2 to M2/M3). M5's 13 = N(6) + O(7), all authored by her and all new.
 
-M5's former groups were distributed as: **J → M2** (fits the AI content-review workstream), **K → M4** (fits the permissions/moderation UI work), **L → M3** (fits the Cloud Functions and architecture work).
-Frame count is *not* the fairness metric, see the weighting rationale in [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md). M2's and M4's frames are the most interaction-heavy (realtime, permissions, admin tables). M1's higher count includes Groups B and M, which are low-complexity settings and shared-state/kit frames.
+The groups of the **then-empty** fifth seat were distributed as: **J → M2** (fits the AI content-review workstream), **K → M4** (fits the permissions/moderation UI work), **L → M3** (fits the Cloud Functions and architecture work). Those three stay where they are; the seat was filled on 14 Oct 2026 and **M5 owns only the two groups added with her**, N and O.
+
+Frame count is *not* the fairness metric, see the weighting rationale in [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md). M2's and M4's frames are the most interaction-heavy (realtime, permissions, admin tables). M1's higher count includes Groups B and M, which are low-complexity settings and shared-state/kit frames. M5's 13 frames are the **fewest**, but every one is net-new and hers to author, alongside two new Swift modules and a full three-feature testing rotation.
 
 ---
 

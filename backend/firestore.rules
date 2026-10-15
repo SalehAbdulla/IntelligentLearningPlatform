@@ -280,6 +280,15 @@ service cloud.firestore {
       }
     }
 
+    // F17 Active Recall Space. One document per learner holding the Anki-style deck
+    // options: learning steps, daily new-card and review limits, and the graduate
+    // interval. Private by construction — the document id IS the uid, and only the
+    // owner may read or write it, so no learner can read another's limits and no
+    // learner can raise their own ceiling above what the app offers.
+    match /recallSettings/{uid} {
+      allow read, write: if isOwner();
+    }
+
     match /quizzes/{quizId} {
       allow read:   if isAdmin() || isTutor() || isOwner();
       allow create: if signedIn() && request.resource.data.ownerUid == uid();
@@ -359,17 +368,47 @@ service cloud.firestore {
       allow update: if isAdmin() || (isMember() && group().ownerUid == uid());
       allow delete: if isAdmin() || (isMember() && group().ownerUid == uid());
 
+      // F16 — the admin is ALWAYS in the space, and that is enforced here rather than
+      // only drawn in the UI. A moderator member document is permanent: no write may
+      // remove it or demote it. `isAdmin()` deliberately does NOT bypass this, because
+      // an admin deleting the moderator would silently break the one guarantee the
+      // feature makes. `resource` is the EXISTING document, so it is only consulted on
+      // update and delete — on create there is no existing document to read.
       match /members/{memberUid} {
-        allow read:  if isAdmin() || isMember();
-        allow write: if isAdmin() || group().ownerUid == uid();
+        function isModerator() { return resource.data.role == 'moderator'; }
+
+        allow read:   if isAdmin() || isMember();
+        allow create: if isAdmin() || group().ownerUid == uid();
+        allow update: if (isAdmin() || group().ownerUid == uid()) && !isModerator();
+        allow delete: if (isAdmin() || group().ownerUid == uid()) && !isModerator();
       }
 
-      // Any member may contribute to the group conversation.
+      // Any member may contribute to the group conversation. The moderator may moderate
+      // any message (hide / pin / flag). A member may edit their OWN message but may NOT
+      // touch the moderation fields, so a hidden message cannot be un-hidden by its
+      // author — without this, `hiddenAt` would be a decoration rather than a decision.
       match /messages/{messageId} {
+        function touchedModerationFields() {
+          return request.resource.data.diff(resource.data).affectedKeys()
+                   .hasAny(['hiddenAt', 'hiddenBy', 'hiddenReason', 'pinnedBy']);
+        }
+
         allow read:   if isAdmin() || isMember();
         allow create: if (isAdmin() || isMember())
                        && request.resource.data.uid == uid();
-        allow update, delete: if isAdmin() || (isMember() && resource.data.uid == uid());
+        allow update: if isAdmin() || (isMember() && resource.data.uid == uid()
+                                       && !touchedModerationFields());
+        allow delete: if isAdmin() || (isMember() && resource.data.uid == uid());
+      }
+
+      // F16's moderation log. Append-only in the strongest sense available: the create
+      // is restricted to a signed-in admin acting as themselves, and update and delete
+      // are refused outright, so a moderation action cannot be rewritten or erased.
+      // Members may READ it, so moderation is transparent rather than secret.
+      match /moderation/{actionId} {
+        allow read:   if isAdmin() || isMember();
+        allow create: if isAdmin() && request.resource.data.moderatorUid == uid();
+        allow update, delete: if false;
       }
     }
 
