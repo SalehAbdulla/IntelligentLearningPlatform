@@ -6,7 +6,7 @@ This folder holds the **evidence** for the assessment components. It is not docu
 |---|---|---|
 | `dossier.md` | Design Document · Background Research (4 marks) | ✅ compiled 8 Oct 2026: problem evidence, the 13 sources and what each forces in the design, affected-population context, competitor teardown with a stage-coverage table, SDG mapping with a source per row, the evidence-to-design change log, Harvard references, the roadmap P1-01 to P1-10 coverage table, and the market figures that are still unverified |
 | `interviews/` | Design Document · Background Research | Anonymised student interview notes; the **tutor interview Q&A** |
-| `meeting-notes/` | Organisation | Weekly stand-up and review minutes |
+| `meeting-notes/` | Organisation | The weekly rhythm's minutes. The **async stand-up is defined as three lines in the team channel** ([doc 10 §7](../docs/10-SPRINT-PLAN.md)), so the channel is the source and a day's minutes are what was actually posted. The convention and the minutes template now exist; **the dated minutes are compiled from the channel**, not written from memory |
 | **`sprints/sprint-<N>/`** | **Sprints, 10% INDIVIDUAL** | Per sprint: `goal.md` · `board.png` · `review/` · `retro.md` · one contribution log per member |
 | `testing/` | iOS App (60%) · Sprints | Test logs per feature, run by the named tester (never the developer) |
 | `reviews/` | Sprints · LO3 | Review notes on AI-generated code, what was wrong, what changed, why |
