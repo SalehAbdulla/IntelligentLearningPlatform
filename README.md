@@ -88,6 +88,7 @@ All placeholder names have been replaced. The workstream of the **then-empty** f
 | [13, Per-Member Tasks](docs/13-PER-MEMBER-TASKS.md) | Tickable task list per member, plus turnkey first-commit starter briefs |
 | [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so four agents can work at once without conflicts |
 | [15, Project Briefing](docs/15-PROJECT-BRIEFING.md) | **Plain-language summary in three parts:** what the project is about, the 17 features, and the interview questions. Start here for interview prep or VIVA revision |
+| [16, Team Kickoff](docs/16-TEAM-KICKOFF.md) | **One page, read it first this week:** what changed, your lane, the five commands, the two rules that cost marks, the deadlines |
 | [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) · [TODO M5](docs/TODO-M5-fatema.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
 
 ---
