@@ -95,11 +95,35 @@ checked, which is why the cells name the source to check instead of quoting a fi
 
 | # | Claim the document would like to make | Primary source to check | Owner | Status |
 |---|---|---|---|---|
-| V1 | Size of the tertiary-education population in Bahrain | Bahrain Ministry of Education / Information and eGovernment Authority open data | M1 | ⬜ to verify |
+| V1 | Size of the tertiary-education population in Bahrain | Bahrain Ministry of Education / Information and eGovernment Authority open data | M1 | ✅ **VERIFIED — 60,723 enrolled students, academic year 2025/2026** (public 41,824 + private 18,899). Source: **iGA Bahrain Open Data Portal**, dataset `23-hec_students-in-higher-education-institutions-by-academic-programme-sex0`, summing all 16 records for `academic_year = 2025/2026`; dataset last processed 27 Sep 2026, retrieved 15 Oct 2026 |
 | V2 | Smartphone and mobile-internet penetration in Bahrain | Bahrain Telecommunications Regulatory Authority (TRA) quarterly market report | M1 | ⬜ to verify |
 | V3 | Growth of digital learning in the GCC | A named industry report (for example a regional e-learning market study) with a publication year, not a blog | M4 | ⬜ to verify |
 | V4 | Bahrain digital-payments context, cited as local context | **Resolution No. 43** as published in the official gazette, plus the Central Bank of Bahrain rulebook for the payment rails named in F13 | M3 | ⬜ to verify |
 | V5 | Cost of the cloud AI tiers the router falls back to | The providers' published price lists, checked on the day of export | M2 | ⬜ to verify |
+
+#### How V1 was verified, reproducibly
+
+The Bahrain Open Data Portal renders its tables in JavaScript, so the dataset cannot be read
+from the page's HTML. It does expose the standard Opendatasoft API, which **is** the primary
+source and returns the same records the portal shows. Two calls reproduce the figure exactly:
+
+```bash
+# 1. which academic years exist (the latest is 2025/2026)
+curl -s 'https://www.data.gov.bh/api/records/1.0/search/?dataset=23-hec_students-in-higher-education-institutions-by-academic-programme-sex0&rows=0&facet=academic_year'
+
+# 2. the 16 records for the latest year; sum the "value" field
+curl -s 'https://www.data.gov.bh/api/records/1.0/search/?dataset=23-hec_students-in-higher-education-institutions-by-academic-programme-sex0&rows=16&refine.academic_year=2025%2F2026'
+```
+
+The 16 records are 2 sectors × 4 education levels × 2 sexes, and they sum to **60,723**:
+public 41,824 (diploma 3,345 · bachelor 36,825 · master 1,347 · doctorate 307) and private
+18,899 (diploma 233 · bachelor 15,095 · master 3,278 · doctorate 293).
+
+> **A note for whoever verifies V2.** The TRA's own site (`tra.org.bh`) returns **HTTP 403** to
+> a scripted request, so the quarterly market report cannot be fetched the same way. It needs
+> either a browser or a request with a normal user agent, or the figure should be taken from the
+> iGA's *Bahrain in Figures* instead, which is also a government primary source and is on the
+> same open-data portal.
 
 **Rule until these clear:** the document states the *structural* argument (second-language
 instruction, part-time work, metered data, Western-market tooling) which the four team
