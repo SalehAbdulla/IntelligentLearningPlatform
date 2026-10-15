@@ -99,7 +99,7 @@ checked, which is why the cells name the source to check instead of quoting a fi
 | V2 | Smartphone and mobile-internet penetration in Bahrain | Bahrain Telecommunications Regulatory Authority (TRA) quarterly market report | M1 | ✅ **VERIFIED — 144.5 mobile lines per 100 inhabitants, 2025.** **2,316,986 mobile phone lines** (TRA, annual series 2016–2025, via the iGA open-data portal) against a **population of 1,603,260** (iGA, June 2025). ⚠️ This is *mobile-line* penetration, the closest primary-source proxy; the TRA's own smartphone/mobile-broadband split lives in its quarterly report, which blocks scripted requests (see the note below) |
 | V3 | Growth of digital learning in the GCC | A named industry report (for example a regional e-learning market study) with a publication year, not a blog | M4 | ⬜ to verify |
 | V4 | Bahrain digital-payments context, cited as local context | **Resolution No. 43** as published in the official gazette, plus the Central Bank of Bahrain rulebook for the payment rails named in F13 | M3 | ⬜ to verify |
-| V5 | Cost of the cloud AI tiers the router falls back to | The providers' published price lists, checked on the day of export | M2 | ⬜ to verify |
+| V5 | Cost of the cloud AI tiers the router falls back to | The providers' published price lists, checked on the day of export | M2 | ✅ **VERIFIED — the free tier is genuinely $0, and the paid rate is quantified. Gemini 2.5 Flash-Lite: free of charge on the free tier; paid $0.10 / 1M input tokens and $0.40 / 1M output tokens.** At the project's own task sizes that is **≈ $0.0008 per generation**, so even the *paid* rate at the stated ceiling of <100 calls/day is **≈ $0.08/day (≈ $2.40/month)**. Source: Google's published Gemini Developer API price list, retrieved 15 Oct 2026 |
 
 #### How V1 was verified, reproducibly
 
@@ -161,9 +161,56 @@ Population, June 2025: **1,603,260** total — of whom **746,097 Bahraini** and 
 >    is an annual one, so the ratio mixes two reference periods. The ratio is stable enough for the
 >    argument; the *sources* are what a marker should check, and both are cited above.
 
-**Rule until these clear:** the document states the *structural* argument (second-language
-instruction, part-time work, metered data, Western-market tooling) which the four team
-members can evidence from their own programme, and does not quote a statistic whose primary
+#### How V5 was verified, reproducibly
+
+**One price list covers both cloud tiers.** The app's `AITier` names tier 1 as *Firebase AI Logic
+(Gemini)* and tier 2 as *Gemini via a Cloud Function proxy* — both are the same provider, so a
+single published price list answers V5 for both. Source:
+**`https://ai.google.dev/gemini-api/docs/pricing`**, retrieved **15 Oct 2026**.
+
+**Rate card, Gemini 2.5 Flash-Lite** (`gemini-2.5-flash-lite`) — the model the high-volume text
+tasks (summarise, make flashcards, make quiz) would use:
+
+| | Free tier | Paid (per 1M tokens) |
+|---|---|---|
+| **Input** (text / image / video) | **free of charge** | **$0.10** |
+| Input (audio) | free of charge | $0.30 |
+| **Output** (including thinking tokens) | **free of charge** | **$0.40** |
+| Batch / Flex | not available | $0.05 in / $0.20 out (the documented 50% reduction) |
+
+**Worked example, using the app's own task sizes** (`AITask.typicalContextTokens`, plus a
+~1,000-token generated answer):
+
+| Task | Context | Cost at the paid rate |
+|---|---|---|
+| `summarize` | 4,000 tokens | 4,000 × $0.10/1M + 1,000 × $0.40/1M = **$0.0008** |
+| `coachAnswer` | 8,000 tokens | 8,000 × $0.10/1M + 1,000 × $0.40/1M = **$0.0012** |
+| 100 generations/day (the stated ceiling) | — | **$0.08 / day ≈ $2.40 / month** |
+
+**What this proves, and what it does not.** It does **not** prove the project is free — it proves
+the *rate* is negligible and that the **$0 claim rests on the free-tier quota, not on the price**.
+That is the honest framing and the more useful one, because it puts a number on the worst case: if
+the free tier were exhausted and nothing else changed, the guardrails in `docs/04 §5`
+(on-device-first routing, the content-hash cache, the per-user daily budget) would be containing a
+cost of roughly **$2.40 a month**, not an unbounded one.
+
+> ⚠️ **Three caveats, stated rather than buried.**
+> 1. **The router does not pin a model** — that is deliberate (`AIProvider` is a seam), so the rate
+>    depends on what an admin configures. Flash-Lite is the model the volume tasks would use; the
+>    larger Flash and Pro models cost more, and **their Standard rates could not be read directly**
+>    from the page in this pass (it is long and truncates), so no figure is asserted for them.
+> 2. **Prices change.** The dossier's own rule is "checked on the day of export", and this was
+>    checked on **15 Oct 2026**. Re-check before submitting.
+> 3. **The free tier's *limits*, not just its price, are what the $0 claim rests on** — per-model
+>    RPM / RPD / TPM quotas, documented on the same page. The design stays inside them through
+>    caching and tier-0 routing, which is why `docs/04 §5` lists "<100 generation calls / day" as
+>    the expected load.
+
+**Rule for the two that remain:** the document states the *structural* argument (second-language
+instruction, part-time work, metered data, Western-market tooling) which the team can evidence from
+its own programme, and **does not quote a statistic whose primary source has not been checked** —
+an unverifiable figure is **removed rather than approximated**. V1, V2 and V5 have now cleared that
+bar; **V3 and V4 have not**, and no number from either may appear in the document until they do.
 ---
 
 ## 3. Competitor teardown
