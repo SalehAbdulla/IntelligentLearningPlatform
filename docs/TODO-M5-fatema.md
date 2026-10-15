@@ -15,16 +15,15 @@
 
 ## 0.0 First, two minutes of setup — you cannot push until this is done
 
-**You need a GitHub invitation to `SalehAbdulla/IntelligentLearningPlatform`.** Ask Saleh (M1)
-to invite the account you will commit from, then accept the email. Until you accept it you
-cannot clone, branch, commit, or open the pull request your own Sprints evidence is read from.
-The team already carries this as an open risk ([doc 09](09-RISKS-OPEN-QUESTIONS.md) R23 — two
-invitations were pending before you joined; yours is a third).
+**Your GitHub access is already in place.** Verified against the GitHub API on **14 Oct 2026**:
+`FatemaGhareeb` is an **accepted collaborator with write access** on
+`SalehAbdulla/IntelligentLearningPlatform`, so nothing is blocking you. (M2 and M4 are still
+pending — that is their problem, not yours, and it is tracked as [doc 09](09-RISKS-OPEN-QUESTIONS.md) R23.)
 
-Then:
+So all you have to do is clone and set your identity:
 
 ```bash
-gh auth status                        # confirm you are signed in
+gh auth status                        # confirm you are signed in as FatemaGhareeb
 git clone https://github.com/SalehAbdulla/IntelligentLearningPlatform.git
 cd IntelligentLearningPlatform
 git config --local user.name  "Fatema Ghareeb"
