@@ -76,15 +76,17 @@ Group headings later in this document use the `{M1}` handle for brevity, expand 
 |---|---|---|---|
 | `0 · Cover & Legend` | `0:1` | 1 | Cover with the five-member team table, legend and page index |
 | `1 · Design System` | `1:2` | 2 | Design system, plus the glass-and-depth board |
-| `2 · Flow Overview` | `1:3` | **21** | Navigation map · flow-diagram header · **15 feature flows (F01–F15)** · **4 system diagrams** (core learning loop, RAG pipeline, system architecture, AI-router decision tree) |
-| `3 · Screens (all features)` | `1:4` | **106** | Every screen from every owner, on one page — see why below |
+| `2 · Flow Overview` | `1:3` | **23** | Navigation map · flow-diagram header · **17 feature flows (F01–F17)** · **4 system diagrams** (core learning loop, RAG pipeline, system architecture, AI-router decision tree) |
+| `3 · Screens (all features)` | `1:4` | **119** | Every screen from every owner, on one page — see why below |
 | `4 · States & Prototype Wiring` | `1:9` | 1 | The cross-cutting state set |
 | `5 · Low-Fi Wireframes` | `54:2` | **107** | 106 low-fidelity wireframes plus the page header, each with its numbered-callout legend panel |
 | `6 · Dark Mode Variants (P9-12)` | `83:2` | 106 | A dark-mode variant of every screen, for the P9-12 audit |
 
 The page list earlier in this section is the **original 9-page plan**. It was consolidated to one page per prototype concern because **the Figma plugin API cannot create NAVIGATE links across pages**, so all screens must share a page for the prototype to work at all. Ownership is carried by the frame name and the cover table instead.
 
-**⚠️ Not yet drawn, and this is the prototype's remaining gap.** Groups **N** and **O** — F16 and F17 — add **13 frames (142–154)** to page `3 · Screens`, and `FLOW_F16` / `FLOW_F17` add **2 frames** to page `2 · Flow Overview`. A whole-file search on 15 Oct 2026 found **no F16 or F17 frame on any page**, so the design document's "inventoried, not yet drawn" note is accurate rather than a placeholder.
+**✅ Groups N and O are drawn (15 Oct 2026).** F16 and F17's **13 frames (142–154)** are on page `3 · Screens`, taking it from **106 to 119**, and `FLOW_F16` / `FLOW_F17` are on page `2 · Flow Overview`, taking the feature flows from **15 to 17**. All 13 screen frames are named `NN_ScreenName_Fatema_202304804` to the brief's rule, and the two flow diagrams follow the same 1080-wide numbered-step idiom as `FLOW_F01–F15`, each ending in its edge case. Both flow diagrams are exported at 2× into [`deliverables/design-document/mockups/figures/`](../deliverables/design-document/mockups/figures/) as `FLOW_F16_Moderated_Group_Chat_Fatema.png` and `FLOW_F17_Active_Recall_Space_Fatema.png`.
+
+> **Still to do for full consistency:** the 106 low-fidelity wireframes on page `5 · Low-Fi Wireframes` have **no N or O counterpart** yet. The tutor's interview answer was explicit that **low-fidelity is what the mockup component expects** (Design Document §3.3, answer 5), so the 13 new screens should get low-fidelity wireframes too. Until they do, groups N and O exist only as finished screens. **This is M5's work**, not M1's.
 
 Two gaps found and closed during this audit, both of which would have cost marks under *"all main features of the app are designed and linked based on your feature list"*:
 
