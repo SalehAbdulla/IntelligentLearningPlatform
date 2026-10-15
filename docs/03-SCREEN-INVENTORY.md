@@ -70,7 +70,21 @@ Group headings later in this document use the `{M1}` handle for brevity, expand 
 | `7 · M4, Collaboration & Admin` | M4 | Groups I, K |
 | `8 · States & Prototype Wiring` | all | Error / empty / loading / success tokens, RTL proof, connection map |
 
-**Build status, verified against the live file on 8 Oct 2026.** The file now holds **106 high-fidelity screens** on page `3 · Screens (all features)`, **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes`, **15 per-feature flow diagrams** on page `2 · Flow Overview`, and **296 prototype connections** with no dead ends. The page list above is the original 9-page plan; it was consolidated to 5 prototype pages plus the low-fi page, because the Figma plugin API cannot create NAVIGATE links across pages, so all screens must share one page for the prototype to work. Ownership is carried by the frame name and the cover table instead.
+**Build status, re-verified against the live file on 15 Oct 2026** by enumerating it through the Figma Plugin API (`getNodeByIdAsync` per page) rather than reading a page list off the canvas. **The file holds 7 pages**, not the 9 planned above:
+
+| Figma Page | Node | Frames | Contents |
+|---|---|---|---|
+| `0 · Cover & Legend` | `0:1` | 1 | Cover with the five-member team table, legend and page index |
+| `1 · Design System` | `1:2` | 2 | Design system, plus the glass-and-depth board |
+| `2 · Flow Overview` | `1:3` | **21** | Navigation map · flow-diagram header · **15 feature flows (F01–F15)** · **4 system diagrams** (core learning loop, RAG pipeline, system architecture, AI-router decision tree) |
+| `3 · Screens (all features)` | `1:4` | **106** | Every screen from every owner, on one page — see why below |
+| `4 · States & Prototype Wiring` | `1:9` | 1 | The cross-cutting state set |
+| `5 · Low-Fi Wireframes` | `54:2` | **107** | 106 low-fidelity wireframes plus the page header, each with its numbered-callout legend panel |
+| `6 · Dark Mode Variants (P9-12)` | `83:2` | 106 | A dark-mode variant of every screen, for the P9-12 audit |
+
+The page list earlier in this section is the **original 9-page plan**. It was consolidated to one page per prototype concern because **the Figma plugin API cannot create NAVIGATE links across pages**, so all screens must share a page for the prototype to work at all. Ownership is carried by the frame name and the cover table instead.
+
+**⚠️ Not yet drawn, and this is the prototype's remaining gap.** Groups **N** and **O** — F16 and F17 — add **13 frames (142–154)** to page `3 · Screens`, and `FLOW_F16` / `FLOW_F17` add **2 frames** to page `2 · Flow Overview`. A whole-file search on 15 Oct 2026 found **no F16 or F17 frame on any page**, so the design document's "inventoried, not yet drawn" note is accurate rather than a placeholder.
 
 Two gaps found and closed during this audit, both of which would have cost marks under *"all main features of the app are designed and linked based on your feature list"*:
 
