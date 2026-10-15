@@ -96,7 +96,7 @@ checked, which is why the cells name the source to check instead of quoting a fi
 | # | Claim the document would like to make | Primary source to check | Owner | Status |
 |---|---|---|---|---|
 | V1 | Size of the tertiary-education population in Bahrain | Bahrain Ministry of Education / Information and eGovernment Authority open data | M1 | ✅ **VERIFIED — 60,723 enrolled students, academic year 2025/2026** (public 41,824 + private 18,899). Source: **iGA Bahrain Open Data Portal**, dataset `23-hec_students-in-higher-education-institutions-by-academic-programme-sex0`, summing all 16 records for `academic_year = 2025/2026`; dataset last processed 27 Sep 2026, retrieved 15 Oct 2026 |
-| V2 | Smartphone and mobile-internet penetration in Bahrain | Bahrain Telecommunications Regulatory Authority (TRA) quarterly market report | M1 | ⬜ to verify |
+| V2 | Smartphone and mobile-internet penetration in Bahrain | Bahrain Telecommunications Regulatory Authority (TRA) quarterly market report | M1 | ✅ **VERIFIED — 144.5 mobile lines per 100 inhabitants, 2025.** **2,316,986 mobile phone lines** (TRA, annual series 2016–2025, via the iGA open-data portal) against a **population of 1,603,260** (iGA, June 2025). ⚠️ This is *mobile-line* penetration, the closest primary-source proxy; the TRA's own smartphone/mobile-broadband split lives in its quarterly report, which blocks scripted requests (see the note below) |
 | V3 | Growth of digital learning in the GCC | A named industry report (for example a regional e-learning market study) with a publication year, not a blog | M4 | ⬜ to verify |
 | V4 | Bahrain digital-payments context, cited as local context | **Resolution No. 43** as published in the official gazette, plus the Central Bank of Bahrain rulebook for the payment rails named in F13 | M3 | ⬜ to verify |
 | V5 | Cost of the cloud AI tiers the router falls back to | The providers' published price lists, checked on the day of export | M2 | ⬜ to verify |
@@ -124,6 +124,42 @@ public 41,824 (diploma 3,345 · bachelor 36,825 · master 1,347 · doctorate 307
 > either a browser or a request with a normal user agent, or the figure should be taken from the
 > iGA's *Bahrain in Figures* instead, which is also a government primary source and is on the
 > same open-data portal.
+
+#### How V2 was verified, reproducibly
+
+**The 403 was worked around, not bypassed.** The TRA publishes its series to the **iGA open-data
+portal** as well as to its own site, and the portal's API answers scripted requests. So the figure
+below is still **TRA-published** — only the delivery route changed.
+
+```bash
+# 1. mobile phone lines, TRA, annual (2016-2025)
+curl -s 'https://www.data.gov.bh/api/records/1.0/search/?dataset=01-number-of-mobile-phone-lines&rows=10&sort=-year'
+
+# 2. population, iGA, June 2025 (16 records: 4 governorates x 2 nationalities x 2 sexes)
+curl -s 'https://www.data.gov.bh/api/records/1.0/search/?dataset=02-population-by-governorate-nationality-sex&rows=16&refine.year=2025'
+```
+
+| Year | Mobile phone lines (TRA) |
+|---|---|
+| 2020 | 1,770,966 |
+| 2021 | 1,923,443 |
+| 2022 | 2,128,304 |
+| 2023 | 2,250,359 |
+| 2024 | 2,316,110 |
+| **2025** | **2,316,986** |
+
+Population, June 2025: **1,603,260** total — of whom **746,097 Bahraini** and 857,163 non-Bahraini.
+
+**Penetration = 2,316,986 ÷ 1,603,260 = 144.5 mobile lines per 100 inhabitants.**
+
+> **Two honest caveats, stated rather than buried.**
+> 1. **Mobile *lines*, not smartphones.** A lines-per-head figure counts SIMs, and one person can
+>    hold two. It is the strongest primary-source proxy for "almost everyone has a phone", which
+>    is the claim the document actually needs — but it is not a smartphone-specific statistic, and
+>    the document must not describe it as one.
+> 2. **The population denominator is a mid-year estimate** (June 2025), and the mobile-lines figure
+>    is an annual one, so the ratio mixes two reference periods. The ratio is stable enough for the
+>    argument; the *sources* are what a marker should check, and both are cited above.
 
 **Rule until these clear:** the document states the *structural* argument (second-language
 instruction, part-time work, metered data, Western-market tooling) which the four team
