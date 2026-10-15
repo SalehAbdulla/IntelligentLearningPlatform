@@ -104,16 +104,16 @@ error, empty, loading, and no-internet states need their own labelled screens?
 
 | Field | Value | Where it goes |
 |---|---|---|
-| **Date** | ⚠️ *not recorded in the notes* — confirm with the team | Design Document §3.1 |
-| **Location** | Bahrain Polytechnic, in the group's allocated section (per the interview guidelines) | Design Document §3.1 |
-| **Attendees** | ⚠️ *not recorded in the notes* — list every member present, and the supervisor | Design Document §3.1 |
-| **Who asked** | Three members ask (the guidelines require two or three) — confirm which three | Design Document §3.1 |
-| **Scribe** | ⚠️ *not recorded* | Design Document §3.1 |
-| **Recording consent** | ⚠️ *not recorded* — the answer must be written down before the first question | Design Document §3.1 |
+| **Date** | ✅ **Tuesday 13 October 2026, 2:40 pm** | Design Document §3.1 |
+| **Location** | ✅ Bahrain Polytechnic, in the group's allocated section (per the interview guidelines) | Design Document §3.1 |
+| **Attendees** | ✅ **All five members attended** — Saleh, Mohammed, Tasbeeh, Shahad and Fatema | Design Document §3.1 |
+| **Who asked** | ✅ Three members asked (the guidelines require two or three) — the notes do not record which three | Design Document §3.1 |
+| **Scribe** | ⬜ not recorded in the team's notes | Design Document §3.1 |
+| **Recording consent** | ⬜ not recorded in the team's notes | Design Document §3.1 |
 
 ## Still outstanding from this interview
 
 - **The written F15 advanced-feature approval.** None of the five questions asked for it, so it
-  is **still pending** and still a rubric requirement (*"one approved advanced feature"*). It needs
-  a follow-up: an email or a signed note from the supervisor is enough. Recorded in Design
-  Document §3.4 and `docs/09` R21.
+  is **still pending** and still a rubric requirement (*"one approved advanced feature"*).
+  **The team is requesting it by email** — approval in writing is enough, it does not need another
+  meeting. Recorded in Design Document §3.4 and `docs/09` R21.
