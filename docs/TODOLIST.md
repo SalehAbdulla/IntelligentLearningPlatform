@@ -143,7 +143,7 @@ Group K (admin content management) is now feature-complete.
 
 ## 9. Doc-versus-code contradictions to fix
 
-- [ ] `tools/check-tokens.sh` is a stub yet `docs/06` section 6 and `docs/09` R10 claim it fails the build on divergence
+- [x] `tools/check-tokens.sh`. **Implemented 15 Oct 2026, and it immediately found two real defects.** It was a five-line stub printing `TODO` and exiting **0**, while `docs/06` section 6 and `docs/09` R10 both claimed it failed the build on divergence — false twice over, since no CI workflow exists either. It now checks the **colour** tokens name-for-name between `docs/06` section 1.1 and `ColorTokens.swift`, fails in **either** direction, and **fails closed** if it cannot read its inputs. Both docs now state its real scope. **What it found:** (1) `onError` was in the code and absent from the documentation — fixed; (2) **R24**, a token named for one role and used in another, recorded in `docs/09` for the design system's owner because `DesignSystem/` is outside M1's lane. **The other token groups are not machine-checked**, and the reason is now written down: their names differ by convention on each side (`Space/4` vs `s4`, `Type/body` vs `sfBody`), so a name-grep would fail on every row
 - [ ] Tick or reconcile the stale checklists in `docs/01`, `docs/08` and `docs/10`
 - [ ] `README.md` lines 161 and 163 show "App identity frozen" and "Cline agent skills installed" as open, which look out of date
 
