@@ -86,7 +86,7 @@ All placeholder names have been replaced. The workstream of the **then-empty** f
 | [11, App Implementation & VIVA](docs/11-APP-IMPLEMENTATION-VIVA.md) | The **60% must-pass**: MVP scope, demo script, VIVA prep, must-pass risk control |
 | [12, Git Workflow](docs/12-GIT-WORKFLOW.md) | **Branches, per-file commits, PRs**, the tutor's stated requirement, plus `tools/commit.sh` |
 | [13, Per-Member Tasks](docs/13-PER-MEMBER-TASKS.md) | Tickable task list per member, plus turnkey first-commit starter briefs |
-| [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so three agents can work at once without conflicts |
+| [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so four agents can work at once without conflicts |
 | [15, Project Briefing](docs/15-PROJECT-BRIEFING.md) | **Plain-language summary in three parts:** what the project is about, the 17 features, and the interview questions. Start here for interview prep or VIVA revision |
 | [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) · [TODO M5](docs/TODO-M5-fatema.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
 
@@ -114,7 +114,7 @@ IntelligentLearningPlatform/
 │   ├── rules-tests/                 emulator suites, negative tests first
 │   └── functions/                   createCharge · tapWebhook · rollupDailyMetrics
 │
-├── docs/                        planning set (00–14), start at README
+├── docs/                        planning set (00–15) + a TODO handover per member, start at README
 │
 ├── deliverables/
 │   ├── design-document/         10%, PDF source + low-fidelity mockups
@@ -122,13 +122,17 @@ IntelligentLearningPlatform/
 │
 ├── research/                    assessment evidence
 │   ├── dossier.md               evidence base for Background Research
+│   ├── interviews/              graded: transcript, capture, written F15 approval
 │   ├── sprints/sprint-<N>/      10% INDIVIDUAL, goal · board · review · retro
-│   ├── testing/                 test logs per feature (tester ≠ developer)
-│   ├── reviews/                 review notes on AI-generated code
 │   ├── cheatsheets/             one per member, VIVA quick reference
-│   └── demo/                    golden-path recordings + backup capture
+│   ├── testing/                 test logs per feature (tester ≠ developer)   ← to create
+│   ├── reviews/                 review notes on AI-generated code            ← to create
+│   ├── meeting-notes/           stand-up and review minutes                  ← to create
+│   └── demo/                    golden-path recordings + backup capture      ← to create
 │
-└── tools/                       install-skills · commit.sh · new-branch.sh · verify-docs
+└── tools/                       commit · new-branch · check-lane · check-submission
+                                 verify-docs · check-strings · todos · build-pdf
+                                 run-ios · run-device · install-skills · figma-cli
 ```
 
 ### Why two halves, and why they aren't symmetrical
@@ -152,22 +156,25 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 | Component | Weight | Status |
 |---|---|---|
 | Individual App | 10% | ✅ complete |
-| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: F01 to F15 implemented; builds and passes 723 unit tests |
-| Sprints (individual) | 10% | 🟨 in progress: continuous commit evidence on `feat/*` branches |
-| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/` |
-| Prototype (Figma) | 10% | 🟨 in progress: **106 screens built** and **interactive** (296 prototype connections, no dead ends); Phase 1 low-fi mockups (**106 wireframes**) and **15 flow diagrams** built. See `deliverables/prototype/figma-link.txt` |
+| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: **F01 to F17** implemented; builds and passes **808 unit tests** |
+| Sprints (individual) | 10% | ⚠️ **at risk:** only **M1 has authored commits**. M3 and M5 can push; **M2 and M4 are still blocked by pending repository invitations** (re-sent 15 Oct). No teammate evidence can exist until they accept |
+| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/`; **tutor interview done and transcribed** (13 Oct); one rubric item still open, the written F15 approval |
+| Prototype (Figma) | 10% | 🟨 in progress: **106 screens built** of a **154-frame inventory**, and **interactive** (296 prototype connections, no dead ends); **106 low-fidelity wireframes** and **15 of 17 flow diagrams**. F16/F17's 13 frames (groups N and O) are inventoried but not yet drawn. See `deliverables/prototype/figma-link.txt` |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
 **Verified locally** (Xcode 27.0, iPhone 17 simulator, iOS 27.0, UDID `08D34825-D798-4328-929A-18616BEA64CB`):
 
 - `xcodebuild ... build` → `** BUILD SUCCEEDED **`
-- `xcodebuild ... test` → `Test run with 723 tests in 117 suites passed`
+- `xcodebuild ... test` → `Test run with 808 tests in 128 suites passed`
 
 - ✅ Brief decoded, rubric extracted, easy-to-miss requirements identified
 - ✅ Local toolchain verified (Xcode 27.0 · iOS 26.5 & 27.0 simulators · Swift 6.4 · Figma.app · Node 24.15)
 - ✅ Tech stack + $0 cost model researched and confirmed
 - ✅ App name, tagline, logo direction, palette proposed
-- ⬜ App identity frozen
+- ✅ App identity frozen (StudyForge · logo · palette — carried in every document header and the Figma cover)
 - ✅ Team names/IDs inserted, 5 members, the brief's own default group size
-- ⬜ Cline agent skills installed
+- ✅ Cline agent skills installed (`.agents/skills/`, `skills-lock.json`)
+- ✅ **Tutor interview conducted** — Tuesday 13 October 2026, 2:40 pm, all five members present; five questions and the supervisor's answers transcribed in [`research/interviews/`](research/interviews/README.md)
+- ⬜ **Written F15 advanced-feature approval** — a rubric requirement; being requested from the tutor by email
+- ⬜ Usability test with 5 users and a SUS score (Design Document §17.3)
