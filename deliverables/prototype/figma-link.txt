@@ -207,8 +207,9 @@ docs/01-ROADMAP-PHASES-TODOLIST.md section 14: 19-23, 32, 39, 40, 49, 50, 66,
 67, 71, 72, 79, 80, 87, 98, 100, 106-108, 113, 114, 116, 117, 119, 123, 127,
 130, 131, 135-137, 140. Every one is a secondary state, an empty state or a
 P1 variant, not a happy path, and every one of the 15 features built so far already
-has its happy path built and linked. The two features added on 14 Oct 2026, F16
-(Admin-Moderated Group Chat, group N) and F17 (Active Recall Space, group O), are
-inventoried in docs/03 section 3 and are not yet drawn, so they are not in the
-gap list above.
+has its happy path built and linked. Groups N and O — F16 (Admin-Moderated Group
+Chat) and F17 (Active Recall Space) — were drawn on 15 Oct 2026 as frames 142-154
+and are exported as FLOW_F16_Moderated_Group_Chat_Fatema.png and
+FLOW_F17_Active_Recall_Space_Fatema.png. Their low-fidelity wireframes are the one
+piece still outstanding.
 

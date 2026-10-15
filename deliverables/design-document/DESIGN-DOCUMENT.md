@@ -68,7 +68,7 @@ commitment to the marker rather than a gate the script enforces.
 | 4.1 | Competitor teardown, screenshots of each product | ⬜ to capture | ⬜ pending |
 | 5.1 | The core learning loop: upload, generate, schedule, practise, measure, adapt | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
 | 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png) | ✅ exported |
-| 9.1 to 9.17 | The 17 per-feature flow diagrams (F01 to F17), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F17` (`FLOW_F16` and `FLOW_F17` are drawn with the groups N and O frames) | 🔶 15 of 17 exported |
+| 9.1 to 9.17 | The 17 per-feature flow diagrams (F01 to F17), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F17` | ✅ all 17 exported |
 | 10.1 | The cross-cutting state set (loading, empty, error, offline, success) | [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png) | ✅ exported |
 | 10.2 to 10.107 | The 106 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_141` | ✅ exported |
 | 11.1 | The global navigation map | [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png) | ✅ exported |
@@ -123,7 +123,7 @@ University students accumulate large volumes of unstructured study material (lec
 
 **StudyForge** turns any study material into summaries, flashcards, quizzes and a spaced-repetition plan, and closes the loop between them: **upload, generate, schedule, practise, measure, adapt**. It is an iPhone-first, bilingual (English and Arabic) application built on Apple's on-device intelligence where possible, so the core loop works offline and at no cloud cost, and every AI artefact carries a visible source citation.
 
-The design is documented end to end in this document: 4 user roles, 17 features, 106 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan; the **106 built screens** are those already drawn in Figma, and the 13 frames of groups N and O — F16 and F17 — are inventoried and drawn next.)
+The design is documented end to end in this document: 4 user roles, 17 features, 119 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan, and the **119 built screens** are those drawn in Figma — all 17 features, including groups N and O for F16 and F17.)
 
 ## 2. Background research: the problem, who is affected, and why it matters
 
@@ -471,14 +471,14 @@ Every step above has at least one designed error or empty state, since the brief
 | 9.13 | F13 Subscription and payments | [FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png](mockups/figures/FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png) |
 | 9.14 | F14 Notifications and reminders | [FLOW_F14_Notifications_Reminders_Saleh.png](mockups/figures/FLOW_F14_Notifications_Reminders_Saleh.png) |
 | 9.15 | F15 AI study companion (advanced) | [FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png](mockups/figures/FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png) |
-| 9.16 | F16 Admin-moderated group chat | `FLOW_F16_Moderated_Group_Chat_Fatema.png` *(drawn with the group N frames)* |
-| 9.17 | F17 Active recall space | `FLOW_F17_Active_Recall_Space_Fatema.png` *(drawn with the group O frames)* |
+| 9.16 | F16 Admin-moderated group chat | [FLOW_F16_Moderated_Group_Chat_Fatema.png](mockups/figures/FLOW_F16_Moderated_Group_Chat_Fatema.png) |
+| 9.17 | F17 Active recall space | [FLOW_F17_Active_Recall_Space_Fatema.png](mockups/figures/FLOW_F17_Active_Recall_Space_Fatema.png) |
 
 ## 10. Low-fidelity mockups
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `115_Admin_AIConfig_Settings_Shahad_202305767`. The file holds **106 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (15 exported so far). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (121 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804`. The file holds **119 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (123 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
@@ -495,20 +495,22 @@ The prototype is built in a single Figma file with one **page per owner**, so au
 | K | Admin Content Management | M4 | 109–112, 115 | 5 |
 | L | Subscription & Payments | M3 | 118, 120–122, 124–126 | 7 |
 | M | System, States & Feedback | M1 | 128, 129, 132–134, 138, 139, 141 | 8 |
-| | **Total** | | | **106** |
+| N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
+| O | Active Recall Space (F17) | M5 | 148–154 | 7 |
+| | **Total** | | | **119** |
 
-*Table 10.1, the 106 screens grouped by feature area, with the owning member.*
+*Table 10.1, the 119 screens grouped by feature area, with the owning member.*
 
-**Pending build (added 14 Oct 2026).** The two features added with the fifth member add **13 further frames**, inventoried in [doc 03 §3](../../docs/03-SCREEN-INVENTORY.md) and drawn next:
+**Groups N and O — built 15 October 2026.** The two features added with the fifth member are now drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**:
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
 | N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
 | O | Active Recall Space (F17) | M5 | 148–154 | 7 |
 
-They are listed here rather than in Table 10.1 so that the **106** above stays an accurate count of what is actually drawn, and the 154-frame inventory remains the full plan.
+**One consistency gap remains, and it is recorded rather than hidden.** The **106 low-fidelity wireframes have no N or O counterpart yet.** The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, so the 13 new screens should get low-fidelity wireframes too; until they do, groups N and O exist only as finished screens.
 
-Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21** built, plus **M5 Fatema 13** pending. The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
+Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21 · M5 Fatema 13.** The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
