@@ -160,9 +160,9 @@ pred_market() {
 }
 
 pred_count() {
-  grep -q '106 designed screens' "$DOC" && return 0
-  grep -q '106 frames' "$DOC" && return 0
-  note "the 106-screen count is not stated in the document"
+  grep -q '119 designed screens' "$DOC" && return 0
+  grep -q '119 frames' "$DOC" && return 0
+  note "the 119-screen count is not stated in the document"
   return 1
 }
 
