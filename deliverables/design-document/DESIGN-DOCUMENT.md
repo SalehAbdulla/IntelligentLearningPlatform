@@ -895,7 +895,9 @@ Every feature has 2 to 3 criteria of this form, which become its test cases.
 
 Five participants (students who are not squad members) complete the golden path: sign up, upload a PDF, generate a summary, generate flashcards, complete a review session, take a short quiz. The facilitator records task success, time on task and any confusion, then collects a **System Usability Scale** score. Consent is written and all data is anonymised (see §16.2). Results and the changes made are recorded here after the test.
 
-> **Status: planned, not yet run.** The usability test is scheduled for Sprint S3, alongside the hi-fidelity prototype, so that the tested build is close to the final one. This subsection will carry the participant table, the SUS score, and the list of changes made in response.
+> **Status: prepared, not yet run.** The usability test is scheduled for Sprint S3, alongside the hi-fidelity prototype, so that the tested build is close to the final one. **The full test pack is prepared and ready to run** in [`research/usability/`](../../research/usability/README.md): the [protocol](../../research/usability/protocol.md) with the facilitator script, the six golden-path tasks and the do-not-help rule; the [consent form](../../research/usability/consent-form.md); the [System Usability Scale questionnaire](../../research/usability/sus-questionnaire.md) with its scoring rule; the [participant log](../../research/usability/participant-log.md); and the [results template](../../research/usability/results.md).
+>
+> This subsection will carry the participant table, the usability score and the list of changes made in response, once the session has been run. **No score is recorded here yet, because none has been observed** — a figure entered before the session would be invented, and the honesty of this section is worth more than its completeness.
 
 ## 18. References
 
