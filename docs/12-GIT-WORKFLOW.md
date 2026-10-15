@@ -92,9 +92,19 @@ the owner may push directly, while every other account still has to go through a
 | Setting | `main` | `develop` |
 |---|---|---|
 | Pull request required before merging | ✅ all members | ✅ all members |
+| **Approvals required before merging** | none enforced | **✅ 1 — and any member may approve** (added 15 Oct 2026) |
 | Admin enforcement (`enforce_admins`) | ❌ off, owner exempt by decision | ❌ off, owner exempt by decision |
 | Force-push blocked | ✅ | ✅ |
 | Branch deletion blocked | ✅ | ✅ |
+
+> **Why `develop` requires one approval, and why it is not "only the owner may merge".** The
+> Sprints component (10%) is read from the **review trail**, and the comprehension contract says
+> *"no PR is merged for code you cannot explain"* — so someone has to actually read each pull
+> request. GitHub will not let you approve your own PR, so making the owner the sole approver
+> would make one person the single point of failure for four. The rule is therefore
+> **"any member may approve anyone's PR"**, which also satisfies the rotation principle in
+> [doc 02 §7](02-FEATURE-LIST-OWNERSHIP.md): every feature is read by at least three different
+> people. `enforce_admins` stays off, so the owner can still merge without an approval.
 
 What the exemption does **not** change:
 
@@ -125,6 +135,10 @@ also permits `main`/`develop`.
 main     pr_required=true enforce_admins=false force_push=false deletions=false
 develop  pr_required=true enforce_admins=false force_push=false deletions=false
 ```
+
+**Updated 15 Oct 2026:** `develop` now additionally requires **one approving review**
+(`approvals_required=1`), so a member can open a pull request but cannot merge it unreviewed.
+`main` is unchanged, because only the owner ever releases to it. See §3.1 for the reasoning.
 
 The check was run before the handover because the configuration had drifted from this section's
 claim: `enforce_admins` was still **`true`**, which left the owner as protected as anyone else
@@ -409,11 +423,21 @@ If the first command returns a thin list, that sprint's individual mark is thin,
 for b in main develop; do
   printf '%-8s ' "$b"
   gh api repos/SalehAbdulla/IntelligentLearningPlatform/branches/$b/protection \
-    --jq '"pr_required=\(.required_pull_request_reviews != null) enforce_admins=\(.enforce_admins.enabled) force_push=\(.allow_force_pushes.enabled) deletions=\(.allow_deletions.enabled)"'
+    --jq '"pr_required=\(.required_pull_request_reviews != null) approvals=\(.required_pull_request_reviews.required_approving_review_count // 0) enforce_admins=\(.enforce_admins.enabled) force_push=\(.allow_force_pushes.enabled) deletions=\(.allow_deletions.enabled)"'
 done
 ```
 
-Expected after the 8 Oct 2026 decision: `pr_required=true enforce_admins=false force_push=false deletions=false`.
+Expected after the 8 Oct 2026 decision, and the 15 Oct 2026 review requirement:
+
+```
+main     pr_required=true approvals=0 enforce_admins=false force_push=false deletions=false
+develop  pr_required=true approvals=1 enforce_admins=false force_push=false deletions=false
+```
+
+- `pr_required=true` is what keeps the review trail for the members.
+- `approvals=1` on `develop` (added 15 Oct 2026) means a member cannot merge their own PR
+  unreviewed; **any** member may approve it, and the owner may merge without an approval
+  because `enforce_admins` is off.
 
 - `pr_required=true` is what keeps the review trail for the members.
 - `enforce_admins=false` is the owner exemption, deliberate: the owner may push directly, and
