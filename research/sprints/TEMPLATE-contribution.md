@@ -4,6 +4,12 @@
 > `research/sprints/sprint-<N>/<yourname>-contribution.md` at the start of each sprint
 > and fill it in **within 24 hours of doing the work**.
 >
+> ⚠️ **Fix the relative links when you copy it.** This template sits one level above the
+> sprint folders, so its own links read `../../docs/…`. A copy inside
+> `research/sprints/sprint-<N>/` is **one level deeper**, so every one of them gains a
+> `../` and must read `../../../docs/…`. `python3 tools/verify-docs.py` fails on a broken
+> link, so a copy that keeps the template's paths will fail the gate.
+>
 > Rules (from [doc 10 §6](../../docs/10-SPRINT-PLAN.md)):
 > - one row per work session
 > - every row links to evidence a marker can open

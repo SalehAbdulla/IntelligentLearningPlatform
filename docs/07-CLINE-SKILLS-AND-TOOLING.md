@@ -127,7 +127,7 @@ npx skills update                # pull newer versions
 > ```
 
 
-**Optional, if we want Cline to touch the Figma file directly:** wire up the Figma MCP server, after which `figma-use` becomes an active tool rather than reference material. Worth doing if the team wants Cline to generate the Figma component library programmatically, a genuine time-saver across ~141 frames.
+**Optional, if we want Cline to touch the Figma file directly:** wire up the Figma MCP server, after which `figma-use` becomes an active tool rather than reference material. Worth doing if the team wants Cline to generate the Figma component library programmatically, a genuine time-saver across ~154 frames.
 
 
 
@@ -150,7 +150,7 @@ The brief requires that **every member can present and explain any part of the a
 | **Vision OCR + NaturalLanguage embeddings** | F02, F15 retrieval | M2 | Can explain why extraction is on-device |
 | **Spaced repetition (SM-2)** | F04 | M3 | Can explain the four rating buttons and what each changes |
 | **Scheduling algorithms** | F06 | M3 | Can explain deadline weighting and the re-plan trigger |
-| **Figma: auto-layout, variables, components** | All ~141 frames | M4 | Can build a screen from the component library |
+| **Figma: auto-layout, variables, components** | All ~154 frames | M4 | Can build a screen from the component library |
 | **Figma prototyping: links, Smart Animate, overflow** | Gate 2 | M4 | Can wire a flow end to end |
 | **UI/UX principles (Nielsen, WCAG 2.2, Fitts's law)** | LO1 + the document | M4 | Can justify a design decision with a named principle |
 | **Visual design (grid, type scale, colour, contrast maths)** | The whole look | M1 | Can state why white-on-ember fails AA |
@@ -187,7 +187,7 @@ The brief requires that **every member can present and explain any part of the a
 | draw.io / Excalidraw | ⬜ | The 15 feature flow diagrams |
 | Figma "Contrast" plugin | ⬜ | Verify the §1.1 table in the actual file |
 | Task tracker (GitHub Projects / Notion) | ⬜ | Mirrors the [roadmap](01-ROADMAP-PHASES-TODOLIST.md) |
-| Git + GitHub repo | ✅ repo exists | Enable branch protection on `main` |
+| Git + GitHub repo | ✅ repo exists; PR required on `main` and `develop` | Members land work only through a PR; the owner is deliberately exempt from admin enforcement (8 Oct 2026) |
 
 ---
 

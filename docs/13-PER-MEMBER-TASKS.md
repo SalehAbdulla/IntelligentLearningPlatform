@@ -2,7 +2,18 @@
 
 > Operational, tickable task list, one section per member. Derived from the allocation in [doc 10 §4](10-SPRINT-PLAN.md) and the ownership in [doc 02](02-FEATURE-LIST-OWNERSHIP.md). Every task below produces evidence a marker can **open**, because the Sprints component is assessed per person and the VIVA requires that every member can explain and demo any part.
 
-**Why this file exists, stated plainly.** As of writing, every commit in this repository is authored by **M1**. The Sprints component (10%) is assessed **individually**, and the VIVA (60%, must pass) requires **every member** to explain and demonstrate parts of the app. With no attributed commits, **M2, M3 and M4 currently have no individual sprint evidence**, which is a real risk to both marks. This file, plus the per-member artefacts it points at, is the fix. Work started from here on is attributed; work already done by M1 stands as M1's and is not back-fillable.
+> **Ready-to-hand AI-agent handover.** One self-contained file per member — hand it whole
+> to an AI coding agent: [M2 Mohammed](TODO-M2-mohammed.md) ·
+> [M3 Tasbeeh](TODO-M3-tasbeeh.md) · [M4 Shahad](TODO-M4-shahad.md) ·
+> [M5 Fatema](TODO-M5-fatema.md). Each sets the member's
+> git identity, requires a written plan before any code, enforces one commit per file and a
+> push on completion, and requires **at least two of that member's features** to carry a
+> real, tested, committed change. Each also pins an exact, **disjoint** file lane so four
+> agents can run at once without merge conflicts —
+> [doc 14](14-COLLEAGUE-AI-AGENT-PROMPTS.md) has the lane map, and
+> `bash tools/check-lane.sh M2|M3|M4|M5` enforces it.
+
+**Why this file exists, stated plainly.** As of writing, every commit in this repository is authored by **M1**. The Sprints component (10%) is assessed **individually**, and the VIVA (60%, must pass) requires **every member** to explain and demonstrate parts of the app. With no attributed commits, **M2, M3, M4 and M5 currently have no individual sprint evidence**, which is a real risk to both marks. This file, plus the per-member artefacts it points at, is the fix. Work started from here on is attributed; work already done by M1 stands as M1's and is not back-fillable.
 
 ---
 
@@ -72,6 +83,21 @@
 - [ ] Coordinate the **sprint review recording** so every member is filmed demoing their own work.
 - [ ] Cheat sheet: `research/cheatsheets/shahad.md`.
 
+## M5, Fatema Ghareeb (`202304804`)
+
+**Develops:** F16 (admin-moderated group chat), F17 (active recall space).
+**Tests:** F01, F05, F13.
+
+> **Joined 14 Oct 2026**, filling the brief's default fifth seat. Her two features were added with her and are **net-new**, so she authors them from her first commit — there is no "someone else wrote this" problem to work around, which is the whole point of this file.
+
+- [ ] **Take ownership of your two features.** Read the surrounding code first (F09's `GroupChatView`, F04's `SpacedRepetition`), write a plan, then build F17's queue and settings and F16's moderator model; commit under your own name.
+- [ ] Own the **spaced-repetition story**: be able to explain, out loud, how SM-2 computes the next interval and exactly where your Recall Space calls it. This is the F17 answer to the VIVA question *"what does this specific function do?"*.
+- [ ] Hand-write the parts that matter: the **due-today queue ordering** and the **daily-limit / learning-step state machine**.
+- [ ] Write and commit **test logs** for F01, F05, F13 in `research/testing/`.
+- [ ] Author Figma groups **N** and **O** (frames 142–154), each named `…_Fatema_202304804`.
+- [ ] Demo your own features at the sprint review.
+- [ ] Cheat sheet: `research/cheatsheets/fatema.md`.
+
 ---
 
 ## Every sprint, every member, these artefacts
@@ -89,7 +115,7 @@ A member does not count as having contributed in a sprint until these exist for 
 
 | They look at | They should find |
 |---|---|
-| `git shortlog -sne main` | four names, each with a real, spread-out commit count |
+| `git shortlog -sne main` | five names, each with a real, spread-out commit count |
 | `git log --author="<you>"` | commits through the sprint, not one dump on the last day |
 | `research/sprints/sprint-N/` | a goal, a contribution log per member, a retro, a review recording |
 | `research/testing/` | test logs where the tester is not the developer |

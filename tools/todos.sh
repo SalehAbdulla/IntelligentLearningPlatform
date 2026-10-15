@@ -12,7 +12,7 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 SRC="ios/StudyForge"
 
-members=("${1:-M1}" "${1:-M2}" "${1:-M3}" "${1:-M4}")
+members=("${1:-M1}" "${1:-M2}" "${1:-M3}" "${1:-M4}" "${1:-M5}")
 if [ "$#" -ge 1 ]; then members=("$1"); fi
 
 total=0

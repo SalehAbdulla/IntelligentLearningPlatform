@@ -36,7 +36,7 @@ if [[ "$NAME" == feat/* ]]; then
     die "invalid feature branch name '$NAME'.
     Feature branches must be:  feat/F<xx>-<lowercase-slug>
     Example:                   feat/F04-sm2-scheduling
-    (doc 02 §4 defines F01-F15)"
+    (doc 02 §4 defines F01-F17)"
   fi
 else
   if ! [[ "$NAME" =~ ^(fix|docs|chore|release|hotfix)/[a-z0-9._-]+$ ]]; then
