@@ -167,33 +167,32 @@ On-device language models shipped to consumer phones in the last platform cycle,
 
 ## 3. Tutor interview: questions asked and summary of responses
 
-> ✅ **Status: the interview HAS taken place.** **Five questions** were put to the supervisor, and they are transcribed **verbatim** in [`research/interviews/tutor-interview-transcript.md`](../../research/interviews/tutor-interview-transcript.md), with the team's original capture beside it as `tutor-interview-notes.docx`. The rubric requires **both** halves — the questions asked *and* the summary of responses — and the interview guidelines make the transcript and the summary graded parts in their own right. §3.2 holds the questions, §3.3 holds the summary of responses **and what changed in the design as a result**.
+> ✅ **Status: the interview HAS taken place — Tuesday 13 October 2026, 2:40 pm, all five members present.** **Five questions** were put to the supervisor, and they are transcribed **verbatim** in [`research/interviews/tutor-interview-transcript.md`](../../research/interviews/tutor-interview-transcript.md), with the team's original capture beside it as `tutor-interview-notes.docx`. The rubric requires **both** halves — the questions asked *and* the summary of responses — and the interview guidelines make the transcript and the summary graded parts in their own right. §3.2 holds the questions, §3.3 holds the summary of responses **and what changed in the design as a result**.
 >
-> ⚠️ **Two fields in §3.1 are still to be confirmed from the team's own record: the date, and who attended.** Everything else below is recorded.
->
-> ⚠️ **One rubric item is still open: the written F15 approval** (§3.4). None of the five questions asked for it, so it needs a short follow-up — it is a requirement (*"one approved advanced feature"*), not a nice-to-have.
+> ⚠️ **One rubric item is still open: the written F15 approval** (§3.4). None of the five questions asked for it, so it needs a short follow-up — it is a requirement (*"one approved advanced feature"*), not a nice-to-have. The team is requesting it by email.
 
 ### 3.1 Interview record
 
 | Field | Value |
 |---|---|
-| Date | ⚠️ *to be confirmed from the team's record* — not captured in the interview notes |
+| Date | **Tuesday 13 October 2026, 2:40 pm** |
 | Location | Bahrain Polytechnic, in the group's allocated section, second session of the week (as the interview guidelines require) |
 | Slot | 15 minutes, allocated by the tutor |
-| Interviewer(s) | ⚠️ *to be confirmed* — the guidelines require two or three members to ask |
+| Interviewer(s) | **Three members asked**, as the guidelines require (the notes do not record which three) |
 | Supervisor | Haetham Alhaddad (module coordinator) |
-| Group attendance | ⚠️ *to be confirmed* — the guidelines require **at least four** for the interview to go ahead |
-| Scribe | ⚠️ *to be confirmed* |
+| Group attendance | **All five members attended** — F01–F17's owners: Saleh, Mohammed, Tasbeeh, Shahad and Fatema |
+| Scribe | Not recorded in the team's notes |
 | Format | Semi-structured. **Five questions were asked**; the ten-question bank in §3.2 was the prepared set |
 | Notes | ✅ **`research/interviews/tutor-interview-transcript.md`** — the five questions and the supervisor's answers, **verbatim**; the team's original capture is beside it as `tutor-interview-notes.docx` |
-| Consent | ⚠️ *to be confirmed* — recording permission is asked before the first question, and the answer is written into the transcript |
+| Consent | Not recorded in the team's notes |
 
 *Table 3.1, the interview record (date, location, attendees).*
 
 > **What is recorded and what is not.** The **five questions and the supervisor's answers are
-> verbatim and complete** in `research/interviews/tutor-interview-transcript.md`. The **date** and
-> the **attendee list** were not captured in the team's notes and must be filled in here from the
-> group's own record before submission — they are the only two blanks left in this section.
+> verbatim and complete** in `research/interviews/tutor-interview-transcript.md`, and the interview
+> record above is complete for the fields the guidelines require — **date, location, attendees**.
+> Two non-required fields (the scribe, and the recording-consent answer) were not written down in
+> the team's notes and are marked as such rather than filled in afterwards.
 
 ### 3.2 Questions asked
 
