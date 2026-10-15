@@ -14,9 +14,10 @@ The interview guidelines add two more graded parts: a **transcript** of the inte
 
 | File | What it is | Status |
 |---|---|---|
-| `tutor-interview-transcript.md` | Verbatim transcript, timestamped, speaker-labelled | ⬜ to record |
-| `tutor-interview-capture-sheet.md` | The scribe's live capture, one row per question | ⬜ to record |
-| `f15-advanced-feature-approval.md` | The tutor's **written** approval of the advanced feature (rubric: *"one approved advanced feature"*) | ⬜ pending |
+| `tutor-interview-transcript.md` | Verbatim transcript of the questions asked and the supervisor's answers | ✅ **recorded** — **5 questions**, verbatim, in this folder. Date and attendees are still to confirm (see that file's *Metadata still to confirm* table) |
+| `tutor-interview-notes.docx` | The team's original capture document, written up during the interview | ✅ present — this is the **source** the transcript was taken from |
+| `tutor-interview-capture-sheet.md` | The scribe's live capture, one row per question | ⬜ to record — the `.docx` serves as the live capture, but the one-row-per-question sheet the guidelines describe has not been made yet |
+| `f15-advanced-feature-approval.md` | The tutor's **written** approval of the advanced feature (rubric: *"one approved advanced feature"*) | ⬜ **still pending** — none of the five questions asked for it, so it needs a follow-up email or note. This is a **rubric requirement**, not optional |
 | `recording.*` | The audio or video recording, if permission was given | ⬜ pending |
 
 ## 2. Before the interview

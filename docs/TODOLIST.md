@@ -76,9 +76,9 @@ Group K (admin content management) is now feature-complete.
 
 ## 4. Design Document, 10%, due 22 Oct 2026 (work-queue C)
 
-- [ ] Section 3.3 tutor-interview responses and "what changed" (blocked on the interview; the questions in section 3.2 are finalised and mapped to the rubric bullets, and the transcript template is in `research/interviews/README.md`)
-- [ ] Section 3.1 interview date is `to be recorded`
-- [ ] Section 3.4 written approval for F15 (`pending`)
+- [x] Section 3.3 tutor-interview responses and "what changed" — **five questions asked and answered verbatim** in `research/interviews/tutor-interview-transcript.md`, with the impact on the design recorded in Table 3.3
+- [ ] Section 3.1 — the interview date is to be confirmed, along with the attendee list and the consent answer. These are the only three blanks left in section 3 (the interview notes did not capture them)
+- [ ] Section 3.4 written approval for F15 (`pending`) — **the five questions asked did not request it**, so it needs a short follow-up email
 - [ ] Section 17.3 usability test with 5 users plus a SUS score (planned, not run)
 - [x] Appendix A, the labelled screen descriptions and mockups — `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` now covers all **106** screens (purpose, layout, named UI elements). The PNG exports into `mockups/figures/` are the only part left.
 - [x] PDF export with embedded fonts and live links. **Cleared on 8 Oct 2026:** the exported figures (132 artboards at 2×, smallest 1720 px wide, so every figure clears 150 dpi), the figure list (`DESIGN-DOCUMENT.md` "List of figures", including the §10.4 per-screen index), the table list ("List of tables", 21 tables, every caption numbered) **and the PDF itself**: `bash tools/build-pdf.sh` builds `deliverables/design-document/StudyForge-Design-Document.pdf` from the Markdown (162 pages, Appendix A carries all 132 figures one per page at print resolution, fonts embedded by the browser, 6 external links live plus a working jump from every figure reference into the appendix). **Known gap, stated in `tools/build-pdf.sh`:** Chromium's command-line printer cannot add page numbers or a running header, so if the marker needs them, re-run with `--html <dir>` and print the generated HTML from a browser with "Headers and footers" on. **Rebuild the PDF after every content change** (the tutor interview and the usability section still land after this export, and Figures 4.1 and 13.1 still need a competitor capture and a real app screenshot)

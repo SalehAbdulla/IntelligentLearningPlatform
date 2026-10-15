@@ -167,26 +167,47 @@ On-device language models shipped to consumer phones in the last platform cycle,
 
 ## 3. Tutor interview: questions asked and summary of responses
 
-> ⚠️ **Status: the interview is booked but has not yet taken place.** The questions below are finalised, ordered by rubric weight, and each one is mapped to the rubric bullet it serves, so nothing asked is wasted. The rubric requires **both** halves, the questions asked *and* the summary of responses, and the interview guidelines make the transcript and the summary graded parts in their own right, so **this section must not be submitted without them.** §3.2 holds the questions, §3.3 holds the summary and what changed, and the verbatim transcript, the capture sheet and the written F15 approval live in `research/interviews/` (see its `README.md` for the transcript template). It is structured so that filling it in takes minutes.
+> ✅ **Status: the interview HAS taken place.** **Five questions** were put to the supervisor, and they are transcribed **verbatim** in [`research/interviews/tutor-interview-transcript.md`](../../research/interviews/tutor-interview-transcript.md), with the team's original capture beside it as `tutor-interview-notes.docx`. The rubric requires **both** halves — the questions asked *and* the summary of responses — and the interview guidelines make the transcript and the summary graded parts in their own right. §3.2 holds the questions, §3.3 holds the summary of responses **and what changed in the design as a result**.
+>
+> ⚠️ **Two fields in §3.1 are still to be confirmed from the team's own record: the date, and who attended.** Everything else below is recorded.
+>
+> ⚠️ **One rubric item is still open: the written F15 approval** (§3.4). None of the five questions asked for it, so it needs a short follow-up — it is a requirement (*"one approved advanced feature"*), not a nice-to-have.
 
 ### 3.1 Interview record
 
 | Field | Value |
 |---|---|
-| Date | *to be recorded* |
-| Location | *Bahrain Polytechnic, in the group's allocated section, second session of the week (as the interview guidelines require)* |
+| Date | ⚠️ *to be confirmed from the team's record* — not captured in the interview notes |
+| Location | Bahrain Polytechnic, in the group's allocated section, second session of the week (as the interview guidelines require) |
 | Slot | 15 minutes, allocated by the tutor |
-| Interviewer(s) | Saleh Abdulla (M1), Mohammed Almadhoon (M2), Shahad Ashoor (M4), **three members ask**, as the guidelines require |
-| Attendee | Haetham Alhaddad (module coordinator) |
-| Group attendance | All five members present, the guidelines require **at least four** for the interview to go ahead |
-| Scribe | Tasbeeh Saeed (M3), writing the answers live in case the recording is unclear |
-| Format | Semi-structured, ten questions in a fixed priority order, plus three buffer questions |
-| Notes and recording | Verbatim transcript, capture sheet and the written F15 approval, all in `research/interviews/` |
-| Consent | Recording permission is asked, and the answer is written into the transcript before the first question |
+| Interviewer(s) | ⚠️ *to be confirmed* — the guidelines require two or three members to ask |
+| Supervisor | Haetham Alhaddad (module coordinator) |
+| Group attendance | ⚠️ *to be confirmed* — the guidelines require **at least four** for the interview to go ahead |
+| Scribe | ⚠️ *to be confirmed* |
+| Format | Semi-structured. **Five questions were asked**; the ten-question bank in §3.2 was the prepared set |
+| Notes | ✅ **`research/interviews/tutor-interview-transcript.md`** — the five questions and the supervisor's answers, **verbatim**; the team's original capture is beside it as `tutor-interview-notes.docx` |
+| Consent | ⚠️ *to be confirmed* — recording permission is asked before the first question, and the answer is written into the transcript |
 
 *Table 3.1, the interview record (date, location, attendees).*
 
+> **What is recorded and what is not.** The **five questions and the supervisor's answers are
+> verbatim and complete** in `research/interviews/tutor-interview-transcript.md`. The **date** and
+> the **attendee list** were not captured in the team's notes and must be filled in here from the
+> group's own record before submission — they are the only two blanks left in this section.
+
 ### 3.2 Questions asked
+
+> **The five questions actually asked** were: (1) API keys and security, (2) AI accuracy and
+> material verification, (3) group chat and study communities, (4) paid subscriptions and
+> monetisation, and (5) mockup coverage and UI states. They are transcribed verbatim, with the
+> supervisor's answers, in
+> [`research/interviews/tutor-interview-transcript.md`](../../research/interviews/tutor-interview-transcript.md),
+> and their impact is recorded in §3.3 below.
+>
+> The **ten-question bank** that follows was the *prepared* set, ordered by rubric weight and each
+> mapped to the rubric bullet it serves. It is retained because it shows the interview was planned
+> against the rubric rather than improvised, and because it is the bank for the **follow-up** that
+> still has to obtain the F15 approval (§3.4).
 
 Ten questions, in plain words, so they can be read out exactly as they stand. The order is deliberate: the questions that move the most marks, and the one that needs a written answer, come first, so a shortened slot still protects them. Three members ask, as the guidelines require, and the rubric bullet each question serves is named, so nothing asked is wasted. Full wording, timings and the buffer questions are in `research/interviews/README.md`.
 
@@ -217,22 +238,39 @@ Ten questions, in plain words, so they can be read out exactly as they stand. Th
 
 | # | Question topic | Summary of response | What changed in the design as a result |
 |---|---|---|---|
-| 1 | Advanced feature F15 approval | *pending* | *pending* |
-| 2 | Mockup coverage and labelled states | *pending* | *pending* |
-| 3 | Accuracy standard for generated resources | *pending* | *pending* |
-| 4 | Feature breadth against depth | *pending* | *pending* |
-| 5 | Low-fidelity against high-fidelity in Phase 1 | *pending* | *pending* |
-| 6 | Monetisation beyond the brief | *pending* | *pending* |
-| 7 | Evidence required for the Innovation marks | *pending* | *pending* |
-| 8 | Study Group Member as a role | *pending* | *pending* |
-| 9 | Transcript and summary format and placement | *pending* | *pending* |
-| 10 | Usability-testing consent and data | *pending* | *pending* |
+| 1 | API keys and security | API keys must **never** be given to users; only developers hold them. Because the app runs locally on development devices rather than in production, enterprise-grade server hardening is not expected at this stage. **Best practice:** keep keys in **environment variables** on the development device, so they are never stored in plain text and never published to GitHub. | **Confirms the existing architecture rather than changing it**, and turns an assumption into evidenced practice. The AI already runs **on-device first** (`D3`), so no key ships inside the app; `tools/commit.sh` already refuses key-shaped values and `.env` files; and `GoogleService-Info.plist` stays in `.gitignore`. The supervisor's "best practice" is therefore the practice the repository already **enforces**, which is the stronger claim to make in the document. |
+| 2 | AI accuracy and material verification | An **AI disclaimer is mandatory** for any application featuring AI. Source linking is good, but students may blindly trust a link without verifying it. A tutor approval flow is strong but does not scale to a large student base. There is **no single standard fix** — weigh each option's drawbacks, pick the one with the fewest limitations, and consider pre-verifying a curated set of materials. | The design **already carries all three**, which the answer endorses: a disclaimer, **provenance on every generated artefact**, and the **tutor review queue** (F11). One concrete addition follows from the answer: the **low-confidence band routes generated items to the tutor queue first** (`AIConfidence.isReviewRecommended`), which is the "pick the option with the fewest limitations" instruction applied rather than quoted. The "curate reliable materials yourself" point is met by the tutor-published course catalogue in F11. |
+| 3 | Group chat and study communities | **Group chat is in scope and expected** when multiple users interact and have profiles. Real-time chat is straightforward with a backend such as Firebase. Subject-scoped versus user-created groups is a design choice; **prioritise UX above everything**, even at extra cost. | **Directly validates F16.** Group chat had been treated as an optional collaboration extra; the supervisor makes it **expected**, which is why **F16 (admin-moderated group chat)** was promoted into the feature list on 14 Oct with its own frame group, security rules and tests. The "prioritise UX" instruction is visible in one design decision inside F16: a moderated message becomes a **tombstone that keeps the reason**, not a silent deletion. |
+| 4 | Paid subscriptions and monetisation (F13) | Monetisation is a good addition **provided the paid tier offers clear, tangible benefits** over free — higher AI limits, extra group sessions — rather than simply covering developer costs. Live transactions and real profitability are **not** expected; a **simulated/demo card** in the presentation is fully acceptable. Documenting App Store and Google Play policies demonstrates industry awareness. | **Removes the open risk on F13** and confirms `D5` (Tap sandbox only, StoreKit behind the same protocol). One concrete change: the paywall must **name tangible benefits** — AI-usage limits, extra group sessions — instead of a generic "premium" tier, and the App Store 3.1.1 discussion stays in the document as future production work. The demo flow is explicitly a **simulated card**, which is what the payment screens already show. |
+| 5 | Mockup coverage and UI states | **Every screen assigned to a feature must be shown**, and members should **take ownership of the mockups for their own features**. Mockups are expected to be **low-fidelity** — layout, structure and interface, without fine detail such as exact colours, final copy or granular data. Loading and error states may be shown, but exact error strings are **not** required at this stage. | **Confirms the per-member frame ownership rule** already in force (`NN_ScreenName_FirstName_StudentID`), and **removes a needless worry**: the team built **high-fidelity** screens where low-fidelity was required — more than asked, not off-brief. The low-fidelity wireframes on Figma page 5 satisfy the stated requirement exactly, so both are kept: the wireframes as the required low-fidelity set, the finished screens as the visual target. Exact error copy is **not** required, so the state screens stay schematic. |
 
-*Table 3.3, the tutor answers and what changed in the design as a result.*
+*Table 3.3, the supervisor's answers and what changed in the design as a result.*
+
+**Two items the interview did not settle**, recorded so they are not mistaken for answered:
+
+- **The F15 advanced-feature approval was not requested**, because none of the five questions asked for it. It remains a rubric requirement and needs a short follow-up (§3.4).
+- **The usability test and its consent rules were not asked about** (prepared question 10). The plan is unchanged: five consenting classmates, a standard SUS questionnaire, and no real study files uploaded — but it is an assumption the document still states rather than an answer it can cite.
 
 ### 3.4 Written approval of the advanced feature (F15)
 
-Requested in question 1, which is asked first for exactly this reason. Status: **pending**. On receipt, store the written approval in `research/interviews/f15-advanced-feature-approval.md` and record the date and the approver here. If the tutor judges F15 is not advanced enough, F09 (live group revision arena) is the prepared substitute and is promoted in its place.
+> ⚠️ **Status: still pending, and this is now the only rubric requirement the interview did not
+> settle.** The five questions asked covered API keys, AI accuracy, group chat, monetisation and
+> mockups — **none of them requested approval of the advanced feature**, so the requirement
+> (*"include one approved advanced feature assigned to one or two developers"*) is still unmet.
+
+**What to do, and it is small:** send the supervisor the one-line request and keep the reply.
+Approval by email is sufficient; it does not need another meeting.
+
+> "Our advanced feature is **F15, the AI Study Companion** — it answers only from a student's own
+> uploaded files, cites the source of each answer, and builds an adaptive study path. Two members
+> (Mohammed and Tasbeeh) are building it. Under the brief's requirement for *one approved advanced
+> feature assigned to one or two developers*, may we have your approval in writing?"
+
+On receipt, store it as `research/interviews/f15-advanced-feature-approval.md` and record the date
+and the approver here. If the supervisor judges F15 is not advanced enough, **F09 (the live group
+revision arena)** is the prepared substitute and is promoted in its place — and note that the
+interview answer on group chat ("in scope and expected") makes F09 a stronger fallback than it was
+when this substitution was first planned.
 
 ## 4. Competitive analysis
 
