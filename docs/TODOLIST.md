@@ -7,6 +7,8 @@
 
 Legend: `[ ]` open, `[x]` done.
 
+> **Gate:** `bash tools/check-submission.sh` turns sections 4 and 5 below into a gate. It exits non-zero while any item there is open, it re-checks the evidence behind every ticked box (an empty tick still fails), it refuses to pass if a new item has no registered check, and it runs `verify-docs.py` and `check-strings.py` as well. Current state: **16 of 26 items cleared, 10 open, 9 of those human-only.**
+
 ---
 
 ## 0. Done recently (context, not work)
@@ -14,11 +16,14 @@ Legend: `[ ]` open, `[x]` done.
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
-- [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver recorded on every product screen (F01-F15); Reduce Motion honoured where it animates; the one fill-hue-as-text contrast defect fixed
+- [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver recorded on every product screen (F01-F17); Reduce Motion honoured where it animates; the one fill-hue-as-text contrast defect fixed
 - [x] Backend: `onUserCreate` claims trigger and `rollupDailyMetrics` implemented (typechecked)
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
+- [x] **Fifth member added** — **M5 Fatema Ghareeb** `202304804` fills the brief's default fifth seat, so the four-member deviation D16 is closed. Features went **15 → 17**, frames **141 → 154**, the lane map **47 → 49 files across four member lanes**. Recorded in [doc 02 §2.1](02-FEATURE-LIST-OWNERSHIP.md), [doc 03 §3](03-SCREEN-INVENTORY.md) and [doc 09 D27](09-RISKS-OPEN-QUESTIONS.md)
+- [x] **F16 and F17 specified end to end** — **F16 Admin-Moderated Group Chat** (the admin is always in the space, enforced in `firestore.rules`) and **F17 Active Recall Space** (Anki-style: one cross-deck queue, learning steps, daily limits, maturity states). Added to the feature list, the screen inventory (groups N and O, frames 142–154), the test rotation, the rubric matrix and the graded Design Document
+- [x] **F16/F17 core implemented, tested and pushed** — `feat/F16-moderated-group-chat` (**16 tests**) and `feat/F17-recall-space` (**29 tests**), both building clean and both awaiting review into `develop`. Scaffolded by M1; **M5 owns, extends and finishes them**, with the remaining work marked as `TODO(M5 · F16|F17)` in the code
 
 ## 1. In-code TODO markers (13 open)
 
@@ -71,33 +76,51 @@ Group K (admin content management) is now feature-complete.
 
 ## 4. Design Document, 10%, due 22 Oct 2026 (work-queue C)
 
-- [ ] Section 3.2/3.3 tutor-interview responses and "what changed" (blocked on the interview)
+- [ ] Section 3.3 tutor-interview responses and "what changed" (blocked on the interview; the questions in section 3.2 are finalised and mapped to the rubric bullets, and the transcript template is in `research/interviews/README.md`)
 - [ ] Section 3.1 interview date is `to be recorded`
 - [ ] Section 3.4 written approval for F15 (`pending`)
 - [ ] Section 17.3 usability test with 5 users plus a SUS score (planned, not run)
-- [ ] Appendix A, the 89 labelled P0 screen descriptions and mockups
-- [ ] Figures at 150 dpi or more; figure list; table list; PDF export with embedded fonts and live links
-- [ ] Create `research/dossier.md` (missing; referenced by section 2 and `docs/01` P1-10)
+- [x] Appendix A, the labelled screen descriptions and mockups — `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` now covers all **106** screens (purpose, layout, named UI elements). The PNG exports into `mockups/figures/` are the only part left.
+- [x] PDF export with embedded fonts and live links. **Cleared on 8 Oct 2026:** the exported figures (132 artboards at 2×, smallest 1720 px wide, so every figure clears 150 dpi), the figure list (`DESIGN-DOCUMENT.md` "List of figures", including the §10.4 per-screen index), the table list ("List of tables", 21 tables, every caption numbered) **and the PDF itself**: `bash tools/build-pdf.sh` builds `deliverables/design-document/StudyForge-Design-Document.pdf` from the Markdown (162 pages, Appendix A carries all 132 figures one per page at print resolution, fonts embedded by the browser, 6 external links live plus a working jump from every figure reference into the appendix). **Known gap, stated in `tools/build-pdf.sh`:** Chromium's command-line printer cannot add page numbers or a running header, so if the marker needs them, re-run with `--html <dir>` and print the generated HTML from a browser with "Headers and footers" on. **Rebuild the PDF after every content change** (the tutor interview and the usability section still land after this export, and Figures 4.1 and 13.1 still need a competitor capture and a real app screenshot)
+- [x] Create `research/dossier.md` (missing; referenced by section 2 and `docs/01` P1-10). **Done:** the dossier now carries the problem evidence, the 13 sources with what each forces in the design, the affected-population context, the competitor teardown with a stage-coverage table, the SDG mapping with a source per row, the change log from evidence to design, the Harvard list, and the roadmap P1-01 to P1-10 coverage table. It also lists the market figures that are still unverified, so nothing is silently asserted
 - [ ] Re-verify the section 2 market figures against their primary sources before submission
-- [ ] Reconcile the section 1 claim of 98 screens with the final Figma count
+- [x] Reconcile the section 1 claim of 98 screens with the final Figma count — reconciled to **106** in `DESIGN-DOCUMENT.md` §1 and §10.1, and in `README.md`
 
 ## 5. Figma Prototype, 10%, due 12 Nov 2026
 
+> **State verified against the live file on 8 Oct 2026, and re-measured the same day.** 106 high-fidelity screens, every one exactly 390 × 844 and named to the brief's rule; **296 prototype reactions**, 97 distinct destination screens, and the 9 screens that are never a click target (`24`, `30`, `41`, `77`, `78`, `88`, `126`, `133`, `134`) are all named flow start points, so no screen is a dead end. Also in the file: **106 low-fidelity wireframes**, **15 per-feature flow diagrams**, and **106 dark-mode variants**. The measurements, and what was deliberately not measured, are recorded in `deliverables/prototype/figma-audit.md`
+
 - [ ] P9-03/04 usability test with 5 users plus a SUS score
-- [ ] P9-06 frame-naming audit
-- [ ] P9-07 hotspot and link audit, zero dead ends
-- [ ] P9-08/09/10 overflow, content and consistency audits
-- [ ] P9-11/12 accessibility, dark mode and RTL frames
-- [ ] P9-14 export the `.fig`
-- [ ] P9-17 assemble the `.fig` plus `deliverables/prototype/figma-link.txt`
+- [x] P9-06 frame-naming audit, all 106 frames match `NN_ScreenName_FirstName_StudentID`
+- [x] P9-07 hotspot and link audit: 296 connections, 97 of 106 reachable by clicking, the other 9 are named flow start points, **zero dead ends**
+- [x] P9-08 overflow audit: every screen is a fixed 390×844 iOS frame, verified no text overflows its frame
+- [ ] P9-09/10 content and consistency audits (a second reader, per the doc 08 process)
+- [x] P9-11 accessibility and RTL frames: `138_Accessibility_LargeText_Example`, `139_RTL_Arabic_Example`
+- [x] P9-12 dark-mode frame variants. **Done 8 Oct 2026:** Figma page `6 · Dark Mode Variants (P9-12)` holds **106** variants, one per screen, each with the `Dark` mode of the `Color` variable collection set explicitly and the dark canvas gradient applied to the clone, so no light text sits on a light canvas. Page 3 is untouched. Measured in `deliverables/prototype/figma-audit.md`; two rendered proofs in `deliverables/prototype/dark-mode-proof/`
+- [x] P9-14 export the `.fig` into `deliverables/prototype/` — done 8 Oct 2026, 1.2 MB, verified as a real Figma export
+- [x] P9-17 assemble `deliverables/prototype/figma-link.txt` (the text document the brief requires). The `.fig` half is P9-14
 - [ ] P9-18/19 submit and `git tag prototype-v1`
-- [ ] Human only: Figma Share -> Anyone with the link -> Can view; File -> Save local copy into `deliverables/prototype/StudyForge.fig`
+- [ ] **Human only:** Figma Share -> Anyone with the link -> Can view; File -> Save local copy into `deliverables/prototype/StudyForge.fig`
+- [x] **NEW** Phase 1 mockups: 106 low-fidelity wireframes with numbered callouts and per-screen legend panels on Figma page 5, plus `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`
+- [x] **NEW** 15 per-feature flow diagrams on Figma page 2, each ending in its error/edge case
+- [x] **NEW** closed two coverage holes: F09 Group Revision Spaces had **zero** screens (88–94 now built and wired) and `57_Quiz_Submit_Confirm` was missing from the quiz flow
+
 
 ## 6. Sprints, 10%, individual (work-queue D, highest open risk)
 
-- [ ] M2, M3 and M4 still have zero authored commits (only Saleh appears in `git shortlog`)
+> **Ready-to-hand agent files for this section.** One per member, self-contained:
+> [M2 Mohammed](TODO-M2-mohammed.md) · [M3 Tasbeeh](TODO-M3-tasbeeh.md) ·
+> [M4 Shahad](TODO-M4-shahad.md). Each sets the member's git identity, requires a written
+> plan before any code, enforces **one commit per file** and a **push on completion**, and
+> requires **at least two of that member's features** to carry a real, tested, committed
+> change. Conflict prevention is enforced, not documented:
+> [doc 14](14-COLLEAGUE-AI-AGENT-PROMPTS.md) holds the disjoint file-lane map and
+> `bash tools/check-lane.sh M2|M3|M4` refuses a protected branch or an out-of-lane file, and
+> `bash tools/check-lane.sh owner` does the same for M1's project-level lane.
+
+- [ ] M2, M3, M4 and M5 still have zero authored commits (only Saleh appears in `git shortlog`). The F16/F17 scaffolding on `feat/F16-moderated-group-chat` and `feat/F17-recall-space` is **M1's**, deliberately: M1's task is "split the codebase so others can own it". **M5 must review, extend, test and commit those features under her own identity** before they count as hers
 - [ ] Sprint-1 contribution logs are empty templates
-- [ ] Missing artefacts: `research/testing/`, `research/reviews/`, `research/meeting-notes/`, `research/interviews/`, `research/demo/`
+- [ ] Missing artefacts: `research/testing/`, `research/reviews/`, `research/meeting-notes/`, `research/demo/` (`research/interviews/` now exists, with the interview pack, transcript template and capture sheet, and still needs the recorded transcript and the written F15 approval)
 - [ ] Sprint review recording, `board.png`, `retro.md`
 - [ ] Keep the per-member cheat sheets current
 - [ ] Each member: set the local git identity, confirm `.mailmap`, claim a feature, make a real change, write a test log

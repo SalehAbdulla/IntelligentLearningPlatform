@@ -78,7 +78,7 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P0-15` Install the Cline agent skills in [doc 07](07-CLINE-SKILLS-AND-TOOLING.md)
 - [ ] `P0-16` Create the shared drive: `deliverables/`, `research/meeting-notes/`, `research/interviews/`
 - [ ] `P0-17` Register a **Tap Payments sandbox** account and request test keys (`pk_test_…`)
-- [ ] `P0-18` Confirm all 4 members have Xcode installed and can build the empty project
+- [ ] `P0-18` Confirm all 5 members have Xcode installed and can build the empty project
 
 **Exit gate:** identity frozen · roster filled · Firebase project live · Figma file ready · interview booked.
 
@@ -97,20 +97,22 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P1-07` Obtain **written approval for the F15 advanced feature** and record it in [doc 02 §5](02-FEATURE-LIST-OWNERSHIP.md)
 - [ ] `P1-08` Write the problem statement: who is affected, why it matters, scale
 - [ ] `P1-09` Write app purpose, goals and intended impact + **measurable** success metrics
-- [ ] `P1-10` Compile everything into `research/dossier.md` with a Harvard reference list
+- [x] `P1-10` Compile everything into `research/dossier.md` with a Harvard reference list — done 8 Oct 2026 (problem evidence, 13 cited sources, SDG mapping, competitor teardown, change log, road-map coverage; the still-unverified market figures are listed as open rather than asserted)
 
-**Tutor interview question bank** (the rubric requires *"questions asked AND summary of responses"*):
+**Tutor interview question bank** (the rubric requires *"questions asked AND summary of responses"*, and the interview guidelines add a **transcript** and a **summary** as graded parts). Ten core questions, ordered by rubric weight, each mapped to the rubric bullet it serves, plus three buffer questions. The full wording, the asker per question and the 15-minute timing plan live in `deliverables/design-document/DESIGN-DOCUMENT.md` section 3.2, and the transcript template and capture sheet live in [`research/interviews/README.md`](../research/interviews/README.md).
 
-1. Which part of the brief do you consider the highest-risk for our team, AI accuracy, scope, or the payments integration?
-2. What would make you say this project earned full Innovation marks?
-3. Do you approve our proposed advanced feature (F15: RAG-based AI Study Companion with adaptive study paths)? Is that "advanced" enough, or should we stretch further?
-4. How much emphasis should the design document place on engineering architecture versus visual design?
-5. For the Figma prototype, do you expect every error/empty state, or only the main flows?
-6. Is there a preferred balance between feature breadth (15 features) and depth (fewer, richer features)?
-7. Any specific references or frameworks you'd like to see applied (e.g. Nielsen's heuristics, WCAG 2.2)?
-8. What causes groups to lose marks in your experience?
-9. Is a working SwiftUI app alongside the Figma prototype viewed positively, neutrally, or as scope creep?
-10. Any constraints we should respect regarding student data collection in our user testing?
+1. **Advanced feature approval (asked first).** Our advanced feature is F15, an AI helper that answers only from the student's own uploaded files and then builds a study plan. Two of us will build it. Is it advanced enough, is it fine that two of us share it, and can we have that in writing today? Is F09, the live group quiz room, acceptable instead if not?
+2. **Mockup coverage (8 of the 20 marks).** Every screen, or only the main screens of each feature? Do the error, empty, loading and no-internet screens each need their own labelled screen?
+3. **How accurate the AI must be.** Is our plan enough (answers only from the student's file, shows where each answer came from, says how sure it is, a tutor checks AI content first, and no AI marking of real coursework), or must we also measure and report the accuracy?
+4. **Number of features.** 17 features across 4 roles means 2 to 4 each, against a minimum of 2. Is 17 right, or fewer features with more detail?
+5. **Finished screens in Phase 1.** Phase 1 asks for low-fidelity mockups but allows Figma, and our document shows finished high-fidelity screens. Could that cost us mockup marks?
+6. **Payment, which the brief never mentions.** Is the F13 paid subscription a good extra idea, or outside the brief and better left as a note for future work?
+7. **What proves an innovation.** Does each innovation need a screen or a piece of code, or is a written explanation enough?
+8. **User roles.** Study Group Member is not a separate account in our design, a student joins a group and then gets the group features. Does that still count as 4 roles?
+9. **Transcript and summary format.** Word for word and complete? Inside the main document or in an appendix? May we quote the answers directly?
+10. **Usability testing.** We plan 5 classmates and a standard questionnaire (SUS). What permission and privacy rules do you need, and should we avoid asking them to upload their real study files?
+
+**Buffers, if time remains:** whether a working iPhone app next to the Figma prototype is seen as a plus or as too much, the sprint dates and whether the final demo is live on a real device, and how much of the Tap against Apple payment conflict the document should explain.
 
 **Exit gate:** dossier written · interview recorded · advanced feature approved in writing.
 
@@ -125,7 +127,7 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P2-03` Assign developers so **every member owns ≥2 features** and effort is visibly balanced
 - [ ] `P2-04` Assign testers using the rotation rule (nobody tests their own work)
 - [ ] `P2-05` Freeze the F15 advanced-feature spec and the `RetrievalService` / `CoachPlanningService` contracts
-- [ ] `P2-06` **All 4 members review and sign off** the feature table (record sign-off date)
+- [ ] `P2-06` **All 5 members review and sign off** the feature table (record sign-off date)
 - [ ] `P2-07` Map each feature → its screen IDs and its Firestore collections (traceability matrix)
 - [ ] `P2-08` Write 2–3 acceptance criteria per feature (these become the test cases in Phase 9)
 
@@ -214,12 +216,12 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P6-06` Build a lightweight DI container (`AppContainer`) so every service is protocol-backed and mockable
 - [ ] `P6-07` Implement `RootView` + `RoleRouter` (role-driven tab bars: 5 tabs student, 4 tutor, 4 admin)
 - [ ] `P6-08` Implement a reusable `LoadState` enum (`idle / loading / loaded / empty / failed`) and drive every screen from it
-- [ ] `P6-09` Create **empty shells** for all 15 features so navigation is demonstrable from day one
+- [ ] `P6-09` Create **empty shells** for all 17 features so navigation is demonstrable from day one
 - [ ] `P6-10` Set up `Configuration.xcconfig` for environments (dev / staging / prod) with no secrets in source
 - [ ] `P6-11` Add `MockData` seeds so the whole app is browsable before Firebase is wired
 - [ ] `P6-12` Enable strict concurrency checking; get to **zero warnings** before Phase 7
 
-**Exit gate:** app builds and runs on the iOS 26.5 simulator · all 15 features navigable · zero warnings.
+**Exit gate:** app builds and runs on the iOS 26.5 simulator · all 17 features navigable · zero warnings.
 
 ---
 
@@ -327,7 +329,7 @@ Ranked order of sacrifice. Cut from the **bottom**, record the decision, and nev
 | 2 | **Golden path rehearsed + backup recording** | 60% · must pass | ⛔ **Never** |
 | 3 | **Individual sprint contribution evidence** | 10% · individual | ⛔ **Never** |
 | 4 | **Design Document's five rubric areas** | 10% · fixed deadline | ⛔ **Never** |
-| 5 | All 15 features linked in Figma + naming compliance | 10% | ⛔ Never |
+| 5 | All 17 features linked in Figma + naming compliance | 10% | ⛔ Never |
 | 6 | P1 state frames (51 of 141) | 10% | **First** |
 | 7 | Tier B feature polish (function stays, shine goes) | 60% | **Second** |
 | 8 | Figma visual polish, dark-mode variants, hero screens | 10% | **Third** |
