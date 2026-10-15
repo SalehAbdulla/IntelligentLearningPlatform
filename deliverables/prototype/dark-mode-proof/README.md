@@ -14,6 +14,6 @@ exist so the work can be checked without opening Figma.
 screenshot tool at 900 px on the long edge. Captured 8 October 2026 while the file was at
 the same revision as the exported `StudyForge.fig`.
 
-**Full set.** All 106 variants were created and verified programmatically; the counts are
-recorded in `../figma-audit.md` (106 variants, 106 with the dark mode set). Re-capture these
+**Full set.** All 119 variants were created and verified programmatically; the counts are
+recorded in `../figma-audit.md` (119 variants, 119 with the dark mode set). Re-capture these
 two screenshots if the screens change, so the proof matches the file.

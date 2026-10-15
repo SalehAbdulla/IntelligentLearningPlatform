@@ -282,7 +282,7 @@ Figure numbering: the 15 flows are Figures 9.1 to 9.15, the states panel is Figu
 
 The exports are counted and checked by `bash tools/check-submission.sh`, and the measurements behind them are recorded in `../../prototype/figma-audit.md`.
 
-The high-fidelity, interactive version is the same file's page `3 · Screens (all features)`; it is delivered as the Project Prototype, not as document figures, so the document stays a **low-fidelity** mockups section as the brief intends. Page `6 · Dark Mode Variants (P9-12)` holds the 106 dark variants, which are also prototype evidence rather than document figures.
+The high-fidelity, interactive version is the same file's page `3 · Screens (all features)`; it is delivered as the Project Prototype, not as document figures, so the document stays a **low-fidelity** mockups section as the brief intends. Page `6 · Dark Mode Variants (P9-12)` holds the 119 dark variants, which are also prototype evidence rather than document figures.
 
 
 

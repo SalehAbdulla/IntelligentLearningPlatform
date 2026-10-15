@@ -76,7 +76,7 @@ Page 5 - Low-Fi Wireframes         106 low-fidelity wireframes, one per screen,
                                    each paired with a legend panel that names its
                                    UI elements and states what each one does.
                                    Retained because Phase 1 (Mockups) needs it.
-Page 6 - Dark Mode Variants        106 dark-mode variants, one per screen, each a
+Page 6 - Dark Mode Variants        119 dark-mode variants, one per screen, each a
                                    clone of its light screen with the Dark mode of
                                    the Color variable collection set explicitly.
                                    Closes P9-12. Page 3 is untouched, so the 106
@@ -156,7 +156,7 @@ shadow and an inner light edge. Palette built on the Apple system-blue family;
 brand blue #0062CC was chosen over Apple's #007AFF because #007AFF measures
 4.0:1 on white and `primary` is used as text in 26 places, whereas #0062CC
 measures 5.80:1. A complete light and dark mode is defined, and as of 8 Oct 2026
-the dark mode is also *drawn*: 106 dark variants on page 6.
+the dark mode is also *drawn*: 119 dark variants on page 6.
 
 Correction for accuracy, measured on 8 Oct 2026: inside each screen, the
 surfaces, cards, text and decorative blobs are variable-bound (48 of 49 nodes
@@ -188,7 +188,7 @@ right-to-left Arabic proof is a built frame (139).
       through the Figma MCP server: 121 PNGs, 1720 x 1920 px each, plus the
       navigation map, the states panel, the design system sheet, the glass
       reference and the cover in deliverables/design-document/figures/)
-  [x] Dark-mode screen variants (done 8 Oct 2026: 106 variants on Figma page 6,
+  [x] Dark-mode screen variants (done 15 Oct 2026: 119 variants on Figma page 6,
       measured in deliverables/prototype/figma-audit.md, with two rendered
       proofs in deliverables/prototype/dark-mode-proof/)
   [ ] Usability test with 5 users and a SUS score (docs/01 P9-03/04)

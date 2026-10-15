@@ -159,7 +159,7 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 | iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: **F01 to F17** implemented; builds and passes **808 unit tests** |
 | Sprints (individual) | 10% | ⚠️ **at risk:** only **M1 has authored commits**. M3 and M5 can push; **M2 and M4 are still blocked by pending repository invitations** (re-sent 15 Oct). No teammate evidence can exist until they accept |
 | Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/`; **tutor interview done and transcribed** (13 Oct); one rubric item still open, the written F15 approval |
-| Prototype (Figma) | 10% | 🟨 in progress: **119 screens built** of a **154-frame inventory**, and **interactive** (296 prototype connections, no dead ends); **106 low-fidelity wireframes** and **all 17 flow diagrams**. F16/F17's 13 frames (groups N and O) were drawn 15 Oct 2026; their low-fidelity wireframes are still to do. See `deliverables/prototype/figma-link.txt` |
+| Prototype (Figma) | 10% | 🟨 in progress: **119 screens built** of a **154-frame inventory**, and **interactive** (**320 prototype connections**, 110 of 119 reachable, zero dead ends); **106 low-fidelity wireframes**, **all 17 flow diagrams** and **119 dark-mode variants**. F16/F17's 13 frames (groups N and O) were drawn and wired 15 Oct 2026; their low-fidelity wireframes are still to do. See `deliverables/prototype/figma-link.txt` |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 

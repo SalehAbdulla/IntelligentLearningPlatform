@@ -92,7 +92,7 @@ Group K (admin content management) is now feature-complete.
 
 - [ ] P9-03/04 usability test with 5 users plus a SUS score
 - [x] P9-06 frame-naming audit, all 106 frames match `NN_ScreenName_FirstName_StudentID`
-- [x] P9-07 hotspot and link audit: 296 connections, 97 of 106 reachable by clicking, the other 9 are named flow start points, **zero dead ends**
+- [x] P9-07 hotspot and link audit: 320 connections, 110 of 119 reachable by clicking, the other 9 are named flow start points, **zero dead ends**
 - [x] P9-08 overflow audit: every screen is a fixed 390×844 iOS frame, verified no text overflows its frame
 - [ ] P9-09/10 content and consistency audits (a second reader, per the doc 08 process)
 - [x] P9-11 accessibility and RTL frames: `138_Accessibility_LargeText_Example`, `139_RTL_Arabic_Example`
