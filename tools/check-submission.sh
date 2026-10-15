@@ -66,9 +66,26 @@ tick_state() { # $1 = fragment to match in sections 4 and 5 ; echoes ticked / op
 # Each prints its own reasons and returns 0 (evidence present) or 1 (evidence missing).
 
 pred_interview() {
-  if grep -q 'to be recorded' "$DOC"; then
-    note "DESIGN-DOCUMENT section 3.1 still says the interview date is 'to be recorded'"
-    note "sections 3.2 and 3.3 need the tutor's answers and what changed as a result"
+  # The rubric wants the questions asked AND a summary of responses. The transcript is the
+  # durable half of that; the document's §3.2/§3.3 carry the readable half.
+  if [ ! -f research/interviews/tutor-interview-transcript.md ]; then
+    note "no transcript at research/interviews/tutor-interview-transcript.md"
+    return 1
+  fi
+  return 0
+}
+
+pred_interview_date() {
+  # The interview RECORD (date, attendees, consent) is a separate rubric requirement from the
+  # responses, so it gets its own check and its own TODOLIST item. This used to key off the single
+  # phrase "to be recorded", which stopped working the moment the interview happened: the answers
+  # were recorded but the DATE was still missing, so the check would have passed a section that
+  # was still incomplete. Both spellings are matched now.
+  local blanks
+  blanks=$(grep -o 'to be recorded\|to be confirmed' "$DOC" | sort -u | tr '\n' ' ')
+  if [ -n "$blanks" ]; then
+    note "DESIGN-DOCUMENT section 3 still has unfilled fields: ${blanks}"
+    note "the interview record needs the date, the attendees, and the recording-consent answer"
     return 1
   fi
   return 0
@@ -221,7 +238,7 @@ pred_p912() { pred_audit P9-12; }
 # key | TODOLIST fragment | kind | predicate | description
 REGISTRY="
 dd-interview|tutor-interview responses|human|pred_interview|Doc 3.2/3.3 tutor interview responses
-dd-interview-date|interview date is|human|pred_interview|Doc 3.1 interview date recorded
+dd-interview-date|interview date is|human|pred_interview_date|Doc 3.1 interview date recorded
 dd-f15-approval|written approval for F15|human|pred_f15_approval|Doc 3.4 F15 written approval
 dd-usability|usability test with 5 users|human|pred_usability|Doc 17.3 usability test and SUS score
 dd-appendix-a|Appendix A, the labelled screen descriptions|machine|pred_appendix_a|Appendix A screen descriptions and mockups
