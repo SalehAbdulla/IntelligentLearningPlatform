@@ -61,6 +61,7 @@ release/sprint-3
 - **Feature / fix / chore / docs work → branch from `develop`.**
 - **Hotfix to a broken demo → branch from `main`**, then merge back into **both** `main` and `develop`.
 - **Releasing to `main` → open a PR from `develop` into `main`.** Never push or fast-forward `main` directly; §3.1 explains why this is now enforced rather than advisory.
+- **`main` must not be left to drift.** `bash tools/check-release.sh` **fails** when a whole directory exists on `develop` and is absent from `main` — the exact condition that left `main` **233 commits behind and missing four evidence folders** on 15 Oct 2026, unnoticed across 30 releases because nothing checked it. It is wired into `tools/check-submission.sh`, so the pre-submission gate reports it. It does **not** fail on ordinary between-release drift, because a check that fires every afternoon gets ignored.
 
 ---
 
