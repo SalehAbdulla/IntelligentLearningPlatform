@@ -334,6 +334,19 @@ if python3 tools/check-strings.py | grep -q 'ALL CHECKS PASSED'; then
 else
   bad "check-strings" "python3 tools/check-strings.py did not print ALL CHECKS PASSED"
 fi
+if bash tools/check-tokens.sh >/dev/null 2>&1; then
+  good "check-tokens" "bash tools/check-tokens.sh"
+else
+  bad "check-tokens" "the documented colour tokens and ColorTokens.swift have diverged"
+fi
+# main is the demo line (docs/12 §3). A marker reading it must see the real state, so structural
+# drift is a submission problem, not just branch hygiene. This fails ONLY when whole directories
+# are missing from main — normal between-release drift passes. See tools/check-release.sh.
+if bash tools/check-release.sh >/dev/null 2>&1; then
+  good "check-release" "bash tools/check-release.sh"
+else
+  bad "check-release" "main has structural drift from develop — release it (docs/12 §3)"
+fi
 
 # ── verdict ───────────────────────────────────────────────────────────────────
 hdr "Verdict"
