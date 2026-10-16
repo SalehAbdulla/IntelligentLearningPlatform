@@ -31,10 +31,12 @@ Today is **Mon 28 Sep 2026**. Work is organised as **five two-week sprints plus 
 |---|---|---|---|
 | **S0** | 28 Sep – 4 Oct | Setup & identity · research & discovery · feature definition | M1, M4, M3 |
 | **S1** | 5 – 18 Oct | Low-fi mockups · design system · **app core loop (F01–F04)** | M2 (Figma), M1 + M2 (app) |
-| **S2** | 19 Oct – 1 Nov | Design Document → **SUBMIT 22 Oct** · **assessment engine (F05–F08, F12, F14)** | M1 (doc), M2, M3, M4 |
-| **S3** | 2 – 15 Nov | Hi-fi prototype → **SUBMIT 12 Nov** · **collaboration & payments (F09, F13, F11)** | M4 (Figma), M3 (payments), M2 |
-| **S4** | 16 – 29 Nov | **Advanced feature F15** · offline · RTL · accessibility · dark mode | M2 + M3, M4 |
+| **S2** | 19 Oct – 1 Nov | Design Document → **SUBMIT 22 Oct** · **assessment engine (F05–F08, F12, F14)** · **M5 ramp-up (F16, F17)** | M1 (doc), M2, M3, M4, **M5** |
+| **S3** | 2 – 15 Nov | Hi-fi prototype → **SUBMIT 12 Nov** · **collaboration & payments (F09, F13, F11)** · **F16/F17 hardening** | M4 (Figma), M3 (payments), M2, **M5** |
+| **S4** | 16 – 29 Nov | **Advanced feature F15** · offline · RTL · accessibility · dark mode · **F16/F17 polish** | M2 + M3, M4, **M5** |
 | **S5** | 30 Nov – 13 Dec | Hardening · regression · **VIVA preparation** | all |
+
+> **M5, Fatema Ghareeb, joined on 14 Oct 2026** and filled the brief's fifth seat. She is **not in S0 or S1** because she was not in the group yet, and her sprint evidence starts in S2 — which is why S2 is explicitly a **ramp-up**: her two features, **F16** and **F17**, were scaffolded and handed to her with a disjoint file lane, a `.mailmap` identity and TODO markers before the sprint began. Adding her mid-sprint rather than at the freeze is deliberate, because a contribution log cannot be created retroactively.
 
 **Critical path, corrected:**
 

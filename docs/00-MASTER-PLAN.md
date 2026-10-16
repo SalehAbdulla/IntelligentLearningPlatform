@@ -237,7 +237,9 @@ Ordered to map 1:1 onto the rubric, so a marker can find every mark without hunt
 | 16 | **Professional ethics & compliance**, Apple 3.1.1, GDPR-style privacy, data retention, academic-integrity policy for AI, human-in-the-loop review | 1.5 | Innovation (2) + **LO3** | M3 |
 | 17 | **Testing & validation**, usability test with 5 users, results, changes made | 1.5 | Organisation (2) | M4 |
 | 18 | **References**, Harvard style | 1 | Background Research (4) | M2 |
-| 19 | **Appendix**, Figma link, prototype `.fig` note, feature-to-screen traceability matrix | 1.5 | Organisation (2) | M3 |
+| 19 | **Appendix**, Figma link, prototype `.fig` note, feature-to-screen traceability matrix | 1.5 | Organisation (2) | M3, with **M5** for the F16/F17 traceability |
+
+> **The fifth member, M5 Fatema Ghareeb, joined on 14 Oct 2026.** The section ownership above was set when the group had four members, so it predates her. She owns **F16** and **F17**, and she draws **Figma groups N and O** (frames 142–154). Where a section above covers her features, she **co-owns** it rather than being written in as a sole author of work she did not do — the traceability row above is the first of those. See [doc 02 §2.1](02-FEATURE-LIST-OWNERSHIP.md).
 
 **Formatting contract** (rubric: *"consistent formatting throughout"*):
 one heading style ladder used everywhere · one body font · one accent colour · numbered captions (`Figure 7, ...`, `Table 3, ...`) · page numbers in the footer · **app name + logo in the header of every page** · Harvard referencing throughout · no orphan headings · all figures at ≥150 dpi.
