@@ -5,7 +5,7 @@
 >
 > Print this. Hold it. Do not read the script from the doc on the day.
 >
-> **Revised 15 Oct 2026:** M5 joined the group on 14 Oct, and the script she inherited had **no step
+> **Revised 16 Oct 2026:** M5 joined the group on 14 Oct, and the script she inherited had **no step
 > for her** while requiring that every member demos their own work. **F17's Recall Space now owns
 > 2:20–2:45** (M5), and she joins the tutor/admin step for **F16**. The money shot moved from
 > 0:25–2:55 to **0:25–3:10**. Rehearse against these figures.
