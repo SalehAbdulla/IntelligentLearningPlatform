@@ -17,7 +17,7 @@ The interview guidelines add two more graded parts: a **transcript** of the inte
 | `tutor-interview-transcript.md` | Verbatim transcript of the questions asked and the supervisor's answers | ✅ **recorded** — **5 questions**, verbatim, in this folder. Date and attendees are still to confirm (see that file's *Metadata still to confirm* table) |
 | `tutor-interview-notes.docx` | The team's original capture document, written up during the interview | ✅ present — this is the **source** the transcript was taken from |
 | `tutor-interview-capture-sheet.md` | The scribe's live capture, one row per question | ⬜ to record — the `.docx` serves as the live capture, but the one-row-per-question sheet the guidelines describe has not been made yet |
-| `f15-advanced-feature-approval.md` | The tutor's **written** approval of the advanced feature (rubric: *"one approved advanced feature"*) | ⬜ **still pending** — none of the five questions asked for it, so it needs a follow-up email or note. This is a **rubric requirement**, not optional |
+| `f15-advanced-feature-approval.md` | The tutor's **written** approval of the advanced feature (rubric: *"one approved advanced feature"*) | ✅ **APPROVED 15 Oct 2026, 2:14 pm** by Ghassan AlShajjar (Tutor, EDICT Programming) — requested by email at 1:11 pm the same day and answered within the hour. **The approval carries three conditions**, all now met: each developer's part named, F15 kept separate from the core AI features, and the F02/F05 dependencies noted. See [Design Document §3.4](../../deliverables/design-document/DESIGN-DOCUMENT.md) |
 | `recording.*` | The audio or video recording, if permission was given | ⬜ pending |
 
 ## 2. Before the interview
@@ -128,7 +128,7 @@ Copy this into `tutor-interview-transcript.md` and fill it in live.
 ## Confirmed by the group
 
 - [ ] Transcript is complete and speaker-labelled
-- [ ] `f15-advanced-feature-approval.md` is filed and dated
+- [x] `f15-advanced-feature-approval.md` is filed and dated — **approved 15 Oct 2026, 2:14 pm**
 - [ ] `DESIGN-DOCUMENT.md` section 3.3 is filled in, one row per question
 - [ ] `DESIGN-DOCUMENT.md` section 3.1 date, location and attendees are no longer `to be recorded`
 - [ ] PDF rebuilt (`bash tools/build-pdf.sh`) after the interview content lands
@@ -139,5 +139,5 @@ Copy this into `tutor-interview-transcript.md` and fill it in live.
 1. Transcribe the recording the same day, while it is fresh.
 2. Fill `DESIGN-DOCUMENT.md` section 3.3, one row per question, with the response **and** what
    changed in the design.
-3. File the written F15 approval, and update section 3.4.
+3. ~~File the written F15 approval, and update section 3.4.~~ ✅ **DONE 15 Oct 2026** — the approval was requested by email at 1:11 pm and **granted at 2:14 pm the same day**. Filed as [`f15-advanced-feature-approval.md`](f15-advanced-feature-approval.md), recorded in §3.4, and its **three conditions** are met in §7.1, §8.4 and §8.5.
 4. Rebuild the PDF, because the export predates the interview.

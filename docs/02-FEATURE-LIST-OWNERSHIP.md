@@ -136,7 +136,7 @@ Counted the way the rubric counts it:
 | **Developers** | **M2 and M3**, exactly two, as the rubric permits |
 | **Screens** | `73`–`80` (8 frames, group H) |
 | **Supporting screens for testing** | `41` (quota error), `76` (citation sheet), `133` (offline banner) |
-| **Tutor approval** | ⬜ **REQUIRED, record here once obtained** (`Approved by: ____ on ____, in class / by email`) |
+| **Tutor approval** | ✅ **APPROVED in writing, 15 Oct 2026 at 2:14 pm, by email** — **Ghassan AlShajjar** (Tutor, EDICT Programming). Filed verbatim as [`research/interviews/f15-advanced-feature-approval.md`](../research/interviews/f15-advanced-feature-approval.md) and recorded in Design Document **§3.4**. **The approval carries three conditions, all met:** each developer's part named (§7.1, §8.4), **F15 separated from the core AI features** (§7.1), and the **F02/F05 dependencies noted** (§8.5). F09 was held in reserve as a substitute and was **not needed** |
 
 **Why this qualifies as an *advanced* feature** (the brief's own examples are *"LLM integration, maps, group chats, or real-time multiplayer"*), F15 is not one technique, it is a **system of four techniques**:
 
