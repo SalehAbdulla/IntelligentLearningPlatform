@@ -12,13 +12,15 @@
 
 ---
 
-## 0.0 First, two minutes of setup — you cannot push until this is done
+## 0.0 First, two minutes of setup
 
-**Your GitHub invitation is still pending** (checked 8 Oct 2026: `mohdalmadhon` has not accepted
-yet, while Tasbeeh has). Until you accept it you cannot clone, branch, commit or open the pull
-request that your own Sprints evidence is read from. Accept the invitation email for
-`SalehAbdulla/IntelligentLearningPlatform`, or ask Saleh to re-send it from Settings,
-Collaborators. Then confirm you are in:
+✅ **Your access is live.** Verified on 15 Oct 2026 against the API: `mohdalmadhon` holds **write**
+on `SalehAbdulla/IntelligentLearningPlatform`, and the pending-invitation list is **empty**. You can
+clone, branch, commit and open the pull request that your Sprints evidence is read from.
+
+**Nothing external is blocking you any more.** The only thing that can hold your mark down now is
+commits that do not exist — so the next step is yours, and it is small: confirm the clone, set your
+own identity, then commit something real today.
 
 ```bash
 gh auth status                        # or: git config --global user.name / user.email

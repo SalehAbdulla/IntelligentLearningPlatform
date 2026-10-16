@@ -33,7 +33,7 @@ That identity is what the marker reads. Committing under anyone else's name is t
 
 | Member | Your features | Your handover file | Can you push? |
 |---|---|---|---|
-| **M2** Mohammed | F03 F04 F05 F11 F15 | `docs/TODO-M2-mohammed.md` | ⚠️ **invitation pending** |
+| **M2** Mohammed | F03 F04 F05 F11 F15 | `docs/TODO-M2-mohammed.md` | ✅ **accepted 15 Oct** |
 | **M3** Tasbeeh | F06 F07 F13 F15 | `docs/TODO-M3-tasbeeh.md` | ✅ |
 | **M4** Shahad | F08 F09 F10 F12 | `docs/TODO-M4-shahad.md` | ✅ |
 | **M5** Fatema | F16 F17 | `docs/TODO-M5-fatema.md` | ✅ |
@@ -65,9 +65,13 @@ Then push **every day you work**. A single dump of commits on the last day reads
 | **Prototype (Figma + `.fig` + link)** | **Thu 12 Nov 2026, 23:55** |
 | **Feature freeze** | 30 Nov 2026 |
 
-## M2 — read this
+## Everyone can push now
 
-Your repository invitation is **still pending**, so you currently **cannot push anything at all**. Accept the email, or ask Saleh to re-send it, before you do anything else. You own **F03, F04, F05, F11** and a share of **F15 — the advanced feature**, so this is blocking more than your own work.
+**All five members hold write access as of 15 October 2026**, verified against the API — `mohdalmadhon`, `Tasbeeh37`, `shaahaadhani43-debug` and `FatemaGhareeb` all show `write`, and the pending-invitation list is **empty**. The blocker recorded as risk **R23** is closed.
+
+**So nothing external is stopping anyone any more.** The remaining problem is not access, it is that the commit history is still almost entirely M1's, and that **cannot be fixed at the end** — a sprint's evidence has to exist throughout the sprint. The commit timestamps are the proof, and they are read.
+
+Every member's next step is the same one, and it is in their handover file: clone, set your own git identity, claim a file in your lane, make a real change, and commit it **under your own name**. Then do it again tomorrow.
 
 ## The one sentence worth repeating
 
