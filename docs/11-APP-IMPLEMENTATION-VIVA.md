@@ -24,7 +24,7 @@
 
 "Complete" is defined here so it can be verified rather than argued about. Features are tiered by demo risk.
 
-### Tier A, demo-solid, non-negotiable (10 features)
+### Tier A, demo-solid, non-negotiable (11 features)
 
 These must work **flawlessly, twice in a row, on a real device, with real data.** They are the features the demo cannot proceed without.
 
@@ -39,15 +39,17 @@ These must work **flawlessly, twice in a row, on a real device, with real data.*
 | **F07** Progress tracking | Closes the loop and makes the dashboard demonstrable |
 | **F08** Shared study folders | The brief's "sharing between students" |
 | **F10** Resource bookmarking | Cheap to build, visibly useful, proves offline caching |
+| **F17** Active recall space | A **cross-deck** due-today queue proves the scheduler works across the whole library rather than one deck, which is the feature that makes daily use habitual. Tier A because it is **in the live script** (2:20–2:45), and Tier A is defined as the features the demo cannot proceed without |
 | **F14** Notifications | Shows real iOS platform integration (FCM + local) |
 
-### Tier B, must function (5 features)
+### Tier B, must function (6 features)
 
 These must work end-to-end with realistic seeded data. Visual polish is optional; *function* is not.
 
 | Feature | Requirement |
 |---|---|
 | **F09** Group revision spaces | Live group quiz must run across **two devices** at least once, recorded |
+| **F16** Admin-moderated group chat | The **permanent-moderator** rule must operate — a moderator cannot be removed by another member. Grouped with F09 because it needs the same group space to function |
 | **F11** Tutor content studio | Course creation, material publish, and the AI review queue must operate |
 | **F12** Admin content management | Moderation queue and user role change must operate (can be on a seeded dataset) |
 | **F13** Subscription & payments | Tap **sandbox** payment must succeed and entitlement must unlock a feature |
@@ -100,15 +102,18 @@ Rehearsed to the second. The **money shot** is the core loop at 0:25–2:55, tha
 | 0:25–0:40 | **Sign in as a student** | Login → student dashboard with real seeded data | M1 |
 | 0:40–1:15 | **Upload → extract** | Real PDF from Files → compress → on-device OCR → appears in library | M1 |
 | 1:15–1:55 | **Generate a summary** | Length/style pickers → streaming generation → **tap a provenance chip** → source page shown | M2 |
-| 1:55–2:25 | **Cards → review** | Generate 20 cards → review session → rate *Good* → next-due interval changes | M2 |
-| 2:25–2:55 | **Quiz → weakness radar → replan** | Take a quiz → scorecard → weakness radar → **accept AI re-plan** and watch the calendar change | M3 |
-| 2:55–3:25 | **Collaboration** | Second device joins the group space → live quiz → real-time leaderboard | M4 |
-| 3:25–3:55 | **AI Coach (advanced feature)** | Ask a question grounded in the uploaded material → answer with citation → tap citation → source sheet | M2 + M3 |
-| 3:55–4:20 | **Payments (sandbox)** | Paywall → plan → order summary in BHD → Tap card → success → a feature unlocks | M3 |
-| 4:20–4:40 | **Tutor & admin view** | Tutor review queue approving AI content; admin KPI dashboard | M4 |
+| 1:55–2:20 | **Cards → review** | Generate 20 cards → review session → rate *Good* → next-due interval changes | M2 |
+| 2:20–2:45 | **Recall Space** | Cross-deck due-today queue gathers cards from **more than one deck** → learning steps → daily limit holds | **M5** |
+| 2:45–3:10 | **Quiz → weakness radar → replan** | Take a quiz → scorecard → weakness radar → **accept AI re-plan** and watch the calendar change | M3 |
+| 3:10–3:35 | **Collaboration** | Second device joins the group space → live quiz → real-time leaderboard | M4 |
+| 3:35–4:00 | **AI Coach (advanced feature)** | Ask a question grounded in the uploaded material → answer with citation → tap citation → source sheet | M2 + M3 |
+| 4:00–4:20 | **Payments (sandbox)** | Paywall → plan → order summary in BHD → Tap card → success → a feature unlocks | M3 |
+| 4:20–4:40 | **Tutor & admin view** | Tutor review queue approving AI content; admin KPI dashboard; **the moderator who cannot be removed** | M4 + **M5** |
 | 4:40–5:00 | **Architecture & cost** | One slide: 3-tier AI router, $0 cost model, 4 roles, security rules | M1 |
 
-**Every step has a rehearsed fallback.** If it fails, the presenter says one line and moves on. Rehearsing the *failure* path matters as much as the happy path.
+**Every step has a rehearsed fallback.** If it fails, the presenter says one line and moves on. Rehearsing the *failure* path matters as much as the happy path. The executable run sheet, **with the fallback line for each step**, is [`research/demo/run-sheet.md`](../research/demo/run-sheet.md).
+
+> **Revised 15 Oct 2026 to include M5.** The script was written on 8 Oct, when the group had four members, and it had **no step for M5 at all** — while this document elsewhere requires that *"every member demos their own work"*. M5's **F17 Recall Space** now owns 2:20–2:45, and she joins the tutor/admin step for **F16's** permanent-moderator rule. The money shot is therefore **0:25–3:10**, and the quiz step moved 20 seconds later. **Re-time the rehearsals against these figures, not the old ones.**
 
 ---
 
@@ -190,7 +195,7 @@ Descend only as far as necessary, and **say so clearly in the VIVA**. A clearly 
 | Cadence | Action | Owner |
 |---|---|---|
 | **Daily** | Build health check: `main` builds, tests pass, app launches | rotating |
-| **Weekly** | Golden path run, logged pass/fail, backup recording refreshed if those screens changed | M4 |
+| **Weekly** | Golden path run, logged pass/fail, backup recording refreshed if those screens changed | M4, with **M5** from S3 |
 | **Weekly** | "Explain it" drill: one member explains another's feature from the code | rotating |
 | **Bi-weekly** | Sprint review: every member demos their own work live | all |
 | **From S3, 3×/week** | Full Tier A golden-path regression against demo accounts | all |
