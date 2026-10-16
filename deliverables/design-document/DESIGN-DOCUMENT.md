@@ -97,7 +97,12 @@ per-screen figure index is §10.4.
 | 5.1 | Goals mapped to a measurable success metric and a target |
 | 6.1 | The four user roles, their exclusive capabilities and their home screen |
 | 7.1 | The master feature list (feature name, main task, user, sub-tasks or steps, developer, tester) |
+| 7.2 | The advanced feature's identity, kept separate from the core feature table |
+| 7.3 | Which developer is responsible for which part of F15 |
 | 8.1 | The retrieval-augmented generation pipeline, step by step |
+| 8.2 | The F15 ownership split with deliverables |
+| 8.3 | The two protocols forming the interface between F15's halves |
+| 8.4 | The features F15 depends on, and what breaks in F15 if each changes |
 | 9.1 | Every feature expanded into its ordered sub-tasks and steps |
 | 10.1 | The 106 screens grouped by feature area, with the owning member |
 | 10.2 | The labelled-element standard, worked example (student home) |
@@ -169,7 +174,7 @@ On-device language models shipped to consumer phones in the last platform cycle,
 
 > ✅ **Status: the interview HAS taken place — Tuesday 13 October 2026, 2:40 pm, all five members present.** **Five questions** were put to the supervisor, and they are transcribed **verbatim** in [`research/interviews/tutor-interview-transcript.md`](../../research/interviews/tutor-interview-transcript.md), with the team's original capture beside it as `tutor-interview-notes.docx`. The rubric requires **both** halves — the questions asked *and* the summary of responses — and the interview guidelines make the transcript and the summary graded parts in their own right. §3.2 holds the questions, §3.3 holds the summary of responses **and what changed in the design as a result**.
 >
-> ⚠️ **One rubric item is still open: the written F15 approval** (§3.4). None of the five questions asked for it, so it needs a short follow-up — it is a requirement (*"one approved advanced feature"*), not a nice-to-have. The team is requesting it by email.
+> ✅ **The written F15 approval has been obtained** (§3.4) — approved by Ghassan AlShajjar on 15 Oct 2026, and it closed the last rubric item the interview had left open. The five interview questions did not request it, so it was requested separately by email, which the tutor confirmed was sufficient.
 
 ### 3.1 Interview record
 
@@ -205,8 +210,8 @@ On-device language models shipped to consumer phones in the last platform cycle,
 >
 > The **ten-question bank** that follows was the *prepared* set, ordered by rubric weight and each
 > mapped to the rubric bullet it serves. It is retained because it shows the interview was planned
-> against the rubric rather than improvised, and because it is the bank for the **follow-up** that
-> still has to obtain the F15 approval (§3.4).
+> against the rubric rather than improvised, and because it is the bank for the **follow-up** — which
+> has now been sent and answered: the F15 approval was obtained by email on 15 Oct 2026 (§3.4).
 
 Ten questions, in plain words, so they can be read out exactly as they stand. The order is deliberate: the questions that move the most marks, and the one that needs a written answer, come first, so a shortened slot still protects them. Three members ask, as the guidelines require, and the rubric bullet each question serves is named, so nothing asked is wasted. Full wording, timings and the buffer questions are in `research/interviews/README.md`.
 
@@ -247,29 +252,42 @@ Ten questions, in plain words, so they can be read out exactly as they stand. Th
 
 **Two items the interview did not settle**, recorded so they are not mistaken for answered:
 
-- **The F15 advanced-feature approval was not requested**, because none of the five questions asked for it. It remains a rubric requirement and needs a short follow-up (§3.4).
+- ~~**The F15 advanced-feature approval was not requested**~~ — ✅ **RESOLVED 15 Oct 2026.** The five questions did not ask for it, so it was requested separately by email and **approved in writing the same day** by Ghassan AlShajjar. See §3.4 and [`research/interviews/f15-advanced-feature-approval.md`](../../research/interviews/f15-advanced-feature-approval.md). Kept here, struck through rather than deleted, so the record shows the interview genuinely did not settle it and the gap was closed afterwards
 - **The usability test and its consent rules were not asked about** (prepared question 10). The plan is unchanged: five consenting classmates, a standard SUS questionnaire, and no real study files uploaded — but it is an assumption the document still states rather than an answer it can cite.
 
 ### 3.4 Written approval of the advanced feature (F15)
 
-> ⚠️ **Status: still pending, and this is now the only rubric requirement the interview did not
-> settle.** The five questions asked covered API keys, AI accuracy, group chat, monetisation and
-> mockups — **none of them requested approval of the advanced feature**, so the requirement
-> (*"include one approved advanced feature assigned to one or two developers"*) is still unmet.
+> ✅ **Approved in writing on Thursday 15 October 2026 at 2:14 pm** by **Ghassan AlShajjar**
+> (Tutor, EDICT Programming), in reply to an email sent at 1:11 pm the same day. The full request
+> and reply, verbatim, are filed as
+> [`research/interviews/f15-advanced-feature-approval.md`](../../research/interviews/f15-advanced-feature-approval.md).
+> This closes the last rubric item the interview did not settle.
 
-**What to do, and it is small:** send the supervisor the one-line request and keep the reply.
-Approval by email is sufficient; it does not need another meeting.
+| Field | Value |
+|---|---|
+| **Approved by** | Ghassan AlShajjar, Tutor, EDICT Programming |
+| **Date** | **Thursday 15 October 2026, 2:14 pm** |
+| **Method** | Email — the supervisor confirmed a written reply is sufficient |
+| **Feature** | **F15, AI Study Companion** (RAG + adaptive coach) |
+| **Developers** | **M2** Mohammed Almadhoon + **M3** Tasbeeh Saeed — exactly two, the brief's maximum |
 
-> "Our advanced feature is **F15, the AI Study Companion** — it answers only from a student's own
-> uploaded files, cites the source of each answer, and builds an adaptive study path. Two members
-> (Mohammed and Tasbeeh) are building it. Under the brief's requirement for *one approved advanced
-> feature assigned to one or two developers*, may we have your approval in writing?"
+**The approval is conditional**, and the tutor named three conditions. Each is a requirement rather
+than a suggestion, so each is tracked to the place that satisfies it:
 
-On receipt, store it as `research/interviews/f15-advanced-feature-approval.md` and record the date
-and the approver here. If the supervisor judges F15 is not advanced enough, **F09 (the live group
-revision arena)** is the prepared substitute and is promoted in its place — and note that the
-interview answer on group chat ("in scope and expected") makes F09 a stronger fallback than it was
-when this substitution was first planned.
+| # | The tutor's words | Where it is met |
+|---|---|---|
+| 1 | *"in the feature list, show which part each of the students are responsible for"* | **§7** names each developer's scope in the advanced-feature block; **§8.4** gives the full split with deliverables |
+| 2 | *"it should also be separate from the core AI features"* | **§7** lifts F15 **out of** the core feature table into its own block, so it cannot read as an eighteenth row among F03, F04, F05 and F11 |
+| 3 | *"do keep note of the dependencies on file upload and quizzes that may introduce"* | **§8.5** names the **F02** and **F05** dependencies and what breaks in F15 if either changes |
+
+**What conditions 1 and 2 are guarding against**, and why they are worth taking seriously: an
+advanced feature with vague ownership (nobody accountable for the hardest part), and an advanced
+feature that is really a fifth AI feature wearing a label. Both are common, and both are visible
+from the feature list alone.
+
+**The substitution was not needed.** **F09 (the live group revision arena)** was held in reserve in
+case F15 was judged not advanced enough. It was approved on its own merits, so F09 remains an
+ordinary Tier B feature and the reserve decision is closed.
 
 ## 4. Competitive analysis
 
@@ -382,7 +400,48 @@ The brief requires a structured feature list with name, user role, main task, fl
 | F12 | Admin Content Management & Moderation | Admin | Keep content correct, safe and compliant | Admin KPIs → user list → user detail (role change or suspend) → moderation queue → flagged reports → taxonomy → AI config → audit log | M4 | M2 |
 | F13 | Subscription & Payments | Student | Buy and manage a premium tier securely | Paywall → plan select → compare → order summary (BHD) → Tap card or BenefitPay → processing → server-side verification → entitlement → receipt → manage | M3 | M5 |
 | F14 | Notifications & Reminders | All | Bring the user back at exactly the right moment | Server event or local schedule → relevance and quiet-hours filter → FCM push or local notification → tap → deep link → inbox → preferences | M1 | M3 |
-| F15 | **ADVANCED** · AI Study Companion (RAG and Adaptive Coach) | Student | Ask anything grounded in your own materials and receive a personalised study path | Ask → on-device embedding search over own library → grounded answer with citation chips → adjust explanation level → recommended study path → rate response | **M2 + M3** | M1 |
+### 7.1 The advanced feature, kept separate from the core features
+
+The brief requires the feature list to *"include one approved advanced feature"*, and the tutor's
+written approval added a condition: **F15 must be separate from the core AI features.** It is
+therefore lifted **out** of the table above rather than sitting as an eighteenth row among F03, F04,
+F05 and F11.
+
+**Why the separation is not cosmetic.** F03, F04, F05 and F11 are each a *single* AI generation task
+against one material, with the model given the material and asked for an artefact. F15 is a
+**retrieval-augmented system**: it indexes a corpus, retrieves against a query, constrains generation
+to what it retrieved, and reasons over the student's own measured mastery to plan what to study next.
+Reading it as a fifth AI feature would understate it, and the tutor asked for it to be presented so
+that it cannot be read that way.
+
+| Field | Value |
+|---|---|
+| **ID** | **F15 · AI Study Companion** (retrieval-augmented generation + adaptive coach) |
+| **Role** | Student |
+| **Main task** | Ask anything grounded in your own materials, and receive a personalised study path |
+| **Flow** | Ask → on-device embedding search over own library → grounded answer with citation chips → adjust explanation level → recommended study path → rate response |
+| **Screens** | `73`–`80` (8 frames, group H) |
+| **Developer(s)** | **M2 + M3** — exactly two, the brief's maximum |
+| **Tester** | **M1** — independent; neither developer tests it |
+| **Tutor approval** | ✅ **Approved in writing, 15 Oct 2026** (§3.4) |
+
+*Table 7.2, the advanced feature's identity, kept out of the master feature table so it cannot read as an eighteenth core feature.*
+
+**Who does what.** The approval also required each developer's part to be named, so the split is
+stated here as well as in §8.4:
+
+| Developer | Owns | Delivers |
+|---|---|---|
+| **M2** Mohammed Almadhoon | **Retrieval and generation layer** — the half that decides *what the model is allowed to see* | Chunking with page and offset, the on-device `NLEmbedding` index, cosine-similarity retrieval, the prompt contract, citation enforcement, and the `AIProvider` routing seam. Screens `73`, `74`, `75`, `76`, `79`, `80` |
+| **M3** Tasbeeh Saeed | **Planner and router integration** — the half that decides *what the student should do next* | The adaptive study path over `topicMastery`, the tier-selection policy, the cost governor integration, and graceful degradation when on-device intelligence is unavailable. Screens `77`, `78` |
+
+*Table 7.3, which developer is responsible for which part of F15, as the tutor's approval required.*
+
+**The split is deliberately disjoint**, so neither developer can block the other: the two halves meet
+at one protocol boundary, and each is independently testable and independently demoable. Full scope,
+deliverables and the interface contract are in **§8.4**; the dependencies this introduces are in
+**§8.5**.
+
 | F16 | Admin-Moderated Group Chat | Admin, Study Group Member | Talk to a study group inside a chat an admin moderates and is always present in | Open group chat → admin presence banner → post and read messages → moderator pins an announcement → hide, delete or flag any message with a reason → tombstone shown → action written to the audit log | M5 | M4 |
 | F17 | Active Recall Space (Anki-style spaced repetition) | Student | Review everything due across every deck in one place, the way Anki does | Recall Space home → due-today counts by card state → filter by deck or tag → session → flip → rate Again/Hard/Good/Easy with the next interval shown → learning steps graduate the card → summary → retention, heatmap and streak | M5 | M2 |
 
@@ -423,6 +482,58 @@ It combines four capabilities that most student projects do not attempt together
 `RetrievalService` and `CoachPlanningService` are protocols, so the retrieval implementation and the planner can each be swapped or unit-tested in isolation. Edge cases handled explicitly: no relevant chunk found (say so), on-device model unavailable (fallback screen), very long answers (chunked streaming), a cited material deleted (the citation degrades gracefully), and a low-confidence response (flagged for the student).
 
 *Figure 8.1, the RAG pipeline (index, retrieve, ground, answer, adapt): [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png). The six steps are the rows of Table 8.1, drawn with the constraint that keeps them honest: vectors stay on the device, the prompt is built only from retrieved chunks, and a response is cited.*
+
+### 8.4 Ownership split, and the contract between the two halves
+
+The tutor's approval required each developer's part to be named. It is stated in §7.1 and expanded
+here, because the split is the reason a two-developer advanced feature is safe rather than risky.
+
+| Developer | Scope | Deliverables | Screens |
+|---|---|---|---|
+| **M2** Mohammed Almadhoon | **Retrieval and generation** — *what the model is allowed to see* | Text chunking carrying page and character offsets; the on-device `NLEmbedding` index held in SwiftData; cosine-similarity top-k retrieval; the prompt contract that admits only retrieved chunk ids; citation enforcement, where a claim with no supporting chunk is **dropped rather than emitted**; the `AIProvider` routing seam | `73`, `74`, `75`, `76`, `79`, `80` |
+| **M3** Tasbeeh Saeed | **Planner and router integration** — *what the student should do next* | The adaptive study path built over `topicMastery`; the tier-selection policy across on-device, cloud and server; `AICostGovernor` integration and the daily allowance; graceful degradation when on-device intelligence is unavailable | `77`, `78` |
+
+*Table 8.2, the F15 ownership split with deliverables, expanded from Table 7.3.*
+
+**The contract between them is one protocol boundary**, and that is what keeps the two halves
+non-blocking:
+
+| Protocol | Written by | Consumed by | Why the boundary is here |
+|---|---|---|---|
+| `RetrievalService` | M2 | M3 | M3's planner must be able to ask *"what does the student's own material say about this topic?"* without knowing how retrieval works |
+| `CoachPlanningService` | M3 | M2 | M2's answer screen must be able to ask *"what should this student do next?"* without knowing how the plan is built |
+
+*Table 8.3, the two protocols that form the interface between F15's two halves.*
+
+Both are protocols, so **each half is unit-testable against a stub of the other**, and neither
+developer is blocked while the other is mid-change. This is the same seam discipline the rest of the
+codebase uses (`AIProvider`, `MaterialStore`, `SubscriptionStore`), applied where the risk of a
+two-person feature is highest.
+
+### 8.5 Dependencies this feature introduces
+
+The approval required these to be noted, and the reason is that **F15 cannot work without two
+features it does not own.** If either changes, F15 breaks in a way that is not obvious from F15's own
+code.
+
+| Depends on | What F15 takes from it | If it changes, what breaks in F15 |
+|---|---|---|
+| **F02 · Material Upload & Course Library** (M1) | The **corpus**. Extraction produces the text; chunking and embedding run over it, and a citation points at a **page and offset within the extracted text**. F15 retrieves nothing if there is no library | A change to extraction or to the stored text shape invalidates **every existing vector**, so the index must be rebuilt — and a citation that referenced an offset no longer opens the right page. **F15 has no corpus of its own**; it is entirely a function of F02's output |
+| **F05 · Quiz Generation & Attempt Analytics** (M2) | The **mastery signal**. Quiz attempts write `topicMastery`, and the adaptive planner reads it to order the path and to pick what to revise first | The planner degrades to a **generic path** — read → cards → quiz → review — in a fixed order with no personalisation. **F15 still functions, but stops being adaptive**, which is the half of the feature that makes it advanced. Note the awkwardness and own it: **F05's developer is also F15's M2**, so a change to the mastery shape is a change one person makes in two places |
+| **F03, F04** (M2) | Not a hard dependency, but the **shared generation pipeline**. F15 routes through the same `AIProvider` seam and the same tier policy | A change to the router's tier policy or the `AIProvider` protocol affects F03, F04, F05 and F15 together. This is a strength (one policy, one place) and a coupling (one mistake, four features) |
+
+*Table 8.4, the features F15 depends on, and what breaks in F15 if each one changes.*
+
+**Why this note is worth having in the document rather than in someone's head.** Both dependencies
+point **inward**, at features owned by other people: F02 is M1's, and F05 is M2's. That means the
+critical path for the advanced feature runs through work that is *not* the advanced feature's own.
+Recording it here is what makes that visible to a reader — and to us, when planning the freeze.
+
+**The honest statement to make in the VIVA:** F15 is the most technically ambitious feature in the
+project and it **sits on top of two features it does not own**. That is a normal and acceptable
+dependency for a retrieval system, but it is a dependency, and saying so is better than presenting
+F15 as self-contained.
+
 
 ## 9. Feature flows
 
