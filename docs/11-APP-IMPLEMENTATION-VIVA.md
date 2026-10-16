@@ -113,7 +113,7 @@ Rehearsed to the second. The **money shot** is the core loop at 0:25–2:55, tha
 
 **Every step has a rehearsed fallback.** If it fails, the presenter says one line and moves on. Rehearsing the *failure* path matters as much as the happy path. The executable run sheet, **with the fallback line for each step**, is [`research/demo/run-sheet.md`](../research/demo/run-sheet.md).
 
-> **Revised 15 Oct 2026 to include M5.** The script was written on 8 Oct, when the group had four members, and it had **no step for M5 at all** — while this document elsewhere requires that *"every member demos their own work"*. M5's **F17 Recall Space** now owns 2:20–2:45, and she joins the tutor/admin step for **F16's** permanent-moderator rule. The money shot is therefore **0:25–3:10**, and the quiz step moved 20 seconds later. **Re-time the rehearsals against these figures, not the old ones.**
+> **Revised 16 Oct 2026 to include M5.** The script was written on 8 Oct, when the group had four members, and it had **no step for M5 at all** — while this document elsewhere requires that *"every member demos their own work"*. M5's **F17 Recall Space** now owns 2:20–2:45, and she joins the tutor/admin step for **F16's** permanent-moderator rule. The money shot is therefore **0:25–3:10**, and the quiz step moved 20 seconds later. **Re-time the rehearsals against these figures, not the old ones.**
 
 ---
 
