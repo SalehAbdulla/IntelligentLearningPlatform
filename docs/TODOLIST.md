@@ -25,16 +25,18 @@ Legend: `[ ]` open, `[x]` done.
 - [x] **F16 and F17 specified end to end** — **F16 Admin-Moderated Group Chat** (the admin is always in the space, enforced in `firestore.rules`) and **F17 Active Recall Space** (Anki-style: one cross-deck queue, learning steps, daily limits, maturity states). Added to the feature list, the screen inventory (groups N and O, frames 142–154), the test rotation, the rubric matrix and the graded Design Document
 - [x] **F16/F17 core implemented, tested and pushed** — `feat/F16-moderated-group-chat` (**16 tests**) and `feat/F17-recall-space` (**29 tests**), both building clean and both awaiting review into `develop`. Scaffolded by M1; **M5 owns, extends and finishes them**, with the remaining work marked as `TODO(M5 · F16|F17)` in the code
 
-## 1. In-code TODO markers (13 open)
+## 1. In-code TODO markers (14 open — **none of them M1's**)
 
-Run `bash tools/todos.sh` for the live list; each line names its file and feature.
+Run `bash tools/todos.sh` for the live list; each line names its file and feature. Verified **15 Oct 2026**: **M1 0 · M2 3 · M3 3 · M4 3 · M5 5**.
 
-### M1, Saleh Abdulla
+### M1, Saleh Abdulla — **all four closed**
 
-- [ ] `UserSession.swift:44` route `AppRole.displayName` and `SubscriptionPlan.displayName` through L10n (F01)
-- [ ] `AcademicCatalogue.swift:73` replace the scaffolding with the student's real enrolled courses (F02)
-- [ ] `ImportMaterialViewModel.swift:25` detect a duplicate upload by content hash, offer Replace / Keep both (F02)
-- [ ] `NotificationPreferencesView.swift:11` add a "Send a test reminder" action (F14)
+- [x] `UserSession.swift:44` route `AppRole.displayName` and `SubscriptionPlan.displayName` through L10n (F01)
+- [x] `AcademicCatalogue.swift:73` replace the scaffolding with the student's real enrolled courses (F02)
+- [x] `ImportMaterialViewModel.swift:25` detect a duplicate upload by content hash, offer Replace / Keep both (F02)
+- [x] `NotificationPreferencesView.swift:11` add a "Send a test reminder" action (F14)
+
+Verified: `grep -rn 'TODO(M1' ios/` returns **nothing**, and `bash tools/todos.sh M1` reports **0 open**. The heading above said *13 open* until 15 Oct 2026 and this section still listed all four as outstanding — the count had drifted **and** the list contradicted the tool that generates it.
 
 ### M2, Mohammed Almadhoon
 
@@ -53,6 +55,16 @@ Run `bash tools/todos.sh` for the live list; each line names its file and featur
 - [ ] `StudyGroup.swift:34` presence seam (`PresenceProvider`) (F09)
 - [ ] `LiveQuizSession.swift:16` reconnect and resync path for a disconnected player (F09)
 - [ ] `BookmarkStore.swift:14` Firestore-backed `BookmarkStore` (F10)
+
+### M5, Fatema Ghareeb
+
+- [ ] `GroupModeration.swift:68` add the localised titles and the consequence sentence for each action (F16)
+- [ ] `GroupModeration.swift:129` map these to `AppError` with localised copy, **in the same commit that adds them** (F16)
+- [ ] `GroupModeration.swift:256` build the **N01–N06** screens on top of this state — the presence banner and the moderator controls (F16)
+- [ ] `RecallQueue.swift:141` build the **O01 Recall Space** screen on top of this queue — the due-today list (F17)
+- [ ] `RecallSettings.swift:51` add the localised titles for O01's state counters (F17)
+
+> **M5 was absent from this section until 15 Oct 2026**, despite having **five** open markers — more than anyone else. The section had been written when the group had four members and was never revisited when she joined. Her five are also the reason the heading's count moved from 13 to 14 rather than down to 10: **the count had been wrong, not the code.**
 
 ## 2. F12 admin (group K)
 
@@ -145,7 +157,7 @@ Group K (admin content management) is now feature-complete.
 ## 9. Doc-versus-code contradictions to fix
 
 - [x] `tools/check-tokens.sh`. **Implemented 15 Oct 2026, and it immediately found two real defects.** It was a five-line stub printing `TODO` and exiting **0**, while `docs/06` section 6 and `docs/09` R10 both claimed it failed the build on divergence — false twice over, since no CI workflow exists either. It now checks the **colour** tokens name-for-name between `docs/06` section 1.1 and `ColorTokens.swift`, fails in **either** direction, and **fails closed** if it cannot read its inputs. Both docs now state its real scope. **What it found:** (1) `onError` was in the code and absent from the documentation — fixed; (2) **R24**, a token named for one role and used in another, recorded in `docs/09` for the design system's owner because `DesignSystem/` is outside M1's lane. **The other token groups are not machine-checked**, and the reason is now written down: their names differ by convention on each side (`Space/4` vs `s4`, `Type/body` vs `sfBody`), so a name-grep would fail on every row
-- [ ] Tick or reconcile the stale checklists in `docs/01`, `docs/08` and `docs/10`
+- [ ] Tick or reconcile the stale checklists in `docs/01`, `docs/08` and `docs/10`. **Measured 15 Oct 2026: `docs/01` has 148 unchecked boxes, `docs/08` 25 and `docs/10` 6.** **Not ticked in this pass, deliberately:** most of those boxes are completed work, but confirming each one means reading the artefact it names, and **ticking a box that has not been checked is worse than leaving it unticked** — it converts a visible gap into a false claim. Two items in this section were reconciled because they were verifiable in one command (`tools/check-tokens.sh`, and M1's four TODO markers, both confirmed against the code). **The rest is a real audit, not a quick win**, and it is worth doing properly rather than quickly
 - [ ] `README.md` lines 161 and 163 show "App identity frozen" and "Cline agent skills installed" as open, which look out of date
 
 ## 10. Suggested order
