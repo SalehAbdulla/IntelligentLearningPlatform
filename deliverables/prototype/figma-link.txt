@@ -68,21 +68,23 @@ Page 1 - Design System             38 colour variables (Light + Dark modes),
 Page 2 - Flow Overview             global navigation map + 15 per-feature flow
                                    diagrams (F01-F15), each ending in the error
                                    or edge case the flow must survive
-Page 3 - Screens (all features)    106 high-fidelity screens, every feature
-                                   group A-M. This is the interactive prototype
+Page 3 - Screens (all features)    119 high-fidelity screens, every feature
+                                   group A-O. This is the interactive prototype
 Page 4 - States & Prototype Wiring state/error/loading/success kits, RTL and
                                    accessibility proof
-Page 5 - Low-Fi Wireframes         106 low-fidelity wireframes, one per screen,
-                                   each paired with a legend panel that names its
-                                   UI elements and states what each one does.
-                                   Retained because Phase 1 (Mockups) needs it.
+Page 5 - Low-Fi Wireframes         EMPTY IN FIGMA, deliberately. The 106 low-fi
+                                   wireframes are delivered as exported PNGs in
+                                   deliverables/design-document/mockups/figures/
+                                   (LF_*.png), which is what Phase 1 (Mockups) is
+                                   marked from. The page is kept so the file's page
+                                   numbering matches this document.
 Page 6 - Dark Mode Variants        119 dark-mode variants, one per screen, each a
                                    clone of its light screen with the Dark mode of
                                    the Color variable collection set explicitly.
-                                   Closes P9-12. Page 3 is untouched, so the 106
+                                   Closes P9-12. Page 3 is untouched, so the 119
                                    prototype frames keep their audited names.
 
-Screens built (106), by group and owner
+Screens built (119), by group and owner
   A Onboarding & Auth           01-10      M1 Saleh
   B Profile & Settings          11-18      M1 Saleh
   C Courses & Library           24-34      M1 Saleh
@@ -96,6 +98,13 @@ Screens built (106), by group and owner
   H AI Study Companion (F15)    73-78      M2 + M3
   I Collaboration               81-97      M4 Shahad
   K Admin Content Management    109-115    M4 Shahad
+  N Moderated Group Chat (F16)  142-147    M5 Fatema
+  O Active Recall Space (F17)   148-154    M5 Fatema
+
+Cover: the team table on page 0 lists all FIVE members, including M5 Fatema
+Ghareeb (202304804). It previously listed four and omitted her; corrected
+16 Oct 2026, along with the page index below it, which had described an
+earlier by-member page split that the file does not have.
 
 5. Prototype wiring, what is actually connected
 -----------------------------------------------
@@ -103,7 +112,7 @@ This was rebuilt at element level. Earlier the file held a linear "click
 anywhere, go to the next screen" chain, which is not an interactive prototype.
 That was removed and replaced with real hotspots.
 
-  Prototype connections in the file : 296
+  Prototype connections in the file : 320
   Screens with element-level hotspots : 98 of 106
     (the hotspot is attached to the actual button, tab item, list row or
      modal action that a user would tap, not to the screen background)
@@ -128,7 +137,7 @@ Navigation model implemented:
     generating to result transitions, the payment processing to receipt, and
     tab switches
 
-Click reachability: 97 of 106 screens are reachable by clicking alone. The
+Click reachability: 110 of 119 screens are reachable by clicking alone. The
 remaining 9 (24, 30, 41, 77, 78, 88, 126, 133, 134) are state, error and
 secondary screens that a user reaches only in a specific situation; each one is
 a named flow start point so it is directly reachable in the prototype player.
@@ -191,12 +200,20 @@ right-to-left Arabic proof is a built frame (139).
   [x] Dark-mode screen variants (done 15 Oct 2026: 119 variants on Figma page 6,
       measured in deliverables/prototype/figma-audit.md, with two rendered
       proofs in deliverables/prototype/dark-mode-proof/)
+  [x] **Cover corrected, 16 Oct 2026.** The team table on page 0 listed FOUR
+      members and omitted **M5 Fatema Ghareeb**; it now lists all five. The page
+      index below it was also wrong — it described an earlier by-member page
+      split (nine pages, "3 · M1 — Auth…", "7 · M4 — Collaboration…") that the
+      file does not have — and now matches the seven pages actually present.
+      Verified by screenshot after the edit.
   [ ] Usability test with 5 users and a SUS score (docs/01 P9-03/04)
-  [ ] Re-export StudyForge.fig if the Figma file changes after this revision,
-      so the .fig and the shared link match. This now includes the dark-mode
-      page: the .fig current on disk predates page 6
-  [ ] The Design Document PDF export (figures and lists are ready, the PDF
-      toolchain is not on this machine)
+  [ ] **Re-export StudyForge.fig. Now MORE urgent than before.** The .fig on disk
+      was exported 8 Oct 2026, so it predates BOTH page 6 (the dark-mode variants)
+      AND the cover correction above. Re-export it after the next Figma change so
+      the .fig and the shared link show the same revision.
+  [x] The Design Document PDF export (done 16 Oct 2026: `bash tools/build-pdf.sh`,
+      168 pages, 134 figures, 32 external links, 20.9 MB — rebuilt after the F15
+      approval and its three conditions landed)
 
 The audited numbers behind this document, with what was and was not measured, are
 recorded in deliverables/prototype/figma-audit.md. `bash tools/check-submission.sh`
