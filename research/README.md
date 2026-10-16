@@ -4,15 +4,16 @@ This folder holds the **evidence** for the assessment components. It is not docu
 
 | Path | Assesses | Contents |
 |---|---|---|
-| `dossier.md` | Design Document · Background Research (4 marks) | Problem evidence, statistics, competitor teardown, SDG mapping, Harvard references |
+| `dossier.md` | Design Document · Background Research (4 marks) | ✅ compiled 8 Oct 2026: problem evidence, the 13 sources and what each forces in the design, affected-population context, competitor teardown with a stage-coverage table, SDG mapping with a source per row, the evidence-to-design change log, Harvard references, the roadmap P1-01 to P1-10 coverage table, and the market figures that are still unverified |
 | `interviews/` | Design Document · Background Research | Anonymised student interview notes; the **tutor interview Q&A** |
-| `meeting-notes/` | Organisation | Weekly stand-up and review minutes |
+| `meeting-notes/` | Organisation | The weekly rhythm's minutes. The **async stand-up is defined as three lines in the team channel** ([doc 10 §7](../docs/10-SPRINT-PLAN.md)), so the channel is the source and a day's minutes are what was actually posted. The convention and the minutes template now exist; **the dated minutes are compiled from the channel**, not written from memory |
 | **`sprints/sprint-<N>/`** | **Sprints, 10% INDIVIDUAL** | Per sprint: `goal.md` · `board.png` · `review/` · `retro.md` · one contribution log per member |
 | `testing/` | iOS App (60%) · Sprints | Test logs per feature, run by the named tester (never the developer) |
 | `reviews/` | Sprints · LO3 | Review notes on AI-generated code, what was wrong, what changed, why |
+| `usability/` | Design Document **§17.3** · Sprints | The usability test pack: the protocol and facilitator script, the consent form, the SUS questionnaire with its scoring rule, the participant log and the results template. **The test itself is not yet run** — this is what it will be run with |
 | `spikes/` | iOS App (60%) · Sprint S0 | Time-boxed feasibility spikes. Each answers a question that could force a redesign, and records the **measured** result rather than an assumption |
 | `cheatsheets/` | iOS App VIVA (60%) | One page per member: their features, key files, trade-offs, known limitations |
-| `demo/` | iOS App Demonstration (60%) | Golden-path recordings and the backup capture |
+| `demo/` | iOS App Demonstration **(60%, must pass)** | The executable half of [doc 11](../docs/11-APP-IMPLEMENTATION-VIVA.md): the timed run sheet with **a fallback line per step**, the **3×/week golden-path regression log** (control 3), the **backup-recording inventory** with what invalidates each clip (control 4), and the **injected-failure rehearsal plan** R19 asks for |
 
 **Templates to copy:**
 - `sprints/TEMPLATE-goal.md` → `sprints/sprint-<N>/goal.md`

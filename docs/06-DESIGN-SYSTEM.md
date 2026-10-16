@@ -28,6 +28,7 @@ Contrast ratios below are computed against the WCAG 2.2 relative-luminance formu
 | `warningText` | `#B45309` | Amber **text** (quota, at-risk stats) | 5.0:1 | ✅ AA |
 | `warning` | `#F59E0B` | Quota warnings, low-confidence flags | 2.2:1 | ⚠️ fill only |
 | `error` | `#DC2626` | Destructive actions, incorrect answers | 4.8:1 | ✅ AA |
+| `onError` | `#FFFFFF` | Label on filled buttons and the loading spinner. **Named `onError` but used on `primary`, not on `error`** — see [docs/09 R24](../docs/09-RISKS-OPEN-QUESTIONS.md) | 5.8:1 on `primary` | ✅ AA |
 | `surface` | `#FFFFFF` | Base background | - | - |
 | `surfaceVariant` | `#F8FAFC` | Cards, grouped sections | - | - |
 | `outline` | `#E2E8F0` | Dividers, input borders | - | - |
@@ -65,6 +66,7 @@ The decorative backdrop glows are restricted to one cool family (blue `#0062CC` 
 | `accentText` | `#FDBA74` | 11.1:1 | ✅ AAA |
 | `warningText` | `#FCD34D` | 13.0:1 | ✅ AAA |
 | `error` | `#F87171` | 6.7:1 | ✅ AA |
+| `onError` | `#FFFFFF` | 3.6:1 on `primary` | ⚠️ **large text only** |
 
 **Subject colour coding** (used by course tags, calendar blocks, radar axes, 8 hues, all AA against both surfaces when used as fills with `onAccent` labels): blue, teal, rose, amber, mint, cyan, lime, slate. Deliberately excludes violet and pink, so a stack of course tags still cannot assemble itself into an AI-looking gradient.
 
@@ -241,7 +243,14 @@ The design system exists in exactly two places and they are kept mechanically in
 | Radius | Variables `Radius/M` … | `enum Radius { static let m: CGFloat = 12 }` |
 | Motion | Smart-animate presets | `enum Motion { static let emphasis = Animation.spring(response: 0.42, dampingFraction: 0.7) }` |
 
-**Workflow rule:** a token changes in **both** places in the same commit, or it does not change. A short script (`tools/check-tokens.sh`) greps the token names in both files and fails the build if they diverge.
+**Workflow rule:** a token changes in **both** places in the same commit, or it does not change. `bash tools/check-tokens.sh` enforces the half of that rule which can be checked mechanically, and **it is precise about which half that is**:
+
+| Checked by the script | Not checked by the script, and why |
+|---|---|
+| **Colour tokens**, name for name, between this document's section 1.1 tables and `DesignSystem/ColorTokens.swift`. It fails in **either** direction: a token in the code but not documented is drift, and so is a documented token that does not exist | **The other groups.** Type, spacing, radius, elevation and motion carry a **different name on each side by design** — Figma holds the grouped name (`Space/4`, `Radius/M`, `Type/body`) and Swift holds the Swift name (`s4`, `m`, `sfBody`). A name-grep across those would compare `space4` against `s4` and fail on every row, so their parity is verified against sections 1.2–1.4 at each freeze instead |
+| | **The Figma variables themselves.** They live in Figma, not in the repository, and reading them needs the Figma API. The Figma side is checked by hand at each freeze, against the list the script prints |
+
+> **Corrected on 15 Oct 2026.** This section previously claimed that the script "greps the token names in both files and fails the build if they diverge", while the script was a five-line stub that printed `TODO` and exited **0**. The claim was false in two ways: the check did not exist, and no build step ran it (there is no CI workflow in this repository). The script is now implemented, it fails closed if it cannot read its inputs, and the table above states its real scope. **It is run by hand as part of the pre-submission checks**, not by a build.
 
 ```swift
 // DesignSystem/ColorTokens.swift  (shape reference, full file in Phase 6)

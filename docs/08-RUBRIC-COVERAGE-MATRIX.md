@@ -23,7 +23,7 @@ Rubric area a, *"Group Assessment – 4%"*.
 | a1 | *"A clear explanation of the real world or context, including who is affected and why the issue matters."* | Design Doc §2 → problem statement, affected population, scale, Gulf/Bahrain context. Dashboard at `research/dossier.md` §1. | M1 | ⬜ |
 | a2 | *"A clear description of the app's purpose, goals, and intended impact as a solution to the problem."* | Design Doc §5 → purpose, goals, **measurable** success metrics, intended impact. | M1 | ⬜ |
 | a3 | *"Supporting research or references, such as online research, trends, or statistics."* | Design Doc §2 + §18 → **8+ cited sources** (retrieval practice, spaced repetition, testing effect, GCC digital-learning adoption, Bahrain Resolution No. 43), Harvard style. `research/dossier.md`. | M4 | ⬜ |
-| a4 | *"Group interview summary with your tutor… Include questions asked and summary of responses."* | Design Doc §3 → the 10 questions from [roadmap Phase 1 §4](01-ROADMAP-PHASES-TODOLIST.md) with the tutor's answers verbatim, plus a "what changed as a result" subsection. **⚠️ easy to lose** | M2 | ⬜ |
+| a4 | *"Group interview summary with your tutor… Include questions asked and summary of responses."* | Design Doc §3 → **Table 3.2**, the 10 questions each mapped to the rubric bullet it serves and the member who asks it, plus **Table 3.3**, the tutor's answers verbatim with a "what changed as a result" column. The interview guidelines also make the **transcript** and the **summary** graded parts: transcript, capture sheet and the **written F15 approval** in [`research/interviews/`](../research/interviews/README.md). The 10 questions and the 3 buffers are banked in [roadmap Phase 1 §4](01-ROADMAP-PHASES-TODOLIST.md). **⚠️ easy to lose** | M2 | ⬜ |
 | a5 | *"Explain what gives your app a competitive edge compared to similar apps in the market."* | Design Doc §4 → competitor teardown table (Quizlet · Anki · NotebookLM · Notion · ChatGPT · Studocu) + the "one closed loop" claim + 3 differentiators. [`00-MASTER-PLAN.md` §8](00-MASTER-PLAN.md). | M4 | ⬜ |
 
 **Also required by the brief for this area (not a separate bullet but stated):** the interview must be *"focused on collecting information from your tutor within class time"*, record the date, location and attendees. ⬜
@@ -37,7 +37,7 @@ Rubric area b.
 | # | Rubric bullet (verbatim) | Evidence | Owner | Status |
 |---|---|---|---|---|
 | b1 | *"Submit a structured feature list."* | Design Doc §7 → the master table. [`02-FEATURE-LIST-OWNERSHIP.md` §4](02-FEATURE-LIST-OWNERSHIP.md). | M3 | ⬜ |
-| b2 | *"Name of Feature"* | Master table column *Feature*, F01–F15. | M3 | ⬜ |
+| b2 | *"Name of Feature"* | Master table column *Feature*, F01–F17. | M3 | ⬜ |
 | b3 | *"Main Task: What is the feature trying to accomplish from the user's perspective?"* | Master table column *Main task*, all 15 written from the user's perspective. | M3 | ⬜ |
 | b4 | *"User: Who is the intended user for this feature"* | Master table column *Role*, 4 distinct roles used across the set. | M3 | ⬜ |
 | b5 | *"Sub-Tasks/Steps: Describe a brief flow or individual steps"* | Design Doc §7 → the expanded sub-task table. [`02 §6`](02-FEATURE-LIST-OWNERSHIP.md). | M3 | ⬜ |
@@ -45,7 +45,7 @@ Rubric area b.
 | b7 | *"Tester: Another team member responsible for testing"* | Master table column *Tester* **and** the rotation matrix [`02 §7`](02-FEATURE-LIST-OWNERSHIP.md) proving tester ≠ developer. | M4 | ⬜ |
 | b8 | *"Use a clear, structured table or bullet-point format"* | The tables are used as-is in the PDF. | M3 | ⬜ |
 | b9 | *"Use at least three user roles."* | **Four**: Student · Tutor/Teacher · Study Group Member · Admin. [`00 §7`](00-MASTER-PLAN.md). | M1 | ⬜ |
-| b10 | *"Every student must be responsible for at least two features as a developer."* | Workload-balance table [`02 §3`](02-FEATURE-LIST-OWNERSHIP.md), every member owns **3** (M3 owns 2 + the advanced feature). | M1 | ⬜ |
+| b10 | *"Every student must be responsible for at least two features as a developer."* | Workload-balance table [`02 §3`](02-FEATURE-LIST-OWNERSHIP.md): every member owns **2–4** (M2 and M3 also co-own the advanced feature), the minimum is 2, and M5's two are both net-new. | M1 | ⬜ |
 | b11 | *"the workload should be fairly distributed between team members."* | `02 §3` balance table + the explicit rationale for why frame count is not the fairness metric. | M1 | ⬜ |
 | b12 | *"include at least one advanced feature agreed upon with the tutor, such as LLM integration, maps, group chats, or real-time multiplayer."* | **F15 AI Study Companion** (RAG + adaptive coach). Spec at [`02 §5`](02-FEATURE-LIST-OWNERSHIP.md). **⚠️ requires written tutor approval** | M2 | ⬜ |
 | b13 | *"The advanced feature should be assigned to one or a maximum of two developers."* | F15 → **M2 + M3**, with the ownership split and interface contracts documented. | M2 | ⬜ |
@@ -61,16 +61,33 @@ Rubric area c. This is where the most marks are available, so it gets the most s
 | # | Rubric bullet (verbatim) | Evidence | Owner | Status |
 |---|---|---|---|---|
 | c1 | *"Clearly show and reflect the structure and flow of each feature."* | One flow diagram + a grouped frame set per feature. [`03-SCREEN-INVENTORY.md`](03-SCREEN-INVENTORY.md) groups A–M. | all | ⬜ |
-| c2 | *"Include multiple screens if the feature requires them."* | 7–18 screens per feature group; 141 total. Every feature exceeds one screen. | all | ⬜ |
+| c2 | *"Include multiple screens if the feature requires them."* | **106 low-fidelity wireframes** across the **17** features, **3–16 per feature**, so every feature exceeds a single screen. (The hi-fi prototype is a separate count: **119** frames built of a **154**-frame inventory.) | all | ⬜ |
 | c3 | *"Contain written descriptions for each screen explaining its purpose and layout."* | The *Purpose & key labelled elements* column in [doc 03](03-SCREEN-INVENTORY.md), written to be pasted directly into the PDF. | all | ⬜ |
 | c4 | *"Identify and label all UI elements, such as buttons, inputs, and labels, and explain their function."* | Every screen's description **names** each element (in bold) **and** states what it does, e.g. *"**Generate** primary button, runs the grounded generation with the chosen settings"*. | all | ⬜ |
 | c5 | *"You may use any software or method… paper sketches scanned, Draw.io, Figma, or Canva."* | **Figma (low-fidelity mode)**, same file as the prototype, so the low-fi and hi-fi stay in sync by construction. Framed as a deliberate efficiency choice. | M2 | ⬜ |
 | c6 | *"should include all necessary screens, show clear navigation or screen flow, label UI elements clearly, and include written screen descriptions"* | Coverage audit against doc 03 · navigation map (doc 03 §5) · labelled elements · descriptions. | M4 | ⬜ |
-| c7 | *"coverage of assigned features"* | All 15 features covered; the [frame-count-by-owner table](03-SCREEN-INVENTORY.md) proves each member covered their own features. | M4 | ⬜ |
+| c7 | *"coverage of assigned features"* | All **17** features covered; the [frame-count-by-owner table](03-SCREEN-INVENTORY.md) §4 proves each member covered their own features, including **M5's groups N and O**. | M4 + **M5** | ⬜ |
 | c8 | *"clarity of screen flow"* | 15 feature flow diagrams + the global navigation map + the modal/push distinction documented. | M3 | ⬜ |
 | c9 | *"usability of layout"* | Design system ([doc 06](06-DESIGN-SYSTEM.md)) applied consistently: 4 pt grid, 16 pt margins, ≥44 pt targets, one primary action per screen. | M1 | ⬜ |
 | c10 | *"meaningful UI labelling"* | Consistent terminology ("deck", "material", "session", "Coach") across every screen, both documents and the app. | M4 | ⬜ |
 | c11 | *"overall neatness/professionalism"* | Aligned frames, consistent gaps, no overlapping elements, ordered frame numbering, consistent titles. | M1 | ⬜ |
+
+**Status update, 8 Oct 2026 (verified against the live file):** every row above is now
+backed by something a marker can open.
+
+| Row | Status | Evidence now in place |
+|---|---|---|
+| c1 | ✅ | 15 per-feature flow diagrams on Figma page `2 · Flow Overview`, each ending in its error/edge case, plus a grouped frame set per feature |
+| c2 | ✅ | **106 low-fi wireframes**; every feature has **3–16** screens (`SCREEN-DESCRIPTIONS.md` §A.15) |
+| c3 | ✅ | `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.2–§A.14: purpose **and** layout for all **106** wireframes |
+| c4 | ✅ | Numbered callout badges on every wireframe, mapped to a legend panel that gives each element's **type** and **function** |
+| c5 | ✅ | Figma page `5 · Low-Fi Wireframes`, greyscale, generated from the same geometry as the prototype |
+| c6 | ✅ | Coverage audit §A.15, navigation map + 15 flow diagrams, labelled elements, descriptions |
+| c7 | ✅ | [doc 03 §4](03-SCREEN-INVENTORY.md) gives frames per owner across **five** members: **M1 48 · M2 41 · M3 25 · M4 27 · M5 13 = 154** |
+| c8 | ✅ | 15 flow diagrams + the navigation map; modal vs pushed distinction documented in doc 03 §5 |
+| c9 | ✅ | One shared 4 pt grid, ≥44 pt targets, one primary action per screen |
+| c10 | ✅ | Terminology is consistent across mockups, prototype and app ("deck", "material", "session", "Coach") |
+| c11 | ✅ | Greyscale only, consistent gaps, ordered numbering, no overlapping elements |
 
 **Low-fi vs hi-fi, state this explicitly in the document so the marker sees we understood the distinction:**
 
@@ -117,11 +134,11 @@ Rubric area e.
 
 | # | Rubric bullet (verbatim) | Evidence | Owner | Status |
 |---|---|---|---|---|
-| p1 | *"All main features of the app are designed and linked based on your feature list."* | All 15 features from [doc 02 §4](02-FEATURE-LIST-OWNERSHIP.md) have frames in [doc 03](03-SCREEN-INVENTORY.md) and are reachable by clicking. Traceability matrix in the appendix. | M2 | ⬜ |
+| p1 | *"All main features of the app are designed and linked based on your feature list."* | All 17 features from [doc 02 §4](02-FEATURE-LIST-OWNERSHIP.md) have frames in [doc 03](03-SCREEN-INVENTORY.md) and are reachable by clicking. Traceability matrix in the appendix. | M2 | ⬜ |
 | p2 | *"Interactive links between screens simulate taps, button presses, and navigation."* | Every item on the [doc 03 §6 wiring checklist](03-SCREEN-INVENTORY.md) verified by a click-through of the whole prototype. 4 end-to-end chains explicitly tested. | M4 | ⬜ |
 | p3 | *"A clearly structured prototype reflects real-world app behavior and layout."* | Role-based tab bars · modal vs push distinction · iOS-native nav bars and sheets · realistic content (no lorem ipsum) · realistic Arabic + English data. | M3 | ⬜ |
 | p4 | *"Visual consistency is maintained in terms of color themes, fonts, and UI elements."* | Figma **variables** bound to every component ([doc 06](06-DESIGN-SYSTEM.md)) so consistency is mechanically enforced, not eyeballed. Verified on the light *and* dark variants. | M1 | ⬜ |
-| p5 | *"Screen organization is consistent in the prototype, and all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."* | Naming rule `NN_ScreenName_FirstName_StudentID` applied to all 141 frames + one Figma page per owner + a naming audit pass. **⚠️ stated rubric line** | M4 | ⬜ |
+| p5 | *"Screen organization is consistent in the prototype, and all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."* | Naming rule `NN_ScreenName_FirstName_StudentID` applied to all 154 frames + one Figma page per owner + a naming audit pass. **⚠️ stated rubric line** | M4 | ⬜ |
 | p6 | *"Submit the interactive prototype file using a Figma file (.fig) alongside the shared link."* | `deliverables/prototype/StudyForge.fig` **and** `deliverables/prototype/figma-link.txt` (URL + "Anyone with the link can view" verified in a private window). **⚠️ both required** | M4 | ⬜ |
 | p7 | *"It is encouraged that your prototype is tested thoroughly by team members and real users to gather feedback."* | Usability test with **5 real users**, 4 scripted tasks, think-aloud, SUS score, findings + applied fixes documented in Design Doc §17. | M4 | ⬜ |
 
@@ -169,14 +186,14 @@ Rubric area e.
 
 | # | Requirement | Evidence | Owner | Status |
 |---|---|---|---|---|
-| app1 | All 15 features present and functional in the app | Tier A demo-solid; Tier B functional ([doc 11 §2](11-APP-IMPLEMENTATION-VIVA.md)) | all | ⬜ |
+| app1 | All 17 features present and functional in the app | Tier A demo-solid; Tier B functional ([doc 11 §2](11-APP-IMPLEMENTATION-VIVA.md)) | all | ⬜ |
 | app2 | Runs on a **physical device** | Demo device with Apple Intelligence enabled | M1 | ⬜ |
 | app3 | Loading, empty, error and offline states implemented | Screen recordings of each state | all | ⬜ |
 | app4 | Real Firebase backend with server-enforced rules | Emulator rules tests passing, including negative tests | M1 | ⬜ |
 | app5 | AI pipeline works, with graceful degradation | Generation demo + the fallback screen behaviour | M2 | ⬜ |
 | app6 | Payments work in Tap sandbox; entitlement unlocks | Recorded sandbox payment + function logs | M3 | ⬜ |
 | app7 | Feature freeze respected from 30 Nov; no new features after | Commit history | M3 | ⬜ |
-| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script | M4 | ⬜ |
+| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script · **executable run sheet with a fallback line per step**: [`research/demo/run-sheet.md`](../research/demo/run-sheet.md). **M5 presents 2:20–2:45 (F17)** and joins the tutor/admin step (F16) | M4 + **M5** | ⬜ |
 | demo2 | Backup screen recording on device **and** USB | Recording file | M4 | ⬜ |
 | demo3 | Four demo accounts + demo content seeded and frozen | Verified accounts and data | M1 | ⬜ |
 | demo4 | Environment checklist executed before the demo | [doc 11 §6](11-APP-IMPLEMENTATION-VIVA.md) ticked | M4 | ⬜ |
@@ -216,7 +233,7 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 - [ ] Every ⬜ row in §2–§7 above is now ✅, or consciously accepted as a lost mark
 - [ ] Tutor interview **questions AND responses** are in the document
 - [ ] Written tutor approval for the F15 advanced feature is recorded
-- [ ] Every one of the 15 features has all seven required columns populated
+- [ ] Every one of the 17 features has all seven required columns populated
 - [ ] Workload balance is stated, not just implied
 - [ ] All 89 P0 screens exist in low fidelity, described and labelled
 - [ ] 15 feature flow diagrams + 1 global navigation map
@@ -229,7 +246,7 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 
 ### Gate 2 · Prototype (before 11 Nov)
 
-- [ ] All 15 features designed and **reachable by clicking**
+- [ ] All 17 features designed and **reachable by clicking**
 - [ ] Every hotspot clicked at least once (no dead ends)
 - [ ] 4 end-to-end chains work: onboarding→home · upload→summary→folder · quiz→results→re-plan · paywall→receipt
 - [ ] Every frame named `NN_ScreenName_FirstName_StudentID`, audited

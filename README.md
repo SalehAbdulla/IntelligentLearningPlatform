@@ -2,6 +2,10 @@
 
 **Turn any material into mastery.**
 
+> **Contributing to this project? Read [`CONTRIBUTING.md`](CONTRIBUTING.md) first.** It is
+> the full guide: setup, the git rules, your file lane, code conventions, testing, the
+> evidence that is actually marked, troubleshooting, and VIVA readiness.
+
 | | |
 |---|---|
 | **Module** | IT8108, Project Design Document & Prototype |
@@ -48,7 +52,7 @@
 
 ## Team
 
-**4 members, group size approved by the tutor.** (The brief's default is 5; the tutor has confirmed 4 is acceptable for this group.)
+**5 members — the brief's own default.** (Between 28 Sep and 14 Oct the group ran with four, which the tutor approved; on 14 Oct 2026 Fatema Ghareeb joined and filled the fifth seat, so the group now matches the brief exactly.)
 
 | Handle | Name | Student ID | Team role | Features owned | Frame suffix |
 |---|---|---|---|---|---|
@@ -56,8 +60,9 @@
 | **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` |
 | **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` |
 | **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` |
+| **M5** | **Fatema Ghareeb** | `202304804` | Collaboration & Recall lead | **F16**, **F17** | `Fatema_202304804` |
 
-All placeholder names have been replaced. The former M5 workstream (F11/F12/F13) was redistributed by adjacency, see [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
+All placeholder names have been replaced. The workstream of the **then-empty** fifth seat (F11/F12/F13) was redistributed by adjacency and **stays** redistributed; M5 owns the two features added with her, F16 and F17. See [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
 
 
 ---
@@ -66,10 +71,11 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 
 | Doc | Contents |
 |---|---|
+| [**CONTRIBUTING.md**](CONTRIBUTING.md) | **Start here to contribute.** Setup, git rules, your file lane, conventions, testing, evidence, troubleshooting, VIVA |
 | [00, Master Plan](docs/00-MASTER-PLAN.md) | Decoded spec, assessment-driven priorities, product identity, roles, innovation |
 | [01, Roadmap, Phases & Todolist](docs/01-ROADMAP-PHASES-TODOLIST.md) | Sprint-structured roadmap with dated gates + tickable task list, **the guide & roadmap** |
-| [02, Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 15 features, 4 developers, developer/tester matrix, advanced feature |
-| [03, Screen Inventory](docs/03-SCREEN-INVENTORY.md) | 141 screens, Figma frame naming rule, prototype cut-line |
+| [02, Feature List & Ownership](docs/02-FEATURE-LIST-OWNERSHIP.md) | 17 features, 5 developers, developer/tester matrix, advanced feature |
+| [03, Screen Inventory](docs/03-SCREEN-INVENTORY.md) | 154 screens, Figma frame naming rule, prototype cut-line |
 | [04, Tech Architecture & Cost](docs/04-TECH-ARCHITECTURE-COST.md) | SwiftUI + Firebase + Tap Payments + 3-tier AI, $0 cost model |
 | [05, Data Model & Security](docs/05-DATA-MODEL-SECURITY.md) | Firestore/Storage schema, roles, security-rules strategy |
 | [06, Design System](docs/06-DESIGN-SYSTEM.md) | Colour, type, spacing, components, UI/UX principle mapping |
@@ -79,6 +85,11 @@ All placeholder names have been replaced. The former M5 workstream (F11/F12/F13)
 | [10, Sprint Plan](docs/10-SPRINT-PLAN.md) | The **individual 10%**: sprint cadence, per-member tasks, contribution evidence |
 | [11, App Implementation & VIVA](docs/11-APP-IMPLEMENTATION-VIVA.md) | The **60% must-pass**: MVP scope, demo script, VIVA prep, must-pass risk control |
 | [12, Git Workflow](docs/12-GIT-WORKFLOW.md) | **Branches, per-file commits, PRs**, the tutor's stated requirement, plus `tools/commit.sh` |
+| [13, Per-Member Tasks](docs/13-PER-MEMBER-TASKS.md) | Tickable task list per member, plus turnkey first-commit starter briefs |
+| [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so four agents can work at once without conflicts |
+| [15, Project Briefing](docs/15-PROJECT-BRIEFING.md) | **Plain-language summary in three parts:** what the project is about, the 17 features, and the interview questions. Start here for interview prep or VIVA revision |
+| [16, Team Kickoff](docs/16-TEAM-KICKOFF.md) | **One page, read it first this week:** what changed, your lane, the five commands, the two rules that cost marks, the deadlines |
+| [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) · [TODO M5](docs/TODO-M5-fatema.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
 
 ---
 
@@ -104,7 +115,7 @@ IntelligentLearningPlatform/
 │   ├── rules-tests/                 emulator suites, negative tests first
 │   └── functions/                   createCharge · tapWebhook · rollupDailyMetrics
 │
-├── docs/                        planning set (00–13), start at README
+├── docs/                        planning set (00–15) + a TODO handover per member, start at README
 │
 ├── deliverables/
 │   ├── design-document/         10%, PDF source + low-fidelity mockups
@@ -112,13 +123,17 @@ IntelligentLearningPlatform/
 │
 ├── research/                    assessment evidence
 │   ├── dossier.md               evidence base for Background Research
+│   ├── interviews/              graded: transcript, capture, written F15 approval
 │   ├── sprints/sprint-<N>/      10% INDIVIDUAL, goal · board · review · retro
-│   ├── testing/                 test logs per feature (tester ≠ developer)
-│   ├── reviews/                 review notes on AI-generated code
 │   ├── cheatsheets/             one per member, VIVA quick reference
-│   └── demo/                    golden-path recordings + backup capture
+│   ├── testing/                 test logs per feature (tester ≠ developer)   ← to create
+│   ├── reviews/                 review notes on AI-generated code            ← to create
+│   ├── meeting-notes/           stand-up and review minutes                  ← to create
+│   └── demo/                    golden-path recordings + backup capture      ← to create
 │
-└── tools/                       install-skills · commit.sh · new-branch.sh · verify-docs
+└── tools/                       commit · new-branch · check-lane · check-submission
+                                 verify-docs · check-strings · todos · build-pdf
+                                 run-ios · run-device · install-skills · figma-cli
 ```
 
 ### Why two halves, and why they aren't symmetrical
@@ -142,22 +157,25 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 | Component | Weight | Status |
 |---|---|---|
 | Individual App | 10% | ✅ complete |
-| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: F01 to F15 implemented; builds and passes 723 unit tests |
-| Sprints (individual) | 10% | 🟨 in progress: continuous commit evidence on `feat/*` branches |
-| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/` |
-| Prototype (Figma) | 10% | 🟨 in progress: 98 frames built, see `deliverables/prototype/figma-link.txt` |
+| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: **F01 to F17** implemented; builds and passes **808 unit tests** |
+| Sprints (individual) | 10% | ⚠️ **at risk, but no longer for access:** all five members hold write access (verified 15 Oct 2026), so **the blocker is gone** — yet **only M1 has authored commits**. Teammate evidence cannot be created at the end; it has to exist throughout the sprint, and the commit timestamps are what a marker reads |
+| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/`; **tutor interview done and transcribed** (13 Oct). **7 of the 26 submission checks are still open, all of them human** — the written **F15 approval**, the **§17.3 usability test** (pack ready in `research/usability/`, and one test clears **two** checks), **2 market figures** (V3/V4), the **second-reader content audit**, the **PDF rebuild**, **submit + `prototype-v1` tag**, and the **Figma share permission**. Run `bash tools/check-submission.sh` for the live list |
+| Prototype (Figma) | 10% | 🟨 in progress: **119 screens built** of a **154-frame inventory**, and **interactive** (**320 prototype connections**, 110 of 119 reachable, zero dead ends); **106 low-fidelity wireframes**, **all 17 flow diagrams** and **119 dark-mode variants**. F16/F17's 13 frames (groups N and O) were drawn and wired 15 Oct 2026; their low-fidelity wireframes are still to do. See `deliverables/prototype/figma-link.txt` |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
 **Verified locally** (Xcode 27.0, iPhone 17 simulator, iOS 27.0, UDID `08D34825-D798-4328-929A-18616BEA64CB`):
 
 - `xcodebuild ... build` → `** BUILD SUCCEEDED **`
-- `xcodebuild ... test` → `Test run with 723 tests in 117 suites passed`
+- `xcodebuild ... test` → `Test run with 808 tests in 128 suites passed`
 
 - ✅ Brief decoded, rubric extracted, easy-to-miss requirements identified
 - ✅ Local toolchain verified (Xcode 27.0 · iOS 26.5 & 27.0 simulators · Swift 6.4 · Figma.app · Node 24.15)
 - ✅ Tech stack + $0 cost model researched and confirmed
 - ✅ App name, tagline, logo direction, palette proposed
-- ⬜ App identity frozen
-- ✅ Team names/IDs inserted, 4 members, group size approved by the tutor
-- ⬜ Cline agent skills installed
+- ✅ App identity frozen (StudyForge · logo · palette — carried in every document header and the Figma cover)
+- ✅ Team names/IDs inserted, 5 members, the brief's own default group size
+- ✅ Cline agent skills installed (`.agents/skills/`, `skills-lock.json`)
+- ✅ **Tutor interview conducted** — Tuesday 13 October 2026, 2:40 pm, all five members present; five questions and the supervisor's answers transcribed in [`research/interviews/`](research/interviews/README.md)
+- ⬜ **Written F15 advanced-feature approval** — a rubric requirement; being requested from the tutor by email
+- ⬜ Usability test with 5 users and a SUS score (Design Document §17.3)
