@@ -193,7 +193,7 @@ Rubric area e.
 | app5 | AI pipeline works, with graceful degradation | Generation demo + the fallback screen behaviour | M2 | ⬜ |
 | app6 | Payments work in Tap sandbox; entitlement unlocks | Recorded sandbox payment + function logs | M3 | ⬜ |
 | app7 | Feature freeze respected from 30 Nov; no new features after | Commit history | M3 | ⬜ |
-| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script | M4 | ⬜ |
+| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script · **executable run sheet with a fallback line per step**: [`research/demo/run-sheet.md`](../research/demo/run-sheet.md) | M4 | ⬜ |
 | demo2 | Backup screen recording on device **and** USB | Recording file | M4 | ⬜ |
 | demo3 | Four demo accounts + demo content seeded and frozen | Verified accounts and data | M1 | ⬜ |
 | demo4 | Environment checklist executed before the demo | [doc 11 §6](11-APP-IMPLEMENTATION-VIVA.md) ticked | M4 | ⬜ |
