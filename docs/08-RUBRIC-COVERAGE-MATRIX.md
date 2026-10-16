@@ -61,12 +61,12 @@ Rubric area c. This is where the most marks are available, so it gets the most s
 | # | Rubric bullet (verbatim) | Evidence | Owner | Status |
 |---|---|---|---|---|
 | c1 | *"Clearly show and reflect the structure and flow of each feature."* | One flow diagram + a grouped frame set per feature. [`03-SCREEN-INVENTORY.md`](03-SCREEN-INVENTORY.md) groups A–M. | all | ⬜ |
-| c2 | *"Include multiple screens if the feature requires them."* | 7–18 screens per feature group; 141 total. Every feature exceeds one screen. | all | ⬜ |
+| c2 | *"Include multiple screens if the feature requires them."* | **106 low-fidelity wireframes** across the **17** features, **3–16 per feature**, so every feature exceeds a single screen. (The hi-fi prototype is a separate count: **119** frames built of a **154**-frame inventory.) | all | ⬜ |
 | c3 | *"Contain written descriptions for each screen explaining its purpose and layout."* | The *Purpose & key labelled elements* column in [doc 03](03-SCREEN-INVENTORY.md), written to be pasted directly into the PDF. | all | ⬜ |
 | c4 | *"Identify and label all UI elements, such as buttons, inputs, and labels, and explain their function."* | Every screen's description **names** each element (in bold) **and** states what it does, e.g. *"**Generate** primary button, runs the grounded generation with the chosen settings"*. | all | ⬜ |
 | c5 | *"You may use any software or method… paper sketches scanned, Draw.io, Figma, or Canva."* | **Figma (low-fidelity mode)**, same file as the prototype, so the low-fi and hi-fi stay in sync by construction. Framed as a deliberate efficiency choice. | M2 | ⬜ |
 | c6 | *"should include all necessary screens, show clear navigation or screen flow, label UI elements clearly, and include written screen descriptions"* | Coverage audit against doc 03 · navigation map (doc 03 §5) · labelled elements · descriptions. | M4 | ⬜ |
-| c7 | *"coverage of assigned features"* | All 17 features covered; the [frame-count-by-owner table](03-SCREEN-INVENTORY.md) proves each member covered their own features. | M4 | ⬜ |
+| c7 | *"coverage of assigned features"* | All **17** features covered; the [frame-count-by-owner table](03-SCREEN-INVENTORY.md) §4 proves each member covered their own features, including **M5's groups N and O**. | M4 + **M5** | ⬜ |
 | c8 | *"clarity of screen flow"* | 15 feature flow diagrams + the global navigation map + the modal/push distinction documented. | M3 | ⬜ |
 | c9 | *"usability of layout"* | Design system ([doc 06](06-DESIGN-SYSTEM.md)) applied consistently: 4 pt grid, 16 pt margins, ≥44 pt targets, one primary action per screen. | M1 | ⬜ |
 | c10 | *"meaningful UI labelling"* | Consistent terminology ("deck", "material", "session", "Coach") across every screen, both documents and the app. | M4 | ⬜ |
@@ -78,12 +78,12 @@ backed by something a marker can open.
 | Row | Status | Evidence now in place |
 |---|---|---|
 | c1 | ✅ | 15 per-feature flow diagrams on Figma page `2 · Flow Overview`, each ending in its error/edge case, plus a grouped frame set per feature |
-| c2 | ✅ | 106 frames; every feature has 3–16 screens (`SCREEN-DESCRIPTIONS.md` §A.15) |
-| c3 | ✅ | `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.2–§A.14: purpose **and** layout for all 106 screens |
+| c2 | ✅ | **106 low-fi wireframes**; every feature has **3–16** screens (`SCREEN-DESCRIPTIONS.md` §A.15) |
+| c3 | ✅ | `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.2–§A.14: purpose **and** layout for all **106** wireframes |
 | c4 | ✅ | Numbered callout badges on every wireframe, mapped to a legend panel that gives each element's **type** and **function** |
 | c5 | ✅ | Figma page `5 · Low-Fi Wireframes`, greyscale, generated from the same geometry as the prototype |
 | c6 | ✅ | Coverage audit §A.15, navigation map + 15 flow diagrams, labelled elements, descriptions |
-| c7 | ✅ | §A.15 gives frames-per-developer: M1 36, M2 31, M3 18, M4 21 |
+| c7 | ✅ | [doc 03 §4](03-SCREEN-INVENTORY.md) gives frames per owner across **five** members: **M1 48 · M2 41 · M3 25 · M4 27 · M5 13 = 154** |
 | c8 | ✅ | 15 flow diagrams + the navigation map; modal vs pushed distinction documented in doc 03 §5 |
 | c9 | ✅ | One shared 4 pt grid, ≥44 pt targets, one primary action per screen |
 | c10 | ✅ | Terminology is consistent across mockups, prototype and app ("deck", "material", "session", "Coach") |
@@ -193,7 +193,7 @@ Rubric area e.
 | app5 | AI pipeline works, with graceful degradation | Generation demo + the fallback screen behaviour | M2 | ⬜ |
 | app6 | Payments work in Tap sandbox; entitlement unlocks | Recorded sandbox payment + function logs | M3 | ⬜ |
 | app7 | Feature freeze respected from 30 Nov; no new features after | Commit history | M3 | ⬜ |
-| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script · **executable run sheet with a fallback line per step**: [`research/demo/run-sheet.md`](../research/demo/run-sheet.md) | M4 | ⬜ |
+| demo1 | Golden path rehearsed and timed to 5 minutes | [doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) script · **executable run sheet with a fallback line per step**: [`research/demo/run-sheet.md`](../research/demo/run-sheet.md). **M5 presents 2:20–2:45 (F17)** and joins the tutor/admin step (F16) | M4 + **M5** | ⬜ |
 | demo2 | Backup screen recording on device **and** USB | Recording file | M4 | ⬜ |
 | demo3 | Four demo accounts + demo content seeded and frozen | Verified accounts and data | M1 | ⬜ |
 | demo4 | Environment checklist executed before the demo | [doc 11 §6](11-APP-IMPLEMENTATION-VIVA.md) ticked | M4 | ⬜ |
