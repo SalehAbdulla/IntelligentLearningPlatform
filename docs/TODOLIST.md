@@ -7,7 +7,7 @@
 
 Legend: `[ ]` open, `[x]` done.
 
-> **Gate:** `bash tools/check-submission.sh` turns sections 4 and 5 below into a gate. It exits non-zero while any item there is open, it re-checks the evidence behind every ticked box (an empty tick still fails), it refuses to pass if a new item has no registered check, and it runs `verify-docs.py` and `check-strings.py` as well. Current state, re-measured **17 Oct 2026**: **22 of 28 items cleared, 6 open, and all six are human-only.** (This line read *16 of 26, 10 open* until then — it had gone stale when `check-release.sh` and `check-tokens.sh` were added to the gate and moved the denominator to 28.)
+> **Gate:** `bash tools/check-submission.sh` turns sections 4 and 5 below into a gate. It exits non-zero while any item there is open, it re-checks the evidence behind every ticked box (an empty tick still fails), it refuses to pass if a new item has no registered check, and it runs `verify-docs.py` and `check-strings.py` as well. Current state, re-measured **17 Oct 2026**: **23 of 28 items cleared, 5 open, and all five are human-only** (`p9-share` was cleared the same day — see section 5). (This line read *16 of 26, 10 open* until then — it had gone stale when `check-release.sh` and `check-tokens.sh` were added to the gate and moved the denominator to 28.)
 
 ---
 
@@ -124,7 +124,7 @@ Group K (admin content management) is now feature-complete.
 - [x] P9-14 export the `.fig` into `deliverables/prototype/` — done 8 Oct 2026, 1.2 MB, verified as a real Figma export
 - [x] P9-17 assemble `deliverables/prototype/figma-link.txt` (the text document the brief requires). The `.fig` half is P9-14
 - [ ] P9-18/19 submit and `git tag prototype-v1`
-- [ ] **Human only:** Figma Share -> Anyone with the link -> Can view; File -> Save local copy into `deliverables/prototype/StudyForge.fig`
+- [x] **Human only:** Figma Share -> Anyone with the link -> Can view — **VERIFIED 17 Oct 2026**, by opening the **token-free** URL (`https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv`, no `?t=` and no `node-id`) and confirming every page loads. **The token-free URL is the test that matters:** a `?t=` token is minted per copy, so a token-bearing link can open a file whose link sharing is off, and proves nothing about a marker's access. File -> Save local copy into `deliverables/prototype/StudyForge.fig` — **done 8 Oct 2026**, 1,201,229 bytes. The **re-export** of that `.fig` is still open, because the copy on disk predates page 6 and the cover fix: see `figma-link.txt` section 9 and the P9-14 line in section 5
 - [x] **NEW** Phase 1 mockups: 106 low-fidelity wireframes with numbered callouts and per-screen legend panels on Figma page 5, plus `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`
 - [x] **NEW** 15 per-feature flow diagrams on Figma page 2, each ending in its error/edge case
 - [x] **NEW** closed two coverage holes: F09 Group Revision Spaces had **zero** screens (88–94 now built and wired) and `57_Quiz_Submit_Confirm` was missing from the quiz flow
