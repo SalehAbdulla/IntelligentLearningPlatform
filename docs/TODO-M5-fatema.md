@@ -225,18 +225,49 @@ Rules, from [doc 12](12-GIT-WORKFLOW.md):
 
 ## 4. Verification commands — run these before you say "done"
 
+**Always these, on any machine** (they are Python and bash, so they work on Windows):
+
 ```bash
 bash tools/check-lane.sh M5            # lane is disjoint
 bash tools/todos.sh M5                 # your open count has dropped
 python3 tools/verify-docs.py           # docs still consistent
-python3 tools/check-strings.py         # only if you touched a .strings file
+python3 tools/check-strings.py         # only if you touched .strings or .stringsdict
+```
 
+### If you are on a Mac
+
+```bash
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' build
 
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' test
 ```
+
+### If you are on Windows — **CI is your build machine**
+
+**Xcode is macOS-only, so `xcodebuild` cannot run on your machine at all.** Do not try to
+install it; there is no Windows version and no emulator that runs an iOS Simulator. Push your
+branch instead — CI builds and tests it on a real macOS runner, for free.
+
+```bash
+git push                         # CI starts automatically
+gh pr checks                     # THE VERDICT
+```
+
+The suite is **808 tests in 128 suites**, and your change should raise that number. If CI is red:
+
+```bash
+gh run view <run-id> --log-failed              # the failing steps
+gh run download <run-id> -n xcodebuild-log     # the raw log, when that is not enough
+```
+
+> **Never write "the build passes" unless `gh pr checks` says so.** Quote the CI result or say
+> that CI has not run yet. An AI agent will happily tell you something works because the code
+> looks right, and that is the one claim this project's evidence cannot afford.
+
+**Full guide for a Windows machine, written for your agent to read:**
+[`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md).
 
 Tests use **Swift Testing** (`@Suite` / `@Test`), never XCTest. Follow the existing suites in
 `ios/StudyForge/StudyForgeTests/`.
