@@ -114,22 +114,27 @@ jobs:
             -project ios/StudyForge/StudyForge.xcodeproj \
             -scheme StudyForge
 
-      # The runner's simulator list is not guaranteed to match a developer's Mac, so
-      # the device is discovered rather than hard-coded. `last` after sorting picks the
-      # newest iPhone on the newest runtime.
+      # The runner's simulator list is not guaranteed to match a developer's Mac, so the device
+      # is discovered rather than hard-coded. The **UDID** is used, not the name: a name like
+      # "iPhone 17" exists on several runtimes and `xcodebuild -destination` rejects the ambiguity
+      # with "Unable to find a device matching the provided destination specifier". A UDID always
+      # resolves. The name is kept only for the human-readable summary.
       - name: Choose an available iPhone simulator
         id: sim
         run: |
-          DEVICE=$(xcrun simctl list devices available -j \
+          PICKED=$(xcrun simctl list devices available -j \
             | jq -r '[.devices | to_entries[] | select(.key | test("iOS"))
-                      | .value[] | select(.name | test("^iPhone")) | .name] | last')
-          if [ -z "$DEVICE" ] || [ "$DEVICE" = "null" ]; then
+                      | .value[] | select(.name | test("^iPhone"))] | last')
+          UDID=$(printf '%s' "$PICKED" | jq -r '.udid')
+          NAME=$(printf '%s' "$PICKED" | jq -r '.name')
+          if [ -z "$UDID" ] || [ "$UDID" = "null" ]; then
             echo "::error::no iPhone simulator found on this runner"
             xcrun simctl list devices available | head -40
             exit 1
           fi
-          echo "device=$DEVICE" >> "$GITHUB_OUTPUT"
-          echo "Using simulator: $DEVICE"
+          echo "udid=$UDID"  >> "$GITHUB_OUTPUT"
+          echo "name=$NAME"  >> "$GITHUB_OUTPUT"
+          echo "Using simulator: $NAME ($UDID)"
 
       - name: Build
         run: |
@@ -147,7 +152,7 @@ jobs:
           set -o pipefail
           xcodebuild -project ios/StudyForge/StudyForge.xcodeproj \
             -scheme StudyForge \
-            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.device }}" \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
             CODE_SIGNING_ALLOWED=NO \
             test 2>&1 | tee /tmp/test.log | xcbeautify --renderer github-actions
 
@@ -161,7 +166,7 @@ jobs:
             echo "| | |"
             echo "|---|---|"
             echo "| Xcode | \`$(xcodebuild -version | head -1)\` |"
-            echo "| Simulator | \`${{ steps.sim.outputs.device }}\` |"
+            echo "| Simulator | \`${{ steps.sim.outputs.name }}\` |"
             echo "| Commit | \`${{ github.sha }}\` |"
             echo ""
             echo "### Test result"
