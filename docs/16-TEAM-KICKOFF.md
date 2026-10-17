@@ -50,6 +50,16 @@ bash tools/commit.sh --push <file> "feat(F06): capture per-course exam dates"
 gh pr create --base develop --fill                # the PR is your evidence
 ```
 
+**Then read the CI result before you move on:**
+
+```bash
+gh pr checks                                      # the build and the 808 tests, on macOS
+```
+
+**Xcode is macOS-only.** If you are on **Windows** you cannot build or test locally at all —
+**CI is your build machine**, and it is free. Do not report that something works unless
+`gh pr checks` says so. Full guide: [`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md).
+
 Then push **every day you work**. A single dump of commits on the last day reads as fabricated.
 
 ## Two rules that cost the team marks
