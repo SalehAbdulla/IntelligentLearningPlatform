@@ -55,16 +55,22 @@ struct TutorDashboardView: View {
 
     // MARK: Content
 
+    /// J02's archive swipe is **not** implemented, and the reason is a build constraint rather
+    /// than a design choice.
+    ///
+    /// Rows outside a `List` only respond to `swipeActions` when the enclosing scroll container
+    /// opts in, which is what `swipeActionsContainer()` does — an **iOS 27** API. It was used
+    /// here behind `#available(iOS 27.0, *)`, which is correct for *runtime* availability but
+    /// not for *compile* time: the symbol does not exist in the iOS 26 SDK, so building with
+    /// Xcode 26 fails outright even though the guard would never let it run.
+    ///
+    /// That made the whole project **unbuildable on the stable Xcode a marker would use**, to
+    /// gain one gesture that only a preview SDK can run. The gesture is therefore dropped rather
+    /// than the build. Restoring it does not need iOS 27 — a `List` with `.swipeActions` works
+    /// from iOS 15, and that is the change to make if the gesture is wanted back.
     @ViewBuilder
     private var content: some View {
-        if #available(iOS 27.0, *) {
-            // J02's archive swipe. Rows outside a `List` only respond to `swipeActions` when the
-            // enclosing scroll container opts in, which is what `swipeActionsContainer()` does
-            // (SDK 27). On earlier systems the gesture is simply absent.
-            courseScroll.swipeActionsContainer()
-        } else {
-            courseScroll
-        }
+        courseScroll
     }
 
     private var courseScroll: some View {

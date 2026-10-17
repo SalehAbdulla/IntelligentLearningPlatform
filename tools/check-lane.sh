@@ -121,6 +121,14 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Core/AI/AIRouter.swift"
         "ios/StudyForge/StudyForge/Core/AI/AIProvider.swift"
         "ios/StudyForge/StudyForge/Core/AI/OnDeviceProvider.swift"
+        # F15 retrieval + generation layer (docs/02 §5: M2 owns what the model is allowed to see).
+        # These were missing from every lane until 17 Oct 2026 — including LocalRetrievalService,
+        # which then broke the build on stable Xcode with nobody able to fix it legitimately.
+        "ios/StudyForge/StudyForge/Core/Coach/RetrievalService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/LocalRetrievalService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/Embedding.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/TextChunk.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/Citation.swift"
         "ios/StudyForge/StudyForge/Core/Admin/AIConfiguration.swift"
         "ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewViewModel.swift"
         "ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewView.swift"
@@ -143,6 +151,15 @@ case "$MEMBER" in
       FEATURES="F06 F07 F13 F15"
       BRANCH_RE='^feat/F(06|07|13|15)-'
       TOUCH=(
+        # F15 planner + router integration (docs/02 §5: M3 owns what the student should do next).
+        # Missing from every lane until 17 Oct 2026, same as M2's half above.
+        "ios/StudyForge/StudyForge/Core/Coach/CoachPlanningService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/CoachService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/CoachStore.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/CoachThread.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/FileCoachStore.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/InMemoryCoachStore.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/AnswerFeedback.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlanner.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlanStore.swift"
