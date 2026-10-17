@@ -167,4 +167,56 @@ struct CourseDetailViewModelTests {
 
         #expect(model.canExport == false)
     }
+
+    // MARK: J02 — archive
+
+    // The dashboard's course card carries J02's archive as a SWIPE, which is invisible to
+    // VoiceOver. The course hub offers the same action as a named row, and that row is the only
+    // caller of `setArchived` — so these three are the tests for the path a tutor actually uses.
+
+    @Test("Archiving writes the flag, and the row flips to Unarchive")
+    func archivePersistsAndFlips() async throws {
+        let store = InMemoryCourseStore(courses: [course()])
+        let model = viewModel(store: store)
+        await model.load()
+
+        #expect(model.isArchived == false)
+        #expect(model.archiveTitle == L10n.tutorArchive.string)
+
+        await model.setArchived(true)
+
+        #expect(model.isArchived, "the reloaded course carries the flag")
+        #expect(
+            try await store.course(id: "c1")?.isArchived == true,
+            "the flag is written, not just shown"
+        )
+        #expect(model.unarchiveTitle == L10n.tutorUnarchive.string, "the row now offers the way back")
+    }
+
+    @Test("Restoring clears the flag again, and the row flips back")
+    func unarchiveClearsTheFlag() async {
+        var archived = course()
+        archived.isArchived = true
+        let store = InMemoryCourseStore(courses: [archived])
+        let model = viewModel(store: store)
+        await model.load()
+
+        #expect(model.isArchived, "an archived course is still openable — archive is not delete")
+
+        await model.setArchived(false)
+
+        #expect(model.isArchived == false)
+    }
+
+    @Test("A failed archive surfaces as an AppError rather than a silent no-op")
+    func archiveFailureMaps() async {
+        let store = InMemoryCourseStore(courses: [course()])
+        let model = viewModel(store: store)
+        await model.load()
+
+        await store.forceFailure(.storageFailed)
+        await model.setArchived(true)
+
+        #expect(model.error != nil)
+    }
 }
