@@ -77,7 +77,7 @@ Full detail, including who tests what: `docs/02-FEATURE-LIST-OWNERSHIP.md`.
 
 | Tool | Version | Why |
 |---|---|---|
-| **Xcode** | 26.6 or newer (verified on **27.0**) | iOS 26+ target, Swift 6 |
+| **Xcode** | **26.6 or newer** — and the project now builds on **both** | iOS 26+ target, Swift 6 |
 | **iOS Simulator runtime** | iOS 26.5 and 27.0 | Build and test |
 | **Swift** | 6.4 | Language mode |
 | **Node.js** | 24.15 | Firebase CLI only |
