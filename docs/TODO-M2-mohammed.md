@@ -253,6 +253,8 @@ Rules that are enforced, not advisory:
 
 ## 6. Verify before claiming anything is done
 
+### If you are on a Mac
+
 ```bash
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO
@@ -261,16 +263,38 @@ xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' test
 ```
 
-The whole suite must pass — it is **723 tests today**, and my change should raise that
-number. Then:
+### If you are on Windows — **CI is your build machine**
+
+**Xcode is macOS-only, so `xcodebuild` cannot run on your machine at all.** Do not try to
+install it; there is no Windows version and no emulator that runs an iOS Simulator. Push your
+branch instead — CI builds and tests it on a real macOS runner, for free.
 
 ```bash
-bash tools/check-lane.sh M2      # lane still clean
-bash tools/todos.sh              # my open count went DOWN
-bash tools/run-ios.sh            # optional: see it running
+bash tools/check-lane.sh M2      # lane still clean. Needs WSL or Git Bash — see docs/18
+python3 tools/verify-docs.py     # docs, links and ownership integrity
+python3 tools/check-strings.py   # only if you touched .strings or .stringsdict
+bash tools/todos.sh              # my open count went DOWN, not up
+
+git push                         # CI starts automatically
+gh pr checks                     # THE VERDICT
 ```
 
-Never commit a red build. If the build or a test fails, fix it first.
+The suite is **808 tests in 128 suites**, and my change should raise that number. If CI is red:
+
+```bash
+gh run view <run-id> --log-failed              # the failing steps
+gh run download <run-id> -n xcodebuild-log     # the raw log, when that is not enough
+```
+
+> **Never write "the build passes" unless `gh pr checks` says so.** Quote the CI result or say
+> that CI has not run yet. This is the one rule that makes the evidence worth anything, and it
+> is the rule an AI agent breaks by default — it will happily tell you something works because
+> the code looks right.
+
+**Full guide for a Windows machine, written for your agent to read:**
+[`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md).
+
+Never commit a red build. If CI or a test fails, fix it first.
 
 ---
 
