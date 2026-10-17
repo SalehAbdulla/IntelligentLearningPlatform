@@ -107,11 +107,19 @@ struct EmailVerificationViewModelTests {
         await viewModel.sendVerification()
         #expect(viewModel.canResend == false)
 
-        // Real time, because the timer is the thing under test. Kept to ~2s.
-        try await Task.sleep(for: .milliseconds(2500))
+        // WAIT FOR THE CONDITION, DO NOT SLEEP A FIXED DURATION
+        // This used to be `Task.sleep(2500ms)` against a 2000ms cooldown, which left 500ms of
+        // margin and passed on a fast laptop. On a loaded CI runner the timer's final tick landed
+        // after the assertion and the test failed at "1 second remaining" — a flake, not a bug in
+        // the countdown. Polling with a generous ceiling proves the same behaviour (the countdown
+        // reaches zero and resend re-enables) without depending on how fast the machine is.
+        let deadline = Date().addingTimeInterval(20)
+        while Date() < deadline, !viewModel.canResend {
+            try await Task.sleep(for: .milliseconds(100))
+        }
 
-        #expect(viewModel.resendSecondsRemaining == 0)
-        #expect(viewModel.canResend)
+        #expect(viewModel.resendSecondsRemaining == 0, "the countdown should have reached zero")
+        #expect(viewModel.canResend, "resending should be available again")
         #expect(viewModel.resendTitle == L10n.verifyResend.string)
     }
 
