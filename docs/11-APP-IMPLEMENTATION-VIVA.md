@@ -78,7 +78,7 @@ Because a single failed demo step is disproportionately expensive, we engineer a
 | # | Control | Detail |
 |---|---|---|
 | 1 | **Feature freeze** | S5 start (**30 Nov**). After this, only bug fixes, no new features, no refactors |
-| 2 | **Daily build health check** | Every morning: `main` builds clean, tests pass, app launches. A red build is the day's top priority |
+| 2 | **Build health check** | `main` builds clean, tests pass, app launches. A red build is the day's top priority. **Automated since 17 Oct 2026:** `.github/workflows/ios.yml` builds and runs the full **808-test** suite on **every pull request and every push to `develop`**, on a macOS runner. Nobody has to remember to do it, and the result is recorded on the PR rather than in a morning ritual. **This is also the control that unblocks the four members on Windows** — Xcode is macOS-only, so CI is their only way to verify anything |
 | 3 | **Golden path test** | One scripted end-to-end run of the Tier A demo flow, executed at least **3× per week from S3**, logged with pass/fail |
 | 4 | **Recorded backup** | A full screen capture of the working golden path, re-recorded after any change to those screens. Used if live hardware or network fails |
 | 5 | **Real-device strategy** | Demoing on a **physical iPhone with Apple Intelligence enabled** (the on-device AI tier does not run in the Simulator). A second device is charged and ready |
