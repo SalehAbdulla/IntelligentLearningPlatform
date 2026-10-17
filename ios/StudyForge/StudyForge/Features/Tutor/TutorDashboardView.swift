@@ -55,40 +55,87 @@ struct TutorDashboardView: View {
 
     // MARK: Content
 
-    /// J02's archive swipe is **not** implemented, and the reason is a build constraint rather
-    /// than a design choice.
+    /// The dashboard body is a **`List`**, and that is a constraint, not a style.
     ///
-    /// Rows outside a `List` only respond to `swipeActions` when the enclosing scroll container
-    /// opts in, which is what `swipeActionsContainer()` does — an **iOS 27** API. It was used
-    /// here behind `#available(iOS 27.0, *)`, which is correct for *runtime* availability but
-    /// not for *compile* time: the symbol does not exist in the iOS 26 SDK, so building with
-    /// Xcode 26 fails outright even though the guard would never let it run.
+    /// J02 asks for an "archive swipe action" on the course cards, and SwiftUI only honours
+    /// `.swipeActions` on rows inside a `List`. The alternative is `swipeActionsContainer()` —
+    /// an **iOS 27** API — which this file used behind `#available(iOS 27.0, *)`. That guard is
+    /// right for *runtime* availability and wrong for *compile* time: the symbol does not exist
+    /// in the iOS 26 SDK, so the project stopped building on the stable Xcode a marker would
+    /// use, to gain one gesture. `60dbfe0` removed the call — but left `.swipeActions` behind,
+    /// where a `ScrollView` ignores it silently, so the archive looked implemented and did
+    /// nothing.
     ///
-    /// That made the whole project **unbuildable on the stable Xcode a marker would use**, to
-    /// gain one gesture that only a preview SDK can run. The gesture is therefore dropped rather
-    /// than the build. Restoring it does not need iOS 27 — a `List` with `.swipeActions` works
-    /// from iOS 15, and that is the change to make if the gesture is wanted back.
+    /// A `List` with `.swipeActions` has worked since **iOS 15**, so this needs no preview SDK.
+    /// The cost is that every block is now a row and has to say what the old `VStack` gave it
+    /// for free — see `dashboardRow`.
     @ViewBuilder
     private var content: some View {
-        courseScroll
+        courseList
     }
 
-    private var courseScroll: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.s6) {
-                kpiRow
+    /// The whole dashboard — the KPI grid, the review banner, the create action and the courses —
+    /// as rows of ONE `List`, so that the course rows can carry J02's swipe.
+    private var courseList: some View {
+        List {
+            dashboardRow(gapAbove: Layout.screenMargin) { kpiRow }
 
-                if let badge = viewModel.reviewBadge {
-                    reviewBanner(badge)
-                }
-
-                createLink
-                courseList
+            if let badge = viewModel.reviewBadge {
+                dashboardRow(gapAbove: Spacing.s6) { reviewBanner(badge) }
             }
-            .padding(Layout.screenMargin)
+
+            dashboardRow(gapAbove: Spacing.s6) { createLink }
+
+            dashboardRow(gapAbove: Spacing.s6) { coursesHeading }
+
+            ForEach(viewModel.courses) { course in
+                dashboardRow(gapAbove: Spacing.s3) {
+                    NavigationLink {
+                        CourseDetailView(container: container, courseId: course.id)
+                    } label: {
+                        courseCard(course)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .swipeActions(edge: .trailing) {
+                    Button {
+                        Task { await viewModel.setArchived(course, archived: !course.isArchived) }
+                    } label: {
+                        Label(
+                            viewModel.archiveActionTitle(course),
+                            systemImage: course.isArchived ? "tray.and.arrow.up" : "archivebox"
+                        )
+                    }
+                    .tint(ColorTokens.primary)
+                }
+            }
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        // The old `ScrollView` ended with `padding(Layout.screenMargin)`. A `List` does not, so
+        // without this the last card sits flush against the tab bar.
+        .contentMargins(.bottom, Layout.screenMargin, for: .scrollContent)
+    }
+
+    /// One dashboard block, as a `List` row.
+    ///
+    /// A `List` row arrives with chrome the old `ScrollView` never drew — a separator, a row
+    /// background, the list's own insets — and with no vertical rhythm between rows at all.
+    /// This puts the design back. `gapAbove` is the `VStack(spacing:)` the blocks used to sit in,
+    /// and the two frames reproduce the old centring: the content column is capped at
+    /// `Layout.maxContentWidth` and then centred inside the full width of the row.
+    private func dashboardRow<Content: View>(
+        gapAbove: CGFloat,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        content()
+            .padding(.horizontal, Layout.screenMargin)
+            .padding(.top, gapAbove)
             .frame(maxWidth: Layout.maxContentWidth, alignment: .leading)
             .frame(maxWidth: .infinity)
-        }
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
     }
 
     // MARK: KPI row (J01)
@@ -151,32 +198,12 @@ struct TutorDashboardView: View {
 
     // MARK: Course list (J02)
 
-    private var courseList: some View {
-        VStack(alignment: .leading, spacing: Spacing.s3) {
-            Text(viewModel.coursesHeading)
-                .font(.sfSubhead)
-                .foregroundStyle(ColorTokens.textSecondary)
-
-            ForEach(viewModel.courses) { course in
-                NavigationLink {
-                    CourseDetailView(container: container, courseId: course.id)
-                } label: {
-                    courseCard(course)
-                }
-                .buttonStyle(.plain)
-                .swipeActions(edge: .trailing) {
-                    Button {
-                        Task { await viewModel.setArchived(course, archived: !course.isArchived) }
-                    } label: {
-                        Label(
-                            viewModel.archiveActionTitle(course),
-                            systemImage: course.isArchived ? "tray.and.arrow.up" : "archivebox"
-                        )
-                    }
-                    .tint(ColorTokens.primary)
-                }
-            }
-        }
+    /// J02's "courses" heading. It is its own row now, so it needs no spacing of its own — the
+    /// row's `gapAbove` is what separates it from the KPI grid above and the first card below.
+    private var coursesHeading: some View {
+        Text(viewModel.coursesHeading)
+            .font(.sfSubhead)
+            .foregroundStyle(ColorTokens.textSecondary)
     }
 
     private func courseCard(_ course: Course) -> some View {
