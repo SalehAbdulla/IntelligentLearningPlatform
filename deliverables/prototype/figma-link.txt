@@ -7,13 +7,44 @@ shared URL, delivered in a text document. This is that document.
 1. Shared view link
 -------------------
 URL               : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv
-Share link saved  : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv/StudyForge?node-id=1-3&t=rqKjdg6ZET7BpeIv-1
 File name         : StudyForge
 Owner account     : 202300540@student.polytechnic.bh  (Figma Education plan)
 Link permission   : SET IN FIGMA. Confirm with Share -> "Anyone with the link" ->
                     "Can view", then open the link in a PRIVATE browser window to
                     verify every page and prototype link is visible without signing in.
 Starting frame    : 01_Splash_Logo_Saleh_202300540
+                    https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv/StudyForge?node-id=1-64
+
+Why none of these links carries a ?t= token
+-------------------------------------------
+Figma appends a `t=` share token when a link is copied from the Share dialog. It is
+scoped to the copy, not to the file: three copies of this file's link, taken on
+16 Oct and 17 Oct, carried three different tokens. A token is therefore not part of
+the file's identity, it can be revoked, and a link that works only because of one is
+not a link a marker can rely on. Every URL in this document is the plain form, which
+works for anyone as soon as link sharing is set to "Can view".
+
+That also makes these links self-checking. Open any one of them in a private browser
+window: if it loads without signing in, link sharing is on; if it asks for an account,
+it is off and item 1 of section 9 is still open.
+
+The seven pages, each directly reachable
+----------------------------------------
+  0 · Cover & Legend            ?node-id=0-1
+  1 · Design System             ?node-id=1-2
+  2 · Flow Overview             ?node-id=1-3
+  3 · Screens (all features)    ?node-id=1-4     <- the interactive prototype
+  4 · States & Prototype Wiring ?node-id=1-9
+  5 · Low-Fi Wireframes         ?node-id=54-2
+  6 · Dark Mode Variants        ?node-id=83-2
+
+CORRECTION, 17 Oct 2026. Until this revision the recorded share link was
+?node-id=1-3, described here as the starting frame. Node 1:3 is not a frame: it is
+the PAGE "2 · Flow Overview". The starting frame 01_Splash_Logo_Saleh_202300540 is
+node 1:64, and the link above now says so. Both node identities were read from the
+file through the Figma Plugin API, not inferred from the URL. The wrong claim is
+corrected in place rather than deleted, so that a reader who saw the earlier revision
+can see exactly what changed.
 
 2. The interactive file (.fig)
 ------------------------------
@@ -72,12 +103,30 @@ Page 3 - Screens (all features)    119 high-fidelity screens, every feature
                                    group A-O. This is the interactive prototype
 Page 4 - States & Prototype Wiring state/error/loading/success kits, RTL and
                                    accessibility proof
-Page 5 - Low-Fi Wireframes         EMPTY IN FIGMA, deliberately. The 106 low-fi
-                                   wireframes are delivered as exported PNGs in
+Page 5 - Low-Fi Wireframes         107 nodes: LF_00_PageHeader_StudyForge plus 106
+                                   low-fidelity wireframes, one per screen, named
+                                   LF_NN_ScreenName_FirstName_StudentID.
+                                   The same 106 frames ship as PNGs in
                                    deliverables/design-document/mockups/figures/
                                    (LF_*.png), which is what Phase 1 (Mockups) is
-                                   marked from. The page is kept so the file's page
-                                   numbering matches this document.
+                                   marked from. The Figma page and the PNG export
+                                   are the same frames, not alternatives to each
+                                   other: the page is the source, the PNGs are the
+                                   deliverable. `tools/check-submission.sh` counts
+                                   the PNGs, so this page and that check agree.
+                                   CORRECTION, 17 Oct 2026. This entry previously
+                                   read "EMPTY IN FIGMA, deliberately" and claimed
+                                   the wireframes existed only as exported PNGs.
+                                   That was wrong: the page was read through the
+                                   Figma Plugin API on 17 Oct 2026 and holds the
+                                   106 frames. Corrected in place rather than
+                                   deleted, so a reader who saw the earlier
+                                   revision can see exactly what changed.
+                                   The one real gap: groups N and O (F16/F17,
+                                   frames 142-154) have no low-fidelity wireframe
+                                   yet — the numbering stops at LF_94. That gap is
+                                   still open, and it is listed at the end of this
+                                   document.
 Page 6 - Dark Mode Variants        119 dark-mode variants, one per screen, each a
                                    clone of its light screen with the Dark mode of
                                    the Color variable collection set explicitly.
@@ -189,7 +238,12 @@ right-to-left Arabic proof is a built frame (139).
 -------------------------------------------
   [ ] Figma -> Share -> "Anyone with the link" -> "Can view", then verify in a
       private browser window that all pages and prototype links are visible
-      without signing in
+      without signing in.
+      The seven per-page links in section 1 are the test: open any one of them
+      logged out. This box stays unticked until that has actually been done,
+      because a tick here is what tells `tools/check-submission.sh` the
+      permission is set. Ticking it without opening the link is the one way this
+      document can lie about the thing a marker checks first.
   [x] Figma -> File -> Save local copy... -> deliverables/prototype/StudyForge.fig
       (done 8 Oct 2026, 1.2 MB, verified as a real Figma export)
   [x] Export the 106 wireframes and 15 flow diagrams at 2x PNG into
