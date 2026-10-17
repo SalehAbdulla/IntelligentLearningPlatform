@@ -13,6 +13,11 @@ Legend: `[ ]` open, `[x]` done.
 
 ## 0. Done recently (context, not work)
 
+- [x] **CI added, and it found three real defects on its first runs** (17 Oct 2026). `.github/workflows/ios.yml` gives every PR a **macOS build + the full 808-test suite**, which is what unblocks the **four members on Windows** — Xcode is macOS-only, so until now every Swift change they pushed was unverified. Free and unlimited, because the repository is public. Two jobs: **Repo checks** (ubuntu, ~6s — `verify-docs`, `check-strings`, `check-tokens`, `check-release`) and **iOS build and test** (`macos-26`, ~12m). **What it found, none of which was visible locally:**
+  1. **The project only compiled on Xcode 27 — a preview release.** `LocalRetrievalService.swift:67` had a chained `map → filter → sorted → prefix → map` that the type-checker cannot infer in reasonable time on **Xcode 26.x**, so the build failed outright on the stable Xcode a marker would use. Split into typed statements. **This was a must-pass (60%) risk**: the app did not build for anyone on stable.
+  2. **`TutorDashboardView.swift:64` used `swipeActionsContainer()` — an iOS 27-only API** — behind a correct `#available(iOS 27.0, *)` guard. The guard covers *runtime* but not *compile* time: the symbol does not exist in the iOS 26 SDK, so the file failed to compile regardless. Removed; the J02 archive gesture is deferred and the code says how to restore it with a `List`.
+  3. **A flaky timing test** — `EmailVerificationTests.countdownExpires` slept a fixed 2500 ms against a 2000 ms cooldown, leaving 500 ms of margin. On the runner the timer's final tick landed after the assertion and it failed at *1 second remaining*. Now polls for the condition with a 20 s ceiling.
+  **Also fixed:** `Core/Coach/` was in **no lane at all** — including the file that broke the build — so nobody could have fixed it legitimately. Assigned to M2 (retrieval + generation) and M3 (planner + router) per `docs/02 §5`. **Verified green** on PR #112: `iOS build and test pass 11m51s`, `Repo checks pass 6s`. The workflow is **active** on `develop` and runs on every future PR.
 - [x] F12 admin: K04 moderation queue, K05 decision panel, K08 audit log (PR #44)
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
@@ -141,6 +146,7 @@ Group K (admin content management) is now feature-complete.
 
 ## 7. App and VIVA readiness (docs/11)
 
+- [ ] **A pluralisation bug the CI exposed, in a string a student reads while waiting.** `"auth.verify.resendIn" = "You can resend in %d seconds"` renders as **"You can resend in 1 seconds"** at the final tick — visible in `EmailVerificationTests` output and on A06. **Fix properly with a `.stringsdict`**, not with two hand-picked strings: the app is bilingual and **Arabic has six plural forms**, so a `count == 1 ?` branch would be wrong in Arabic. `tools/check-strings.py` will need to know about the new file
 - [ ] Golden path proven on a physical device, twice, no dead ends. **The log now exists** — [`research/demo/regression-log.md`](../research/demo/regression-log.md) is the 3×/week record [doc 11 §3](../docs/11-APP-IMPLEMENTATION-VIVA.md) control 3 requires, with a step-per-column table and a **failure table that matters more than the pass table**. The run sheet's **per-step fallback lines** and the **injected-failure plan** (R19) are in the same folder
 - [ ] Loading, empty and error states visible; aeroplane-mode graceful degradation
 - [ ] Seed demo data and four verified accounts (student, tutor, group, admin)
