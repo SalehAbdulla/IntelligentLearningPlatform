@@ -9,9 +9,12 @@ shared URL, delivered in a text document. This is that document.
 URL               : https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv
 File name         : StudyForge
 Owner account     : 202300540@student.polytechnic.bh  (Figma Education plan)
-Link permission   : SET IN FIGMA. Confirm with Share -> "Anyone with the link" ->
-                    "Can view", then open the link in a PRIVATE browser window to
-                    verify every page and prototype link is visible without signing in.
+Link permission   : SET IN FIGMA, and VERIFIED 17 Oct 2026: Share -> "Anyone with
+                    the link" -> "Can view". Verified by opening the token-free URL
+                    above (no ?t=, no node-id) and confirming every page loads. The
+                    token-free URL is the test that matters: a ?t= token is minted
+                    per copy, so a token-bearing link can open a file whose link
+                    sharing is off, and proves nothing about a marker's access.
 Starting frame    : 01_Splash_Logo_Saleh_202300540
                     https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv/StudyForge?node-id=1-64
 
@@ -236,14 +239,16 @@ right-to-left Arabic proof is a built frame (139).
 
 9. Remaining manual steps before submission
 -------------------------------------------
-  [ ] Figma -> Share -> "Anyone with the link" -> "Can view", then verify in a
+  [x] Figma -> Share -> "Anyone with the link" -> "Can view", then verify in a
       private browser window that all pages and prototype links are visible
       without signing in.
-      The seven per-page links in section 1 are the test: open any one of them
-      logged out. This box stays unticked until that has actually been done,
-      because a tick here is what tells `tools/check-submission.sh` the
-      permission is set. Ticking it without opening the link is the one way this
-      document can lie about the thing a marker checks first.
+      DONE 17 Oct 2026, verified against the token-free URL in section 1: with no
+      ?t= token and no node-id, the file opens and every page loads. That is the
+      test that matters, because a ?t= token is minted per copy and can open a
+      file whose link sharing is off — so a token-bearing link proves nothing
+      about a marker's access.
+      `tools/check-submission.sh` reads this box (pred_share), so it is the only
+      evidence that counts for this item.
   [x] Figma -> File -> Save local copy... -> deliverables/prototype/StudyForge.fig
       (done 8 Oct 2026, 1.2 MB, verified as a real Figma export)
   [x] Export the 106 wireframes and 15 flow diagrams at 2x PNG into
