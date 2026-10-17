@@ -1,0 +1,201 @@
+name: iOS
+
+# ── WHY THIS EXISTS ────────────────────────────────────────────────────────────
+# Four of the five members work on **Windows**. Xcode is macOS-only, so they cannot
+# build, run or test anything locally — which means every Swift change they push is
+# unverified. This workflow IS their build machine: it runs on GitHub's macOS runners
+# and reports the result back on the pull request.
+#
+# The repository is public, so GitHub-hosted runners cost nothing and are unlimited,
+# including the macOS ones. (macOS bills at 10x the Linux rate on private repos, which
+# is the only reason this would be a problem — it is not one here.)
+#
+# ── WHY THE OUTPUT IS SHAPED THE WAY IT IS ─────────────────────────────────────
+# The thing reading this is **an AI agent**, not a person watching a progress bar. So:
+#   · every step prints a verdict that can be grepped
+#   · the job writes a summary to $GITHUB_STEP_SUMMARY that survives the log being long
+#   · failures are surfaced as GitHub annotations (xcbeautify's github-actions renderer)
+#   · the raw xcodebuild log is uploaded as an artifact, so a failure can be read in full
+#
+# The commands an agent runs to fetch the verdict are in
+# docs/18-WINDOWS-CONTRIBUTING.md. Do not change this file's output shape without
+# updating that document.
+#
+# ── WHAT IS DELIBERATELY NOT HERE ──────────────────────────────────────────────
+#   · No Firebase emulator. The test suite is hermetic — `grep -rl Firebase
+#     ios/StudyForge/StudyForgeTests/` returns nothing — so nothing needs a network.
+#   · No code signing. `CODE_SIGNING_ALLOWED=NO` builds for the Simulator, which is
+#     the point; a signed build would need certificates this project does not have.
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+
+# A new push to the same branch cancels the previous run. On a 5-person team pushing
+# daily, that is the difference between a queue and a result.
+concurrency:
+  group: ios-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Fast: everything that does not need a Mac ────────────────────────────────
+  # Runs in seconds, so a Windows member gets doc and lane feedback long before the
+  # ~10 minute macOS build finishes.
+  repo-checks:
+    name: Repo checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # check-release compares main against develop
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Documentation and ownership integrity
+        run: python3 tools/verify-docs.py
+
+      - name: English and Arabic string parity
+        run: python3 tools/check-strings.py
+
+      - name: Colour-token parity
+        run: bash tools/check-tokens.sh
+
+      - name: main has not structurally drifted from develop
+        run: |
+          git fetch origin main develop --depth=1 2>/dev/null || true
+          bash tools/check-release.sh
+
+  # ── The build machine ────────────────────────────────────────────────────────
+  ios:
+    name: iOS build and test
+    runs-on: macos-26                 # macOS 26 + Xcode 26 → the iOS 26 SDK this project needs
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select the newest installed Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
+          echo "Selecting $XCODE"
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+
+      - name: Record the toolchain
+        run: |
+          echo "xcodebuild : $(xcodebuild -version | head -1)"
+          echo "--- iOS SDKs ---"
+          xcodebuild -showsdks | grep -i 'ios' || true
+          echo "--- iOS runtimes ---"
+          xcrun simctl list runtimes | grep -i 'ios' || true
+
+      # Firebase iOS SDK pulls 13 packages including binary gRPC and abseil frameworks.
+      # Cold resolution is minutes; cached is seconds. Keyed on Package.resolved so a
+      # dependency change correctly invalidates it.
+      - name: Cache Swift Package checkouts
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+          key: spm-${{ runner.os }}-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-
+
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project ios/StudyForge/StudyForge.xcodeproj \
+            -scheme StudyForge
+
+      # The runner's simulator list is not guaranteed to match a developer's Mac, so
+      # the device is discovered rather than hard-coded. `last` after sorting picks the
+      # newest iPhone on the newest runtime.
+      - name: Choose an available iPhone simulator
+        id: sim
+        run: |
+          DEVICE=$(xcrun simctl list devices available -j \
+            | jq -r '[.devices | to_entries[] | select(.key | test("iOS"))
+                      | .value[] | select(.name | test("^iPhone")) | .name] | last')
+          if [ -z "$DEVICE" ] || [ "$DEVICE" = "null" ]; then
+            echo "::error::no iPhone simulator found on this runner"
+            xcrun simctl list devices available | head -40
+            exit 1
+          fi
+          echo "device=$DEVICE" >> "$GITHUB_OUTPUT"
+          echo "Using simulator: $DEVICE"
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild -project ios/StudyForge/StudyForge.xcodeproj \
+            -scheme StudyForge \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee /tmp/build.log | xcbeautify
+
+      - name: Test
+        id: test
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild -project ios/StudyForge/StudyForge.xcodeproj \
+            -scheme StudyForge \
+            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.device }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            test 2>&1 | tee /tmp/test.log | xcbeautify --renderer github-actions
+
+      # The agent's primary signal. Written to the job summary so it survives a long log.
+      - name: Summarise the result
+        if: always()
+        run: |
+          {
+            echo "## iOS build and test"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Xcode | \`$(xcodebuild -version | head -1)\` |"
+            echo "| Simulator | \`${{ steps.sim.outputs.device }}\` |"
+            echo "| Commit | \`${{ github.sha }}\` |"
+            echo ""
+            echo "### Test result"
+            echo ""
+            echo '```'
+            grep -E 'Test run with|Executed [0-9]+ tests?' /tmp/test.log 2>/dev/null | tail -4 \
+              || echo 'no test summary line found — the build may have failed before testing'
+            echo '```'
+            FAILURES=$(grep -cE '^✘|error:|failed' /tmp/test.log 2>/dev/null || echo 0)
+            if [ "${FAILURES:-0}" -gt 0 ]; then
+              echo ""
+              echo "### Failures (first 25 lines)"
+              echo ""
+              echo '```'
+              grep -E '^✘|error:|Failing|failed' /tmp/test.log 2>/dev/null | head -25 || true
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the raw log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: |
+            /tmp/test.log
+            /tmp/build.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+      # continue-on-error above lets the summary and artifact steps run even when tests
+      # fail. This is what actually fails the job, so the PR gets a red X.
+      - name: Fail the job if the tests failed
+        if: steps.test.outcome == 'failure'
+        run: |
+          echo "::error::the test suite failed — see the job summary and the xcodebuild-log artifact"
+          exit 1
