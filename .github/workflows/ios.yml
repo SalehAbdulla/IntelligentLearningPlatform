@@ -43,6 +43,11 @@ on:
   # rows in `gh pr checks`. That is noise, not a gate — `develop` requires a review but no
   # status checks — and it is worth it for a build on every push. `concurrency` below still
   # cancels superseded runs, so pushing five times in a row does not queue five builds.
+  #
+  # DO NOT "fix" the duplication by widening the concurrency group to cancel across the two
+  # events. It would halve the runs and it would be worse: a run that is *cancelled* reads as a
+  # failure to the AI agent reading `gh pr checks`, whereas a duplicate pass reads as what it
+  # is. Trading a harmless duplicate for an ambiguous red is the wrong way round.
   push:
     branches:
       - develop
