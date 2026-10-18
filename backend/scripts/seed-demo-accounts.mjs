@@ -34,11 +34,12 @@
 // file grants full admin access to the project.
 //
 //   export GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/key.json
-//   export SF_DEMO_PASSWORD='<a password you will type in the demo>'
 //   npm run seed:accounts
 //
-// The password comes from the environment and is never written to disk or echoed
-// after the accounts exist, so no credential lands in this public repository.
+// The demo password defaults to "changeme" and can be overridden with SF_DEMO_PASSWORD.
+// The default is published on purpose — see the note beside it — so a demo needs no
+// lookup. The SERVICE-ACCOUNT KEY is the real credential here, and it is never committed:
+// it is read from the path above, and nothing writes it anywhere.
 //
 // IDEMPOTENT: re-running updates the claims of accounts that already exist and
 // leaves their password alone, so it is safe to run again after a claim change.
@@ -126,19 +127,21 @@ function loadCredential() {
   return { credential: cert(json), projectId: json.project_id };
 }
 
-const password = process.env.SF_DEMO_PASSWORD;
-if (!password) {
-  die(
-    'SF_DEMO_PASSWORD is not set.\n' +
-    '    This is the password you will type in the demo, so choose one you can\n' +
-    '    remember. It is read from the environment rather than stored here so\n' +
-    '    that no credential is committed to a public repository.\n' +
-    '\n' +
-    "      export SF_DEMO_PASSWORD='<the demo password>'"
-  );
-}
+// The demo password. `changeme` by default, because the whole point of these accounts is
+// that a demo can be run without looking a password up.
+//
+// THE TRADE-OFF, STATED PLAINLY: this repository is public, so `changeme` is a PUBLISHED
+// credential. That is acceptable for these four accounts and nothing else — they hold no
+// real data, they use reserved `.test` addresses, and docs/09 R4 already treats the free
+// tier as burnable. It would not be acceptable for an account holding anything real, which
+// is why the script prints the warning below rather than staying quiet.
+const DEFAULT_DEMO_PASSWORD = 'changeme';
+
+const usingDefaultPassword = !process.env.SF_DEMO_PASSWORD;
+const password = process.env.SF_DEMO_PASSWORD ?? DEFAULT_DEMO_PASSWORD;
+
 if (password.length < 8) {
-  die('SF_DEMO_PASSWORD must be at least 8 characters — Firebase Auth rejects shorter ones.');
+  die('the demo password must be at least 8 characters — Firebase Auth rejects shorter ones.');
 }
 
 // ── run ───────────────────────────────────────────────────────────────────────
@@ -196,10 +199,15 @@ for (const row of results) {
   ok(`${row.label}: ${row.created ? 'created' : 'already existed, claims updated'}  (${row.why})`);
 }
 
-console.log(
-  '\nThe password is the one passed in SF_DEMO_PASSWORD. It was not written anywhere.\n' +
-  'Sign in on the device and confirm each account lands on the right home screen.\n'
-);
+if (usingDefaultPassword) {
+  console.log(
+    `  ! These accounts use the DEFAULT demo password "${DEFAULT_DEMO_PASSWORD}".\n` +
+    '    It is published in this repository on purpose, so a demo needs no lookup —\n' +
+    '    and that means anyone can sign in as them. Never put real data in these\n' +
+    '    accounts. Set SF_DEMO_PASSWORD to use a different one.\n'
+  );
+}
+console.log('Sign in on the device and confirm each account lands on the right home screen.\n');
 console.log(
   'NOTE: a claim change only reaches the app on a fresh ID token. If a role change does\n' +
   'not show up, sign out and in again.\n'
