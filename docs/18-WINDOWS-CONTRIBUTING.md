@@ -87,6 +87,20 @@ bash tools/todos.sh              # your open count should go DOWN, not up
 gh pr checks                     # the fast answer: which jobs passed or failed
 ```
 
+**CI also runs on the push itself, before any pull request exists** — on every `feat/`, `fix/`,
+`docs/`, `chore/`, `release/` and `hotfix/` branch. So **you do not have to open a PR to find out
+whether your branch builds, and you should not wait for one:**
+
+```bash
+gh run list --branch "$(git branch --show-current)" --limit 3   # is a run going?
+gh run watch                                                    # wait for the newest one
+```
+
+> **Why this matters more than it sounds.** A member pushed a branch that did not compile and
+> nothing looked at it for hours: CI only ran on pull requests, and he never opened one. Three
+> types his file referenced did not exist anywhere in the repository. **Push, then watch the
+> run** — a red result eleven minutes later is a working session; silence is a lost afternoon.
+
 The output looks like this, and **the agent should quote it verbatim**:
 
 ```
