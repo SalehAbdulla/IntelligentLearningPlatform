@@ -31,6 +31,28 @@ enum StudyIntensity: String, Sendable, CaseIterable, Codable {
 }
 
 /// What the student told the wizard. This is the reusable "recipe" a re-plan re-runs.
+/// One course's exam date, carried on the plan rather than on the profile.
+///
+/// WHY IT LIVES HERE AND NOT ON THE PROFILE
+/// ----------------------------------------
+/// docs/03 §B draws exam-date pickers on B03 (profile setup) and they were deliberately not
+/// built there: an exam date is per-course and per-term, so a date written into the profile
+/// document goes stale the moment the term ends with nothing left to clear it. That is docs/09
+/// Q11, and `Core/Profile/StudyGoals.swift` records the same reasoning. A plan is regenerated
+/// for the term the student is actually in, so it is the one document where the date stays true.
+///
+/// WHY THE SUBJECT IS THE KEY
+/// --------------------------
+/// The wizard refuses a repeated subject (`addSubject` de-duplicates on the way in), so each
+/// subject appears at most once. Its name is therefore both a unique key and exactly the join
+/// the scheduler needs when it asks "has this subject an exam?" — no id to keep in step.
+struct CourseExam: Equatable, Sendable, Codable {
+    /// The subject's name: the identical string held in `StudyPlanInput.subjects`.
+    var subject: String
+    var date: Date
+}
+
+/// What the student told the wizard. This is the reusable "recipe" a re-plan re-runs.
 struct StudyPlanInput: Equatable, Sendable, Codable {
     var subjects: [String]
     var weeklyHours: Int
@@ -38,18 +60,50 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
     /// The next exam or assignment date, when there is one. `nil` means "no deadline yet".
     var deadline: Date?
 
+    /// Per-course exam dates. Empty means "none entered" — and also, deliberately, "this plan
+    /// was written before the field existed". Those two readings have to be the same one, which
+    /// is what `init(from:)` below exists to guarantee.
+    var examDates: [CourseExam]
+
     var intensity: StudyIntensity
 
     init(
         subjects: [String],
         weeklyHours: Int,
         deadline: Date? = nil,
+        examDates: [CourseExam] = [],
         intensity: StudyIntensity
     ) {
         self.subjects = subjects
         self.weeklyHours = weeklyHours
         self.deadline = deadline
+        self.examDates = examDates
         self.intensity = intensity
+    }
+
+    /// Decoded by hand, for one reason: a plan that is already on disk must still load.
+    ///
+    /// Swift's synthesised decoder treats a non-optional `Array` as a REQUIRED key. Every
+    /// `study-plans.json` written before this feature has no `examDates` key, so a synthesised
+    /// `init(from:)` would throw `keyNotFound`, `FileStudyPlanStore.load()` would translate that
+    /// into `StudyPlanError.storageFailed`, and the student would lose the plan they already had
+    /// in order to gain a field they never asked for. `decodeIfPresent ?? []` makes a missing key
+    /// mean "none entered", which is exactly what every pre-existing plan means.
+    ///
+    /// `encode(to:)` stays synthesised from `CodingKeys`, so the key is always written from now on.
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.subjects = try container.decode([String].self, forKey: .subjects)
+        self.weeklyHours = try container.decode(Int.self, forKey: .weeklyHours)
+        self.deadline = try container.decodeIfPresent(Date.self, forKey: .deadline)
+        self.examDates = try container.decodeIfPresent([CourseExam].self, forKey: .examDates) ?? []
+        self.intensity = try container.decode(StudyIntensity.self, forKey: .intensity)
+    }
+
+    /// Declared rather than left to the compiler so the wire format is readable in one place
+    /// here; a missing property would fail the build rather than fail silently at runtime.
+    private enum CodingKeys: String, CodingKey {
+        case subjects, weeklyHours, deadline, examDates, intensity
     }
 }
 
