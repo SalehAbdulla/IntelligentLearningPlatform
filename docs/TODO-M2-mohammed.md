@@ -12,6 +12,26 @@
 
 ---
 
+## ⚡ The four things that actually go wrong — read this before anything else
+
+**Every problem a member has hit so far has been one of these four.** They take ten minutes to get
+right, and they are what the Sprints mark — **10%, assessed individually** — is read from.
+
+| # | Do this | **Not** this | What goes wrong otherwise |
+|---|---|---|---|
+| **1** | `git config --local user.email "202401702@student.polytechnic.bh"` | `<your github email>`, or a personal Gmail | **This file used to say `<your github email>`, and that was wrong.** A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody |
+| **2** | `bash tools/new-branch.sh feat/F04-hard-grade-tracking` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
+| **3** | `bash tools/commit.sh <file> "feat(F04): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
+| **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew, because the only thing that ever looked at it was a person doing it by hand |
+
+> **The one-line version:** *set your identity, branch with the tool, commit with the tool, open the
+> PR.* In that order, every time.
+
+> **And open the PR even when the work is unfinished.** A red PR is a working session. An unopened
+> one is a lost afternoon — and the four things above are all things the tooling would have caught.
+
+---
+
 ## 0.0 First, two minutes of setup
 
 ✅ **Your access is live.** Verified on 16 Oct 2026 against the API: `mohdalmadhon` holds **write**
@@ -26,10 +46,15 @@ own identity, then commit something real today.
 gh auth status                        # or: git config --global user.name / user.email
 git clone https://github.com/SalehAbdulla/IntelligentLearningPlatform.git
 cd IntelligentLearningPlatform
-git config user.name "Mohammed Almadhoon"     # your own identity, not the owner's
-git config user.email "<your github email>"
+git config --local user.name  "Mohammed Almadhoon"
+git config --local user.email "202401702@student.polytechnic.bh"
 python3 tools/verify-docs.py          # proves the clone is complete
 ```
+
+> **`--local`, and the student address — not your GitHub or personal email.** This block used to say
+> `<your github email>` and that was simply wrong: a commit under any other address does not appear
+> under your name in `git shortlog`, so the work counts for nobody. `.mailmap` canonicalises the
+> student address; it cannot rescue an address that was never yours.
 
 Your access is **write**, deliberately: a pull request is required on `main` and `develop` for
 every member, and only the repository owner is exempt from admin enforcement
