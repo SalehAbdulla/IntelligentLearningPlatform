@@ -40,11 +40,18 @@ on:
   # to prevent for the members who cannot build locally at all.
   #
   # THE COST, measured rather than assumed: a commit with both a push run and a pull-request run
-  # produces TWO workflow runs, visible in `gh run list`, so this doubles the number of macOS
-  # jobs while a branch has an open PR. It does NOT confuse the verdict — `gh pr checks
-  # --json name,event` reports ONE row per job, from the pull-request run. The minutes are free
-  # on a public repository, and `concurrency` still cancels superseded runs within a ref, so the
-  # only real cost is queue depth.
+  # produces TWO workflow runs, so this doubles the macOS jobs while a branch has an open PR —
+  # and `gh pr checks` shows each job TWICE, once per run:
+  #
+  #     $ gh pr checks 124 --json name,event
+  #       iOS build and test   IN_PROGRESS  event=push
+  #       Repo checks          SUCCESS      event=push
+  #       iOS build and test   IN_PROGRESS  event=pull_request
+  #       Repo checks          SUCCESS      event=pull_request
+  #
+  # The `event` field is what keeps that readable rather than confusing, and a red row from
+  # EITHER run means the commit is broken. The minutes are free on a public repository, and
+  # `concurrency` still cancels superseded runs within a ref, so the real cost is queue depth.
   #
   # DO NOT "fix" that by widening the concurrency group to cancel across the two events. It
   # would halve the runs and be worse: a *cancelled* run reads as a failure to the AI agent
