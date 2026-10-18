@@ -150,6 +150,11 @@ npm run seed:accounts
 - **It is idempotent.** Re-running updates the claims of accounts that already exist and leaves
   their password alone, so it is safe after a claim change. It deliberately does **not** reset
   passwords, because that would invalidate one already written on the demo run sheet.
+- **`--force-password` repairs an account that cannot sign in.** It sets the password on
+  existing accounts too. It exists because one tool in this project can leave an account in
+  exactly that state: `firebase auth:import` **without** a hash algorithm sets the custom claims
+  and **clears the password**. An account created that way has the right role and no way in, and
+  without this flag the seeder cannot fix it.
 - **A claim change needs a fresh ID token.** If you change a role and the app still shows the old
   one, sign out and in again.
 
