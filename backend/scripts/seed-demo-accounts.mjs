@@ -51,16 +51,24 @@ import { getAuth } from 'firebase-admin/auth';
 
 // ── the four accounts docs/08 demo3 asks for ───────────────────────────────────
 //
-// `groupIds` is on the STUDENT, not a separate role: `UserSession.swift` is
-// explicit that "Study Group Member" is deliberately not a role, it is a
-// capability layered on top of `student` and expressed through `groupIds` — one
-// human, one account, many contexts. `g_1042` is the group the seeded preview
-// session uses, so the demo's group space is the one this account lands in.
+// THE FOUR COVER ALL THREE SUBSCRIPTION TIERS, deliberately: free, plus and pro. The
+// paywall sells three plans and `PlanCompareView` compares all three, so an account list
+// that only ever showed free and pro would leave the middle tier undemonstrated — which is
+// exactly what the first version of this file did. `DeveloperAccountSwitcherTests` now
+// asserts the coverage so it cannot silently regress.
+//
+// `groupIds` is on the STUDENT, not a separate role: `UserSession.swift` is explicit that
+// "Study Group Member" is deliberately not a role, it is a capability layered on top of
+// `student` and expressed through `groupIds` — one human, one account, many contexts.
+// `g_1042` is the group the seeded preview session uses, so the demo's group space is the
+// one this account lands in.
 const ACCOUNTS = [
   {
     label: 'Student',
     email: 'student@studyforge.test',
     displayName: 'Sara Ali',
+    // FREE: 15 cloud AI generations/day, 20 materials, 1 group space — the tier the
+    // paywall upsells FROM, so the golden-path demo should start here.
     claims: { role: 'student', plan: 'free', groupIds: [] },
     why: 'the golden path — sign in, upload, summarise, generate cards, review',
   },
@@ -75,7 +83,10 @@ const ACCOUNTS = [
     label: 'Group member',
     email: 'group@studyforge.test',
     displayName: 'Omar Noor',
-    claims: { role: 'student', plan: 'pro', groupIds: ['g_1042'] },
+    // PLUS: 100 generations/day, 200 materials, 5 group spaces. The middle tier belongs
+    // here rather than on the student, because this is the account that owns group spaces
+    // and 5 is what PLUS buys over FREE's 1.
+    claims: { role: 'student', plan: 'plus', groupIds: ['g_1042'] },
     why: 'a student who is also in a study group — the collaboration surfaces',
   },
   {

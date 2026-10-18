@@ -48,6 +48,8 @@ enum DemoAccounts {
             email: "student@studyforge.test",
             displayName: "Sara Ali",
             role: .student,
+            // FREE — 15 cloud AI generations/day, 20 materials, 1 group space. The tier the
+            // paywall upsells FROM, so the golden-path demo starts here.
             plan: .free,
             reaches: "the golden path — upload, summarise, cards, review"
         ),
@@ -62,8 +64,12 @@ enum DemoAccounts {
             email: "group@studyforge.test",
             displayName: "Omar Noor",
             role: .student,
-            plan: .pro,
-            reaches: "a study group member — the collaboration surfaces"
+            // PLUS — the MIDDLE tier, and the reason this account exists on it: the four
+            // accounts must cover free, plus and pro, or a demo cannot show the tier the
+            // paywall actually sells most of. `groupIds` is a capability on a student, not a
+            // fourth role (`UserSession.swift`), so the tier is free to differ from the role.
+            plan: .plus,
+            reaches: "a study group member on the middle tier — the collaboration surfaces"
         ),
         DemoAccount(
             email: "admin@studyforge.test",

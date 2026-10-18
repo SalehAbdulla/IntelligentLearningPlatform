@@ -138,8 +138,23 @@ npm run seed:accounts
 |---|---|---|---|---|
 | `student@studyforge.test` | `student` | `free` | — | the golden path: upload → summary → cards → review |
 | `tutor@studyforge.test` | `tutor` | `pro` | — | the tutor studio (F11) |
-| `group@studyforge.test` | `student` | `pro` | `g_1042` | the collaboration surfaces |
+| `group@studyforge.test` | `student` | **`plus`** | `g_1042` | the collaboration surfaces, on the **middle tier** |
 | `admin@studyforge.test` | `admin` | `pro` | — | the admin area (F12) |
+
+**The four cover all three tiers, deliberately.** The paywall sells three plans and
+`PlanCompareView` compares all three, so an account list of free / pro / pro / pro would leave
+the middle tier impossible to demonstrate. The tiers differ in three ways:
+
+| | `free` | `plus` | `pro` |
+|---|---|---|---|
+| Cloud AI generations/day | 15 | 100 | unlimited |
+| Saved materials | 20 | 200 | unlimited |
+| Group spaces | 1 | 5 | unlimited |
+
+*(On-device generation is unlimited on every tier — `docs/04` §4.)* The **middle tier sits on
+the group member** rather than the student because the student is the account the paywall
+upsells *from*, and PLUS's 5 group spaces is what this account is for. A unit test asserts the
+coverage, so adding a tier to `SubscriptionPlan` fails the build until an account carries it.
 
 **Why the group member is a `student` and not a fourth role:** `UserSession.swift` is explicit that
 *Study Group Member* is deliberately **not** a role — it is a capability layered on top of

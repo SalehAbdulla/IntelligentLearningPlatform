@@ -60,6 +60,31 @@ struct DeveloperAccountSwitcherTests {
         #expect(roles["group@studyforge.test"] == .student)
     }
 
+    @Test("The four accounts cover all three subscription tiers")
+    func accountsCoverEveryTier() {
+        // THE TEST THAT WOULD HAVE CAUGHT THIS. The first version of `DemoAccounts` was
+        // free / pro / pro / pro, so the PLUS branch was unreachable in a demo — even though
+        // the paywall sells three plans and `PlanCompareView` compares all three.
+        //
+        // It asserts the COVERAGE rather than the individual values, which is what makes it
+        // impossible to reintroduce: adding a fourth tier to `SubscriptionPlan` now fails
+        // here until an account carries it, instead of silently going undemonstrated.
+        let covered = Set(DemoAccounts.all.map(\.plan))
+        let missing = Set(SubscriptionPlan.allCases).subtracting(covered)
+
+        #expect(
+            missing.isEmpty,
+            "every tier must be demonstrable; missing \(missing.map(\.rawValue).sorted())"
+        )
+    }
+
+    @Test("The golden-path account is on the FREE tier")
+    func theStudentIsFree() {
+        // The paywall upsells FROM free, so the account that demonstrates the golden path has
+        // to be on it. If this ever became a paid tier the upsell could not be shown at all.
+        #expect(DemoAccounts.account(forEmail: "student@studyforge.test")?.plan == .free)
+    }
+
     @Test("The password is the seeder's default")
     func passwordMatchesTheSeeder() {
         // The seeder sets `changeme` unless SF_DEMO_PASSWORD overrides it. Pinned here so the
