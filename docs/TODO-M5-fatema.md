@@ -28,6 +28,11 @@ right, and they are what the Sprints mark — **10%, assessed individually** —
 > **The one-line version:** *set your identity, branch with the tool, commit with the tool, open the
 > PR.* In that order, every time.
 
+> **And expect your PR to sit "blocked" until it has one approving review.** `develop` requires it
+> ([doc 12 §3.1](12-GIT-WORKFLOW.md)) and GitHub will not let you merge it yourself. **That is the
+> process working, not a rejection.** Post the link in the group chat and it gets reviewed — but plan
+> for the review to take a day, so a PR opened the night before a deadline will not be merged by it.
+
 > **You are the newest member, so this matters most for you:** your evidence cannot be created at the
 > end of the project. One real commit a week, under your own name, beats a sprint's worth in December.
 
