@@ -147,6 +147,57 @@ struct StudyPlanWizardView: View {
                 )
                 .font(.sfBody)
             }
+
+            if !viewModel.subjects.isEmpty {
+                perSubjectExamDates
+            }
+        }
+    }
+
+    // MARK: Per-course exam dates (F06)
+
+    /// One exam-date row per subject the student entered on step 1.
+    ///
+    /// The copy is entirely reused: `plan.subjectsHeading` asks "What are you studying?", and every
+    /// control is labelled with the subject itself, so this adds no localisation key. That is not
+    /// laziness — `Core/Localisation/` sits in M1's OWNED_DIRS, so editing `L10n.swift` would put
+    /// this commit outside M3's lane. If the team wants the word "exam" spelled out per row, M1
+    /// adds a key and this becomes a one-line swap.
+    ///
+    /// Each row is optional because "this course has no exam yet" is a real answer. Forcing a date
+    /// onto every subject would make the planner squeeze horizons the student never set.
+    private var perSubjectExamDates: some View {
+        VStack(alignment: .leading, spacing: Spacing.s4) {
+            Text(viewModel.subjectsHeading)
+                .font(.sfBodyEmph)
+                .foregroundStyle(ColorTokens.textSecondary)
+
+            ForEach(viewModel.subjects, id: \.self) { subject in
+                examDateRow(subject)
+            }
+        }
+    }
+
+    private func examDateRow(_ subject: String) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.s2) {
+            Toggle(subject, isOn: Binding(
+                get: { viewModel.examDates[subject] != nil },
+                set: { viewModel.setExamDate(enabled: $0, for: subject) }
+            ))
+            .font(.sfBody)
+            .tint(ColorTokens.primary)
+
+            if let date = viewModel.examDates[subject] {
+                DatePicker(
+                    subject,
+                    selection: Binding(
+                        get: { date },
+                        set: { viewModel.setExamDate($0, for: subject) }
+                    ),
+                    displayedComponents: .date
+                )
+                .font(.sfBody)
+            }
         }
     }
 
