@@ -13,6 +13,31 @@
 
 ---
 
+## ⚡ The four things that actually go wrong — read this before anything else
+
+**Every problem a member has hit so far has been one of these four.** They take ten minutes to get
+right, and they are what the Sprints mark — **10%, assessed individually** — is read from.
+
+| # | Do this | **Not** this | What goes wrong otherwise |
+|---|---|---|---|
+| **1** | `git config --local user.email "202304804@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody |
+| **2** | `bash tools/new-branch.sh feat/F17-recall-space` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
+| **3** | `bash tools/commit.sh <file> "feat(F17): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
+| **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew |
+
+> **The one-line version:** *set your identity, branch with the tool, commit with the tool, open the
+> PR.* In that order, every time.
+
+> **And expect your PR to sit "blocked" until it has one approving review.** `develop` requires it
+> ([doc 12 §3.1](12-GIT-WORKFLOW.md)) and GitHub will not let you merge it yourself. **That is the
+> process working, not a rejection.** Post the link in the group chat and it gets reviewed — but plan
+> for the review to take a day, so a PR opened the night before a deadline will not be merged by it.
+
+> **You are the newest member, so this matters most for you:** your evidence cannot be created at the
+> end of the project. One real commit a week, under your own name, beats a sprint's worth in December.
+
+---
+
 ## 0.0 First, two minutes of setup — you cannot push until this is done
 
 **Your GitHub access is already in place.** Verified against the GitHub API on **14 Oct 2026**:
