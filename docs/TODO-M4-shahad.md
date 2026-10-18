@@ -12,6 +12,23 @@
 
 ---
 
+## ⚡ The four things that actually go wrong — read this before anything else
+
+**Every problem a member has hit so far has been one of these four.** They take ten minutes to get
+right, and they are what the Sprints mark — **10%, assessed individually** — is read from.
+
+| # | Do this | **Not** this | What goes wrong otherwise |
+|---|---|---|---|
+| **1** | `git config --local user.email "202305767@student.polytechnic.bh"` | `<your github email>`, or a personal address | **This file used to say `<your github email>`, and that was wrong.** A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody |
+| **2** | `bash tools/new-branch.sh feat/F09-presence-seam` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
+| **3** | `bash tools/commit.sh <file> "feat(F09): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
+| **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew |
+
+> **The one-line version:** *set your identity, branch with the tool, commit with the tool, open the
+> PR.* In that order, every time.
+
+---
+
 ## 0.0 First, two minutes of setup
 
 ✅ **Your access is live.** Verified on 16 Oct 2026 against the API: `shaahaadhani43-debug` holds
@@ -27,8 +44,8 @@ own identity, then commit something real today.
 gh auth status                        # or: git config --global user.name / user.email
 git clone https://github.com/SalehAbdulla/IntelligentLearningPlatform.git
 cd IntelligentLearningPlatform
-git config user.name "Shahad Ashoor"           # your own identity, not the owner's
-git config user.email "<your github email>"
+git config --local user.name  "Shahad Ashoor"
+git config --local user.email "202305767@student.polytechnic.bh"
 python3 tools/verify-docs.py          # proves the clone is complete
 ```
 
