@@ -140,6 +140,13 @@ const DEFAULT_DEMO_PASSWORD = 'changeme';
 const usingDefaultPassword = !process.env.SF_DEMO_PASSWORD;
 const password = process.env.SF_DEMO_PASSWORD ?? DEFAULT_DEMO_PASSWORD;
 
+// `--force-password` sets the password on accounts that already exist, instead of leaving
+// it alone. It exists because there is one case where leaving it alone is wrong: an account
+// that exists but cannot sign in. `auth:import` with no hash algorithm sets the claims and
+// CLEARS the password, so an account created that way is unreachable — and without this flag
+// the seeder cannot repair it.
+const forcePassword = process.argv.includes('--force-password');
+
 if (password.length < 8) {
   die('the demo password must be at least 8 characters — Firebase Auth rejects shorter ones.');
 }
@@ -162,9 +169,12 @@ for (const account of ACCOUNTS) {
   }
 
   if (user) {
-    // The password is deliberately NOT reset on a re-run: rotating it would
-    // invalidate a password already written on the demo run sheet.
-    await auth.updateUser(user.uid, { displayName: account.displayName });
+    // The password is deliberately NOT reset on a re-run by default: rotating it would
+    // invalidate a password already written on the demo run sheet. `--force-password` is the
+    // opt-in for the one case where leaving it alone is wrong — see the note beside the flag.
+    const update = { displayName: account.displayName };
+    if (forcePassword) update.password = password;
+    await auth.updateUser(user.uid, update);
   } else {
     user = await auth.createUser({
       email: account.email,
