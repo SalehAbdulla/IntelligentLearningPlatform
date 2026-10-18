@@ -82,6 +82,12 @@ case "$MEMBER" in
         "deliverables/"
         "tools/"
         "research/"
+        # The backend is the owner's, and only the owner's. docs/10 §4 assigns M1 the
+        # Firebase project and the rules skeleton in S0, and the security audit plus rules
+        # re-test in S5 — so it cannot be off limits to the one person the plan gives it to.
+        # It stays FORBIDDEN for M2–M5, who never need it: their work is in `ios/`, and the
+        # emulator means they can run and test everything locally without the project.
+        "backend/"
         ".github/"
         "CONTRIBUTING.md"
         "README.md"
@@ -254,11 +260,13 @@ SHARED=(
   "ios/StudyForge/StudyForge/Resources/ar.lproj/Localizable.strings"
 )
 
-# Nobody touches these, ever. The owner's list is shorter: docs, deliverables, tools and the
-# repo-level files ARE the owner's lane (see OWNED_DIRS above), so only the project file and
-# the backend stay forbidden.
+# Nobody touches these, ever. The owner's list is shorter: docs, deliverables, tools, research,
+# backend and the repo-level files ARE the owner's lane (see OWNED_DIRS above), so only the
+# project file stays forbidden for the owner. `backend/` was forbidden to EVERYONE until
+# 18 Oct 2026, which contradicted docs/10 §4 — where M1 owns the Firebase project and the rules
+# in S0 and the security audit plus rules re-test in S5. It stays forbidden for M2–M5.
 if [[ "$OWNER_MODE" -eq 1 ]]; then
-  FORBIDDEN_RE='^(ios/StudyForge/StudyForge\.xcodeproj/|ios/StudyForge/StudyForge\.xcworkspace/|backend/)'
+  FORBIDDEN_RE='^(ios/StudyForge/StudyForge\.xcodeproj/|ios/StudyForge/StudyForge\.xcworkspace/)'
 else
   FORBIDDEN_RE='^(ios/StudyForge/StudyForge\.xcodeproj/|ios/StudyForge/StudyForge\.xcworkspace/|docs/|deliverables/|backend/|tools/|\.github/|README\.md$|\.mailmap$|\.gitignore$)'
 fi
