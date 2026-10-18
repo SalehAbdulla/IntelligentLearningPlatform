@@ -30,7 +30,6 @@ enum StudyIntensity: String, Sendable, CaseIterable, Codable {
     }
 }
 
-/// What the student told the wizard. This is the reusable "recipe" a re-plan re-runs.
 /// One course's exam date, carried on the plan rather than on the profile.
 ///
 /// WHY IT LIVES HERE AND NOT ON THE PROFILE
