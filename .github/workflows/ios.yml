@@ -30,8 +30,29 @@ name: iOS
 on:
   pull_request:
     branches: [develop, main]
+  # Feature branches too, and this is not a nicety.
+  #
+  # WHY: a member pushed a branch that did NOT COMPILE and nothing looked at it. CI only ran
+  # on pull requests, and he never opened one, so the failure was invisible — three types his
+  # file referenced did not exist anywhere in the repository, and the first anyone knew was
+  # when somebody built it by hand hours later. A red run 11 minutes after a push is a working
+  # session. Silence is a lost afternoon, and it is the failure mode the whole workflow exists
+  # to prevent for the members who cannot build locally at all.
+  #
+  # THE TRADE-OFF, stated: a commit that has both a push run and a pull-request run shows TWO
+  # rows in `gh pr checks`. That is noise, not a gate — `develop` requires a review but no
+  # status checks — and it is worth it for a build on every push. `concurrency` below still
+  # cancels superseded runs, so pushing five times in a row does not queue five builds.
   push:
-    branches: [develop, main]
+    branches:
+      - develop
+      - main
+      - 'feat/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'chore/**'
+      - 'release/**'
+      - 'hotfix/**'
   workflow_dispatch:
 
 # A new push to the same branch cancels the previous run. On a 5-person team pushing
