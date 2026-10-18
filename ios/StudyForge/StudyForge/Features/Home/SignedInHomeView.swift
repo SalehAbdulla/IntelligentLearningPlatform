@@ -85,6 +85,10 @@ struct SignedInHomeView: View {
             .background(ColorTokens.surface)
             .navigationTitle(L10n.sessionHomeTitle.string)
             .navigationBarTitleDisplayMode(.large)
+            // DEBUG only: the `key` toolbar button, so a demo can switch accounts from here
+            // rather than having to sign out first. It is the same modifier the log-in screen
+            // uses — one entry point, two places it is reachable from.
+            .developerAccountSwitcher(container)
         }
     }
 

@@ -65,8 +65,7 @@ npm run test:storage              # 18 tests (needs Firestore too — see below)
 npm run emulators                 # auth + firestore + storage, with the emulator UI
 
 # ── the four demo accounts (docs/08 demo3) ──
-# Needs a service-account key and a password. See "The demo accounts" below.
-export SF_DEMO_PASSWORD='<the password you will type in the demo>'
+# Needs a service-account key. The password defaults to "changeme". See below.
 npm run seed:accounts             # creates student / tutor / group member / admin
 
 # ── deploy (never deploy rules without the tests passing first) ──
@@ -127,7 +126,7 @@ cd backend
 #    *firebase-adminsdk*.json are gitignored, because the file grants full admin access.
 export GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/key.json
 
-# 2. The password you will type in the demo. Read from the environment, never stored.
+# 2. Optional: override the demo password. It defaults to "changeme" — see the note below.
 export SF_DEMO_PASSWORD='<the demo password>'
 
 npm run seed:accounts
@@ -154,8 +153,20 @@ npm run seed:accounts
 - **A claim change needs a fresh ID token.** If you change a role and the app still shows the old
   one, sign out and in again.
 
-The script refuses to run without a key and without a password, and it never echoes the password
-back. That is why no credential appears in this public repository.
+### The demo password is `changeme`, on purpose
+
+It is **published in this repository**, which is a deliberate trade: these accounts exist so a
+demo can be run without looking anything up, and a password nobody can find defeats that. It is
+acceptable **only** because they are throwaway accounts — reserved `.test` addresses, no real
+data, and `docs/09` R4 already treats the free tier as burnable.
+
+It would **not** be acceptable for an account holding anything real. Set `SF_DEMO_PASSWORD` to
+use a different one, and the script will say so on every run that it is using the default.
+
+The **service-account key is the real credential here**, and it is never committed — both
+`serviceAccountKey.json` and `*firebase-adminsdk*.json` are in `.gitignore`.
+
+The script refuses to run without a key, and it never echoes the password back.
 
 ---
 
