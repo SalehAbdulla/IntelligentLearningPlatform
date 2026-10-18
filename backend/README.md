@@ -64,6 +64,11 @@ npm run test:storage              # 18 tests (needs Firestore too — see below)
 # ── local development ──
 npm run emulators                 # auth + firestore + storage, with the emulator UI
 
+# ── the four demo accounts (docs/08 demo3) ──
+# Needs a service-account key and a password. See "The demo accounts" below.
+export SF_DEMO_PASSWORD='<the password you will type in the demo>'
+npm run seed:accounts             # creates student / tutor / group member / admin
+
 # ── deploy (never deploy rules without the tests passing first) ──
 npm run deploy:rules            # Firestore rules — the ones that matter
 npm run deploy:indexes
@@ -91,6 +96,66 @@ node --test rules-tests/*.test.mjs                          # 56/58 — cross-ta
 ```bash
 npm test && npm run deploy:rules
 ```
+
+---
+
+## The demo accounts
+
+`docs/08` row **demo3** asks for *"four demo accounts + demo content seeded and frozen"*, and
+`docs/01` P7-19 / P10-02 ask for the same thing. They **cannot** be created by the app:
+
+- `firestore.rules` accepts only `role == 'student'` on create and pins it with `keeps('role')`
+  on update, so a client can never promote itself;
+- the role is read off the ID token as a **custom claim** (`docs/05` §2.1), and
+  `CustomClaims.swift` resolves `AppRole(rawValue: claims["role"]) ?? .student` — so an account
+  created by hand in the Firebase console is **always a student**, and the tutor studio (F11) and
+  the admin area (F12) are unreachable;
+- `onUserCreate` in `functions/src/index.ts` would grant the default claims automatically, but the
+  functions are **not deployed** — there is no Blaze plan.
+
+So the role is granted **out of band**, which is the path `docs/09` Q13 records, made repeatable by
+`scripts/seed-demo-accounts.mjs`.
+
+### Running it
+
+```bash
+cd backend
+
+# 1. Generate a service-account key (owner only):
+#    Firebase console -> Project settings -> Service accounts -> Generate new private key
+#    Save it OUTSIDE the repo, or as backend/serviceAccountKey.json — both that name and
+#    *firebase-adminsdk*.json are gitignored, because the file grants full admin access.
+export GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/key.json
+
+# 2. The password you will type in the demo. Read from the environment, never stored.
+export SF_DEMO_PASSWORD='<the demo password>'
+
+npm run seed:accounts
+```
+
+### What it creates
+
+| Account | Role | Plan | Group ids | Reaches |
+|---|---|---|---|---|
+| `student@studyforge.test` | `student` | `free` | — | the golden path: upload → summary → cards → review |
+| `tutor@studyforge.test` | `tutor` | `pro` | — | the tutor studio (F11) |
+| `group@studyforge.test` | `student` | `pro` | `g_1042` | the collaboration surfaces |
+| `admin@studyforge.test` | `admin` | `pro` | — | the admin area (F12) |
+
+**Why the group member is a `student` and not a fourth role:** `UserSession.swift` is explicit that
+*Study Group Member* is deliberately **not** a role — it is a capability layered on top of
+`student`, expressed through `groupIds`. One human, one account, many contexts.
+
+### Two things worth knowing
+
+- **It is idempotent.** Re-running updates the claims of accounts that already exist and leaves
+  their password alone, so it is safe after a claim change. It deliberately does **not** reset
+  passwords, because that would invalidate one already written on the demo run sheet.
+- **A claim change needs a fresh ID token.** If you change a role and the app still shows the old
+  one, sign out and in again.
+
+The script refuses to run without a key and without a password, and it never echoes the password
+back. That is why no credential appears in this public repository.
 
 ---
 
