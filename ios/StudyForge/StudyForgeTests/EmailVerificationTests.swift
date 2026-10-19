@@ -100,27 +100,50 @@ struct EmailVerificationViewModelTests {
         #expect(viewModel.resendSecondsRemaining == 60, "the countdown should be untouched")
     }
 
-    @Test("The countdown actually ticks down and then re-enables resending")
+    @Test("The countdown ticks down and then re-enables resending")
     func countdownExpires() async throws {
         let viewModel = model(auth: MockAuthService(latency: .zero), cooldown: 2)
 
         await viewModel.sendVerification()
+        #expect(viewModel.resendSecondsRemaining == 2)
         #expect(viewModel.canResend == false)
+        #expect(viewModel.resendTitle == L10n.verifyResendIn.string(2))
 
-        // WAIT FOR THE CONDITION, DO NOT SLEEP A FIXED DURATION
-        // This used to be `Task.sleep(2500ms)` against a 2000ms cooldown, which left 500ms of
-        // margin and passed on a fast laptop. On a loaded CI runner the timer's final tick landed
-        // after the assertion and the test failed at "1 second remaining" — a flake, not a bug in
-        // the countdown. Polling with a generous ceiling proves the same behaviour (the countdown
-        // reaches zero and resend re-enables) without depending on how fast the machine is.
-        let deadline = Date().addingTimeInterval(20)
-        while Date() < deadline, !viewModel.canResend {
-            try await Task.sleep(for: .milliseconds(100))
-        }
+        // DRIVEN, NOT WAITED ON — and this is the third attempt at this test, deliberately.
+        //
+        //   v1  `Task.sleep(2500ms)` against a 2000ms cooldown: 500ms of margin, passed on a
+        //       laptop, failed on CI at "1 second remaining".
+        //   v2  a 20s poll for the condition: still failed on CI, with the countdown reading
+        //       **2 seconds after 66 seconds**, because the ticker's @MainActor continuation
+        //       never got a turn on a loaded runner. The same commit passed one run and failed
+        //       the next.
+        //   v3  this. `tickCountdown()` is the method the ticker itself calls, so the logic
+        //       under test is the production logic — and it no longer depends on the machine
+        //       being fast, or on the scheduler being kind, which v1 and v2 both did.
+        #expect(viewModel.tickCountdown() == false, "2 → 1 is not the end")
+        #expect(viewModel.resendSecondsRemaining == 1)
+        #expect(viewModel.canResend == false, "one second left must still block")
+        #expect(viewModel.resendTitle == L10n.verifyResendIn.string(1))
 
+        #expect(viewModel.tickCountdown() == true, "1 → 0 is the end")
         #expect(viewModel.resendSecondsRemaining == 0, "the countdown should have reached zero")
         #expect(viewModel.canResend, "resending should be available again")
         #expect(viewModel.resendTitle == L10n.verifyResend.string)
+    }
+
+    @Test("A cooldown of one second finishes on its first tick")
+    func oneSecondCooldownFinishesImmediately() async {
+        // The boundary the v1 test kept tripping over: the last second must clear on the tick
+        // that reaches it, not one tick later. An off-by-one here is invisible in a 60s
+        // cooldown and very visible in a 1s one.
+        let viewModel = model(auth: MockAuthService(latency: .zero), cooldown: 1)
+
+        await viewModel.sendVerification()
+        #expect(viewModel.resendSecondsRemaining == 1)
+
+        #expect(viewModel.tickCountdown() == true)
+        #expect(viewModel.resendSecondsRemaining == 0)
+        #expect(viewModel.canResend)
     }
 
     @Test("A rate-limit failure is surfaced and does NOT start a cooldown")
