@@ -122,6 +122,64 @@ struct StudyPlannerTests {
         #expect(near.map(\.scheduledAt) != far.map(\.scheduledAt))
     }
 
+    /// The student MOVES a date on an existing plan — the re-plan case, not just two plans that
+    /// happen to differ. Moving it earlier must pull every session behind the new date, and the
+    /// subject with no exam is placed by the ordinary week horizon, which the change does not
+    /// touch — so its sessions must be identical in both runs.
+    @Test("Moving a subject's exam earlier pulls every session behind the new date")
+    func movingAnExamEarlierRepullsItsSessions() {
+        let original = StudyPlanner.schedule(
+            input(examDates: [CourseExam(subject: "Maths", date: exam(in: 6))]),
+            now: now
+        )
+        let changed = StudyPlanner.schedule(
+            input(examDates: [CourseExam(subject: "Maths", date: exam(in: 3))]),
+            now: now
+        )
+
+        #expect(original.map(\.scheduledAt) != changed.map(\.scheduledAt), "changing the date must change the plan")
+
+        let newExamDay = Calendar.current.startOfDay(for: exam(in: 3))
+        let maths = changed.filter { $0.subject == "Maths" }
+        #expect(!maths.isEmpty, "the subject whose exam moved still gets sessions")
+        for session in maths {
+            #expect(
+                Calendar.current.startOfDay(for: session.scheduledAt) < newExamDay,
+                "\(session.scheduledAt) is on or after the moved Maths exam"
+            )
+        }
+
+        #expect(
+            original.filter { $0.subject == "Physics" }.map(\.scheduledAt)
+                == changed.filter { $0.subject == "Physics" }.map(\.scheduledAt),
+            "moving one course's exam must not disturb a course without one"
+        )
+    }
+
+    @Test("Moving a subject's exam later frees the days it used to shadow")
+    func movingAnExamLaterFreesTheOldDays() {
+        let original = StudyPlanner.schedule(
+            input(examDates: [CourseExam(subject: "Maths", date: exam(in: 2))]),
+            now: now
+        )
+        let changed = StudyPlanner.schedule(
+            input(examDates: [CourseExam(subject: "Maths", date: exam(in: 5))]),
+            now: now
+        )
+
+        // Two days before the old date, five before the new one — the plan visibly re-spreads.
+        #expect(dayCount(of: "Maths", in: original) == 2, "confined to the two days before the old exam")
+        #expect(dayCount(of: "Maths", in: changed) == 5, "five days open up under the later exam")
+
+        let newExamDay = Calendar.current.startOfDay(for: exam(in: 5))
+        for session in changed.filter({ $0.subject == "Maths" }) {
+            #expect(
+                Calendar.current.startOfDay(for: session.scheduledAt) < newExamDay,
+                "\(session.scheduledAt) is on or after the moved Maths exam"
+            )
+        }
+    }
+
     @Test("A near exam packs that subject into fewer days than a subject without one")
     func nearExamConcentratesSessions() {
         let sessions = StudyPlanner.schedule(
@@ -156,7 +214,15 @@ struct StudyPlannerTests {
         )
         let plain = StudyPlanner.schedule(input(), now: now)
 
-        #expect(distant == plain, "a month-away exam must not reshape a one-week plan")
+        // Compared by WHAT the schedule says, not by identity: `StudySession.id` is a fresh
+        // UUID on every call, so `distant == plain` could never be true no matter how correct
+        // the planner is — the same reason `isDeterministic` and `staleExamDateIsIgnored`
+        // compare these two maps rather than whole sessions.
+        #expect(
+            distant.map(\.scheduledAt) == plain.map(\.scheduledAt),
+            "a month-away exam must not reshape a one-week plan"
+        )
+        #expect(distant.map(\.subject) == plain.map(\.subject))
     }
 
     @Test("Exam dates do not make the schedule nondeterministic")
@@ -166,9 +232,12 @@ struct StudyPlannerTests {
             CourseExam(subject: "Physics", date: exam(in: 5))
         ]
 
-        #expect(
-            StudyPlanner.schedule(input(examDates: examDates), now: now)
-                == StudyPlanner.schedule(input(examDates: examDates), now: now)
-        )
+        // `StudySession.id` is a fresh UUID per call, so identity comparison would fail
+        // even when the schedule says exactly the same thing. Compare the schedule's
+        // content, exactly as `isDeterministic` does.
+        let first = StudyPlanner.schedule(input(examDates: examDates), now: now)
+        let second = StudyPlanner.schedule(input(examDates: examDates), now: now)
+        #expect(first.map(\.scheduledAt) == second.map(\.scheduledAt))
+        #expect(first.map(\.subject) == second.map(\.subject))
     }
 }
