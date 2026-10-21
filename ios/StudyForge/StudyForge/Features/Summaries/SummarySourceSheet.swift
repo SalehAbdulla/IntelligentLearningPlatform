@@ -3,15 +3,13 @@ import SwiftUI
 struct SummarySourceSheet: View {
 
     let source: SummarySource
-    let onOpen: ((SummarySource) -> Void)?
-
-    @Environment(\.dismiss) private var dismiss
+    let onOpen: () -> Void
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.s4) {
                 VStack(alignment: .leading, spacing: Spacing.s1) {
-                    Text("\(L10n.summarySource.string) · p.\(source.page)")
+                    Text(source.sheetTitle)
                         .font(.sfTitleS)
                         .foregroundStyle(ColorTokens.textPrimary)
                         .accessibilityAddTraits(.isHeader)
@@ -27,16 +25,14 @@ struct SummarySourceSheet: View {
                     .padding(Spacing.s4)
                     .frame(maxWidth: .infinity, minHeight: 110, alignment: .topLeading)
                     .summaryGlass(strong: true)
+                    .textSelection(.enabled)
 
                 Text(source.relevanceLabel)
                     .font(.sfCaption)
-                    .foregroundStyle(ColorTokens.successText)
+                    .foregroundStyle(source.relevance >= 0.5 ? ColorTokens.successText : ColorTokens.warningText)
 
-                SFPrimaryButton(title: "Open in viewer") {
-                    dismiss()
-                    onOpen?(source)
-                }
-                .padding(.top, Spacing.s3)
+                SFPrimaryButton(title: "Open in viewer", action: onOpen)
+                    .padding(.top, Spacing.s3)
             }
             .padding(.horizontal, Layout.screenMargin + Spacing.s3)
             .padding(.top, Spacing.s6)
