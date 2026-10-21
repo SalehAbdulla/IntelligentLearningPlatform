@@ -107,7 +107,7 @@ struct MaterialLibraryView: View {
             }
         }
         .sheet(item: $summaryMaterial) { material in
-            SummaryFlowView(
+            SummaryScreensView(
                 material: material,
                 router: router,
                 store: summaryStore,
