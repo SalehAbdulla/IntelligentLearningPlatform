@@ -3,9 +3,11 @@ import SwiftUI
 struct SummaryQuotaView: View {
 
     let viewModel: SummaryScreensViewModel
-    let onUpgrade: (() -> Void)?
 
-    @State private var isShowingUpgradeInfo = false
+    @Environment(AppContainer.self) private var container: AppContainer?
+
+    @State private var isShowingPaywall = false
+    @State private var isShowingUpgradeUnavailable = false
 
     var body: some View {
         ScrollView {
@@ -35,11 +37,11 @@ struct SummaryQuotaView: View {
                 .padding(.bottom, Spacing.s8)
 
                 Button {
-                    viewModel.switchToOnDevice()
+                    _ = viewModel.switchToOnDevice()
                 } label: {
                     optionLabel(
                         title: "Switch to on-device engine",
-                        subtitle: "Unlimited · private",
+                        subtitle: viewModel.onDeviceUnavailableReason?.title ?? "Unlimited · private",
                         foreground: ColorTokens.textPrimary,
                         secondary: ColorTokens.textSecondary
                     )
@@ -49,12 +51,14 @@ struct SummaryQuotaView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .disabled(!viewModel.canUseOnDevice)
+                .opacity(viewModel.canUseOnDevice ? 1 : 0.5)
 
                 Button {
-                    if let onUpgrade {
-                        onUpgrade()
+                    if container != nil {
+                        isShowingPaywall = true
                     } else {
-                        isShowingUpgradeInfo = true
+                        isShowingUpgradeUnavailable = true
                     }
                 } label: {
                     optionLabel(
@@ -75,10 +79,26 @@ struct SummaryQuotaView: View {
             .padding(.horizontal, Layout.screenMargin + Spacing.s3)
             .padding(.bottom, Spacing.s6)
         }
-        .alert("Upgrade plan", isPresented: $isShowingUpgradeInfo) {
+        .sheet(isPresented: $isShowingPaywall, onDismiss: {
+            if !viewModel.isQuotaBlocked {
+                viewModel.backToConfigure()
+            }
+        }) {
+            if let container {
+                NavigationStack {
+                    PaywallView(container: container)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button(L10n.commonCancel.string) { isShowingPaywall = false }
+                            }
+                        }
+                }
+            }
+        }
+        .alert("Upgrade plan", isPresented: $isShowingUpgradeUnavailable) {
             Button(L10n.commonDone.string, role: .cancel) {}
         } message: {
-            Text("Upgrading will be available soon.")
+            Text("Sign in to see the plans available to you.")
         }
     }
 
