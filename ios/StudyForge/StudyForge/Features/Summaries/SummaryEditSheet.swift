@@ -12,6 +12,7 @@ struct SummaryEditSheet: View {
 
     @Environment(\.dismiss) private var dismiss
 
+    @State private var title: String
     @State private var tldr: String
     @State private var points: [SummaryEditablePoint]
     @State private var isConfirmingDiscard = false
@@ -19,21 +20,33 @@ struct SummaryEditSheet: View {
     init(viewModel: SummaryScreensViewModel, summary: GeneratedSummary) {
         self.viewModel = viewModel
         self.summary = summary
+        _title = State(initialValue: summary.title)
         _tldr = State(initialValue: summary.tldr)
         _points = State(initialValue: summary.keyPoints.map { SummaryEditablePoint(text: $0) })
     }
 
     private var error: String? {
-        viewModel.editError(tldr: tldr, keyPoints: points.map(\.text))
+        viewModel.editError(title: title, tldr: tldr, keyPoints: points.map(\.text))
     }
 
     private var hasChanges: Bool {
-        tldr != summary.tldr || points.map(\.text) != summary.keyPoints
+        title != summary.title || tldr != summary.tldr || points.map(\.text) != summary.keyPoints
     }
 
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    TextField("Title", text: $title)
+                        .onChange(of: title) {
+                            if title.count > SummaryLimits.titleMaxCharacters {
+                                title = String(title.prefix(SummaryLimits.titleMaxCharacters))
+                            }
+                        }
+                } header: {
+                    Text("Title")
+                }
+
                 Section {
                     TextField("TL;DR", text: $tldr, axis: .vertical)
                         .lineLimit(3...6)
@@ -84,6 +97,12 @@ struct SummaryEditSheet: View {
                     Text("Up to \(SummaryLimits.keyPointMaxCount) points, \(SummaryLimits.keyPointMaxCharacters) characters each.")
                 }
 
+                Section {
+                    Label("AI-drafted · \(summary.source.pageLabel) provenance kept", systemImage: "sparkles")
+                        .font(.sfFootnote)
+                        .foregroundStyle(ColorTokens.textSecondary)
+                }
+
                 if let error {
                     Section {
                         Label(error, systemImage: "exclamationmark.circle.fill")
@@ -105,7 +124,7 @@ struct SummaryEditSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L10n.commonDone.string) {
-                        viewModel.applyEdits(tldr: tldr, keyPoints: points.map(\.text))
+                        viewModel.applyEdits(title: title, tldr: tldr, keyPoints: points.map(\.text))
                         dismiss()
                     }
                     .disabled(error != nil || !hasChanges)
