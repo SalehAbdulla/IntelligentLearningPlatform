@@ -11,6 +11,10 @@ enum SummaryEngine: Equatable {
     case onDevice
     case cloud
 
+    init(tier: AITier) {
+        self = tier == .onDevice ? .onDevice : .cloud
+    }
+
     var badgeTitle: String {
         switch self {
         case .onDevice: L10n.summaryEngineOnDevice.string
@@ -27,11 +31,13 @@ enum SummaryEngine: Equatable {
 }
 
 enum SummaryLimits {
+    static let minimumSourceCharacters = 200
     static let focusMaxCharacters = 120
     static let focusMaxTopics = 5
     static let focusMaxTopicCharacters = 40
+    static let titleMaxCharacters = 80
     static let tldrMaxCharacters = 300
-    static let keyPointMaxCharacters = 120
+    static let keyPointMaxCharacters = 160
     static let keyPointMaxCount = 8
 }
 
@@ -50,12 +56,15 @@ struct SummaryGlossaryItem: Identifiable, Equatable {
 }
 
 struct SummarySource: Equatable {
-    let page: Int
+    let page: Int?
     let fileName: String
-    let quote: String
+    let excerpt: String
     let relevance: Double
 
-    var chipTitle: String { "p.\(page) cite" }
+    var quote: String { "\"…\(excerpt)…\"" }
+    var pageLabel: String { page.map { "p.\($0)" } ?? L10n.summarySource.string }
+    var chipTitle: String { page.map { "p.\($0) cite" } ?? L10n.summarySource.string }
+    var sheetTitle: String { page.map { "\(L10n.summarySource.string) · p.\($0)" } ?? L10n.summarySource.string }
     var relevanceLabel: String { "Relevance \(String(format: "%.2f", relevance))" }
 }
 
@@ -64,18 +73,39 @@ struct GeneratedSummary: Equatable {
     var tldr: String
     var keyPoints: [String]
     var glossary: [SummaryGlossaryItem]
-    var source: SummarySource
-    var style: SummaryStyle
+    let source: SummarySource
+    let style: SummaryStyle
+    let length: SummaryLength
+    let language: OutputLanguage
+    let provenance: AIProvenance
+    let tier: AITier
+
+    var engine: SummaryEngine { SummaryEngine(tier: tier) }
 
     var shareText: String {
-        var lines = [title, "", "TL;DR", tldr, "", "Key points"]
+        var lines = [title, "", "TL;DR", tldr, "", L10n.summaryKeyPointsHeading.string]
         lines += keyPoints.map { "• \($0)" }
         if !glossary.isEmpty {
-            lines += ["", "Glossary"]
+            lines += ["", L10n.summaryGlossaryHeading.string]
             lines += glossary.map { "\($0.term): \($0.definition)" }
         }
-        lines += ["", "Source: \(source.fileName), p.\(source.page)"]
+        lines += ["", "\(L10n.summarySource.string): \(source.fileName), \(source.pageLabel)"]
         return lines.joined(separator: "\n")
+    }
+
+    func stored(id: String) -> Summary {
+        Summary(
+            id: id,
+            title: title,
+            length: length,
+            style: style,
+            language: language,
+            tldr: tldr,
+            keyPoints: keyPoints,
+            glossary: glossary.map { SummaryTerm(term: $0.term, definition: $0.definition) },
+            provenance: provenance,
+            tier: tier
+        )
     }
 }
 
@@ -85,14 +115,6 @@ extension SummaryLength {
         case .short: L10n.summaryLengthShort.string
         case .standard: L10n.summaryLengthStandard.string
         case .examReady: L10n.summaryLengthExamReady.string
-        }
-    }
-
-    var keyPointCount: Int {
-        switch self {
-        case .short: 2
-        case .standard: 4
-        case .examReady: 6
         }
     }
 }
@@ -113,53 +135,5 @@ extension OutputLanguage {
         case .english: L10n.summaryLanguageEnglish.string
         case .arabic: L10n.summaryLanguageArabic.string
         }
-    }
-}
-
-enum SummaryMock {
-    static func make(
-        material: Material,
-        fileName: String,
-        length: SummaryLength,
-        style: SummaryStyle,
-        focusTopics: [String]
-    ) -> GeneratedSummary {
-        let sentences = material.text
-            .split(whereSeparator: { ".!?؟\n".contains($0) })
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-
-        let tldr = sentences.first.map { $0 + "." } ?? material.title
-        var points = Array(sentences.dropFirst().prefix(length.keyPointCount))
-        if points.isEmpty {
-            points = [tldr]
-        }
-        for topic in focusTopics where points.count < SummaryLimits.keyPointMaxCount {
-            points.append("Focus: \(topic)")
-        }
-
-        let glossary = material.tags.prefix(3).enumerated().map { index, tag in
-            SummaryGlossaryItem(
-                term: tag.capitalized,
-                definition: "A key term covered in \(material.title).",
-                confidence: max(0.92 - Double(index) * 0.2, 0.3)
-            )
-        }
-
-        let quoteSource = sentences.last ?? String(material.text.prefix(120))
-
-        return GeneratedSummary(
-            title: "\(material.title) — Summary",
-            tldr: tldr,
-            keyPoints: points,
-            glossary: glossary,
-            source: SummarySource(
-                page: max((material.pageCount ?? 1) / 2, 1),
-                fileName: fileName,
-                quote: "\"…\(quoteSource)…\"",
-                relevance: 0.92
-            ),
-            style: style
-        )
     }
 }
