@@ -7,28 +7,23 @@ struct SummaryScreensView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let onMakeCards: ((GeneratedSummary) -> Void)?
-    private let onUpgrade: (() -> Void)?
-    private let onOpenSource: ((SummarySource) -> Void)?
+    private let router: AIRouter
+    private let learningStyle: LearningStyle
 
     init(
         material: Material,
-        engine: SummaryEngine = .cloud,
-        usedToday: Int = 0,
-        dailyLimit: Int = 3,
-        onMakeCards: ((GeneratedSummary) -> Void)? = nil,
-        onUpgrade: (() -> Void)? = nil,
-        onOpenSource: ((SummarySource) -> Void)? = nil
+        router: AIRouter,
+        store: any SummaryStore,
+        learningStyle: LearningStyle = .visual
     ) {
         _viewModel = State(initialValue: SummaryScreensViewModel(
             material: material,
-            engine: engine,
-            usedToday: usedToday,
-            dailyLimit: dailyLimit
+            router: router,
+            store: store,
+            learningStyle: learningStyle
         ))
-        self.onMakeCards = onMakeCards
-        self.onUpgrade = onUpgrade
-        self.onOpenSource = onOpenSource
+        self.router = router
+        self.learningStyle = learningStyle
     }
 
     var body: some View {
@@ -46,14 +41,14 @@ struct SummaryScreensView: View {
                         SummaryResultView(
                             viewModel: viewModel,
                             summary: summary,
-                            onMakeCards: onMakeCards,
-                            onOpenSource: onOpenSource
+                            router: router,
+                            learningStyle: learningStyle
                         )
                     } else {
                         Color.clear.onAppear { viewModel.backToConfigure() }
                     }
                 case .quotaExceeded:
-                    SummaryQuotaView(viewModel: viewModel, onUpgrade: onUpgrade)
+                    SummaryQuotaView(viewModel: viewModel)
                 }
             }
             .frame(maxWidth: Layout.maxContentWidth)
@@ -61,13 +56,36 @@ struct SummaryScreensView: View {
         }
         .animation(Motion.respecting(Motion.standard, reduceMotion: reduceMotion), value: viewModel.step)
         .interactiveDismissDisabled(viewModel.step == .generating || (viewModel.step == .result && !viewModel.isSaved))
+        .onDisappear { viewModel.cancelGeneration() }
     }
 }
 
 #Preview("F03 Summary") {
-    SummaryScreensView(material: Material.samples[0])
+    SummaryScreensView(
+        material: Material(
+            title: "Lecture 4 — Trees",
+            source: .pdf,
+            text: PageMarker.forPage(12) + "A tree is a hierarchy with one root. Each node holds children, enabling fast search. A binary tree has at most two children per node, enabling logarithmic search in balanced cases. Traversal can be in-order, pre-order or post-order. A leaf is a node with no children. Height and depth measure distance from the leaves and from the root.",
+            pageCount: 20,
+            tags: ["trees", "binary tree"]
+        ),
+        router: AIRouter(
+            providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .seconds(2))],
+            governor: AICostGovernor()
+        ),
+        store: InMemorySummaryStore()
+    )
 }
 
 #Preview("F03 Quota") {
-    SummaryScreensView(material: Material.samples[0], usedToday: 3)
+    let governor = AICostGovernor()
+    governor.seed(usedToday: governor.limit)
+    return SummaryScreensView(
+        material: Material.samples[0],
+        router: AIRouter(
+            providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .zero)],
+            governor: governor
+        ),
+        store: InMemorySummaryStore()
+    )
 }
