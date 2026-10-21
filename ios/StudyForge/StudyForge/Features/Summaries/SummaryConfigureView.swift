@@ -22,6 +22,7 @@ struct SummaryConfigureView: View {
                     Text("Summarise")
                         .font(.sfTitleL)
                         .foregroundStyle(ColorTokens.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
                     Text(viewModel.fileName)
                         .font(.sfFootnote)
                         .foregroundStyle(ColorTokens.textSecondary)
@@ -60,24 +61,56 @@ struct SummaryConfigureView: View {
                         .summaryGlass()
                 }
 
+                if let error = viewModel.error {
+                    SFErrorBanner(
+                        error: error,
+                        onRecover: recoverAction(for: error),
+                        recoverTitle: recoverTitle(for: error)
+                    )
+                }
+
                 VStack(spacing: Spacing.s2) {
                     SFPrimaryButton(title: L10n.summaryGenerate.string, isEnabled: viewModel.canGenerate) {
                         isFocusFieldActive = false
-                        viewModel.generate()
+                        _ = viewModel.generate()
                     }
 
-                    if viewModel.engine == .cloud {
+                    if viewModel.showsCloudAllowance {
                         Text("\(viewModel.remainingToday) of \(viewModel.dailyLimit) free generations left today")
+                            .font(.sfFootnote)
+                            .foregroundStyle(ColorTokens.textSecondary)
+                            .monospacedDigit()
+                    } else {
+                        Label(viewModel.predictedEngine.badgeTitle, systemImage: viewModel.predictedEngine.symbolName)
                             .font(.sfFootnote)
                             .foregroundStyle(ColorTokens.textSecondary)
                     }
                 }
+                .frame(maxWidth: .infinity)
                 .padding(.top, Spacing.s12 - Spacing.s6)
             }
             .padding(.horizontal, Layout.screenMargin + Spacing.s3)
             .padding(.bottom, Spacing.s6)
         }
         .scrollDismissesKeyboard(.interactively)
+    }
+
+    private func recoverAction(for error: AppError) -> (() -> Void)? {
+        switch error {
+        case .materialUnreadable, .notPermitted, .onDeviceAIUnavailable:
+            return { viewModel.dismissError() }
+        default:
+            return { _ = viewModel.generate() }
+        }
+    }
+
+    private func recoverTitle(for error: AppError) -> String? {
+        switch error {
+        case .materialUnreadable, .notPermitted, .onDeviceAIUnavailable:
+            return L10n.commonDone.string
+        default:
+            return nil
+        }
     }
 
     private var focusField: some View {
