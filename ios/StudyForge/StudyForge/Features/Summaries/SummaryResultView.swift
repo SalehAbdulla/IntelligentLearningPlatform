@@ -4,13 +4,18 @@ struct SummaryResultView: View {
 
     let viewModel: SummaryScreensViewModel
     let summary: GeneratedSummary
-    let onMakeCards: ((GeneratedSummary) -> Void)?
-    let onOpenSource: ((SummarySource) -> Void)?
+    let router: AIRouter
+    let learningStyle: LearningStyle
+
+    @Environment(AppContainer.self) private var container: AppContainer?
 
     @State private var isShowingSource = false
+    @State private var opensViewerAfterSource = false
+    @State private var isShowingViewer = false
     @State private var isEditing = false
     @State private var isConfirmingDiscard = false
-    @State private var isShowingCardsInfo = false
+    @State private var isMakingCards = false
+    @State private var isShowingCardsUnavailable = false
 
     var body: some View {
         ScrollView {
@@ -33,21 +38,22 @@ struct SummaryResultView: View {
                         .font(.sfTitleM)
                         .foregroundStyle(ColorTokens.textPrimary)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityAddTraits(.isHeader)
 
                     Button {
                         isShowingSource = true
                     } label: {
                         Text(summary.source.chipTitle)
                             .font(.sfCaption.weight(.semibold))
-                            .foregroundStyle(ColorTokens.onAccent)
+                            .foregroundStyle(ColorTokens.onError)
                             .padding(.horizontal, Spacing.s3)
-                            .frame(minHeight: 26)
+                            .frame(minWidth: 100, minHeight: 26)
                             .background(ColorTokens.success, in: .capsule)
                             .frame(minHeight: Layout.minTouchTarget, alignment: .top)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("\(L10n.summarySource.string), page \(summary.source.page)")
+                    .accessibilityLabel("\(L10n.summarySource.string), \(summary.source.pageLabel)")
                 }
 
                 tldrCard
@@ -62,6 +68,10 @@ struct SummaryResultView: View {
                     }
                 }
 
+                if let error = viewModel.error {
+                    SFErrorBanner(error: error, onRecover: { Task { await viewModel.save() } })
+                }
+
                 actions
                     .padding(.top, Spacing.s2)
 
@@ -70,17 +80,43 @@ struct SummaryResultView: View {
                         .font(.sfFootnote.weight(.semibold))
                         .foregroundStyle(ColorTokens.successText)
                         .transition(.opacity)
+                } else if viewModel.hasUnsavedChanges {
+                    Label("Edited — save to keep your changes.", systemImage: "pencil.circle.fill")
+                        .font(.sfFootnote.weight(.semibold))
+                        .foregroundStyle(ColorTokens.warningText)
                 }
             }
             .padding(.horizontal, Layout.screenMargin + Spacing.s3)
             .padding(.bottom, Spacing.s6)
         }
         .sensoryFeedback(.success, trigger: viewModel.isSaved) { _, saved in saved }
-        .sheet(isPresented: $isShowingSource) {
-            SummarySourceSheet(source: summary.source, onOpen: onOpenSource)
+        .sheet(isPresented: $isShowingSource, onDismiss: {
+            if opensViewerAfterSource {
+                opensViewerAfterSource = false
+                isShowingViewer = true
+            }
+        }) {
+            SummarySourceSheet(source: summary.source) {
+                opensViewerAfterSource = true
+                isShowingSource = false
+            }
+        }
+        .sheet(isPresented: $isShowingViewer) {
+            SummaryMaterialViewer(material: viewModel.material, source: summary.source)
         }
         .sheet(isPresented: $isEditing) {
             SummaryEditSheet(viewModel: viewModel, summary: summary)
+        }
+        .sheet(isPresented: $isMakingCards) {
+            if let container {
+                FlashcardGenerateView(
+                    initialMaterial: viewModel.material,
+                    materialStore: container.materials,
+                    deckStore: container.decks,
+                    router: router,
+                    learningStyle: learningStyle
+                )
+            }
         }
         .confirmationDialog("Discard this summary?", isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
             Button("Discard", role: .destructive) {
@@ -90,10 +126,10 @@ struct SummaryResultView: View {
         } message: {
             Text("It hasn't been saved yet.")
         }
-        .alert("Flashcards", isPresented: $isShowingCardsInfo) {
+        .alert("Flashcards", isPresented: $isShowingCardsUnavailable) {
             Button(L10n.commonDone.string, role: .cancel) {}
         } message: {
-            Text("Making cards from a summary will be available soon.")
+            Text("Sign in to turn this material into a flashcard deck.")
         }
     }
 
@@ -191,28 +227,36 @@ struct SummaryResultView: View {
         HStack(spacing: Spacing.s2) {
             Button("Edit") { isEditing = true }
                 .buttonStyle(SummaryActionButtonStyle())
+                .disabled(viewModel.isSaving)
 
             Button {
-                viewModel.save()
+                Task { await viewModel.save() }
             } label: {
-                Text(viewModel.isSaved ? "Saved" : "Save")
+                if viewModel.isSaving {
+                    ProgressView()
+                        .tint(ColorTokens.primary)
+                } else {
+                    Text(viewModel.isSaved ? "Saved" : "Save")
+                }
             }
             .buttonStyle(SummaryActionButtonStyle())
-            .disabled(viewModel.isSaved)
+            .disabled(viewModel.isSaved || viewModel.isSaving)
+            .accessibilityLabel(viewModel.isSaving ? L10n.summarySaving.string : (viewModel.isSaved ? "Saved" : "Save"))
 
-            ShareLink(item: summary.shareText) {
+            ShareLink(item: summary.shareText, subject: Text(summary.title)) {
                 Text("Share")
             }
             .buttonStyle(SummaryActionButtonStyle())
 
             Button("Cards") {
-                if let onMakeCards {
-                    onMakeCards(summary)
+                if container != nil {
+                    isMakingCards = true
                 } else {
-                    isShowingCardsInfo = true
+                    isShowingCardsUnavailable = true
                 }
             }
             .buttonStyle(SummaryActionButtonStyle(isPrimary: true))
+            .accessibilityLabel(L10n.libraryMakeCards.string)
         }
     }
 
