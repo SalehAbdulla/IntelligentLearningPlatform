@@ -1,0 +1,48 @@
+# ===========================================================================
+#  commit-hygiene-allowlist.txt — commits exempt from tools/check-commits.sh
+# ===========================================================================
+#
+# WHY THIS FILE EXISTS
+#   `tools/check-commits.sh` refuses a branch whose commits are not attributable or are not
+#   Conventional Commits. Five commits on `feat/F03-AI-SUMMARY` predate that check and cannot be
+#   made to pass on their own: their subjects are not Conventional Commits, and a subject that
+#   has been pushed cannot be reworded without a force-push, which docs/12 §5 forbids.
+#
+#   They are named HERE, individually, rather than excused by a rule such as "only check commits
+#   after <date>". A date rule would quietly exempt everything older forever; this list says
+#   exactly which commits are exempt and why, and it cannot grow by accident. An entry here is a
+#   recorded exception, not a silent one — the same principle as a lane exception recorded in
+#   docs/TODOLIST.md.
+#
+# WHAT THIS FILE DOES *NOT* DO
+#   · It exempts the MESSAGE check only.
+#   · It does not touch the identity check, which these commits already satisfy through
+#     `.mailmap`: `git check-mailmap 'malmadhoo <mohammedalmadhoon000@gmail.com>'` resolves to
+#     `Mohammed Almadhoon <202401702@student.polytechnic.bh>`, so `git shortlog` counts them.
+#   · It does not touch the lane check, which is judged on the branch diff rather than per
+#     commit.
+#
+# THE OTHER WAY OUT, WHICH IS THE OWNER'S DECISION AND NOT THIS FILE'S
+#   Rewriting `feat/F03-AI-SUMMARY` — so the five subjects are Conventional Commits and the
+#   author address is the student one — would remove the need for these entries entirely, and
+#   is the only way to make the MERGED history clean. It is a force-push, so it is the owner's
+#   call, it must be recorded in docs/TODOLIST.md, and it should be done before the branch is
+#   merged, if it is done at all. Until then these five commits are exempt and visible.
+#
+# REMOVING AN ENTRY
+#   Entries become moot once the branch is merged — the check is applied to the commits a branch
+#   brings, not to history already on develop. Delete them then, in their own commit, with the
+#   reason in the message.
+#
+# FORMAT
+#   <12-character sha>  <who>  <branch>  <why>
+#
+# ---------------------------------------------------------------------------
+#  Added 22 Oct 2026, while auditing the four member lanes. Measured, not inferred:
+#  `git log --format='%h %s' origin/feat/F03-AI-SUMMARY` shows all five.
+# ---------------------------------------------------------------------------
+8cd3a1011db3  M2  feat/F03-AI-SUMMARY  subject "source sheet" — not a Conventional Commit
+28a2f21a6ae1  M2  feat/F03-AI-SUMMARY  subject "quate view" (typo included) — not a Conventional Commit
+57e10d2551d6  M2  feat/F03-AI-SUMMARY  subject "edit sheet" — not a Conventional Commit
+ab3443dbba7e  M2  feat/F03-AI-SUMMARY  subject "view" — not a Conventional Commit
+4b5bd6dd161e  M2  feat/F03-AI-SUMMARY  subject "configure view" — not a Conventional Commit
