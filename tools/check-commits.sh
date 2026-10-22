@@ -183,6 +183,22 @@ if [[ -z "$TOTAL" || "$TOTAL" -eq 0 ]]; then
   exit 0
 fi
 
+# FAIL CLOSED ON AN IMPLAUSIBLE RANGE. This is not defensive decoration: on its first CI run this
+# check was handed `origin/develop..HEAD` in a checkout where that ref did not resolve to
+# develop's tip, so it judged **1345 commits** — the repository's whole history — and failed the
+# branch on eight non-Conventional subjects from the project's first week. A gate that fails for
+# the wrong reason teaches people to ignore it, which is worse than no gate. A feature branch on
+# this project brings tens of commits; hundreds means the base is wrong.
+RANGE_LIMIT=200
+if [[ "$TOTAL" -gt "$RANGE_LIMIT" ]]; then
+  red "REFUSING: '$RANGE' contains $TOTAL non-merge commits, which is a history, not a branch."
+  printf '  A feature branch here brings tens of commits. This almost always means the base ref is\n'
+  printf '  not what it should be — check it with:\n'
+  printf '    git rev-parse --short <base>\n'
+  printf '  then pass an explicit range:  --range <base-sha>..HEAD\n'
+  exit 2
+fi
+
 allowlisted() {   # allowlisted <sha> — matched on the first 12 characters
   [[ -n "$ALLOWLIST" && -f "$ALLOWLIST" ]] || return 1
   grep -v '^[[:space:]]*#' "$ALLOWLIST" 2>/dev/null | awk '{print $1}' | grep -q "^${1:0:12}"
