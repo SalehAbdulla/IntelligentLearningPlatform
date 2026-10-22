@@ -128,22 +128,27 @@ jobs:
           HEAD_REF: ${{ github.head_ref }}
           REF_NAME: ${{ github.ref_name }}
           BASE_REF: ${{ github.base_ref }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           # `set -e` matters here: without it a failed fetch is invisible, the base ref stays
           # whatever the checkout happened to leave behind, and the range silently becomes the
-          # repository's whole history. That is exactly what happened on this check's first run —
-          # it judged 1345 commits and failed the branch on subjects from the project's first
-          # week. tools/check-commits.sh now refuses an implausible range as well, so this cannot
-          # fail quietly again, but the fetch is the real fix.
+          # repository's whole history. That is what happened on this check's first run — it
+          # judged 1345 commits and failed the branch on subjects from the project's first week.
+          # tools/check-commits.sh now refuses an implausible range as well, so it cannot fail
+          # quietly again, but the fetch and the explicit refspec are the real fix.
+          #
+          # WHY NOT `github.event.pull_request.base.sha`: it is the base as it was when the pull
+          # request was OPENED, so a range from it sweeps in everything develop gained since —
+          # including pull-request merge commits, which are authored by GitHub and are nobody's
+          # work. Measured, on this check's second run: it judged 14 commits and failed on
+          # `196bf0b`, the merge commit of PR #130. The freshly fetched base tip excludes exactly
+          # that, in both directions: it is correct when the merge ref is stale, and correct when
+          # develop has moved on.
           set -euo pipefail
           BASE="${BASE_REF:-develop}"
           git fetch --no-tags origin "refs/heads/$BASE:refs/remotes/origin/$BASE"
           echo "origin/$BASE resolves to $(git rev-parse --short "origin/$BASE")"
-          if [ -n "$BASE_SHA" ]; then
-            # The PR's own base commit. It needs no fetch to be correct, and it is what the pull
-            # request was actually built against.
-            RANGE="${BASE_SHA}..HEAD"
+          if [ -n "$BASE_REF" ]; then
+            RANGE="origin/$BASE..HEAD"
             BRANCH="$HEAD_REF"
           else
             RANGE="$(git merge-base "origin/$BASE" HEAD)..HEAD"
