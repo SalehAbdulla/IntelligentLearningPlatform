@@ -11,7 +11,7 @@ struct SummaryGeneratingView: View {
         VStack(alignment: .leading, spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.s4) {
-                    Text("Generating summary")
+                    Text(SummaryCopy.generatingHeading)
                         .font(.sfTitleM)
                         .foregroundStyle(ColorTokens.textPrimary)
                         .padding(.top, Spacing.s12)
@@ -48,7 +48,7 @@ struct SummaryGeneratingView: View {
             }
             .scrollDisabled(true)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Generating summary. \(viewModel.engine.badgeTitle)")
+            .accessibilityLabel(SummaryCopy.generatingAccessibility(engine: viewModel.engine.badgeTitle))
             .accessibilityAddTraits(.updatesFrequently)
 
             Button(L10n.commonCancel.string) {
