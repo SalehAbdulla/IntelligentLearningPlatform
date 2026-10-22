@@ -219,12 +219,15 @@ The rotation matrix is `docs/02-FEATURE-LIST-OWNERSHIP.md` §7.
 
 ### 3.2 Your file lane — this is what prevents merge conflicts
 
-Four members may be running AI agents at the same time. To make that safe, **every file
-belongs to exactly one lane**, and the lanes are verified disjoint: **69 files
-across the four member modify-lanes, zero claimed by two members.** (This line read *49 files*
-until 22 Oct 2026, when the counts were re-measured against `tools/check-lane.sh` rather than
-recounted by hand: **M2 25 · M3 24 · M4 18 · M5 2**. The older figure had been stale since the
-Coach files were given lanes on 17 Oct. See [doc 14 §1](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md).)
+Four members may be running AI agents at the same time. To make that safe, **every tracked app
+file belongs to exactly one lane** — verified against the tree rather than asserted: **392 app
+files, 190 of them in the four member modify-lanes (M2 71 · M3 51 · M4 63 · M5 5), zero claimed by
+two members, zero in no lane at all.** (This line read *49 files*, then *69*; both were counted by
+hand. On 22 Oct 2026 it was measured, and the measurement found **167 app files in no lane at
+all** — including `Core/Scheduling/SpacedRepetition.swift`, which M2's own brief tells him to
+hand-write, and **the three files M5's own TODOs point at**. Members' lanes are now
+**directories** rather than file lists, which is what [doc 14 §2](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md)
+had described all along.)
 
 **Run this before every commit and push:**
 
@@ -238,7 +241,7 @@ each as **yours**, **new (yours)**, **SHARED**, or **OUT OF LANE / FORBIDDEN**.
 | | M2 Mohammed | M3 Tasbeeh | M4 Shahad | M5 Fatema |
 |---|---|---|---|---|
 | **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` | `feat/F16-*` `F17-*` |
-| **Owns** | `Core/AI/`, `Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `Core/Admin/AIConfiguration.swift`, `Features/Coach/{CoachHome,CoachChat,CitationSheet}*.swift` (F15 screens 73–76, 79, 80), `Features/Library/MaterialLibraryView.swift` | `Core/{Planning,Payments}/`, `Features/{StudyPlan,Progress,Subscription}/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift`, `Features/Coach/StudyPath{View,ViewModel}.swift` (F15 screens 77, 78) | `Core/{Groups,Bookmarks,Folders}/`, `Features/{Folders,Bookmarks,Admin}/` | `Features/Groups/GroupChat{View,ViewModel}.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+| **Owns** | **Dirs:** `Core/{AI,Flashcards,Quizzes,Scheduling,Summaries,Tutor}/`, `Features/{Flashcards,Quizzes,Summaries,Tutor}/`. **Plus:** `Core/Admin/AIConfiguration.swift`, `Features/Coach/{CoachHome,CoachChat,CitationSheet}*.swift`, `Features/Library/MaterialLibraryView.swift`. **Minus:** `Core/Tutor/CohortSnapshot.swift` (M3's) | **Dirs:** `Core/{Payments,Planning,Progress}/`, `Features/{Progress,StudyPlan,Subscription}/`. **Plus:** `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift`, `Features/Coach/StudyPath{View,ViewModel}.swift`. **Minus:** — | **Dirs:** `Core/{Admin,Bookmarks,Folders}/`, `Features/{Admin,Bookmarks,Folders,Groups}/`. **Plus:** `Core/Groups/{StudyGroup,LiveQuizSession,GroupStore,FileGroupStore,InMemoryGroupStore}.swift`. **Minus:** `Core/Admin/AIConfiguration.swift` (M2's), `Features/Groups/GroupChat*` + `Moderation/` (M5's) | **Dirs:** `Core/{Recall,Groups/Moderation}/`, `Features/{Recall,Groups/Moderation}/`. **Plus:** `Features/Groups/GroupChat{View,ViewModel}.swift` |
 
 > **The boundary inside `Features/Coach/`, added 22 Oct 2026.** F15 is co-owned, and its screens
 > are assigned **by name** in [doc 03 §H](docs/03-SCREEN-INVENTORY.md): **M2 has 73–76, 79 and 80;
