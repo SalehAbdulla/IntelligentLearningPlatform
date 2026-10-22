@@ -16,6 +16,8 @@ struct SummaryResultView: View {
     @State private var isConfirmingDiscard = false
     @State private var isMakingCards = false
     @State private var isShowingCardsUnavailable = false
+    @State private var isPickingFolder = false
+    @State private var isShowingFolderUnavailable = false
 
     var body: some View {
         ScrollView {
@@ -53,7 +55,13 @@ struct SummaryResultView: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("\(L10n.summarySource.string), \(summary.source.pageLabel)")
+                    .accessibilityLabel(SummaryCopy.sourceAccessibility(label: L10n.summarySource.string, page: summary.source.pageLabel))
+                }
+
+                if summary.showsAIDraftLabel {
+                    Label(SummaryCopy.aiDrafted, systemImage: "sparkles")
+                        .font(.sfCaption.weight(.semibold))
+                        .foregroundStyle(ColorTokens.textSecondary)
                 }
 
                 tldrCard
@@ -76,12 +84,27 @@ struct SummaryResultView: View {
                     .padding(.top, Spacing.s2)
 
                 if viewModel.isSaved {
-                    Label(L10n.summarySavedTitle.string, systemImage: "checkmark.circle.fill")
-                        .font(.sfFootnote.weight(.semibold))
-                        .foregroundStyle(ColorTokens.successText)
-                        .transition(.opacity)
+                    HStack(spacing: Spacing.s3) {
+                        Label(L10n.summarySavedTitle.string, systemImage: "checkmark.circle.fill")
+                            .font(.sfFootnote.weight(.semibold))
+                            .foregroundStyle(ColorTokens.successText)
+                        Spacer(minLength: 0)
+                        Button {
+                            if container != nil {
+                                isPickingFolder = true
+                            } else {
+                                isShowingFolderUnavailable = true
+                            }
+                        } label: {
+                            Label(SummaryCopy.addToFolder, systemImage: "folder.badge.plus")
+                                .font(.sfFootnote.weight(.semibold))
+                                .foregroundStyle(ColorTokens.primary)
+                                .frame(minHeight: Layout.minTouchTarget)
+                        }
+                    }
+                    .transition(.opacity)
                 } else if viewModel.hasUnsavedChanges {
-                    Label("Edited — save to keep your changes.", systemImage: "pencil.circle.fill")
+                    Label(SummaryCopy.edited, systemImage: "pencil.circle.fill")
                         .font(.sfFootnote.weight(.semibold))
                         .foregroundStyle(ColorTokens.warningText)
                 }
@@ -118,24 +141,39 @@ struct SummaryResultView: View {
                 )
             }
         }
-        .confirmationDialog("Discard this summary?", isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
-            Button("Discard", role: .destructive) {
+        .sheet(isPresented: $isPickingFolder) {
+            if let container, let id = viewModel.savedSummaryID {
+                SummaryFolderSheet(
+                    summaryID: id,
+                    summaryTitle: summary.title,
+                    store: container.folders,
+                    userName: container.session?.displayName ?? ""
+                )
+            }
+        }
+        .confirmationDialog(SummaryCopy.discardTitle, isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
+            Button(SummaryCopy.discardConfirm, role: .destructive) {
                 viewModel.backToConfigure()
             }
             Button(L10n.commonCancel.string, role: .cancel) {}
         } message: {
-            Text("It hasn't been saved yet.")
+            Text(SummaryCopy.discardMessage)
         }
-        .alert("Flashcards", isPresented: $isShowingCardsUnavailable) {
+        .alert(SummaryCopy.folderTitle, isPresented: $isShowingFolderUnavailable) {
             Button(L10n.commonDone.string, role: .cancel) {}
         } message: {
-            Text("Sign in to turn this material into a flashcard deck.")
+            Text(SummaryCopy.folderUnavailable)
+        }
+        .alert(SummaryCopy.cardsTitle, isPresented: $isShowingCardsUnavailable) {
+            Button(L10n.commonDone.string, role: .cancel) {}
+        } message: {
+            Text(SummaryCopy.cardsUnavailable)
         }
     }
 
     private var tldrCard: some View {
         VStack(alignment: .leading, spacing: Spacing.s2) {
-            Text("TL;DR")
+            Text(SummaryCopy.tldr)
                 .font(.sfFootnote.weight(.semibold))
             Text(summary.tldr)
                 .font(.sfCallout)
@@ -183,7 +221,7 @@ struct SummaryResultView: View {
             VStack(spacing: 0) {
                 ForEach(Array(summary.keyPoints.enumerated()), id: \.offset) { index, point in
                     HStack(alignment: .top, spacing: Spacing.s3) {
-                        Text("Q\(index + 1)")
+                        Text(verbatim: "Q\(index + 1)")
                             .font(.sfFootnote.weight(.semibold))
                             .foregroundStyle(ColorTokens.primary)
                             .frame(width: Spacing.s8, alignment: .leading)
@@ -225,7 +263,7 @@ struct SummaryResultView: View {
 
     private var actions: some View {
         HStack(spacing: Spacing.s2) {
-            Button("Edit") { isEditing = true }
+            Button(SummaryCopy.edit) { isEditing = true }
                 .buttonStyle(SummaryActionButtonStyle())
                 .disabled(viewModel.isSaving)
 
@@ -236,19 +274,19 @@ struct SummaryResultView: View {
                     ProgressView()
                         .tint(ColorTokens.primary)
                 } else {
-                    Text(viewModel.isSaved ? "Saved" : "Save")
+                    Text(viewModel.isSaved ? SummaryCopy.saved : SummaryCopy.save)
                 }
             }
             .buttonStyle(SummaryActionButtonStyle())
             .disabled(viewModel.isSaved || viewModel.isSaving)
-            .accessibilityLabel(viewModel.isSaving ? L10n.summarySaving.string : (viewModel.isSaved ? "Saved" : "Save"))
+            .accessibilityLabel(viewModel.isSaving ? L10n.summarySaving.string : (viewModel.isSaved ? SummaryCopy.saved : SummaryCopy.save))
 
             ShareLink(item: summary.shareText, subject: Text(summary.title)) {
-                Text("Share")
+                Text(SummaryCopy.share)
             }
             .buttonStyle(SummaryActionButtonStyle())
 
-            Button("Cards") {
+            Button(SummaryCopy.cards) {
                 if container != nil {
                     isMakingCards = true
                 } else {
