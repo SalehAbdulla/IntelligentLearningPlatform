@@ -135,6 +135,15 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Core/Coach/Embedding.swift"
         "ios/StudyForge/StudyForge/Core/Coach/TextChunk.swift"
         "ios/StudyForge/StudyForge/Core/Coach/Citation.swift"
+        # F15's screens 73-76, 79 and 80 are M2's (docs/02 §5, docs/03 §H), so the Coach UI that
+        # renders them is his too. `Features/Coach/` was in NO lane at all until 22 Oct 2026 —
+        # the same defect as the two notes above and M5's two chat files: the feature was split,
+        # the screens were assigned by name, and nobody was given the files that draw them.
+        "ios/StudyForge/StudyForge/Features/Coach/CoachHomeView.swift"
+        "ios/StudyForge/StudyForge/Features/Coach/CoachHomeViewModel.swift"
+        "ios/StudyForge/StudyForge/Features/Coach/CoachChatView.swift"
+        "ios/StudyForge/StudyForge/Features/Coach/CoachChatViewModel.swift"
+        "ios/StudyForge/StudyForge/Features/Coach/CitationSheetView.swift"
         "ios/StudyForge/StudyForge/Core/Admin/AIConfiguration.swift"
         "ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewViewModel.swift"
         "ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewView.swift"
@@ -144,6 +153,14 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForgeTests/FlashcardReviewViewModelTests.swift"
         "ios/StudyForge/StudyForgeTests/FlashcardGenerateViewModelTests.swift"
         "ios/StudyForge/StudyForgeTests/SummaryFlowViewModelTests.swift"
+        # F03's entry point is the library's summarise sheet, so F03 is the feature that has to
+        # change this file — the same rule that handed M5 the two GroupChat files. The change is
+        # one line (`SummaryFlowView` -> `SummaryScreensView`, commit 48999d5 on
+        # feat/F03-AI-SUMMARY) and M2's handover file never named `Features/Library/` as off
+        # limits, so `check-lane.sh M2` was failing him on a seam the lane map had left unowned.
+        # The owner keeps the rest of `Features/Library/` (F02); an edit here from either side is
+        # rebased before it is pushed, never forced.
+        "ios/StudyForge/StudyForge/Features/Library/MaterialLibraryView.swift"
       )
       NEW=(
         "ios/StudyForge/StudyForge/Core/AI/"
@@ -166,6 +183,13 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Core/Coach/FileCoachStore.swift"
         "ios/StudyForge/StudyForge/Core/Coach/InMemoryCoachStore.swift"
         "ios/StudyForge/StudyForge/Core/Coach/AnswerFeedback.swift"
+        # F15 screen 77 (`77_Coach_StudyPath_Recommended_{M3}`, docs/03 §H) is M3's, and so is the
+        # "Add all to plan" integration behind it: it writes into F06's `StudyPlanStore`, which is
+        # hers. Both files were in NO lane at all until 22 Oct 2026 — found by M3 in a read-only
+        # audit — so the screen the inventory names her as the owner of could not be implemented
+        # or tested legitimately.
+        "ios/StudyForge/StudyForge/Features/Coach/StudyPathView.swift"
+        "ios/StudyForge/StudyForge/Features/Coach/StudyPathViewModel.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlanner.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlanStore.swift"
@@ -183,6 +207,10 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForgeTests/CohortSnapshotTests.swift"
       )
       NEW=(
+        # Screen 78 (`78_Coach_QuizMe_Voice_{M3}`, docs/03 §H, P2) does not exist yet; when it is
+        # built it lands here. Every other screen in `Features/Coach/` already has its file, and
+        # those files are M2's (see his TOUCH above), so a NEW file in this directory is screen 78's.
+        "ios/StudyForge/StudyForge/Features/Coach/"
         "ios/StudyForge/StudyForge/Core/Planning/"
         "ios/StudyForge/StudyForge/Core/Payments/"
         "ios/StudyForge/StudyForge/Features/StudyPlan/"
