@@ -19,7 +19,7 @@ struct SummaryConfigureView: View {
                 }
 
                 VStack(alignment: .leading, spacing: Spacing.s1) {
-                    Text("Summarise")
+                    Text(SummaryCopy.configureTitle)
                         .font(.sfTitleL)
                         .foregroundStyle(ColorTokens.textPrimary)
                         .accessibilityAddTraits(.isHeader)
@@ -76,7 +76,7 @@ struct SummaryConfigureView: View {
                     }
 
                     if viewModel.showsCloudAllowance {
-                        Text("\(viewModel.remainingToday) of \(viewModel.dailyLimit) free generations left today")
+                        Text(SummaryCopy.allowance(remaining: viewModel.remainingToday, limit: viewModel.dailyLimit))
                             .font(.sfFootnote)
                             .foregroundStyle(ColorTokens.textSecondary)
                             .monospacedDigit()
@@ -115,7 +115,7 @@ struct SummaryConfigureView: View {
 
     private var focusField: some View {
         VStack(alignment: .leading, spacing: Spacing.s2) {
-            Text("\(L10n.summaryFocusLabel.string) (optional)")
+            Text(SummaryCopy.focusOptionalLabel)
                 .font(.sfFootnote.weight(.semibold))
                 .foregroundStyle(ColorTokens.textSecondary)
 
@@ -145,11 +145,11 @@ struct SummaryConfigureView: View {
                     Label(focusError, systemImage: "exclamationmark.circle.fill")
                         .foregroundStyle(ColorTokens.error)
                 } else {
-                    Text("Separate topics with commas.")
+                    Text(SummaryCopy.focusHint)
                         .foregroundStyle(ColorTokens.textSecondary)
                 }
                 Spacer()
-                Text("\(viewModel.focusTopics.count)/\(SummaryLimits.focusMaxCharacters)")
+                Text(verbatim: "\(viewModel.focusTopics.count)/\(SummaryLimits.focusMaxCharacters)")
                     .foregroundStyle(ColorTokens.textSecondary)
                     .monospacedDigit()
             }
