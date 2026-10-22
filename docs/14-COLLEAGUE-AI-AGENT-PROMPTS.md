@@ -35,14 +35,25 @@ modes are predictable and both are expensive:
 
 ### Verified: the lanes do not overlap
 
-**49 files** are reachable across the four members' *modify* lanes, and **zero of them is
+**69 files** are reachable across the four members' *modify* lanes, and **zero of them is
 claimed by two members.** The four lanes were checked programmatically:
 
 ```
-TOUCH files            M2 14 · M3 15 · M4 18 · M5 2   (49 total)
+TOUCH files            M2 25 · M3 24 · M4 18 · M5 2   (69 total)
 claimed by two members : none
 also declared SHARED   : none
 ```
+
+> **Correction, 22 Oct 2026 — this block read *49 files, M2 14 · M3 15 · M4 18 · M5 2*, and had
+> been stale since 17 Oct**, when the Coach retrieval/planner files were given lanes because
+> `LocalRetrievalService.swift` broke the stable-Xcode build and no member could fix it
+> legitimately. Re-measured against `tools/check-lane.sh` rather than recounted by hand: **M2 19 ·
+> M3 22 · M4 18 · M5 2 = 61** before this pass, **69** after it. The same pass gave
+> `Features/Coach/` an owner — seven files that were in **no lane at all**, found by M3 while
+> auditing her own F15 work — and gave M2 the one line of `Features/Library/` that F03 needs, so
+> that `check-lane.sh M2` stops failing a member for a seam the lane map had left unowned. See
+> the note under §2. **Counts are reproducible:** extract the four `TOUCH` arrays from
+> `tools/check-lane.sh` and count them; the overlap check is a set intersection, not a reading.
 
 `tools/check-lane.sh M2|M3|M4|M5` re-checks this on every commit and push, from the member's
 own side:
@@ -71,8 +82,8 @@ repository. The guard forbids touching the `.xcodeproj` regardless.
 | | M2 Mohammed | M3 Tasbeeh | M4 Shahad | M5 Fatema |
 |---|---|---|---|---|
 | **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` | `feat/F16-*` `F17-*` |
-| **Owns** | `Core/AI/`, `Features/Flashcards/`, `Features/Summaries/`, `Features/Quizzes/`, `Features/Tutor/`, `Core/Admin/AIConfiguration.swift` | `Core/Planning/`, `Core/Payments/`, `Features/StudyPlan/`, `Features/Progress/`, `Features/Subscription/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift` | `Core/Groups/` (top level), `Core/Bookmarks/`, `Core/Folders/`, `Features/Groups/` (top level), `Features/Folders/`, `Features/Bookmarks/`, `Features/Admin/` | `Features/Groups/GroupChatView.swift`, `Features/Groups/GroupChatViewModel.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
-| **May add new files in** | `…/Core/AI/`, `…/Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `StudyForgeTests/` | `…/Core/{Planning,Payments}/`, `…/Features/{StudyPlan,Progress,Subscription}/`, `StudyForgeTests/` | `…/Core/{Groups,Bookmarks,Folders}/`, `…/Features/{Folders,Bookmarks,Admin}/`, `StudyForgeTests/` | `…/Core/Groups/Moderation/`, `…/Core/Recall/`, `…/Features/Groups/Moderation/`, `…/Features/Recall/`, `StudyForgeTests/` |
+| **Owns** | `Core/AI/`, `Features/Flashcards/`, `Features/Summaries/`, `Features/Quizzes/`, `Features/Tutor/`, `Core/Admin/AIConfiguration.swift`, `Features/Coach/{CoachHome,CoachChat,CitationSheet}*.swift` (F15 screens 73–76, 79, 80), `Features/Library/MaterialLibraryView.swift` | `Core/Planning/`, `Core/Payments/`, `Features/StudyPlan/`, `Features/Progress/`, `Features/Subscription/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift`, `Features/Coach/StudyPath{View,ViewModel}.swift` (F15 screens 77, 78) | `Core/Groups/` (top level), `Core/Bookmarks/`, `Core/Folders/`, `Features/Groups/` (top level), `Features/Folders/`, `Features/Bookmarks/`, `Features/Admin/` | `Features/Groups/GroupChatView.swift`, `Features/Groups/GroupChatViewModel.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+| **May add new files in** | `…/Core/AI/`, `…/Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `StudyForgeTests/` | `…/Core/{Planning,Payments}/`, `…/Features/{StudyPlan,Progress,Subscription}/`, `…/Features/Coach/` (screen 78, P2 — not built yet), `StudyForgeTests/` | `…/Core/{Groups,Bookmarks,Folders}/`, `…/Features/{Folders,Bookmarks,Admin}/`, `StudyForgeTests/` | `…/Core/Groups/Moderation/`, `…/Core/Recall/`, `…/Features/Groups/Moderation/`, `…/Features/Recall/`, `StudyForgeTests/` |
 | **Primary tester for** | F06, F12, F17 | F02, F08, F10, F14 | F04, F11, F16 | F01, F05, F13 |
 | **May touch, with care** | `AppContainer.swift`, `en/ar Localizable.strings` | same | same | same |
 | **Off limits to all** | `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`, `README.md`, `.mailmap`, `*.xcodeproj` — **this is the M2–M5 rule.** `check-lane.sh owner` treats the first five, plus `research/` and the repo-level files, as **the owner's own lane**; only `*.xcodeproj` is off limits to everyone. See the note below | | | |
@@ -92,6 +103,28 @@ repository. The guard forbids touching the `.xcodeproj` regardless.
 > This is the one place where two members' prefixes meet, and it is deliberate — F16 extends
 > F09's chat. Before 14 Oct `GroupChatView.swift` and `GroupChatViewModel.swift` were in **no
 > member's lane at all**, so nobody could modify them; they are now M5's.
+
+> **The other split directory, added 22 Oct 2026: `Features/Coach/`.** F15 is the one feature
+> two members own (docs/02 §5) and its screens are assigned **by name** in
+> [doc 03 §H](03-SCREEN-INVENTORY.md) — **M2 has 73–76, 79 and 80; M3 has 77 and 78.** The files
+> that draw them were in **no lane at all** until now, so the member doc 03 names as screen 77's
+> owner could neither implement nor test it: `check-lane.sh M3` refused both files. Found by M3
+> herself, in a read-only audit of her own F15 work, not by a failed build. Both halves now have
+> their files — **M2 five, M3 two** — plus `…/Features/Coach/` in M3's NEW list for screen 78,
+> which does not exist yet.
+>
+> **`Features/Library/MaterialLibraryView.swift` is the one file where a member's lane meets the
+> owner's.** F03's entry point is the library's summarise sheet, M2's change there is **one line**
+> (`SummaryFlowView` → `SummaryScreensView`, `48999d5`), and his handover file never named
+> `Features/Library/` as off limits — so `check-lane.sh M2` was failing him on a seam the lane map
+> had left unowned. It is his now; the owner keeps the rest of the directory (F02), and an edit
+> there from either side is rebased before it is pushed, never forced.
+>
+> **Operational note, and it will bite somebody:** the guard runs from **your branch's own copy**
+> of `tools/check-lane.sh`. A lane change therefore reaches you only once you merge or rebase
+> `develop` into your branch — until then your branch still runs the old lists and refuses the
+> files this note says are yours. Verified in both directions on 22 Oct 2026: `feat/F03-AI-SUMMARY`
+> fails on the stale copy and passes after `develop` is merged in.
 
 **Shared files** (all four members, 1–2 line edits only, rebase before pushing):
 `App/AppContainer.swift` · `Resources/en.lproj/Localizable.strings` ·
