@@ -109,6 +109,39 @@ jobs:
           git fetch origin main develop --depth=1 2>/dev/null || true
           bash tools/check-release.sh
 
+      # ── The log-level rules, where they cannot be skipped ──────────────────
+      # See tools/check-commits.sh for what it refuses and why. Two details matter here:
+      #
+      #   · `--rules-ref` makes the BASE branch's rules judge the branch — its message pattern,
+      #     its allowlist, its lane guard and its `.mailmap`. Without it, the pull request that
+      #     changed a rule would be the one deciding whether it applies.
+      #   · the range is `origin/$BASE..HEAD`, so only the commits this branch BRINGS are judged.
+      #     History already on develop is not re-litigated by every pull request.
+      #
+      # This is the check that would have caught `feat/F03-AI-SUMMARY` on the day it was pushed:
+      # five subjects that are not Conventional Commits, a personal author address, and — once
+      # a PR exists — an out-of-lane file. It exists because tools/commit.sh and
+      # tools/check-lane.sh are LOCAL tools, and a member who never runs them was contradicted by
+      # nothing at all (docs/12 §3.1: a rule that can be silently bypassed is not a rule).
+      - name: Commit hygiene (identity, message, lane)
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -uo pipefail
+          BASE="${BASE_REF:-develop}"
+          git fetch --no-tags origin "$BASE:refs/remotes/origin/$BASE"
+          if [ -n "$BASE_REF" ]; then
+            RANGE="origin/$BASE..HEAD"
+            BRANCH="$HEAD_REF"
+          else
+            RANGE="$(git merge-base "origin/$BASE" HEAD)..HEAD"
+            BRANCH="$REF_NAME"
+          fi
+          echo "judging $RANGE on '$BRANCH', by the rules on origin/$BASE"
+          bash tools/check-commits.sh --range "$RANGE" --branch "$BRANCH" --rules-ref "origin/$BASE"
+
   # ── The build machine ────────────────────────────────────────────────────────
   ios:
     name: iOS build and test
