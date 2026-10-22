@@ -6,7 +6,7 @@ import Testing
 @MainActor
 struct SummaryScreensViewModelTests {
 
-    private let sampleText = PageMarker.forPage(12) + """
+    private let paragraph = """
     A tree is a hierarchy with one root node at the top. \
     Each node holds children, enabling fast search over sorted keys. \
     A binary tree has at most two children per node, enabling logarithmic search in balanced cases. \
@@ -14,6 +14,14 @@ struct SummaryScreensViewModelTests {
     A leaf is a node with no children. \
     Height counts edges to the deepest leaf while depth counts edges from the root.
     """
+
+    private var sampleText: String {
+        PageMarker.forPage(12) + String(repeating: paragraph + " ", count: 4)
+    }
+
+    private func words(_ count: Int) -> String {
+        Array(repeating: "tree", count: count).joined(separator: " ")
+    }
 
     private func material(text: String? = nil) -> Material {
         Material(title: "Lecture 4 — Trees", source: .pdf, text: text ?? sampleText, pageCount: 20)
@@ -29,13 +37,22 @@ struct SummaryScreensViewModelTests {
     private func model(
         material: Material? = nil,
         router: AIRouter? = nil,
-        store: any SummaryStore = InMemorySummaryStore()
+        store: any SummaryStore = InMemorySummaryStore(),
+        cache: SummaryResponseCache = SummaryResponseCache(),
+        timeout: Duration = .seconds(30)
     ) -> SummaryScreensViewModel {
         SummaryScreensViewModel(
             material: material ?? self.material(),
             router: router ?? self.router(),
-            store: store
+            store: store,
+            cache: cache,
+            timeout: timeout
         )
+    }
+
+    @Test("The sample material is long enough to summarise")
+    func sampleIsLongEnough() {
+        #expect(SummaryLimits.wordCount(of: sampleText) >= SummaryLimits.minimumSourceWords)
     }
 
     @Test("Generating moves to the result with a grounded summary from the router")
@@ -46,10 +63,12 @@ struct SummaryScreensViewModelTests {
 
         #expect(viewModel.step == .result)
         let summary = try #require(viewModel.summary)
-        #expect(summary.title == "Lecture 4 — Trees — Summary")
+        #expect(summary.title == SummaryCopy.summaryTitle("Lecture 4 — Trees"))
         #expect(summary.tier == .firebaseAI)
         #expect(!summary.keyPoints.isEmpty)
+        #expect(summary.showsAIDraftLabel)
         #expect(viewModel.engine == .cloud)
+        #expect(viewModel.servedFromCache == false)
     }
 
     @Test("The source sheet quotes a sentence that really exists in the material")
@@ -77,19 +96,63 @@ struct SummaryScreensViewModelTests {
         #expect(viewModel.remainingToday == before - 1)
     }
 
+    @Test("Asking again for the same summary is served from the cache without spending quota")
+    func repeatRequestIsServedFromCache() async {
+        let governor = AICostGovernor()
+        let viewModel = model(router: router(governor: governor))
+
+        await viewModel.generate()?.value
+        let first = viewModel.summary
+        let afterFirst = viewModel.remainingToday
+        viewModel.backToConfigure()
+        await viewModel.generate()?.value
+
+        #expect(viewModel.step == .result)
+        #expect(viewModel.servedFromCache)
+        #expect(viewModel.remainingToday == afterFirst)
+        #expect(viewModel.summary?.tldr == first?.tldr)
+    }
+
+    @Test("A different length is a different cache entry")
+    func differentOptionsMissTheCache() async {
+        let governor = AICostGovernor()
+        let viewModel = model(router: router(governor: governor))
+
+        await viewModel.generate()?.value
+        let afterFirst = viewModel.remainingToday
+        viewModel.backToConfigure()
+        viewModel.length = .examReady
+        await viewModel.generate()?.value
+
+        #expect(viewModel.servedFromCache == false)
+        #expect(viewModel.remainingToday == afterFirst - 1)
+    }
+
     @Test("With the allowance spent, generating shows the quota screen instead of an error")
     func exhaustedQuotaShowsQuotaScreen() async {
         let governor = AICostGovernor()
         governor.seed(usedToday: governor.limit)
         let viewModel = model(router: router(governor: governor))
 
-        let task = viewModel.generate()
-        await task?.value
+        await viewModel.generate()?.value
 
-        #expect(task == nil)
         #expect(viewModel.step == .quotaExceeded)
         #expect(viewModel.error == nil)
         #expect(viewModel.summary == nil)
+    }
+
+    @Test("A cached summary is still served when the allowance is spent")
+    func cacheBeatsTheQuotaScreen() async {
+        let governor = AICostGovernor()
+        let viewModel = model(router: router(governor: governor))
+        await viewModel.generate()?.value
+        viewModel.backToConfigure()
+        governor.seed(usedToday: governor.limit)
+
+        await viewModel.generate()?.value
+
+        #expect(viewModel.step == .result)
+        #expect(viewModel.servedFromCache)
     }
 
     @Test("Switching to on-device generates without spending the cloud allowance")
@@ -129,6 +192,20 @@ struct SummaryScreensViewModelTests {
         #expect(viewModel.error == .onDeviceAIUnavailable)
     }
 
+    @Test("A generation that runs past the time limit is stopped with the timed-out error")
+    func slowGenerationTimesOut() async {
+        let viewModel = model(
+            router: router(providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .seconds(5))]),
+            timeout: .milliseconds(50)
+        )
+
+        await viewModel.generate()?.value
+
+        #expect(viewModel.step == .configure)
+        #expect(viewModel.error == .timedOut)
+        #expect(viewModel.summary == nil)
+    }
+
     @Test("Cancelling mid-generation returns to configure and drops the late result")
     func cancelDropsResult() async {
         let viewModel = model(router: router(providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .seconds(5))]))
@@ -140,16 +217,27 @@ struct SummaryScreensViewModelTests {
 
         #expect(viewModel.step == .configure)
         #expect(viewModel.summary == nil)
+        #expect(viewModel.error == nil)
     }
 
-    @Test("A material under the minimum length cannot be summarised")
-    func shortMaterialIsRefused() async {
-        let viewModel = model(material: material(text: "Too short to summarise."))
+    @Test("A material under 200 words cannot be summarised, and 200 words can")
+    func shortMaterialIsRefused() {
+        let short = model(material: material(text: words(199)))
+        let enough = model(material: material(text: words(200)))
 
-        #expect(viewModel.materialError != nil)
-        #expect(viewModel.canGenerate == false)
-        #expect(viewModel.generate() == nil)
-        #expect(viewModel.step == .configure)
+        #expect(short.materialError == SummaryCopy.materialShort(minimum: 200, actual: 199))
+        #expect(short.canGenerate == false)
+        #expect(short.generate() == nil)
+        #expect(short.step == .configure)
+        #expect(enough.materialError == nil)
+        #expect(enough.canGenerate)
+    }
+
+    @Test("Words are counted across spaces and line breaks")
+    func wordCounting() {
+        #expect(SummaryLimits.wordCount(of: "one two\nthree\t four  ") == 4)
+        #expect(SummaryLimits.wordCount(of: "   ") == 0)
+        #expect(SummaryLimits.wordCount(of: "الشجرة لها جذر واحد") == 4)
     }
 
     @Test("Invalid focus topics block generation", arguments: [
@@ -190,6 +278,27 @@ struct SummaryScreensViewModelTests {
         #expect(saved.first?.tldr == "Edited takeaway.")
         #expect(saved.first?.keyPoints == ["One", "Two"])
         #expect(viewModel.isSaved)
+    }
+
+    @Test("Turning off the AI-drafted label is an edit, and the shared text follows it")
+    func watermarkToggleIsAnEdit() async throws {
+        let viewModel = model()
+        await viewModel.generate()?.value
+        let original = try #require(viewModel.summary)
+        #expect(original.shareText.contains(SummaryCopy.shareWatermark))
+
+        viewModel.applyEdits(
+            title: original.title,
+            tldr: original.tldr,
+            keyPoints: original.keyPoints,
+            showsAIDraftLabel: false
+        )
+
+        let edited = try #require(viewModel.summary)
+        #expect(edited.showsAIDraftLabel == false)
+        #expect(edited.shareText.contains(SummaryCopy.shareWatermark) == false)
+        #expect(edited.provenance == original.provenance)
+        #expect(viewModel.hasUnsavedChanges)
     }
 
     @Test("A storage failure surfaces an error and leaves the summary unsaved")
