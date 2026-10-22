@@ -50,7 +50,7 @@ enum SummaryGrounding {
         let tldr = generated.value.tldr.trimmingCharacters(in: .whitespacesAndNewlines)
 
         return GeneratedSummary(
-            title: "\(material.title) — Summary",
+            title: SummaryCopy.summaryTitle(material.title),
             tldr: tldr.isEmpty ? (keyPoints.first ?? material.title) : tldr,
             keyPoints: Array(keyPoints),
             glossary: glossary(for: generated.value, material: material),
