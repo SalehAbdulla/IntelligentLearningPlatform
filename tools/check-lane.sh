@@ -68,6 +68,25 @@ esac
 # SHARED : may be modified only under the shared-file protocol below.
 
 OWNED_DIRS=()
+# DIRS is the same idea for a member: the directories that member owns outright — existing files
+# and new ones alike. This is NOT a new rule. docs/14 §2 and CONTRIBUTING §3.2 have described each
+# member's lane as a set of directories since the handover; the guard simply never implemented it,
+# so on 22 Oct 2026 an audit of the tracked tree found **167 of the 394 app files were in no lane
+# at all** and could not be modified by anybody — including the three files M5's own TODOs point
+# at, and `Core/Scheduling/SpacedRepetition.swift`, which M2's own starter brief tells him to edit.
+DIRS=()
+# Files and directories CARVED OUT of a DIRS prefix, because another member owns them by name.
+# One visible list, so the exception is declared rather than implied by list order.
+CARVE_OUTS=(
+  # M3 — F07's tutor metrics, inside M2's Core/Tutor/
+  "ios/StudyForge/StudyForge/Core/Tutor/CohortSnapshot.swift"
+  # M2 — F15's admin config, inside M4's Core/Admin/
+  "ios/StudyForge/StudyForge/Core/Admin/AIConfiguration.swift"
+  # M5 — F16, inside M4's Features/Groups/
+  "ios/StudyForge/StudyForge/Features/Groups/GroupChatView.swift"
+  "ios/StudyForge/StudyForge/Features/Groups/GroupChatViewModel.swift"
+  "ios/StudyForge/StudyForge/Features/Groups/Moderation/"
+)
 OWNER_MODE=0
 
 case "$MEMBER" in
@@ -112,6 +131,16 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Features/ProfileSetup/"
         "ios/StudyForge/StudyForge/Features/Search/"
         "ios/StudyForge/StudyForge/Features/DesignSystemGallery/"
+        # The app-level and cross-cutting files no feature owns: the app entry point and router,
+        # the design system, the resource bundle and the preview assets. They were in no lane
+        # either, and they belong to the project level rather than to any one feature.
+        "ios/StudyForge/StudyForge/App/"
+        "ios/StudyForge/StudyForge/DesignSystem/"
+        "ios/StudyForge/StudyForge/Features/AISpike/"
+        "ios/StudyForge/StudyForge/Preview Content/"
+        # The two .strings files inside Resources/ stay SHARED for the members; the owner holds
+        # the rest of the bundle, which is assets and the .stringsdict files.
+        "ios/StudyForge/StudyForge/Resources/"
         "ios/StudyForge/StudyForgeTests/"
       )
       TOUCH=(
@@ -121,6 +150,21 @@ case "$MEMBER" in
   M2) NAME="Mohammed Almadhoon"; ID=202401702; WHO=mohammed
       FEATURES="F03 F04 F05 F11 F15"
       BRANCH_RE='^feat/F(03|04|05|11|15)-'
+      # The directories M2 owns outright — existing files and new ones alike (docs/02 §2). These
+      # are the modules his five features live in. `Core/Tutor/` is his F11 area except
+      # `CohortSnapshot.swift`, which is F07's and is carved out for M3 above.
+      DIRS=(
+        "ios/StudyForge/StudyForge/Core/AI/"
+        "ios/StudyForge/StudyForge/Core/Flashcards/"
+        "ios/StudyForge/StudyForge/Core/Quizzes/"
+        "ios/StudyForge/StudyForge/Core/Scheduling/"
+        "ios/StudyForge/StudyForge/Core/Summaries/"
+        "ios/StudyForge/StudyForge/Core/Tutor/"
+        "ios/StudyForge/StudyForge/Features/Flashcards/"
+        "ios/StudyForge/StudyForge/Features/Quizzes/"
+        "ios/StudyForge/StudyForge/Features/Summaries/"
+        "ios/StudyForge/StudyForge/Features/Tutor/"
+      )
       TOUCH=(
         "ios/StudyForge/StudyForge/Core/AI/PromptTemplates.swift"
         "ios/StudyForge/StudyForge/Core/AI/AITier.swift"
@@ -173,6 +217,17 @@ case "$MEMBER" in
   M3) NAME="Tasbeeh Saeed"; ID=202300549; WHO=tasbeeh
       FEATURES="F06 F07 F13 F15"
       BRANCH_RE='^feat/F(06|07|13|15)-'
+      # M3's own modules (docs/02 §2): the planner and the wizard, progress, payments and
+      # subscription. `Core/Payments/` mattered most — all seventeen of its files existed and none
+      # of them was in her lane, so the F13 work her brief describes could not be started.
+      DIRS=(
+        "ios/StudyForge/StudyForge/Core/Payments/"
+        "ios/StudyForge/StudyForge/Core/Planning/"
+        "ios/StudyForge/StudyForge/Core/Progress/"
+        "ios/StudyForge/StudyForge/Features/Progress/"
+        "ios/StudyForge/StudyForge/Features/StudyPlan/"
+        "ios/StudyForge/StudyForge/Features/Subscription/"
+      )
       TOUCH=(
         # F15 planner + router integration (docs/02 §5: M3 owns what the student should do next).
         # Missing from every lane until 17 Oct 2026, same as M2's half above.
@@ -221,6 +276,18 @@ case "$MEMBER" in
   M4) NAME="Shahad Ashoor"; ID=202305767; WHO=shahad
       FEATURES="F08 F09 F10 F12"
       BRANCH_RE='^feat/F(08|09|10|12)-'
+      # M4's own modules (docs/02 §2). `Features/Groups/` is his F09 area except the two chat
+      # files and `Moderation/`, which are F16's and are carved out for M5 above; `Core/Groups/`
+      # top-level files stay listed in TOUCH below for the same reason.
+      DIRS=(
+        "ios/StudyForge/StudyForge/Core/Admin/"
+        "ios/StudyForge/StudyForge/Core/Bookmarks/"
+        "ios/StudyForge/StudyForge/Core/Folders/"
+        "ios/StudyForge/StudyForge/Features/Admin/"
+        "ios/StudyForge/StudyForge/Features/Bookmarks/"
+        "ios/StudyForge/StudyForge/Features/Folders/"
+        "ios/StudyForge/StudyForge/Features/Groups/"
+      )
       TOUCH=(
         "ios/StudyForge/StudyForge/Core/Groups/StudyGroup.swift"
         "ios/StudyForge/StudyForge/Core/Groups/LiveQuizSession.swift"
@@ -254,6 +321,17 @@ case "$MEMBER" in
   M5) NAME="Fatema Ghareeb"; ID=202304804; WHO=fatema
       FEATURES="F16 F17"
       BRANCH_RE='^feat/F(16|17)-'
+      # M5's own modules (docs/02 §2). This is the fix that mattered most to her: her five open
+      # TODOs live in `Core/Recall/RecallQueue.swift`, `RecallSettings.swift` and
+      # `Core/Groups/Moderation/GroupModeration.swift`, all three of which EXISTED and appeared in
+      # her lane only under NEW — and NEW means "does not exist yet", so the guard refused every
+      # one of them. She could not have started.
+      DIRS=(
+        "ios/StudyForge/StudyForge/Core/Recall/"
+        "ios/StudyForge/StudyForge/Core/Groups/Moderation/"
+        "ios/StudyForge/StudyForge/Features/Recall/"
+        "ios/StudyForge/StudyForge/Features/Groups/Moderation/"
+      )
       # F16 (moderated group chat) extends F09's group chat, which M4 owns. To keep the two
       # lanes disjoint the boundary is drawn by FILE, not by directory: M4 keeps every F09
       # group-space and live-quiz file, and M5 takes exactly the two chat files plus its own
@@ -280,6 +358,8 @@ esac
 # Array lengths, so an empty TOUCH/NEW never expands under `set -u` on bash 3.2 (macOS).
 TOUCH_LEN="${#TOUCH[@]}"
 NEW_LEN="${#NEW[@]}"
+DIRS_LEN="${#DIRS[@]}"
+CARVE_LEN="${#CARVE_OUTS[@]}"
 
 # Declared shared files: anyone may touch these, under the protocol below.
 SHARED=(
@@ -396,6 +476,14 @@ while IFS= read -r f; do
   if in_list "$f" "${SHARED[@]}"; then
     ylw "  SHARED        $f   (rebase develop first, keep it to 1-2 lines)"
     SHARED_HIT=1
+    continue
+  fi
+  # A directory in your DIRS list is yours, EXCEPT anything another member owns by name — the
+  # carve-outs are checked here, so a file given to someone else is never claimed by the
+  # directory it happens to sit in.
+  if [[ "$OWNER_MODE" -eq 0 && "$DIRS_LEN" -gt 0 ]] && under_dir "$f" "${DIRS[@]}" \
+     && { [[ "$CARVE_LEN" -eq 0 ]] || ! under_dir "$f" "${CARVE_OUTS[@]}"; }; then
+    grn "  yours         $f"
     continue
   fi
   if [[ "$TOUCH_LEN" -gt 0 ]] && in_list "$f" "${TOUCH[@]}"; then
