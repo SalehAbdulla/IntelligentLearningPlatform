@@ -97,12 +97,21 @@ Never `git switch develop` to "just quickly fix something". Never `git push orig
 
 **You may modify these** (and nothing else):
 
-| Area | Files |
+| Area | Yours |
 |---|---|
-| F15 AI | `Core/AI/PromptTemplates.swift` · `Core/AI/AITier.swift` · `Core/AI/AIRouter.swift` · `Core/AI/AIProvider.swift` · `Core/AI/OnDeviceProvider.swift` |
-| F15 admin config | `Core/Admin/AIConfiguration.swift` |
-| F04 / F03 / F05 flashcards | everything in `Features/Flashcards/` |
+| **F03 · F04 · F05 · F11 — everything in these directories** | `Core/AI/` · `Core/Flashcards/` · `Core/Quizzes/` · `Core/Scheduling/` · `Core/Summaries/` · `Core/Tutor/` · `Features/Flashcards/` · `Features/Quizzes/` · `Features/Summaries/` · `Features/Tutor/` |
+| F15 admin config | `Core/Admin/AIConfiguration.swift` — the one file of yours inside M4's `Core/Admin/` |
+| F15 Coach UI (screens 73–76, 79, 80) | `Features/Coach/CoachHomeView.swift` · `CoachHomeViewModel.swift` · `CoachChatView.swift` · `CoachChatViewModel.swift` · `CitationSheetView.swift` |
+| F03's entry point | `Features/Library/MaterialLibraryView.swift` — a one-line seam inside the owner's directory |
 | Tests | `StudyForgeTests/AIRouterTests.swift` · `AIVocabularyTests.swift` · `FlashcardReviewViewModelTests.swift` · `FlashcardGenerateViewModelTests.swift` · `SummaryFlowViewModelTests.swift` |
+| **NOT yours, inside your own directories** | `Core/Tutor/CohortSnapshot.swift` is **M3's** (F07) |
+
+> **Corrected 22 Oct 2026 — your lane used to be a list of individual files, and it was too small.**
+> An audit of the tracked tree found **167 of the 394 app files were in no lane at all**, including
+> `Core/Scheduling/SpacedRepetition.swift` — which *your own starter brief* tells you to hand-write —
+> and the whole Coach UI behind screens 73–76, 79 and 80, which docs/03 assigns to you by name. Your
+> lane is now the **directories** your five features live in, existing files and new ones alike, with
+> the exception named above. Full detail: [doc 14 §2](14-COLLEAGUE-AI-AGENT-PROMPTS.md).
 
 **You may add NEW files** inside: `Core/AI/` · `Features/Flashcards/` ·
 `Features/Summaries/` · `Features/Quizzes/` · `Features/Tutor/` · `StudyForgeTests/`
