@@ -31,7 +31,7 @@ struct SummarySourceSheet: View {
                     .font(.sfCaption)
                     .foregroundStyle(source.relevance >= 0.5 ? ColorTokens.successText : ColorTokens.warningText)
 
-                SFPrimaryButton(title: "Open in viewer", action: onOpen)
+                SFPrimaryButton(title: SummaryCopy.openInViewer, action: onOpen)
                     .padding(.top, Spacing.s3)
             }
             .padding(.horizontal, Layout.screenMargin + Spacing.s3)
