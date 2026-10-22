@@ -12,7 +12,7 @@ struct SummaryQuotaView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.s4) {
-                Text("!")
+                Text(verbatim: "!")
                     .font(.system(size: 30, weight: .bold))
                     .foregroundStyle(ColorTokens.onAccent)
                     .frame(width: 64, height: 64)
@@ -21,13 +21,13 @@ struct SummaryQuotaView: View {
                     .accessibilityHidden(true)
 
                 VStack(spacing: Spacing.s2) {
-                    Text("Daily limit reached")
+                    Text(SummaryCopy.quotaTitle)
                         .font(.sfTitleM)
                         .foregroundStyle(ColorTokens.textPrimary)
                         .accessibilityAddTraits(.isHeader)
 
                     TimelineView(.periodic(from: .now, by: 60)) { context in
-                        Text("Your free AI generations reset in \(viewModel.resetText(now: context.date)).")
+                        Text(SummaryCopy.quotaBody(viewModel.resetText(now: context.date)))
                             .font(.sfCallout)
                             .foregroundStyle(ColorTokens.textSecondary)
                             .multilineTextAlignment(.center)
@@ -40,8 +40,8 @@ struct SummaryQuotaView: View {
                     _ = viewModel.switchToOnDevice()
                 } label: {
                     optionLabel(
-                        title: "Switch to on-device engine",
-                        subtitle: viewModel.onDeviceUnavailableReason?.title ?? "Unlimited · private",
+                        title: SummaryCopy.quotaOnDevice,
+                        subtitle: viewModel.onDeviceUnavailableReason?.title ?? SummaryCopy.quotaOnDeviceSubtitle,
                         foreground: ColorTokens.textPrimary,
                         secondary: ColorTokens.textSecondary
                     )
@@ -62,8 +62,8 @@ struct SummaryQuotaView: View {
                     }
                 } label: {
                     optionLabel(
-                        title: "Upgrade plan",
-                        subtitle: "Plus BHD 1.900 / term",
+                        title: SummaryCopy.quotaUpgrade,
+                        subtitle: SummaryCopy.quotaUpgradeSubtitle,
                         foreground: ColorTokens.onError,
                         secondary: ColorTokens.onError
                     )
@@ -71,7 +71,7 @@ struct SummaryQuotaView: View {
                 }
                 .buttonStyle(.plain)
 
-                Button("Try again later") {
+                Button(SummaryCopy.quotaLater) {
                     viewModel.backToConfigure()
                 }
                 .buttonStyle(SummarySecondaryButtonStyle())
@@ -95,10 +95,10 @@ struct SummaryQuotaView: View {
                 }
             }
         }
-        .alert("Upgrade plan", isPresented: $isShowingUpgradeUnavailable) {
+        .alert(SummaryCopy.quotaUpgrade, isPresented: $isShowingUpgradeUnavailable) {
             Button(L10n.commonDone.string, role: .cancel) {}
         } message: {
-            Text("Sign in to see the plans available to you.")
+            Text(SummaryCopy.quotaUpgradeUnavailable)
         }
     }
 
