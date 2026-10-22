@@ -31,7 +31,8 @@ enum SummaryEngine: Equatable {
 }
 
 enum SummaryLimits {
-    static let minimumSourceCharacters = 200
+    static let minimumSourceWords = 200
+    static let generationTimeout: Duration = .seconds(60)
     static let focusMaxCharacters = 120
     static let focusMaxTopics = 5
     static let focusMaxTopicCharacters = 40
@@ -39,6 +40,10 @@ enum SummaryLimits {
     static let tldrMaxCharacters = 300
     static let keyPointMaxCharacters = 160
     static let keyPointMaxCount = 8
+
+    static func wordCount(of text: String) -> Int {
+        text.split(whereSeparator: { $0.isWhitespace || $0.isNewline }).count
+    }
 }
 
 struct SummaryGlossaryItem: Identifiable, Equatable {
@@ -50,8 +55,8 @@ struct SummaryGlossaryItem: Identifiable, Equatable {
     var isHighConfidence: Bool { confidence >= 0.8 }
 
     var confidenceLabel: String {
-        let level = confidence >= 0.8 ? "high" : confidence >= 0.5 ? "medium" : "low"
-        return "Confidence: \(level) · \(String(format: "%.2f", confidence))"
+        let level = confidence >= 0.8 ? SummaryCopy.levelHigh : confidence >= 0.5 ? SummaryCopy.levelMedium : SummaryCopy.levelLow
+        return SummaryCopy.confidence(level: level, score: confidence.formatted(.number.precision(.fractionLength(2))))
     }
 }
 
@@ -62,10 +67,10 @@ struct SummarySource: Equatable {
     let relevance: Double
 
     var quote: String { "\"…\(excerpt)…\"" }
-    var pageLabel: String { page.map { "p.\($0)" } ?? L10n.summarySource.string }
-    var chipTitle: String { page.map { "p.\($0) cite" } ?? L10n.summarySource.string }
-    var sheetTitle: String { page.map { "\(L10n.summarySource.string) · p.\($0)" } ?? L10n.summarySource.string }
-    var relevanceLabel: String { "Relevance \(String(format: "%.2f", relevance))" }
+    var pageLabel: String { page.map { SummaryCopy.page($0) } ?? L10n.summarySource.string }
+    var chipTitle: String { page.map { SummaryCopy.citeChip($0) } ?? L10n.summarySource.string }
+    var sheetTitle: String { page.map { SummaryCopy.sourcePage(label: L10n.summarySource.string, page: $0) } ?? L10n.summarySource.string }
+    var relevanceLabel: String { SummaryCopy.relevance(relevance.formatted(.number.precision(.fractionLength(2)))) }
 }
 
 struct GeneratedSummary: Equatable {
@@ -73,6 +78,7 @@ struct GeneratedSummary: Equatable {
     var tldr: String
     var keyPoints: [String]
     var glossary: [SummaryGlossaryItem]
+    var showsAIDraftLabel = true
     let source: SummarySource
     let style: SummaryStyle
     let length: SummaryLength
@@ -83,13 +89,16 @@ struct GeneratedSummary: Equatable {
     var engine: SummaryEngine { SummaryEngine(tier: tier) }
 
     var shareText: String {
-        var lines = [title, "", "TL;DR", tldr, "", L10n.summaryKeyPointsHeading.string]
+        var lines = [title, "", SummaryCopy.tldr, tldr, "", L10n.summaryKeyPointsHeading.string]
         lines += keyPoints.map { "• \($0)" }
         if !glossary.isEmpty {
             lines += ["", L10n.summaryGlossaryHeading.string]
             lines += glossary.map { "\($0.term): \($0.definition)" }
         }
-        lines += ["", "\(L10n.summarySource.string): \(source.fileName), \(source.pageLabel)"]
+        lines += ["", SummaryCopy.shareSource(label: L10n.summarySource.string, fileName: source.fileName, page: source.pageLabel)]
+        if showsAIDraftLabel {
+            lines.append(SummaryCopy.shareWatermark)
+        }
         return lines.joined(separator: "\n")
     }
 
