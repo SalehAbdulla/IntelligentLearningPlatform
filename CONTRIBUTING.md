@@ -220,8 +220,11 @@ The rotation matrix is `docs/02-FEATURE-LIST-OWNERSHIP.md` §7.
 ### 3.2 Your file lane — this is what prevents merge conflicts
 
 Four members may be running AI agents at the same time. To make that safe, **every file
-belongs to exactly one lane**, and the lanes are verified disjoint: **49 files
-across the four member modify-lanes, zero claimed by two members.**
+belongs to exactly one lane**, and the lanes are verified disjoint: **69 files
+across the four member modify-lanes, zero claimed by two members.** (This line read *49 files*
+until 22 Oct 2026, when the counts were re-measured against `tools/check-lane.sh` rather than
+recounted by hand: **M2 25 · M3 24 · M4 18 · M5 2**. The older figure had been stale since the
+Coach files were given lanes on 17 Oct. See [doc 14 §1](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md).)
 
 **Run this before every commit and push:**
 
@@ -235,7 +238,17 @@ each as **yours**, **new (yours)**, **SHARED**, or **OUT OF LANE / FORBIDDEN**.
 | | M2 Mohammed | M3 Tasbeeh | M4 Shahad | M5 Fatema |
 |---|---|---|---|---|
 | **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` | `feat/F16-*` `F17-*` |
-| **Owns** | `Core/AI/`, `Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `Core/Admin/AIConfiguration.swift` | `Core/{Planning,Payments}/`, `Features/{StudyPlan,Progress,Subscription}/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift` | `Core/{Groups,Bookmarks,Folders}/`, `Features/{Folders,Bookmarks,Admin}/` | `Features/Groups/GroupChat{View,ViewModel}.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+| **Owns** | `Core/AI/`, `Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `Core/Admin/AIConfiguration.swift`, `Features/Coach/{CoachHome,CoachChat,CitationSheet}*.swift` (F15 screens 73–76, 79, 80), `Features/Library/MaterialLibraryView.swift` | `Core/{Planning,Payments}/`, `Features/{StudyPlan,Progress,Subscription}/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift`, `Features/Coach/StudyPath{View,ViewModel}.swift` (F15 screens 77, 78) | `Core/{Groups,Bookmarks,Folders}/`, `Features/{Folders,Bookmarks,Admin}/` | `Features/Groups/GroupChat{View,ViewModel}.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+
+> **The boundary inside `Features/Coach/`, added 22 Oct 2026.** F15 is co-owned, and its screens
+> are assigned **by name** in [doc 03 §H](docs/03-SCREEN-INVENTORY.md): **M2 has 73–76, 79 and 80;
+> M3 has 77 and 78.** The files that draw them were in **no lane at all** until now — so
+> `check-lane.sh M3` refused `StudyPathView.swift` and `StudyPathViewModel.swift`, the two files
+> that implement screen 77 (`77_Coach_StudyPath_Recommended_{M3}`) and the "Add all to plan"
+> integration that writes into M3's own `StudyPlanStore`. M3 found this herself, auditing her F15
+> work read-only, before writing any code. **`Features/Library/MaterialLibraryView.swift` is the
+> one file where a member's lane meets the owner's:** F03's entry point is the library's summarise
+> sheet and M2 needed one line there (`SummaryFlowView` → `SummaryScreensView`).
 
 > **The one boundary inside `Core/Groups/` and `Features/Groups/`.** M4 owns the F09
 > group-space and live-quiz files at the top level; **M5 owns only the `Moderation/`
