@@ -60,15 +60,21 @@ struct SummaryScreensView: View {
     }
 }
 
-#Preview("F03 Summary") {
-    SummaryScreensView(
-        material: Material(
+private extension Material {
+    static var previewTrees: Material {
+        Material(
             title: "Lecture 4 — Trees",
             source: .pdf,
-            text: PageMarker.forPage(12) + "A tree is a hierarchy with one root. Each node holds children, enabling fast search. A binary tree has at most two children per node, enabling logarithmic search in balanced cases. Traversal can be in-order, pre-order or post-order. A leaf is a node with no children. Height and depth measure distance from the leaves and from the root.",
+            text: PageMarker.forPage(12) + String(repeating: "A tree is a hierarchy with one root. Each node holds children, enabling fast search. A binary tree has at most two children per node, enabling logarithmic search in balanced cases. Traversal can be in-order, pre-order or post-order. A leaf is a node with no children. Height and depth measure distance from the leaves and from the root. ", count: 4),
             pageCount: 20,
             tags: ["trees", "binary tree"]
-        ),
+        )
+    }
+}
+
+#Preview("F03 Summary") {
+    SummaryScreensView(
+        material: .previewTrees,
         router: AIRouter(
             providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .seconds(2))],
             governor: AICostGovernor()
@@ -81,7 +87,7 @@ struct SummaryScreensView: View {
     let governor = AICostGovernor()
     governor.seed(usedToday: governor.limit)
     return SummaryScreensView(
-        material: Material.samples[0],
+        material: .previewTrees,
         router: AIRouter(
             providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .zero)],
             governor: governor
