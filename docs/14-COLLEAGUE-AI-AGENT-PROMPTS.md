@@ -35,14 +35,37 @@ modes are predictable and both are expensive:
 
 ### Verified: the lanes do not overlap
 
-**69 files** are reachable across the four members' *modify* lanes, and **zero of them is
-claimed by two members.** The four lanes were checked programmatically:
+**190 files** are reachable across the four members' *modify* lanes, **zero of them is claimed by
+two members, and no tracked app file is in no lane at all.** Measured 22 Oct 2026 against the
+tracked tree and against the guard itself:
 
 ```
-TOUCH files            M2 25 · M3 24 · M4 18 · M5 2   (69 total)
-claimed by two members : none
-also declared SHARED   : none
+app files              : 392
+  M1 (project level)   : 202   the app entry point and router, the design system, Resources,
+                               the preview assets, the existing test files, and F01/F02/F14
+  M2 · M3 · M4 · M5    :  71 · 51 · 63 · 5        (190 in the four modify-lanes)
+  claimed by two       :   0
+  in no lane at all    :   0   ← was 167 before this pass; see the correction below
 ```
+
+> **Correction, 22 Oct 2026 — the lane map described directories, and the guard implemented files.**
+> docs/14 and CONTRIBUTING have described each member's lane as a set of *directories* since the
+> handover ("`Core/AI/`, `Features/{Flashcards,Summaries,Quizzes,Tutor}/`…"), but `tools/check-lane.sh`
+> gave members only **individual file lists**, and `NEW` — the only directory mechanism it had —
+> applies exclusively to files that **do not exist yet**. An audit of the tracked tree found the
+> consequence: **167 of the 394 app files were in no lane at all**, including
+> `Core/Scheduling/SpacedRepetition.swift` (which M2's own starter brief tells him to hand-write),
+> all seventeen `Core/Payments/` files (M3's F13), the whole `Features/Admin/` screen set (M4's F12),
+> and **the three files M5's own TODOs point at** — she could not have started. Every one of those
+> would have produced the same `OUT OF LANE` that stopped M3 on the Coach screens. The guard now has
+> a per-member `DIRS` list (the owner's `OWNED_DIRS`, applied to members), so a member's lane is the
+> directories their features live in — existing files and new files alike. **Three files stay with
+> someone else inside another member's directories**, and they are declared once in the guard's
+> `CARVE_OUTS` rather than left to list order: `Core/Tutor/CohortSnapshot.swift` (M3), and
+> `Core/Admin/AIConfiguration.swift` (M2), `Features/Groups/GroupChat*` + `Moderation/` (M5).
+> Verified both ways in a clone: every member reaches the files their own brief names, and each
+> carve-out is still refused to the member who does not own it. The previous version of this block
+> read *69 files*; the count was re-measured from the file and the tree, not recounted by hand.
 
 > **Correction, 22 Oct 2026 — this block read *49 files, M2 14 · M3 15 · M4 18 · M5 2*, and had
 > been stale since 17 Oct**, when the Coach retrieval/planner files were given lanes because
@@ -82,7 +105,7 @@ repository. The guard forbids touching the `.xcodeproj` regardless.
 | | M2 Mohammed | M3 Tasbeeh | M4 Shahad | M5 Fatema |
 |---|---|---|---|---|
 | **Branches** | `feat/F03-*` `F04-*` `F05-*` `F11-*` `F15-*` | `feat/F06-*` `F07-*` `F13-*` `F15-*` | `feat/F08-*` `F09-*` `F10-*` `F12-*` | `feat/F16-*` `F17-*` |
-| **Owns** | `Core/AI/`, `Features/Flashcards/`, `Features/Summaries/`, `Features/Quizzes/`, `Features/Tutor/`, `Core/Admin/AIConfiguration.swift`, `Features/Coach/{CoachHome,CoachChat,CitationSheet}*.swift` (F15 screens 73–76, 79, 80), `Features/Library/MaterialLibraryView.swift` | `Core/Planning/`, `Core/Payments/`, `Features/StudyPlan/`, `Features/Progress/`, `Features/Subscription/`, `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift`, `Features/Coach/StudyPath{View,ViewModel}.swift` (F15 screens 77, 78) | `Core/Groups/` (top level), `Core/Bookmarks/`, `Core/Folders/`, `Features/Groups/` (top level), `Features/Folders/`, `Features/Bookmarks/`, `Features/Admin/` | `Features/Groups/GroupChatView.swift`, `Features/Groups/GroupChatViewModel.swift`, `Core/Groups/Moderation/`, `Core/Recall/`, `Features/Groups/Moderation/`, `Features/Recall/` |
+| **Owns** | **Directories:** `Core/{AI,Flashcards,Quizzes,Scheduling,Summaries,Tutor}/`, `Features/{Flashcards,Quizzes,Summaries,Tutor}/`. **Plus the files:** `Core/Admin/AIConfiguration.swift`, `Features/Coach/{CoachHome,CoachChat,CitationSheet}*.swift` (screens 73–76, 79, 80), `Features/Library/MaterialLibraryView.swift`. **Minus:** `Core/Tutor/CohortSnapshot.swift` (M3's) | **Directories:** `Core/{Payments,Planning,Progress}/`, `Features/{Progress,StudyPlan,Subscription}/`. **Plus the files:** `Features/Home/SignedInHomeView.swift`, `Core/Tutor/CohortSnapshot.swift`, `Features/Coach/StudyPath{View,ViewModel}.swift` (screens 77, 78) | **Directories:** `Core/{Admin,Bookmarks,Folders}/`, `Features/{Admin,Bookmarks,Folders,Groups}/`. **Plus the files:** `Core/Groups/{StudyGroup,LiveQuizSession,GroupStore,FileGroupStore,InMemoryGroupStore}.swift`. **Minus:** `Core/Admin/AIConfiguration.swift` (M2's), `Features/Groups/GroupChat*` + `Moderation/` (M5's) | **Directories:** `Core/{Recall,Groups/Moderation}/`, `Features/{Recall,Groups/Moderation}/`. **Plus the files:** `Features/Groups/GroupChatView.swift`, `GroupChatViewModel.swift` |
 | **May add new files in** | `…/Core/AI/`, `…/Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `StudyForgeTests/` | `…/Core/{Planning,Payments}/`, `…/Features/{StudyPlan,Progress,Subscription}/`, `…/Features/Coach/` (screen 78, P2 — not built yet), `StudyForgeTests/` | `…/Core/{Groups,Bookmarks,Folders}/`, `…/Features/{Folders,Bookmarks,Admin}/`, `StudyForgeTests/` | `…/Core/Groups/Moderation/`, `…/Core/Recall/`, `…/Features/Groups/Moderation/`, `…/Features/Recall/`, `StudyForgeTests/` |
 | **Primary tester for** | F06, F12, F17 | F02, F08, F10, F14 | F04, F11, F16 | F01, F05, F13 |
 | **May touch, with care** | `AppContainer.swift`, `en/ar Localizable.strings` | same | same | same |
