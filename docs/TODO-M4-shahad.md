@@ -89,13 +89,19 @@ Never `git switch develop` to "just quickly fix something". Never `git push orig
 
 **You may modify these** (and nothing else):
 
-| Area | Files |
+| Area | Yours |
 |---|---|
-| F09 groups | `Core/Groups/StudyGroup.swift` · `LiveQuizSession.swift` · `GroupStore.swift` · `FileGroupStore.swift` · `InMemoryGroupStore.swift` |
-| F09 UI | `Features/Groups/LiveQuizView.swift` · `LiveQuizViewModel.swift` · `GroupDetailView.swift` |
-| F10 bookmarks | `Core/Bookmarks/BookmarkStore.swift` · `FileBookmarkStore.swift` · `InMemoryBookmarkStore.swift` · `BookmarkCollection.swift` |
-| F12 admin | `Features/Admin/AdminDashboardView.swift` |
+| **F08 · F09 · F10 · F12 — everything in these directories** | `Core/Admin/` · `Core/Bookmarks/` · `Core/Folders/` · `Features/Admin/` · `Features/Bookmarks/` · `Features/Folders/` · `Features/Groups/` |
+| F09 group stores (top level of `Core/Groups/`) | `StudyGroup.swift` · `LiveQuizSession.swift` · `GroupStore.swift` · `FileGroupStore.swift` · `InMemoryGroupStore.swift` |
 | Tests | `StudyForgeTests/BookmarkStoreTests.swift` · `BookmarkViewModelTests.swift` · `GroupViewModelTests.swift` · `GroupStoreTests.swift` · `AdminTests.swift` |
+| **NOT yours, inside your own directories** | `Core/Admin/AIConfiguration.swift` is **M2's** (F15) · `Features/Groups/GroupChatView.swift`, `GroupChatViewModel.swift` and `Features/Groups/Moderation/` are **M5's** (F16) |
+
+> **Corrected 22 Oct 2026 — your lane used to be a list of individual files, and it was too small.**
+> An audit of the tracked tree found **167 of the 394 app files were in no lane at all**, including
+> your whole `Features/Admin/` screen set, `Features/Bookmarks/`, `Features/Folders/` and all twenty
+> `Core/Admin/` files — so the F12 work your brief describes could not be started. Your lane is now
+> the **directories** your four features live in, existing files and new ones alike, with the three
+> exceptions named in the last row above. Full detail: [doc 14 §2](14-COLLEAGUE-AI-AGENT-PROMPTS.md).
 
 **You may add NEW files** inside: `Core/Groups/` · `Core/Bookmarks/` · `Core/Folders/` ·
 `Features/Groups/` · `Features/Folders/` · `Features/Bookmarks/` · `Features/Admin/` ·
