@@ -53,7 +53,7 @@ struct SummaryMaterialViewer: View {
     private func sectionCard(_ section: SummaryMaterialSection, isCited: Bool) -> some View {
         VStack(alignment: .leading, spacing: Spacing.s2) {
             if let page = section.page {
-                Text("Page \(page)")
+                Text(SummaryCopy.viewerPage(page))
                     .font(.sfFootnote.weight(.semibold))
                     .foregroundStyle(isCited ? ColorTokens.successText : ColorTokens.textSecondary)
                     .accessibilityAddTraits(.isHeader)
