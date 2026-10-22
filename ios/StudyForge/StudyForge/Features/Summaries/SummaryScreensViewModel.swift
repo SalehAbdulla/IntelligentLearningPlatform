@@ -1,5 +1,7 @@
 import Foundation
 
+struct SummaryTimeoutError: Error, Equatable {}
+
 @MainActor
 @Observable
 final class SummaryScreensViewModel {
@@ -15,6 +17,7 @@ final class SummaryScreensViewModel {
     private(set) var savedSummaryID: String?
     private(set) var hasUnsavedChanges = false
     private(set) var isSaving = false
+    private(set) var servedFromCache = false
     private(set) var error: AppError?
 
     let material: Material
@@ -22,6 +25,8 @@ final class SummaryScreensViewModel {
     private let router: AIRouter
     private let store: any SummaryStore
     private let learningStyle: LearningStyle
+    private let cache: SummaryResponseCache
+    private let timeout: Duration
 
     @ObservationIgnored private var generationTask: Task<Void, Never>?
     @ObservationIgnored private var generationID = UUID()
@@ -30,12 +35,16 @@ final class SummaryScreensViewModel {
         material: Material,
         router: AIRouter,
         store: any SummaryStore,
-        learningStyle: LearningStyle = .visual
+        learningStyle: LearningStyle = .visual,
+        cache: SummaryResponseCache = .shared,
+        timeout: Duration = SummaryLimits.generationTimeout
     ) {
         self.material = material
         self.router = router
         self.store = store
         self.learningStyle = learningStyle
+        self.cache = cache
+        self.timeout = timeout
         self.engine = predictedEngine
     }
 
@@ -55,27 +64,31 @@ final class SummaryScreensViewModel {
     var focusError: String? {
         let topics = self.topics
         if topics.count > SummaryLimits.focusMaxTopics {
-            return "Use up to \(SummaryLimits.focusMaxTopics) topics, separated by commas."
+            return SummaryCopy.focusTooMany(SummaryLimits.focusMaxTopics)
         }
         if topics.contains(where: { $0.count > SummaryLimits.focusMaxTopicCharacters }) {
-            return "Each topic must be \(SummaryLimits.focusMaxTopicCharacters) characters or fewer."
+            return SummaryCopy.focusTooLong(SummaryLimits.focusMaxTopicCharacters)
         }
         if topics.contains(where: { $0.rangeOfCharacter(from: .alphanumerics) == nil }) {
-            return "Topics need letters or numbers."
+            return SummaryCopy.focusSymbols
         }
         if Set(topics.map { $0.lowercased() }).count != topics.count {
-            return "Remove repeated topics."
+            return SummaryCopy.focusRepeated
         }
         return nil
     }
 
+    var materialWordCount: Int {
+        SummaryLimits.wordCount(of: material.text)
+    }
+
     var materialError: String? {
-        let text = material.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        if text.isEmpty {
-            return "This material has no readable text yet. Re-import it and try again."
+        if material.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return SummaryCopy.materialEmpty
         }
-        if text.count < SummaryLimits.minimumSourceCharacters {
-            return "This material is too short to summarise. Add at least \(SummaryLimits.minimumSourceCharacters) characters of text."
+        let words = materialWordCount
+        if words < SummaryLimits.minimumSourceWords {
+            return SummaryCopy.materialShort(minimum: SummaryLimits.minimumSourceWords, actual: words)
         }
         return nil
     }
@@ -131,11 +144,6 @@ final class SummaryScreensViewModel {
     @discardableResult
     func generate() -> Task<Void, Never>? {
         guard canGenerate else { return nil }
-        if isQuotaBlocked {
-            error = nil
-            step = .quotaExceeded
-            return nil
-        }
         return start(forceOnDevice: false)
     }
 
@@ -165,6 +173,7 @@ final class SummaryScreensViewModel {
         summary = nil
         savedSummaryID = nil
         hasUnsavedChanges = false
+        servedFromCache = false
         error = nil
         engine = predictedEngine
         step = .configure
@@ -192,18 +201,18 @@ final class SummaryScreensViewModel {
 
     func editError(title: String, tldr: String, keyPoints: [String]) -> String? {
         if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return "Give the summary a title."
+            return SummaryCopy.editTitleError
         }
         if tldr.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return "The TL;DR can't be empty."
+            return SummaryCopy.editTldrError
         }
         if keyPoints.allSatisfy({ $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
-            return "Keep at least one key point."
+            return SummaryCopy.editPointsError
         }
         return nil
     }
 
-    func applyEdits(title: String, tldr: String, keyPoints: [String]) {
+    func applyEdits(title: String, tldr: String, keyPoints: [String], showsAIDraftLabel: Bool? = nil) {
         guard var edited = summary, editError(title: title, tldr: tldr, keyPoints: keyPoints) == nil else { return }
         edited.title = String(title.trimmingCharacters(in: .whitespacesAndNewlines).prefix(SummaryLimits.titleMaxCharacters))
         edited.tldr = String(tldr.trimmingCharacters(in: .whitespacesAndNewlines).prefix(SummaryLimits.tldrMaxCharacters))
@@ -212,6 +221,9 @@ final class SummaryScreensViewModel {
             .filter { !$0.isEmpty }
             .prefix(SummaryLimits.keyPointMaxCount)
             .map { String($0.prefix(SummaryLimits.keyPointMaxCharacters)) }
+        if let showsAIDraftLabel {
+            edited.showsAIDraftLabel = showsAIDraftLabel
+        }
         guard edited != summary else { return }
         summary = edited
         hasUnsavedChanges = true
@@ -219,7 +231,7 @@ final class SummaryScreensViewModel {
 
     func resetText(now: Date = .now) -> String {
         let minutes = max(Int(router.governor.resetsAt.timeIntervalSince(now) / 60), 1)
-        return "\(minutes / 60) h \(minutes % 60) m"
+        return SummaryCopy.reset(hours: minutes / 60, minutes: minutes % 60)
     }
 
     private func start(forceOnDevice: Bool) -> Task<Void, Never> {
@@ -230,6 +242,7 @@ final class SummaryScreensViewModel {
         summary = nil
         savedSummaryID = nil
         hasUnsavedChanges = false
+        servedFromCache = false
         engine = forceOnDevice ? .onDevice : predictedEngine
         step = .generating
 
@@ -254,6 +267,21 @@ final class SummaryScreensViewModel {
     }
 
     private func run(_ request: SummaryRequest, id: UUID, forceOnDevice: Bool) async {
+        let key = SummaryResponseCache.key(for: request)
+        if let cached = await cache.value(for: key) {
+            guard id == generationID, step == .generating, !Task.isCancelled else { return }
+            finish(with: cached, request: request, fromCache: true)
+            return
+        }
+
+        guard id == generationID, step == .generating, !Task.isCancelled else { return }
+        if !forceOnDevice, isQuotaBlocked {
+            generationTask = nil
+            engine = predictedEngine
+            step = .quotaExceeded
+            return
+        }
+
         let previousPolicy = router.policy
         if forceOnDevice {
             router.policy = .offlineOnly
@@ -261,7 +289,7 @@ final class SummaryScreensViewModel {
 
         let outcome: Result<AIGenerated<AISummary>, any Error>
         do {
-            outcome = .success(try await router.summarize(request))
+            outcome = .success(try await summarizeWithTimeout(request))
         } catch {
             outcome = .failure(error)
         }
@@ -271,28 +299,55 @@ final class SummaryScreensViewModel {
         }
 
         guard id == generationID, step == .generating, !Task.isCancelled else { return }
-        generationTask = nil
 
         switch outcome {
         case .success(let generated):
-            summary = SummaryGrounding.summary(
-                from: generated,
-                material: material,
-                fileName: fileName,
-                length: request.length,
-                style: request.style,
-                language: request.context.language
-            )
-            engine = SummaryEngine(tier: generated.tier)
-            step = .result
+            await cache.store(generated, for: key)
+            guard id == generationID, step == .generating else { return }
+            finish(with: generated, request: request, fromCache: false)
         case .failure(let failure):
+            generationTask = nil
             if !forceOnDevice, hitQuota(failure) {
                 step = .quotaExceeded
             } else {
-                error = AppError.from(failure)
+                error = failure is SummaryTimeoutError ? .timedOut : AppError.from(failure)
                 engine = predictedEngine
                 step = .configure
             }
+        }
+    }
+
+    private func finish(with generated: AIGenerated<AISummary>, request: SummaryRequest, fromCache: Bool) {
+        generationTask = nil
+        summary = SummaryGrounding.summary(
+            from: generated,
+            material: material,
+            fileName: fileName,
+            length: request.length,
+            style: request.style,
+            language: request.context.language
+        )
+        servedFromCache = fromCache
+        engine = SummaryEngine(tier: generated.tier)
+        step = .result
+    }
+
+    private func summarizeWithTimeout(_ request: SummaryRequest) async throws -> AIGenerated<AISummary> {
+        let router = self.router
+        let timeout = self.timeout
+        return try await withThrowingTaskGroup(of: AIGenerated<AISummary>.self) { group in
+            group.addTask {
+                try await router.summarize(request)
+            }
+            group.addTask {
+                try await Task.sleep(for: timeout)
+                throw SummaryTimeoutError()
+            }
+            defer { group.cancelAll() }
+            guard let first = try await group.next() else {
+                throw SummaryTimeoutError()
+            }
+            return first
         }
     }
 
