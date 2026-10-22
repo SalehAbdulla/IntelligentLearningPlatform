@@ -94,9 +94,20 @@ the owner may push directly, while every other account still has to go through a
 |---|---|---|
 | Pull request required before merging | ✅ all members | ✅ all members |
 | **Approvals required before merging** | none enforced | **✅ 1 — and any member may approve** (added 15 Oct 2026) |
+| **Required status checks before merging** | none | **✅ `Repo checks` + `iOS build and test`** (added 22 Oct 2026) |
 | Admin enforcement (`enforce_admins`) | ❌ off, owner exempt by decision | ❌ off, owner exempt by decision |
 | Force-push blocked | ✅ | ✅ |
 | Branch deletion blocked | ✅ | ✅ |
+
+> **CI is a gate now, not a verdict somebody chooses to read (22 Oct 2026).** `develop` requires
+> **`Repo checks`** and **`iOS build and test`** to pass before a pull request can be merged. This
+> closes the dangerous half of [doc 09 R26](09-RISKS-OPEN-QUESTIONS.md): until now a red build
+> could be merged, which is the one failure CI was added to prevent for the four members who
+> cannot run Xcode. Two details are deliberate. **`strict=false`**, so a green pull request is not
+> invalidated every time `develop` moves — a 12-minute re-run per merge is how a gate becomes
+> something people route around. And **`enforce_admins` stays off**, so the owner hotfix path
+> below still exists. What CI cannot check is whether the code is any *good*, which is what the
+> required review is for.
 
 > **Why `develop` requires one approval, and why it is not "only the owner may merge".** The
 > Sprints component (10%) is read from the **review trail**, and the comprehension contract says
@@ -171,6 +182,17 @@ disabling anything.
 > **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. That is why the
 > PR requirement stays enforced for the members whose work is assessed, and why the guards live
 > in executable tools (`tools/commit.sh`, `tools/check-lane.sh`) as well as in settings.
+
+> **Updated 22 Oct 2026 — the guards now run where they cannot be skipped.** `tools/commit.sh`
+> and `tools/check-lane.sh` are *local* tools: they refuse a bad commit only if the person runs
+> them. One member's branch showed the gap precisely — five subjects that are not Conventional
+> Commits, a personal author address, and no pull request for anything to notice it. So
+> **`tools/check-commits.sh`** now checks identity, message and lane across a branch's commits,
+> and the **`Repo checks`** CI job runs it on every push and every pull request. It reads its
+> rules from the **base** branch (`--rules-ref`: that branch's message pattern, its lane guard,
+> its allowlist and its `.mailmap`), so a pull request cannot relax the rule that judges it. The
+> one place an exception is allowed is `tools/commit-hygiene-allowlist.txt`, which names
+> individual commits with a written reason — a recorded exception, never a silent one.
 
 ```
 remote: error: GH006: Protected branch update failed for refs/heads/develop.
