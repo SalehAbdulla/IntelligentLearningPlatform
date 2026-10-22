@@ -63,14 +63,20 @@ Never `git switch develop` to "just quickly fix something". Never `git push orig
 
 **You may modify these** (and nothing else):
 
-| Area | Files |
+| Area | Yours |
 |---|---|
-| F06 planning | `Core/Planning/StudyPlan.swift` · `StudyPlanner.swift` · `StudyPlanStore.swift` · `FileStudyPlanStore.swift` · `InMemoryStudyPlanStore.swift` |
-| F06/F07 wizard + progress | `Features/StudyPlan/StudyPlanWizardView.swift` · `StudyPlanWizardViewModel.swift` · `StudyPlanViewModel.swift` · `StudySessionDetailView.swift` · `Features/Progress/ProgressDashboardView.swift` |
-| F07 home | `Features/Home/SignedInHomeView.swift` |
-| F07 tutor metrics | `Core/Tutor/CohortSnapshot.swift` |
-| F13 payments | everything under `Core/Payments/` and `Features/Subscription/` |
+| **F06 · F07 · F13 — everything in these directories** | `Core/Planning/` · `Core/Payments/` · `Core/Progress/` · `Features/StudyPlan/` · `Features/Progress/` · `Features/Subscription/` |
+| F06/F07 named files | `Features/Home/SignedInHomeView.swift` (F07's home) · `Core/Tutor/CohortSnapshot.swift` (F07's tutor metrics) |
+| F15 screen 77 (+ 78) | `Features/Coach/StudyPathView.swift` · `StudyPathViewModel.swift` · and `Features/Coach/` for screen 78, which does not exist yet |
 | Tests | `StudyForgeTests/StudyPlannerTests.swift` · `NotificationViewModelTests.swift` · `CohortSnapshotTests.swift` |
+
+> **Corrected 22 Oct 2026 — your lane used to be a list of individual files, and it was too small.**
+> All **seventeen** files in `Core/Payments/` already existed and **none** was in your lane, so the
+> F13 work your brief describes could not be started; the same was true of `Core/Progress/`, and of
+> the two `Features/Coach/StudyPath*` files that implement screen 77 — the screen the inventory names
+> you as the owner of. An audit of the tracked tree found **167 of the 394 app files were in no lane
+> at all**. Your lane is now the **directories** your features live in, existing files and new ones
+> alike. Full detail: [doc 14 §2](14-COLLEAGUE-AI-AGENT-PROMPTS.md).
 
 **You may add NEW files** inside: `Core/Planning/` · `Core/Payments/` ·
 `Features/StudyPlan/` · `Features/Progress/` · `Features/Subscription/` ·
