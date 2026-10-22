@@ -15,6 +15,7 @@ struct SummaryEditSheet: View {
     @State private var title: String
     @State private var tldr: String
     @State private var points: [SummaryEditablePoint]
+    @State private var showsAIDraftLabel: Bool
     @State private var isConfirmingDiscard = false
 
     init(viewModel: SummaryScreensViewModel, summary: GeneratedSummary) {
@@ -23,6 +24,7 @@ struct SummaryEditSheet: View {
         _title = State(initialValue: summary.title)
         _tldr = State(initialValue: summary.tldr)
         _points = State(initialValue: summary.keyPoints.map { SummaryEditablePoint(text: $0) })
+        _showsAIDraftLabel = State(initialValue: summary.showsAIDraftLabel)
     }
 
     private var error: String? {
@@ -30,25 +32,28 @@ struct SummaryEditSheet: View {
     }
 
     private var hasChanges: Bool {
-        title != summary.title || tldr != summary.tldr || points.map(\.text) != summary.keyPoints
+        title != summary.title
+            || tldr != summary.tldr
+            || points.map(\.text) != summary.keyPoints
+            || showsAIDraftLabel != summary.showsAIDraftLabel
     }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Title", text: $title)
+                    TextField(SummaryCopy.titleField, text: $title)
                         .onChange(of: title) {
                             if title.count > SummaryLimits.titleMaxCharacters {
                                 title = String(title.prefix(SummaryLimits.titleMaxCharacters))
                             }
                         }
                 } header: {
-                    Text("Title")
+                    Text(SummaryCopy.titleField)
                 }
 
                 Section {
-                    TextField("TL;DR", text: $tldr, axis: .vertical)
+                    TextField(SummaryCopy.tldr, text: $tldr, axis: .vertical)
                         .lineLimit(3...6)
                         .onChange(of: tldr) {
                             if tldr.count > SummaryLimits.tldrMaxCharacters {
@@ -56,9 +61,9 @@ struct SummaryEditSheet: View {
                             }
                         }
                 } header: {
-                    Text("TL;DR")
+                    Text(SummaryCopy.tldr)
                 } footer: {
-                    Text("\(tldr.count)/\(SummaryLimits.tldrMaxCharacters)")
+                    Text(verbatim: "\(tldr.count)/\(SummaryLimits.tldrMaxCharacters)")
                         .monospacedDigit()
                 }
 
@@ -88,19 +93,21 @@ struct SummaryEditSheet: View {
                         Button {
                             points.append(SummaryEditablePoint(text: ""))
                         } label: {
-                            Label("Add key point", systemImage: "plus.circle.fill")
+                            Label(SummaryCopy.addKeyPoint, systemImage: "plus.circle.fill")
                         }
                     }
                 } header: {
                     Text(L10n.summaryKeyPointsHeading.string)
                 } footer: {
-                    Text("Up to \(SummaryLimits.keyPointMaxCount) points, \(SummaryLimits.keyPointMaxCharacters) characters each.")
+                    Text(SummaryCopy.pointsFooter(count: SummaryLimits.keyPointMaxCount, characters: SummaryLimits.keyPointMaxCharacters))
                 }
 
                 Section {
-                    Label("AI-drafted · \(summary.source.pageLabel) provenance kept", systemImage: "sparkles")
-                        .font(.sfFootnote)
-                        .foregroundStyle(ColorTokens.textSecondary)
+                    Toggle(isOn: $showsAIDraftLabel) {
+                        Label(SummaryCopy.watermarkToggle, systemImage: "sparkles")
+                    }
+                } footer: {
+                    Text(SummaryCopy.watermarkFooter(citation: summary.source.pageLabel))
                 }
 
                 if let error {
@@ -110,7 +117,7 @@ struct SummaryEditSheet: View {
                     }
                 }
             }
-            .navigationTitle("Edit summary")
+            .navigationTitle(SummaryCopy.editSheetTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -124,15 +131,20 @@ struct SummaryEditSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L10n.commonDone.string) {
-                        viewModel.applyEdits(title: title, tldr: tldr, keyPoints: points.map(\.text))
+                        viewModel.applyEdits(
+                            title: title,
+                            tldr: tldr,
+                            keyPoints: points.map(\.text),
+                            showsAIDraftLabel: showsAIDraftLabel
+                        )
                         dismiss()
                     }
                     .disabled(error != nil || !hasChanges)
                 }
             }
-            .confirmationDialog("Discard your changes?", isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
-                Button("Discard", role: .destructive) { dismiss() }
-                Button("Keep editing", role: .cancel) {}
+            .confirmationDialog(SummaryCopy.discardChangesTitle, isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
+                Button(SummaryCopy.discardConfirm, role: .destructive) { dismiss() }
+                Button(SummaryCopy.keepEditing, role: .cancel) {}
             }
         }
         .interactiveDismissDisabled(hasChanges)
