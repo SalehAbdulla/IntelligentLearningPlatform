@@ -26,6 +26,8 @@
 
 **Audit date:** 23 October 2026 · **Auditor:** M1 Saleh Abdulla (`202300540`) · **Scope:** the 106 low-fidelity wireframes on Figma page `5 · Low-Fi Wireframes`, their written descriptions in Appendix A, and the design-system consistency of the frame set
 
+> **Superseded in part, 24 October 2026.** The wireframe set grew from **106 to 130** (13 for groups N/O, 11 for the reworked F13 subscription states), Appendix A's coverage audit moved from §A.15 to §A.17, and the counts quoted throughout this audit refer to the 106-frame set it measured. The findings below are kept as the dated record; the current counts live in `figma-audit.md` and `docs/03`.
+
 ---
 
 ## Verdict
