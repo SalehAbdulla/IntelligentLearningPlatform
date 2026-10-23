@@ -12,6 +12,48 @@
 
 ---
 
+> ## ⚠️ READ THIS FIRST IF YOU HAVE `feat/F03-AI-SUMMARY` CHECKED OUT
+>
+> **Your branch was rewritten on 23 Oct 2026 by Saleh (M1), with the authorisation recorded in
+> [`docs/TODOLIST.md` §0](TODOLIST.md). Your clone now points at commits that no longer exist on
+> the remote.** One command fixes it:
+>
+> ```bash
+> git fetch origin && git reset --hard origin/feat/F03-AI-SUMMARY
+> ```
+>
+> **Before you run that: if you have any local work you have not pushed, stop and say so first.**
+> Nothing is lost either way — the old line is kept on the remote as `backup/F03-before-rewrite`
+> (`5e4a94e`) — but moving your work across *before* the reset is much easier than after it.
+>
+> **What changed, and why.** The branch had been created from `main` instead of `develop`, so it
+> carried **67 commits**: your 36, plus main's entire release line. Three measured consequences:
+> the lane guard refused you a file that is yours, GitGuardian went red on one of Saleh's earlier
+> commits (PR #34) that your branch happened to contain, and `tools/check-commits.sh` reported
+> **5 message failures** — `view`, `configure view`, `edit sheet`, `quate view`, `source sheet` —
+> plus a personal author address.
+>
+> The branch was **rebased onto `develop`**, the five subjects were **reworded from each commit's
+> own diff**, and **author *and* committer were set to `Mohammed Almadhoon
+> <202401702@student.polytechnic.bh>`** — the identity the Sprints mark is read from. Your PR now
+> shows **36 commits instead of 67**, and the tool reports **0 message failures and 0 identity
+> failures**.
+>
+> **Nothing about your code changed.** Verified before the push, not after: the branch's net
+> change is **byte-identical** — the same 21 files, the same **+2897/−1**. Only the log moved, and
+> your commit dates are unchanged, so the sprint timeline still reads honestly.
+>
+> **This is not a correction of you.** You were committing under the identity this file used to
+> tell you to use, on a branch created the way the handover used to describe it. Both were
+> documentation defects, and both are now fixed in this file.
+>
+> **One thing stays red, and it is not yours to fix:** `bash tools/check-lane.sh M2` still reports
+> `Features/Library/MaterialLibraryView.swift` as OUT OF LANE until **PR #131** merges and you
+> merge `develop` into your branch. That file *is* yours — the corrected guard is simply not on
+> `develop` yet.
+
+---
+
 ## ⚡ The four things that actually go wrong — read this before anything else
 
 **Every problem a member has hit so far has been one of these four.** They take ten minutes to get
