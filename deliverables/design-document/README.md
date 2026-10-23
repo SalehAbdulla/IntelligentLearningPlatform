@@ -3,8 +3,8 @@
 The exported PDF is built from the Markdown source in this folder, not assembled by hand.
 
 - `DESIGN-DOCUMENT.md`               the source of truth for the document (all 19 sections)
-- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 162 pages, its Appendix A carries every one of the 132 figures one per page at print resolution, fonts embedded by the browser, links live. It is **gitignored on purpose** (`.gitignore` line 79: the PDF goes through the portal, not git), which is exactly why the build is a script: the PDF is reproducible from the Markdown on any machine, and the tool is what gets reviewed here
-- `mockups/`                         ✅ the low-fidelity mockups deliverable: `SCREEN-DESCRIPTIONS.md` (purpose, layout and named UI elements for all 106 screens) + `figures/` with the **128 exported 2× PNGs** (106 wireframes, 15 flow diagrams, the four system diagrams drawn 8 Oct 2026, the navigation map and two page headers)
+- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 194 pages, its Appendix A carries every one of the 158 figures one per page at print resolution, fonts embedded by the browser, links live (36 external). It is **gitignored on purpose** (`.gitignore` line 79: the PDF goes through the portal, not git), which is exactly why the build is a script: the PDF is reproducible from the Markdown on any machine, and the tool is what gets reviewed here
+- `mockups/`                         ✅ the low-fidelity mockups deliverable: `SCREEN-DESCRIPTIONS.md` (purpose, layout and named UI elements for all **130** wireframes) + `figures/` with the **154 exported 2× PNGs** (130 wireframes, 17 flow diagrams, the four system diagrams drawn 8 Oct 2026, the navigation map and two page headers)
 - `figures/`                         ✅ the document figures that are not mockups: the Figma cover, the design system sheet, the glass reference and the cross-cutting states panel
 
 ## Rebuilding the PDF
