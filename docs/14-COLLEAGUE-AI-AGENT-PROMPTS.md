@@ -187,7 +187,7 @@ the shared file from their diffs entirely.
 | `tools/new-branch.sh feat/Fxx-slug` | Creates a correctly named branch from `develop` and pushes it |
 | `tools/commit.sh [--push] [--multi]` | One file per commit, Conventional Commits, refuses `main`/`develop` |
 | `tools/todos.sh` | Lists every in-code TODO grouped by owner |
-| `python3 tools/check-strings.py` | English/Arabic key parity (912 keys) after any `.strings` change |
+| `python3 tools/check-strings.py` | English/Arabic key parity (912 keys, 910 until PR #134 lands) after any `.strings` change |
 | `python3 tools/verify-docs.py` | Internal links, screen inventory, ownership integrity |
 | `bash tools/check-submission.sh` | **The pre-submission gate.** Runs `verify-docs`, `check-strings`, `check-tokens` and `check-release`, then every section 4 and 5 item against its evidence. Exits non-zero while anything is open |
 | `bash tools/check-tokens.sh` | Colour-token parity between `docs/06` section 1.1 and `ColorTokens.swift` |
