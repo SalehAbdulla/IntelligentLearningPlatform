@@ -41,7 +41,7 @@ Feature IDs are **stable** and referenced across every other document (`F03` →
 |---|---|---|---|---|---|---|
 | **M1** | **Saleh Abdulla** | `202300540` | Data, Auth & Admin lead | F01, F02, F14 | `Saleh_202300540` | 3 |
 | **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` | 4 + shared |
-| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` | 3 + shared |
+| **M3** | **Tasbeeh Saeed** | `202305409` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` | 3 + shared |
 | **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` | 4 |
 | **M5** | **Fatema Ghareeb** | `202304804` | Collaboration & Recall lead | **F16**, **F17** | `Fatema_202304804` | 2 |
 
