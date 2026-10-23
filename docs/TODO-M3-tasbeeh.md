@@ -1,4 +1,4 @@
-# TODO — Tasbeeh Saeed · M3 · `202300549`
+# TODO — Tasbeeh Saeed · M3 · `202305409`
 
 > **Hand this entire file to your AI coding agent.** It is self-contained: identity,
 > the rules, your features, your open TODOs, the git protocol, and the definition of
@@ -19,7 +19,7 @@ right, and they are what the Sprints mark — **10%, assessed individually** —
 
 | # | Do this | **Not** this | What goes wrong otherwise |
 |---|---|---|---|
-| **1** | `git config --local user.email "202300549@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody. `.mailmap` cannot rescue an address that was never yours |
+| **1** | `git config --local user.email "202305409@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody. `.mailmap` cannot rescue an address that was never yours |
 | **2** | `bash tools/new-branch.sh feat/F06-study-plan` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
 | **3** | `bash tools/commit.sh <file> "feat(F06): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
 | **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew |
@@ -63,14 +63,20 @@ Never `git switch develop` to "just quickly fix something". Never `git push orig
 
 **You may modify these** (and nothing else):
 
-| Area | Files |
+| Area | Yours |
 |---|---|
-| F06 planning | `Core/Planning/StudyPlan.swift` · `StudyPlanner.swift` · `StudyPlanStore.swift` · `FileStudyPlanStore.swift` · `InMemoryStudyPlanStore.swift` |
-| F06/F07 wizard + progress | `Features/StudyPlan/StudyPlanWizardView.swift` · `StudyPlanWizardViewModel.swift` · `StudyPlanViewModel.swift` · `StudySessionDetailView.swift` · `Features/Progress/ProgressDashboardView.swift` |
-| F07 home | `Features/Home/SignedInHomeView.swift` |
-| F07 tutor metrics | `Core/Tutor/CohortSnapshot.swift` |
-| F13 payments | everything under `Core/Payments/` and `Features/Subscription/` |
+| **F06 · F07 · F13 — everything in these directories** | `Core/Planning/` · `Core/Payments/` · `Core/Progress/` · `Features/StudyPlan/` · `Features/Progress/` · `Features/Subscription/` |
+| F06/F07 named files | `Features/Home/SignedInHomeView.swift` (F07's home) · `Core/Tutor/CohortSnapshot.swift` (F07's tutor metrics) |
+| F15 screen 77 (+ 78) | `Features/Coach/StudyPathView.swift` · `StudyPathViewModel.swift` · and `Features/Coach/` for screen 78, which does not exist yet |
 | Tests | `StudyForgeTests/StudyPlannerTests.swift` · `NotificationViewModelTests.swift` · `CohortSnapshotTests.swift` |
+
+> **Corrected 22 Oct 2026 — your lane used to be a list of individual files, and it was too small.**
+> All **seventeen** files in `Core/Payments/` already existed and **none** was in your lane, so the
+> F13 work your brief describes could not be started; the same was true of `Core/Progress/`, and of
+> the two `Features/Coach/StudyPath*` files that implement screen 77 — the screen the inventory names
+> you as the owner of. An audit of the tracked tree found **167 of the 394 app files were in no lane
+> at all**. Your lane is now the **directories** your features live in, existing files and new ones
+> alike. Full detail: [doc 14 §2](14-COLLEAGUE-AI-AGENT-PROMPTS.md).
 
 **You may add NEW files** inside: `Core/Planning/` · `Core/Payments/` ·
 `Features/StudyPlan/` · `Features/Progress/` · `Features/Subscription/` ·
@@ -127,8 +133,25 @@ If the push is rejected, rebase again. **Never force-push.**
 
 ```bash
 git config --local user.name  "Tasbeeh Saeed"
-git config --local user.email "202300549@student.polytechnic.bh"
+git config --local user.email "202305409@student.polytechnic.bh"
 ```
+
+> **⚑ 23 Oct 2026 — your student ID was corrected: `202300549` → `202305409`.** The old one
+> transposed two digits, and it had propagated into every roster, the tooling, your git config
+> and this file. **Use `202305409@student.polytechnic.bh` from now on.** Three things worth
+> knowing:
+>
+> - **Your merged commits keep the old address, and that is fine.** They were pushed and merged
+>   before the correction, and rewriting merged history is not an option. `.mailmap` now maps the
+>   old address to you, so `git shortlog` still counts all **12** of them — verified, it reads
+>   `12  Tasbeeh Saeed <202305409@student.polytechnic.bh>`. If a marker asks, that is the answer.
+> - **Type the domain in lower case** (`student.polytechnic.bh`, not `Student.`). The check that
+>   reads identities matches the domain case-sensitively. The capitalised form is aliased too, so
+>   it will not fail — but lower case is the convention and the safer habit.
+> - **The old ID still appears in the Figma frame suffix** (`Tasbeeh_202300549`), in the 18 mockup
+>   PNG filenames, and in the Design Document that lists them. Those are artifact *names* rather
+>   than identities, and renaming them means editing the Figma file and rebuilding the PDF — a
+>   separate decision, not yet taken. Nothing you need to do about it.
 
 Every commit must be attributable to me. My **Sprints mark is 10% and assessed per
 person**, and the **VIVA is 60% and must pass**, so I have to be able to explain every
@@ -159,8 +182,46 @@ are the planner work I am expected to own.
 
 ## 3. My open TODOs (confirm with `bash tools/todos.sh`)
 
-**F06 — per-course exam dates that feed the planner**
-`ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift:100`
+> **⚑ 23 Oct 2026 — two lines waiting for you, and they close the last F06 copy defect.**
+> The review of your F06 PR recorded one thing rather than waving it through: the per-course
+> exam-date rows reuse the subjects heading, so the word *"exam"* never appears on screen, and the
+> toggle and the date control in each row carry **the same** accessibility label. You wrote the
+> same seam into the code yourself — *"`Core/Localisation/` sits in M1's OWNED_DIRS, so editing
+> `L10n.swift` would put this commit outside M3's lane. If the team wants the word 'exam' spelled
+> out per row, M1 adds a key and this becomes a one-line swap."* **M1 has now added the keys** —
+> `plan.examDatesHeading` ("When are your exams?") and `plan.examDateLabel` ("Exam date"), with
+> their Arabic copy, in **PR #134**. The two lines that *use* them are yours, because
+> `Features/StudyPlan/` is your lane and an owner edit there would be refused by the guard exactly
+> as your edit of `L10n.swift` was. **Do not "tidy away" the two keys** — they are unused until
+> these two lines land, and that is deliberate.
+>
+> ```swift
+> // ios/StudyForge/StudyForge/Features/StudyPlan/StudyPlanWizardView.swift
+> // 1. in `perSubjectExamDates` — the heading now says what the rows are
+> -            Text(viewModel.subjectsHeading)
+> +            Text(L10n.planExamDatesHeading.string)
+>
+> // 2. in `examDateRow` — the date control stops being labelled with the subject alone
+>                  )
+>                  .font(.sfBody)
+> +                .accessibilityLabel("\(subject), \(L10n.planExamDateLabel.string)")
+> ```
+>
+> ```bash
+> bash tools/new-branch.sh feat/F06-exam-date-copy
+> bash tools/check-lane.sh M3        # that one file is yours — it should pass first time
+> bash tools/commit.sh --push ios/StudyForge/StudyForge/Features/StudyPlan/StudyPlanWizardView.swift \
+>   "fix(F06): label the exam-date rows and their date controls"
+> gh pr create --base develop --fill
+> ```
+>
+> **And the other thing only you can do:** `research/sprints/sprint-1/tasbeeh-contribution.md` is
+> still an empty template. Your two merged PRs (`196bf0b`, `afd293f`) are attributable and real,
+> but the Sprints component — **10%, assessed per person** — is read off that file, and a log
+> filled in at the end reads as back-filled. Two rows now beat six rows later.
+
+**F06 — per-course exam dates that feed the planner — ✅ DONE, merged as `196bf0b` (PR #130)**
+`ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift:100` — the marker is gone from the code
 Exam dates belong on the **plan**, not the profile, so a date cannot go stale
 (docs/09 Q11).
 Files: `Core/Planning/StudyPlan.swift` (the model) · `Core/Planning/StudyPlanner.swift`
@@ -170,8 +231,10 @@ a "+ Add deadline" control).
 *Done when:* dates can be entered and stored on the plan, the planner avoids scheduling
 after them, and a test covers a plan that respects one.
 
-**F07 — the real student home (B05)**
-`ios/StudyForge/StudyForge/Features/Home/SignedInHomeView.swift:148`
+**F07 — the real student home (B05) — ✅ DONE, merged as `afd293f` (PR #133)**
+`ios/StudyForge/StudyForge/Features/Home/SignedInHomeView.swift:148` — the placeholder and its
+`TODO(M3 · F07)` marker are gone; the designed home exists, and `StudentHomeViewModel` +
+`StudentHomeViewModelTests` (7 tests) are yours
 Replace the placeholder with the designed home: greeting, today's plan, streak, and the
 quick-action tiles — then retire the ad-hoc library and profile links that exist only
 because the real home does not.

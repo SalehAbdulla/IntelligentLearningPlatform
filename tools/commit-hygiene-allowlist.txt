@@ -1,0 +1,67 @@
+# ===========================================================================
+#  commit-hygiene-allowlist.txt — commits exempt from tools/check-commits.sh
+# ===========================================================================
+#
+# WHY THIS FILE EXISTS
+#   `tools/check-commits.sh` refuses a branch whose commits are not attributable or are not
+#   Conventional Commits. Some commits genuinely cannot be made to pass on their own: a subject
+#   that has been pushed cannot be reworded without a force-push, which docs/12 §5 forbids.
+#
+#   They are named HERE, individually, rather than excused by a rule such as "only check commits
+#   after <date>". A date rule would quietly exempt everything older forever; this list says
+#   exactly which commits are exempt and why, and it cannot grow by accident. An entry here is a
+#   recorded exception, not a silent one — the same principle as a lane exception recorded in
+#   docs/TODOLIST.md.
+#
+#   **There are currently no entries.** The five that prompted this file were removed on
+#   23 Oct 2026, because the branch they named was rewritten instead — see the note at the
+#   bottom, which is kept as the record of why.
+#
+# WHAT THIS FILE DOES *NOT* DO
+#   · It exempts the MESSAGE check only.
+#   · It does not touch the identity check, which is resolved through `.mailmap` — an address
+#     that resolves to a team address is attributable even when it is not the student one.
+#   · It does not touch the lane check, which is judged on the branch diff rather than per
+#     commit.
+#
+# REMOVING AN ENTRY
+#   Two things make an entry moot: the branch is merged (the check is applied to the commits a
+#   branch brings, not to history already on develop), or the branch is rewritten so the commit
+#   no longer exists. Delete it then, in its own commit, with the reason in the message.
+#
+# FORMAT
+#   <12-character sha>  <who>  <branch>  <why>
+#
+# ---------------------------------------------------------------------------
+#  REMOVED 23 Oct 2026 — the five entries below were deleted, because the commits they named no
+#  longer exist. `feat/F03-AI-SUMMARY` was rewritten by the owner, with the authorisation recorded
+#  in docs/TODOLIST.md §0 and a backup ref kept at `backup/F03-before-rewrite` (`5e4a94e`):
+#
+#    · the branch was rebased onto `develop`, which dropped main's release line, so the pull
+#      request's commit range fell from 67 to the 36 commits that are actually his;
+#    · the five subjects were reworded to Conventional Commits, from each commit's own diff:
+#        "configure view" → "feat(F03): add the summary configure screen"
+#        "view"           → "feat(F03): add the summary screens container"
+#        "edit sheet"     → "feat(F03): add the summary edit sheet"
+#        "quate view"     → "feat(F03): add the summary quota screen"
+#        "source sheet"   → "feat(F03): add the summary screens, models and the source sheet"
+#    · the author AND committer of all 36 commits were set to
+#      `Mohammed Almadhoon <202401702@student.polytechnic.bh>`, matching the convention the other
+#      members' merged commits already follow.
+#
+#  Verified before the force-push, and recorded because it is the part that could have gone
+#  wrong: the branch's net change is **byte-identical** to what it was before — `git diff
+#  17ba8a0 backup/F03-before-rewrite` and `git diff origin/develop <new tip>` are the same 3029
+#  lines, 21 files, +2897/−1. The rewrite changed the log, not the code.
+#
+#  `bash tools/check-commits.sh` on the rewritten branch now reports **0 message failures and
+#  0 identity failures**, so nothing needs exempting.
+# ---------------------------------------------------------------------------
+#  The five entries, for the record (they no longer resolve):
+#    8cd3a1011db3  M2  feat/F03-AI-SUMMARY  subject "source sheet" — not a Conventional Commit
+#    28a2f21a6ae1  M2  feat/F03-AI-SUMMARY  subject "quate view" (typo included) — not a Conventional Commit
+#    57e10d2551d6  M2  feat/F03-AI-SUMMARY  subject "edit sheet" — not a Conventional Commit
+#    ab3443dbba7e  M2  feat/F03-AI-SUMMARY  subject "view" — not a Conventional Commit
+#    4b5bd6dd161e  M2  feat/F03-AI-SUMMARY  subject "configure view" — not a Conventional Commit
+# ---------------------------------------------------------------------------
+

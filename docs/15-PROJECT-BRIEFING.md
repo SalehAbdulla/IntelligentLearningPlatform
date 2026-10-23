@@ -119,7 +119,7 @@ So the working app is the most important deliverable, and Figma is not.
 |---|---|---|---|---|
 | **M1** | Saleh Abdulla | 202300540 | Data, auth and admin | F01, F02, F14 |
 | **M2** | Mohammed Almadhoon | 202401702 | AI/ML and tutor tools | F03, F04, F05, F11, F15 (shared) |
-| **M3** | Tasbeeh Saeed | 202300549 | Architecture and payments | F06, F07, F13, F15 (shared) |
+| **M3** | Tasbeeh Saeed | 202305409 | Architecture and payments | F06, F07, F13, F15 (shared) |
 | **M4** | Shahad Ashoor | 202305767 | UI/UX, collaboration and admin | F08, F09, F10, F12 |
 
 ---

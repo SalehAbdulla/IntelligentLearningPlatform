@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **Tester** | **M1, Saleh Abdulla** (`202300540`) |
-| **Developers** | M2, Mohammed Almadhoon (`202401702`) + M3, Tasbeeh Saeed (`202300549`) — *neither is me* |
+| **Developers** | M2, Mohammed Almadhoon (`202401702`) + M3, Tasbeeh Saeed (`202305409`) — *neither is me* |
 | **Date** | 15 October 2026 |
 | **Build** | `xcodebuild … -scheme StudyForge -destination 'platform=iOS Simulator,name=iPhone 17' test` |
 | **Feature** | F15 AI Study Companion · screens H01–H08 · **the feature the rubric requires written tutor approval for** |

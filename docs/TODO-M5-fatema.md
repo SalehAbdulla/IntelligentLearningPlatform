@@ -95,16 +95,20 @@ Never `git switch develop` to "just quickly fix something". Never `git push orig
 
 **You may modify these, and nothing else:**
 
-| Area | Files |
+| Area | Yours |
 |---|---|
-| F16 chat UI | `Features/Groups/GroupChatView.swift` · `GroupChatViewModel.swift` |
+| **F17 — everything in these directories** | `Core/Recall/` · `Features/Recall/` |
+| **F16 — the moderation model and its screens** | `Core/Groups/Moderation/` · `Features/Groups/Moderation/` |
+| **F16 — the two chat files you extend** | `Features/Groups/GroupChatView.swift` · `GroupChatViewModel.swift` |
 
-> **Why only two files, when you own two features.** F16 extends the group chat that M4 owns
-> (F09). To keep the two lanes disjoint the boundary is drawn by *file*, not by directory:
-> M4 keeps every F09 group-space and live-quiz file, and you take exactly these two chat files
-> plus your own subdirectories below. **Before 14 Oct those two files appeared in no member's
-> lane at all**, so nobody could modify them; F16 is the feature that needs them, so they are
-> yours now.
+> **Corrected 22 Oct 2026 — your lane used to be TWO FILES, and that was a defect.** `Core/Recall/RecallQueue.swift`,
+> `RecallSettings.swift` and `Core/Groups/Moderation/GroupModeration.swift` **already existed** but
+> appeared in your lane only under *"new files"* — and the guard's new-file rule means *"does not
+> exist yet"*. So **every file your five open TODOs live in was refused to you**: you would have hit
+> `OUT OF LANE` on your first commit, exactly as M3 hit it on the Coach screens. Your lane is now
+> the **directories** your two features live in, existing files and new files alike. An audit of the
+> whole tree the same day found **167 of 394 app files were in no lane at all**; that is fixed, and
+> the count is now zero.
 
 **You may add NEW files** inside:
 
@@ -128,7 +132,7 @@ Do not add a file directly into `Core/Groups/` or `Features/Groups/`.
 - `ios/StudyForge/StudyForge/Resources/ar.lproj/Localizable.strings`
 
 If you touch a `.strings` file you **must** run `python3 tools/check-strings.py` (English and
-Arabic key parity, 910 keys) before pushing.
+Arabic key parity — 912 keys once PR #134 lands, 910 until then) before pushing.
 
 **Off limits, always:** `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`,
 `README.md`, `.mailmap`, and `ios/StudyForge/StudyForge.xcodeproj/` (nobody touches the
