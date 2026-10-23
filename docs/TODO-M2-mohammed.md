@@ -15,16 +15,23 @@
 > ## ⚠️ READ THIS FIRST IF YOU HAVE `feat/F03-AI-SUMMARY` CHECKED OUT
 >
 > **Your branch was rewritten on 23 Oct 2026 by Saleh (M1), with the authorisation recorded in
-> [`docs/TODOLIST.md` §0](TODOLIST.md). Your clone now points at commits that no longer exist on
-> the remote.** One command fixes it:
+> [`docs/TODOLIST.md` §0](TODOLIST.md), and its name was corrected the same day** —
+> `feat/F03-AI-SUMMARY` → **`feat/F03-ai-summary`**, because an uppercase slug is what
+> `tools/new-branch.sh` refuses. **Your clone now points at commits that no longer exist on the
+> remote, under a branch name that no longer exists either.** These commands fix both:
 >
 > ```bash
-> git fetch origin && git reset --hard origin/feat/F03-AI-SUMMARY
+> git fetch origin
+> git branch -m feat/F03-AI-SUMMARY feat/F03-ai-summary   # only if that name is checked out
+> git branch -u origin/feat/F03-ai-summary feat/F03-ai-summary
+> git reset --hard origin/feat/F03-ai-summary
+> git remote prune origin
 > ```
 >
 > **Before you run that: if you have any local work you have not pushed, stop and say so first.**
-> Nothing is lost either way — the old line is kept on the remote as `backup/F03-before-rewrite`
-> (`5e4a94e`) — but moving your work across *before* the reset is much easier than after it.
+> The old line now exists in exactly two places — your clone, and a bundle Saleh holds
+> (`.git/F03-before-rewrite.bundle`, head `5e4a94e`) — so moving your work across *before* the
+> reset is much easier than after it.
 >
 > **What changed, and why.** The branch had been created from `main` instead of `develop`, so it
 > carried **67 commits**: your 36, plus main's entire release line. Three measured consequences:
@@ -35,9 +42,9 @@
 >
 > The branch was **rebased onto `develop`**, the five subjects were **reworded from each commit's
 > own diff**, and **author *and* committer were set to `Mohammed Almadhoon
-> <202401702@student.polytechnic.bh>`** — the identity the Sprints mark is read from. Your PR now
-> shows **36 commits instead of 67**, and the tool reports **0 message failures and 0 identity
-> failures**.
+> <202401702@student.polytechnic.bh>`** — the identity the Sprints mark is read from. Your pull
+> request — now **#135**, because renaming the branch closed #132 — shows **36 commits instead of
+> 67**, and the tool reports **0 message failures and 0 identity failures**.
 >
 > **Nothing about your code changed.** Verified before the push, not after: the branch's net
 > change is **byte-identical** — the same 21 files, the same **+2897/−1**. Only the log moved, and
