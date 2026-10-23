@@ -132,7 +132,7 @@ Do not add a file directly into `Core/Groups/` or `Features/Groups/`.
 - `ios/StudyForge/StudyForge/Resources/ar.lproj/Localizable.strings`
 
 If you touch a `.strings` file you **must** run `python3 tools/check-strings.py` (English and
-Arabic key parity, 910 keys) before pushing.
+Arabic key parity, 912 keys) before pushing.
 
 **Off limits, always:** `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`,
 `README.md`, `.mailmap`, and `ios/StudyForge/StudyForge.xcodeproj/` (nobody touches the
