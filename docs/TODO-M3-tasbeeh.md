@@ -1,4 +1,4 @@
-# TODO — Tasbeeh Saeed · M3 · `202300549`
+# TODO — Tasbeeh Saeed · M3 · `202305409`
 
 > **Hand this entire file to your AI coding agent.** It is self-contained: identity,
 > the rules, your features, your open TODOs, the git protocol, and the definition of
@@ -19,7 +19,7 @@ right, and they are what the Sprints mark — **10%, assessed individually** —
 
 | # | Do this | **Not** this | What goes wrong otherwise |
 |---|---|---|---|
-| **1** | `git config --local user.email "202300549@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody. `.mailmap` cannot rescue an address that was never yours |
+| **1** | `git config --local user.email "202305409@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody. `.mailmap` cannot rescue an address that was never yours |
 | **2** | `bash tools/new-branch.sh feat/F06-study-plan` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
 | **3** | `bash tools/commit.sh <file> "feat(F06): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
 | **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew |
@@ -133,8 +133,25 @@ If the push is rejected, rebase again. **Never force-push.**
 
 ```bash
 git config --local user.name  "Tasbeeh Saeed"
-git config --local user.email "202300549@student.polytechnic.bh"
+git config --local user.email "202305409@student.polytechnic.bh"
 ```
+
+> **⚑ 23 Oct 2026 — your student ID was corrected: `202300549` → `202305409`.** The old one
+> transposed two digits, and it had propagated into every roster, the tooling, your git config
+> and this file. **Use `202305409@student.polytechnic.bh` from now on.** Three things worth
+> knowing:
+>
+> - **Your merged commits keep the old address, and that is fine.** They were pushed and merged
+>   before the correction, and rewriting merged history is not an option. `.mailmap` now maps the
+>   old address to you, so `git shortlog` still counts all **12** of them — verified, it reads
+>   `12  Tasbeeh Saeed <202305409@student.polytechnic.bh>`. If a marker asks, that is the answer.
+> - **Type the domain in lower case** (`student.polytechnic.bh`, not `Student.`). The check that
+>   reads identities matches the domain case-sensitively. The capitalised form is aliased too, so
+>   it will not fail — but lower case is the convention and the safer habit.
+> - **The old ID still appears in the Figma frame suffix** (`Tasbeeh_202300549`), in the 18 mockup
+>   PNG filenames, and in the Design Document that lists them. Those are artifact *names* rather
+>   than identities, and renaming them means editing the Figma file and rebuilding the PDF — a
+>   separate decision, not yet taken. Nothing you need to do about it.
 
 Every commit must be attributable to me. My **Sprints mark is 10% and assessed per
 person**, and the **VIVA is 60% and must pass**, so I have to be able to explain every
