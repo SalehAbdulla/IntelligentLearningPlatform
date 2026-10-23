@@ -35,18 +35,36 @@ modes are predictable and both are expensive:
 
 ### Verified: the lanes do not overlap
 
-**190 files** are reachable across the four members' *modify* lanes, **zero of them is claimed by
-two members, and no tracked app file is in no lane at all.** Measured 22 Oct 2026 against the
-tracked tree and against the guard itself:
+**204 files** are reachable across the four members' *modify* lanes, **no file is claimed by two
+members, and no tracked app file is in no lane at all.** Re-measured 23 Oct 2026 by parsing the
+guard's own `DIRS` / `TOUCH` / `OWNED_DIRS` / `CARVE_OUTS` arrays and testing every tracked app
+file against them, rather than recounting by hand:
 
 ```
-app files              : 392
+app files              : 392   ios/StudyForge/StudyForge + StudyForgeTests
   M1 (project level)   : 202   the app entry point and router, the design system, Resources,
                                the preview assets, the existing test files, and F01/F02/F14
-  M2 · M3 · M4 · M5    :  71 · 51 · 63 · 5        (190 in the four modify-lanes)
-  claimed by two       :   0
-  in no lane at all    :   0   ← was 167 before this pass; see the correction below
+  M2 · M3 · M4 · M5    :  77 · 54 · 68 · 5        (204 in the four modify-lanes)
+  member-vs-member     :   0   no file sits in two members' lanes
+  owner meets member   :  14   in the owner's lane AND one member's — see the note below
+  member-only files    : 190   the 204 minus those 14; and 202 + 190 = 392
+  in no lane at all    :   0   ← was 167 before the 22 Oct pass; see the correction below
 ```
+
+> **Correction, 23 Oct 2026 — this block read *190 … 71 · 51 · 63 · 5 · claimed by two: 0*.**
+> The 190 was right as a **partition** of the 392 app files, but wrong as a **per-member lane
+> size**: it had quietly excluded the files a member holds that the owner also holds, so
+> *"claimed by two: 0"* was true only of member-versus-member pairs. The **14** files the owner
+> and a member both hold are **13 existing test files** in `StudyForgeTests/` — which the owner
+> holds as a directory, and which M2, M3 and M4 each name individually in `TOUCH`
+> (`AIRouterTests`, `AIVocabularyTests`, `FlashcardGenerateViewModelTests`,
+> `FlashcardReviewViewModelTests`, `SummaryFlowViewModelTests`, `CohortSnapshotTests`,
+> `NotificationViewModelTests`, `StudyPlannerTests`, `AdminTests`, `BookmarkStoreTests`,
+> `BookmarkViewModelTests`, `GroupStoreTests`, `GroupViewModelTests`) — plus
+> **`Features/Library/MaterialLibraryView.swift`**, the one file where a member's lane meets the
+> owner's, already described in the note under §2. **No member-vs-member overlap exists**, so the
+> lane map still does the job it was built for; but on those 14 files the two agents are **M1 and
+> one member**, and that edit is rebased before it is pushed, never forced.
 
 > **Correction, 22 Oct 2026 — the lane map described directories, and the guard implemented files.**
 > docs/14 and CONTRIBUTING have described each member's lane as a set of *directories* since the
@@ -169,7 +187,7 @@ the shared file from their diffs entirely.
 | `tools/new-branch.sh feat/Fxx-slug` | Creates a correctly named branch from `develop` and pushes it |
 | `tools/commit.sh [--push] [--multi]` | One file per commit, Conventional Commits, refuses `main`/`develop` |
 | `tools/todos.sh` | Lists every in-code TODO grouped by owner |
-| `python3 tools/check-strings.py` | English/Arabic key parity (910 keys) after any `.strings` change |
+| `python3 tools/check-strings.py` | English/Arabic key parity (912 keys) after any `.strings` change |
 | `python3 tools/verify-docs.py` | Internal links, screen inventory, ownership integrity |
 | `bash tools/check-submission.sh` | **The pre-submission gate.** Runs `verify-docs`, `check-strings`, `check-tokens` and `check-release`, then every section 4 and 5 item against its evidence. Exits non-zero while anything is open |
 | `bash tools/check-tokens.sh` | Colour-token parity between `docs/06` section 1.1 and `ColorTokens.swift` |
