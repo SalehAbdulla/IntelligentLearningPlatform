@@ -70,7 +70,7 @@ commitment to the marker rather than a gate the script enforces.
 | 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png) | ✅ exported |
 | 9.1 to 9.17 | The 17 per-feature flow diagrams (F01 to F17), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F17` | ✅ all 17 exported |
 | 10.1 | The cross-cutting state set (loading, empty, error, offline, success) | [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png) | ✅ exported |
-| 10.2 to 10.107 | The 106 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_141` | ✅ exported |
+| 10.2 to 10.131 | The 130 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_179` | ✅ exported |
 | 11.1 | The global navigation map | [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png) | ✅ exported |
 | 11.2 | The core learning loop, restated in the navigation context (same artwork as Figure 5.1) | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
 | 12.1 | The design system sheet: colour variables, type ramp, spacing, radius, elevation | [figures/01_DesignSystem_Saleh_202300540.png](figures/01_DesignSystem_Saleh_202300540.png) | ✅ exported |
@@ -104,10 +104,10 @@ per-screen figure index is §10.4.
 | 8.3 | The two protocols forming the interface between F15's halves |
 | 8.4 | The features F15 depends on, and what breaks in F15 if each changes |
 | 9.1 | Every feature expanded into its ordered sub-tasks and steps |
-| 10.1 | The 106 screens grouped by feature area, with the owning member |
+| 10.1 | The 123 screens grouped by feature area, with the owning member |
 | 10.2 | The labelled-element standard, worked example (student home) |
 | 10.3 | The screens that implement each feature, with a one-line purpose each |
-| 10.4 | The figure index for the 106 wireframes |
+| 10.4 | The figure index for the 130 wireframes |
 | 11.1 | The five-tab spine and what each tab holds per role |
 | 12.1 | The light-mode colour tokens with their measured contrast ratios |
 | 13.1 | The ten innovations, each with its problem, idea, feasibility and evidence |
@@ -128,7 +128,7 @@ University students accumulate large volumes of unstructured study material (lec
 
 **StudyForge** turns any study material into summaries, flashcards, quizzes and a spaced-repetition plan, and closes the loop between them: **upload, generate, schedule, practise, measure, adapt**. It is an iPhone-first, bilingual (English and Arabic) application built on Apple's on-device intelligence where possible, so the core loop works offline and at no cloud cost, and every AI artefact carries a visible source citation.
 
-The design is documented end to end in this document: 4 user roles, 17 features, 119 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan, and the **119 built screens** are those drawn in Figma — all 17 features, including groups N and O for F16 and F17.)
+The design is documented end to end in this document: 4 user roles, 17 features, 123 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan, and the **123 built screens** are those drawn in Figma — all 17 features, including groups N and O for F16 and F17.)
 
 ## 2. Background research: the problem, who is affected, and why it matters
 
@@ -537,7 +537,7 @@ F15 as self-contained.
 
 ## 9. Feature flows
 
-Each feature is broken into an ordered set of steps (the brief's "sub-tasks or individual steps"). These are the steps the prototype wires and the acceptance tests exercise. The 15 flow diagrams are drawn in Figma page `2 · Flow Overview` and reproduced as figures at export.
+Each feature is broken into an ordered set of steps (the brief's "sub-tasks or individual steps"). These are the steps the prototype wires and the acceptance tests exercise. The 17 flow diagrams are drawn in Figma page `2 · Flow Overview` and reproduced as figures at export.
 
 | Feature | Sub-tasks / steps |
 |---|---|
@@ -553,7 +553,7 @@ Each feature is broken into an ordered set of steps (the brief's "sub-tasks or i
 | F10 Bookmarks | 1 Bookmark from any screen, 2 choose or create a collection, 3 optional save offline, 4 item appears in the collection, 5 open later via deep link |
 | F11 Tutor Studio | 1 Create course, 2 build roster, 3 publish material, 4 AI content lands in the review queue, 5 approve, edit or reject with a reason, 6 cohort progress, 7 announcement, 8 gradebook export |
 | F12 Admin | 1 Admin home KPIs, 2 search users, 3 change role or suspend with a reason, 4 moderation queue, 5 resolve flagged reports, 6 manage taxonomy, 7 configure AI routing and quotas, 8 review the audit log |
-| F13 Payments | 1 Paywall, 2 select plan, 3 order summary in BHD with VAT, 4 choose method, 5 Tap card or BenefitPay, 6 processing, 7 server-side verification via webhook, 8 entitlement written, 9 receipt, 10 manage or cancel |
+| F13 Payments | 1 Paywall, 2 select plan, 3 order summary in BHD with VAT, 4 choose method, 5 simulated card or BenefitPay (no live provider is contacted), 6 processing, 7 simulated success or failure result, 8 demo entitlement written, 9 demo receipt, 10 manage or cancel |
 | F14 Notifications | 1 Server event or local schedule fires, 2 relevance and quiet-hours filter, 3 deliver FCM or local notification, 4 tap deep-links to the screen, 5 inbox history, 6 preferences respected |
 | F15 Companion | 1 Ask a question, 2 embed the query on-device, 3 retrieve top-k chunks, 4 build a grounded prompt, 5 router picks a tier, 6 streamed answer with citations, 7 tap citation to source, 8 adjust explanation level, 9 request a study path, 10 capture feedback |
 | F16 Moderated chat | 1 Open the group chat, 2 admin presence banner and shield badge render, 3 post and read messages, 4 moderator pins an announcement, 5 long-press a message, 6 choose hide/delete/pin/flag, 7 capture a reason, 8 tombstone replaces the body, 9 the action is written to the append-only audit log |
@@ -563,7 +563,7 @@ Each feature is broken into an ordered set of steps (the brief's "sub-tasks or i
 
 Every step above has at least one designed error or empty state, since the brief requires error and feedback states. Representative examples: F05, the timer expiring auto-submits; F04, rating a card then closing early saves partially; F08, an expired invite code shows a recovery action; F13, a declined card and a 3-D Secure timeout both resolve to a clear next step.
 
-**Figures 9.1 to 9.15, one flow diagram per feature.** Each diagram is drawn on Figma page `2 · Flow Overview`, named `FLOW_Fnn_…` with its owner, and exported at 2× into `deliverables/design-document/mockups/figures/`. Every diagram ends with the error or edge case the flow must survive, which is how the brief's error and feedback requirement is evidenced per feature.
+**Figures 9.1 to 9.17, one flow diagram per feature.** Each diagram is drawn on Figma page `2 · Flow Overview`, named `FLOW_Fnn_…` with its owner, and exported at 2× into `deliverables/design-document/mockups/figures/`. Every diagram ends with the error or edge case the flow must survive, which is how the brief's error and feedback requirement is evidenced per feature. `FLOW_F13` is titled *Subscription & Payments (Demo)* and ends by stating that the prototype involves **no real charges, no payment-provider handoff and no payment webhook** — the same limitation the wireframes and §16.1 carry.
 
 | Figure | Feature | Diagram file |
 |---|---|---|
@@ -589,7 +589,7 @@ Every step above has at least one designed error or empty state, since the brief
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804`. The file holds **119 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (123 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804`. The file holds **123 frames** across the feature groups below, plus **130 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (154 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
@@ -604,24 +604,27 @@ The prototype is built in a single Figma file with one **page per owner**, so au
 | I | Collaboration | M4 | 81–86, 88–97 | 16 |
 | J | Tutor Content Studio | M2 | 99, 101–105 | 6 |
 | K | Admin Content Management | M4 | 109–112, 115 | 5 |
-| L | Subscription & Payments | M3 | 118, 120–122, 124–126 | 7 |
+| L | Subscription & Payments | M3 | 155–157, 172–179 | 11 |
 | M | System, States & Feedback | M1 | 128, 129, 132–134, 138, 139, 141 | 8 |
 | N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
 | O | Active Recall Space (F17) | M5 | 148–154 | 7 |
-| | **Total** | | | **119** |
+| | **Total** | | | **123** |
 
-*Table 10.1, the 119 screens grouped by feature area, with the owning member.*
+*Table 10.1, the 123 screens grouped by feature area, with the owning member.*
 
-**Groups N and O — built 15 October 2026.** The two features added with the fifth member are now drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**:
+**Group L, superseded 24 October 2026.** The seven first-cut F13 screens (`118`, `120`–`122`, `124`–`126`) were replaced by eleven subscription-state screens (`155`–`157`, `172`–`179`) as the feature was reworked around an explicitly **simulated** payment flow: study-to-unlock and trial activation, the Exam Boost one-time purchase, the Pro monthly checkout, the processing-then-failure state, and subscription management through to cancellation. The wireframes for the retired seven (`LF_118`, `LF_120`–`LF_122`, `LF_124`–`LF_126`) are **kept on page 5 as the design record of that first pass**, and the eleven current screens each have a wireframe of their own.
+
+
+**Groups N and O — built 15 October 2026.** The two features added with the fifth member are drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**, and then to **123** once group L was reworked:
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
 | N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
 | O | Active Recall Space (F17) | M5 | 148–154 | 7 |
 
-**One consistency gap remains, and it is recorded rather than hidden.** The **106 low-fidelity wireframes have no N or O counterpart yet.** The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, so the 13 new screens should get low-fidelity wireframes too; until they do, groups N and O exist only as finished screens.
+**The low-fidelity gap is closed (24 October 2026).** Page `5 · Low-Fi Wireframes` now carries **130 wireframes**, so every built screen has a low-fidelity counterpart. The original 106 are joined by the **13 F16/F17 wireframes** (`LF_142`–`LF_147`, `LF_148`–`LF_154`) that the 15 October audit recorded as missing, and by the **11 F13 subscription-state wireframes** (`LF_155`–`LF_157`, `LF_172`–`LF_179`) drawn from the current prototype screens. The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, which is why the 24 new screens were given low-fidelity counterparts rather than left as finished screens only. The two N and O rows above are therefore no longer a stated gap.
 
-Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21 · M5 Fatema 13.** The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
+Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 22 · M4 Shahad 21 · M5 Fatema 13** — **123** in total. The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
@@ -678,9 +681,9 @@ The brief requires success, error and feedback states. A dedicated state set exi
 
 *Figure 10.1, the cross-cutting state set as built, exported from Figma page `4 · States & Prototype Wiring`: [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png).*
 
-### 10.4 Figure index, the 106 wireframes
+### 10.4 Figure index, the 130 wireframes
 
-Figures 10.2 to 10.107 are the 106 wireframes, numbered in screen order. Each figure is the
+Figures 10.2 to 10.131 are the 130 wireframes, numbered in screen order. Each figure is the
 Figma frame for that screen, exported at 2×, and contains the greyscale wireframe with its
 numbered callout badges beside the legend panel that names every element and its function.
 The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
@@ -793,8 +796,32 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.105 | `138` | [LF_138_Accessibility_LargeText_Example_Saleh_202300540.png](mockups/figures/LF_138_Accessibility_LargeText_Example_Saleh_202300540.png) |
 | 10.106 | `139` | [LF_139_RTL_Arabic_Example_Saleh_202300540.png](mockups/figures/LF_139_RTL_Arabic_Example_Saleh_202300540.png) |
 | 10.107 | `141` | [LF_141_Logout_Confirm_Saleh_202300540.png](mockups/figures/LF_141_Logout_Confirm_Saleh_202300540.png) |
+| 10.108 | `142` | [LF_142_GroupChat_Moderator_Presence_Banner_Fatema_202304804.png](mockups/figures/LF_142_GroupChat_Moderator_Presence_Banner_Fatema_202304804.png) |
+| 10.109 | `143` | [LF_143_GroupChat_Message_Moderation_Menu_Fatema_202304804.png](mockups/figures/LF_143_GroupChat_Message_Moderation_Menu_Fatema_202304804.png) |
+| 10.110 | `144` | [LF_144_GroupChat_Hidden_Message_Placeholder_Fatema_202304804.png](mockups/figures/LF_144_GroupChat_Hidden_Message_Placeholder_Fatema_202304804.png) |
+| 10.111 | `145` | [LF_145_GroupChat_Moderation_Reason_Sheet_Fatema_202304804.png](mockups/figures/LF_145_GroupChat_Moderation_Reason_Sheet_Fatema_202304804.png) |
+| 10.112 | `146` | [LF_146_GroupChat_SlowMode_Muted_Notice_Fatema_202304804.png](mockups/figures/LF_146_GroupChat_SlowMode_Muted_Notice_Fatema_202304804.png) |
+| 10.113 | `147` | [LF_147_GroupChat_Moderation_Audit_Entry_Fatema_202304804.png](mockups/figures/LF_147_GroupChat_Moderation_Audit_Entry_Fatema_202304804.png) |
+| 10.114 | `148` | [LF_148_RecallSpace_Home_DueToday_Fatema_202304804.png](mockups/figures/LF_148_RecallSpace_Home_DueToday_Fatema_202304804.png) |
+| 10.115 | `149` | [LF_149_RecallSpace_Session_Front_Fatema_202304804.png](mockups/figures/LF_149_RecallSpace_Session_Front_Fatema_202304804.png) |
+| 10.116 | `150` | [LF_150_RecallSpace_Session_Back_Rate_Fatema_202304804.png](mockups/figures/LF_150_RecallSpace_Session_Back_Rate_Fatema_202304804.png) |
+| 10.117 | `151` | [LF_151_RecallSpace_Daily_Limits_Fatema_202304804.png](mockups/figures/LF_151_RecallSpace_Daily_Limits_Fatema_202304804.png) |
+| 10.118 | `152` | [LF_152_RecallSpace_Stats_Fatema_202304804.png](mockups/figures/LF_152_RecallSpace_Stats_Fatema_202304804.png) |
+| 10.119 | `153` | [LF_153_RecallSpace_Filter_By_Deck_Fatema_202304804.png](mockups/figures/LF_153_RecallSpace_Filter_By_Deck_Fatema_202304804.png) |
+| 10.120 | `154` | [LF_154_RecallSpace_EmptyState_Fatema_202304804.png](mockups/figures/LF_154_RecallSpace_EmptyState_Fatema_202304804.png) |
+| 10.121 | `155` | [LF_155_StudyToUnlock_Milestones_Tasbeeh_202305409.png](mockups/figures/LF_155_StudyToUnlock_Milestones_Tasbeeh_202305409.png) |
+| 10.122 | `156` | [LF_156_StudyToUnlock_Completed_Tasbeeh_202305409.png](mockups/figures/LF_156_StudyToUnlock_Completed_Tasbeeh_202305409.png) |
+| 10.123 | `157` | [LF_157_Trial_Activated_Tasbeeh_202305409.png](mockups/figures/LF_157_Trial_Activated_Tasbeeh_202305409.png) |
+| 10.124 | `172` | [LF_172_Checkout_ExamBoost_Tasbeeh_202305409.png](mockups/figures/LF_172_Checkout_ExamBoost_Tasbeeh_202305409.png) |
+| 10.125 | `173` | [LF_173_Payment_Processing_Failed_Tasbeeh_202305409.png](mockups/figures/LF_173_Payment_Processing_Failed_Tasbeeh_202305409.png) |
+| 10.126 | `174` | [LF_174_Subscription_Manage_Monthly_Tasbeeh_202300549.png](mockups/figures/LF_174_Subscription_Manage_Monthly_Tasbeeh_202300549.png) |
+| 10.127 | `175` | [LF_175_Subscription_Manage_ExamBoost_Tasbeeh_202305409.png](mockups/figures/LF_175_Subscription_Manage_ExamBoost_Tasbeeh_202305409.png) |
+| 10.128 | `176` | [LF_176_Subscription_Manage_Trial_Tasbeeh_202305409.png](mockups/figures/LF_176_Subscription_Manage_Trial_Tasbeeh_202305409.png) |
+| 10.129 | `177` | [LF_177_Subscription_Cancel_Confirm_Tasbeeh_202305409.png](mockups/figures/LF_177_Subscription_Cancel_Confirm_Tasbeeh_202305409.png) |
+| 10.130 | `178` | [LF_178_Subscription_Cancelled_Tasbeeh_202305409.png](mockups/figures/LF_178_Subscription_Cancelled_Tasbeeh_202305409.png) |
+| 10.131 | `179` | [LF_179_Checkout_Pro_Tasbeeh_202305409.png](mockups/figures/LF_179_Checkout_Pro_Tasbeeh_202305409.png) |
 
-*Table 10.4, the figure index for the 106 wireframes, in screen order.*
+*Table 10.4, the figure index for the 130 wireframes, in screen order.*
 
 Two further exports are page furniture rather than figures and carry no number: `LF_00_PageHeader_StudyForge.png` (the header on the wireframe page) and `F00_FlowDiagrams_Header_StudyForge.png` (the header on the flow diagrams page).
 
@@ -957,7 +984,7 @@ Accessibility is where SDG 10 becomes real, and where LO1 (UI and UX best practi
 
 ### 16.1 Apple Guideline 3.1.1 and payments
 
-Digital goods on the App Store must use Apple In-App Purchase. The client specifies a Bahrain gateway (Tap Payments). Rather than ignore the conflict, StudyForge abstracts payments behind a `PaymentGateway` protocol with two implementations, a Tap adapter and a `StoreKitGateway`. The prototype demonstrates the Tap sandbox flow; the production path is StoreKit. This turns a compliance problem into a documented architectural decision (LO3).
+Digital goods on the App Store must use Apple In-App Purchase. The client specifies a Bahrain gateway (Tap Payments). Rather than ignore the conflict, StudyForge abstracts payments behind a `PaymentGateway` protocol with two implementations, a Tap adapter and a `StoreKitGateway`. The prototype **simulates** the gateway end to end: no live provider is contacted, no card data leaves the device, and every payment screen says so in plain words (`FLOW_F13`, and the demo notices on the wireframes). The production path is StoreKit. This turns a compliance problem into a documented architectural decision (LO3).
 
 ### 16.2 Privacy and data protection
 
@@ -1040,7 +1067,7 @@ upgraded on the way in from the dossier.
 
 ### Appendix A, screen inventory (labelled descriptions)
 
-The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` (**106** frames across groups A to M between them) and from `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`, which carries the purpose-and-layout description for every screen alongside the numbered element legend printed on Figma page 5. It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
+The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` and from `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`, which carries the purpose-and-layout description for every screen alongside the numbered element legend printed on Figma page 5 — **130 wireframes across groups A to O**. It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
 
 ### Appendix B, full colour token tables
 
