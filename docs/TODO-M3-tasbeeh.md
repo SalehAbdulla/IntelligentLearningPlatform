@@ -165,8 +165,46 @@ are the planner work I am expected to own.
 
 ## 3. My open TODOs (confirm with `bash tools/todos.sh`)
 
-**F06 — per-course exam dates that feed the planner**
-`ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift:100`
+> **⚑ 23 Oct 2026 — two lines waiting for you, and they close the last F06 copy defect.**
+> The review of your F06 PR recorded one thing rather than waving it through: the per-course
+> exam-date rows reuse the subjects heading, so the word *"exam"* never appears on screen, and the
+> toggle and the date control in each row carry **the same** accessibility label. You wrote the
+> same seam into the code yourself — *"`Core/Localisation/` sits in M1's OWNED_DIRS, so editing
+> `L10n.swift` would put this commit outside M3's lane. If the team wants the word 'exam' spelled
+> out per row, M1 adds a key and this becomes a one-line swap."* **M1 has now added the keys** —
+> `plan.examDatesHeading` ("When are your exams?") and `plan.examDateLabel` ("Exam date"), with
+> their Arabic copy, in **PR #134**. The two lines that *use* them are yours, because
+> `Features/StudyPlan/` is your lane and an owner edit there would be refused by the guard exactly
+> as your edit of `L10n.swift` was. **Do not "tidy away" the two keys** — they are unused until
+> these two lines land, and that is deliberate.
+>
+> ```swift
+> // ios/StudyForge/StudyForge/Features/StudyPlan/StudyPlanWizardView.swift
+> // 1. in `perSubjectExamDates` — the heading now says what the rows are
+> -            Text(viewModel.subjectsHeading)
+> +            Text(L10n.planExamDatesHeading.string)
+>
+> // 2. in `examDateRow` — the date control stops being labelled with the subject alone
+>                  )
+>                  .font(.sfBody)
+> +                .accessibilityLabel("\(subject), \(L10n.planExamDateLabel.string)")
+> ```
+>
+> ```bash
+> bash tools/new-branch.sh feat/F06-exam-date-copy
+> bash tools/check-lane.sh M3        # that one file is yours — it should pass first time
+> bash tools/commit.sh --push ios/StudyForge/StudyForge/Features/StudyPlan/StudyPlanWizardView.swift \
+>   "fix(F06): label the exam-date rows and their date controls"
+> gh pr create --base develop --fill
+> ```
+>
+> **And the other thing only you can do:** `research/sprints/sprint-1/tasbeeh-contribution.md` is
+> still an empty template. Your two merged PRs (`196bf0b`, `afd293f`) are attributable and real,
+> but the Sprints component — **10%, assessed per person** — is read off that file, and a log
+> filled in at the end reads as back-filled. Two rows now beat six rows later.
+
+**F06 — per-course exam dates that feed the planner — ✅ DONE, merged as `196bf0b` (PR #130)**
+`ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift:100` — the marker is gone from the code
 Exam dates belong on the **plan**, not the profile, so a date cannot go stale
 (docs/09 Q11).
 Files: `Core/Planning/StudyPlan.swift` (the model) · `Core/Planning/StudyPlanner.swift`
@@ -176,8 +214,10 @@ a "+ Add deadline" control).
 *Done when:* dates can be entered and stored on the plan, the planner avoids scheduling
 after them, and a test covers a plan that respects one.
 
-**F07 — the real student home (B05)**
-`ios/StudyForge/StudyForge/Features/Home/SignedInHomeView.swift:148`
+**F07 — the real student home (B05) — ✅ DONE, merged as `afd293f` (PR #133)**
+`ios/StudyForge/StudyForge/Features/Home/SignedInHomeView.swift:148` — the placeholder and its
+`TODO(M3 · F07)` marker are gone; the designed home exists, and `StudentHomeViewModel` +
+`StudentHomeViewModelTests` (7 tests) are yours
 Replace the placeholder with the designed home: greeting, today's plan, streak, and the
 quick-action tiles — then retire the ad-hoc library and profile links that exist only
 because the real home does not.
