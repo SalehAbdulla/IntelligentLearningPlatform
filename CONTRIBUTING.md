@@ -164,7 +164,7 @@ xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
 
 # 3. the repo's own safety nets
 python3 tools/verify-docs.py       # planning-doc links and ownership integrity
-python3 tools/check-strings.py     # English/Arabic parity, 912 keys
+python3 tools/check-strings.py     # English/Arabic parity, 912 keys (910 until PR #134 lands)
 bash tools/todos.sh                # every open TODO, grouped by owner
 
 # 4. the lane guard knows who you are
@@ -547,7 +547,7 @@ bash tools/run-device.sh --list       # list paired devices
 | `bash tools/check-lane.sh M2` | branch protection + file lane | **before every commit and push** |
 | `bash tools/check-lane.sh owner [--allow-protected]` | the same guard for M1's lane — the project level plus F01/F02/F14; `--allow-protected` adds `main`/`develop` and prints `OWNER BYPASS` | owner only, before an owner commit |
 | `bash tools/todos.sh` | open in-code TODOs by owner | after finishing a TODO |
-| `python3 tools/check-strings.py` | English/Arabic key parity (912 keys × 2) | after touching any `.strings` |
+| `python3 tools/check-strings.py` | English/Arabic key parity (912 keys × 2, 910 until PR #134 lands) | after touching any `.strings` |
 | `python3 tools/verify-docs.py` | doc links, screen inventory, ownership integrity | after touching `docs/` |
 | `bash tools/check-tokens.sh` | Figma ↔ SwiftUI token parity | ⚠️ **currently a stub** — it prints a TODO and does not actually check. Do not rely on it (`docs/TODOLIST.md` §9). |
 
