@@ -164,7 +164,7 @@ xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
 
 # 3. the repo's own safety nets
 python3 tools/verify-docs.py       # planning-doc links and ownership integrity
-python3 tools/check-strings.py     # English/Arabic parity, 910 keys
+python3 tools/check-strings.py     # English/Arabic parity, 912 keys
 bash tools/todos.sh                # every open TODO, grouped by owner
 
 # 4. the lane guard knows who you are
@@ -221,13 +221,22 @@ The rotation matrix is `docs/02-FEATURE-LIST-OWNERSHIP.md` §7.
 
 Four members may be running AI agents at the same time. To make that safe, **every tracked app
 file belongs to exactly one lane** — verified against the tree rather than asserted: **392 app
-files, 190 of them in the four member modify-lanes (M2 71 · M3 51 · M4 63 · M5 5), zero claimed by
+files, 204 of them in the four member modify-lanes (M2 77 · M3 54 · M4 68 · M5 5), zero claimed by
 two members, zero in no lane at all.** (This line read *49 files*, then *69*; both were counted by
 hand. On 22 Oct 2026 it was measured, and the measurement found **167 app files in no lane at
 all** — including `Core/Scheduling/SpacedRepetition.swift`, which M2's own brief tells him to
 hand-write, and **the three files M5's own TODOs point at**. Members' lanes are now
 **directories** rather than file lists, which is what [doc 14 §2](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md)
 had described all along.)
+
+> **Re-measured 23 Oct 2026, and one number above was wrong.** Parsing the guard's own `DIRS` /
+> `TOUCH` / `OWNED_DIRS` / `CARVE_OUTS` arrays and testing all 392 app files against them gives
+> **204** in the four member lanes, not 190: the 190 was the member-*only* count, and it had
+> quietly excluded **14 files the owner holds as well** — 13 existing `StudyForgeTests/` files
+> named individually in M2/M3/M4's `TOUCH`, plus `Features/Library/MaterialLibraryView.swift`.
+> **No file is in two members' lanes**, so the rule above still holds exactly as written; on those
+> 14 the two agents are **M1 and one member**, and that edit is rebased before it is pushed, never
+> forced. The full breakdown is in [doc 14 §1](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md).
 
 **Run this before every commit and push:**
 
@@ -538,7 +547,7 @@ bash tools/run-device.sh --list       # list paired devices
 | `bash tools/check-lane.sh M2` | branch protection + file lane | **before every commit and push** |
 | `bash tools/check-lane.sh owner [--allow-protected]` | the same guard for M1's lane — the project level plus F01/F02/F14; `--allow-protected` adds `main`/`develop` and prints `OWNER BYPASS` | owner only, before an owner commit |
 | `bash tools/todos.sh` | open in-code TODOs by owner | after finishing a TODO |
-| `python3 tools/check-strings.py` | English/Arabic key parity (910 keys × 2) | after touching any `.strings` |
+| `python3 tools/check-strings.py` | English/Arabic key parity (912 keys × 2) | after touching any `.strings` |
 | `python3 tools/verify-docs.py` | doc links, screen inventory, ownership integrity | after touching `docs/` |
 | `bash tools/check-tokens.sh` | Figma ↔ SwiftUI token parity | ⚠️ **currently a stub** — it prints a TODO and does not actually check. Do not rely on it (`docs/TODOLIST.md` §9). |
 
