@@ -26,7 +26,7 @@ shared URL, delivered in a text document.
 
 1. **Share the link:** Figma → Share → *Anyone with the link* → *Can view*, then open it in a private browser window to confirm everything is visible without signing in.
 2. ~~Export the file~~ ✅ **done** — `deliverables/prototype/StudyForge.fig` (1.2 MB, 8 Oct 2026). Re-export if the Figma file changes again.
-3. **Export the figures:** 106 wireframes and 15 flow diagrams at 2× PNG into `deliverables/design-document/mockups/figures/` — see `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.16.
+3. **Export the figures:** 130 wireframes and 17 flow diagrams at 2× PNG into `deliverables/design-document/mockups/figures/` — see `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.18.
 
 See `docs/01-ROADMAP-PHASES-TODOLIST.md` Phase 9 for the full checklist.
 
