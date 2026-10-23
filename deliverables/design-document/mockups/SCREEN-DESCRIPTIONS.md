@@ -12,17 +12,17 @@
 
 | | |
 |---|---|
-| **Frames** | **106** wireframes, one per screen, covering **15** features (F01–F15). Three counts appear in this appendix and each counts something different: **154** is the planned screen inventory in `docs/03`, **119** is the frames built in Figma, and **106** is the wireframes described here |
+| **Frames** | **130** wireframes, one per built screen, covering **17** features (F01–F17). Three counts appear in this appendix and each counts something different: **154** is the planned screen inventory in `docs/03`, **123** is the frames built in Figma, and **130** is the wireframes described here |
 | **Page** | Figma page `5 · Low-Fi Wireframes`, 4 wireframes per row, ordered by screen number |
 | **Naming** | `NN_ScreenName_FirstName_StudentID`, exactly as the brief requires. Every frame carries a real student ID, so authorship is visible at a glance |
 | **Each wireframe** | A greyscale drawing of the screen, with **numbered callout badges** on the key UI elements |
 | **Beside each wireframe** | A **legend panel** listing every numbered element, its **type** (button, input field, section heading, content card, tab bar item, label) and **what it does** |
-| **Flow** | Page `2 · Flow Overview` holds the global navigation map plus **15 per-feature flow diagrams**, each ending in the error/edge case the flow must survive |
+| **Flow** | Page `2 · Flow Overview` holds the global navigation map plus **17 per-feature flow diagrams**, each ending in the error/edge case the flow must survive |
 | **Style** | Structure and hierarchy only: no colour, no imagery, no shadow. A **filled block** is a primary action, a **light block** is a container/card/input, a **numbered badge** is a described element |
 
 **Why the wireframes are drawn in Figma rather than on paper:** the low-fidelity set is generated from the same frame geometry as the high-fidelity prototype, so the two can never drift apart. A change to a screen changes both, by construction.
 
-The exhaustive element-by-element legend for every one of the 106 screens is printed beside its wireframe on Figma page 5. This appendix is the **written** half: the purpose and layout of each screen, with its key elements named.
+The exhaustive element-by-element legend for every one of the 130 wireframes is printed beside its wireframe on Figma page 5. This appendix is the **written** half: the purpose and layout of each screen, with its key elements named.
 
 ---
 
@@ -206,6 +206,22 @@ The exhaustive element-by-element legend for every one of the 106 screens is pri
 | 125 | `125_Payment_Success_Receipt_Tasbeeh_202300549` | Confirm the purchase and receipt it properly. | **Success check**, **Receipt card** (Amount BHD 1.900, Method Visa ·· 4242, Reference TAP-8841-2210), **unlocked-features list**, **Done**. |
 | 126 | `126_Payment_Failed_Retry_Tasbeeh_202300549` | A declined payment must not read as a dead end. | **Error mark**, **"Nothing has been charged"** reassurance, **retry guidance**, and the two actions **Retry** and **Try another method**. |
 
+**The F13 set was reworked on 24 October 2026.** The seven screens above were the first cut, and their wireframes (`LF_118`, `LF_120`–`LF_122`, `LF_124`–`LF_126`) are kept on page 5 as the record of that pass. The feature now has eleven screens that follow the **simulated** payment flow end to end — study-to-unlock and trial, a one-time Exam Boost purchase, a monthly Pro checkout, the processing-then-failure state, and subscription management through to cancellation. Every one of them says, on screen, that no real charge is made and no payment provider is contacted.
+
+| # | Screen | Purpose | Layout and key labelled elements |
+|---|---|---|---|
+| 155 | `155_StudyToUnlock_Milestones_Tasbeeh_202305409` | Reward study consistency rather than demanding payment up front. | **Progress readout** (3/5 planned sessions, 60% bar, "2 sessions remaining"), **YOUR REWARD** card ("3-day Plus trial (demo)", "One trial per month"), **No purchase required** notice, **Claim trial** primary, **Back to Plans** secondary. |
+| 156 | `156_StudyToUnlock_Completed_Tasbeeh_202305409` | The completed state of the same milestone. | Identical layout with **5/5**, **100% complete**, "All 5 sessions completed", and the same claimable reward. |
+| 157 | `157_Trial_Activated_Tasbeeh_202305409` | Confirm what was activated, and that it was a demo activation. | **Plus trial activated** heading, **Demo activation only** sub-line, **SAMPLE DEMO DATES** card (duration 3 days, activation 16 Oct 2026, trial end 19 Oct 2026, "these are sample dates"), **Plus benefits · demo activation** list, **Return to StudyForge** primary, **Manage subscription** secondary. |
+| 172 | `172_Checkout_ExamBoost_Tasbeeh_202305409` | Show a one-time purchase as clearly one-time. | **Exam Boost Pass** card with a **14 days** chip, **BHD 0.900 (placeholder price)**, "14 days of Plus · one-time access, not recurring", **Subtotal BHD 0.818 / VAT (10%) BHD 0.082 / Total BHD 0.900**, **Change plan**, **terms checkbox**, **Demo order, no actual charges** notice, **Continue to Payment**, **Cancel**. |
+| 173 | `173_Payment_Processing_Failed_Tasbeeh_202305409` | Hold the user still during processing, and warn that a simulated failure follows. | **Processing your demo payment…** heading, **progress bar**, **Demo order** card (Mode: Demo only, Payment: Simulated), **No real money is charged** notice ("a static preview … not a live transaction"). |
+| 174 | `174_Subscription_Manage_Monthly_Tasbeeh_202300549` | Manage the monthly subscription. | **Manage subscription** heading, **Demo subscription** badge, **Current plan** card (Plus Monthly, **BHD 1.900/month**, Status: Active (Demo)), **Plus benefits · demo activation** list, **No real charges** notice, **Cancel demo subscription** destructive primary, **Return to StudyForge**. |
+| 175 | `175_Subscription_Manage_ExamBoost_Tasbeeh_202305409` | Manage the one-time Exam Boost pass. | Same shell with the **Exam Boost Pass** card (**BHD 0.900**, placeholder price, "14 days left · one-time access, no recurring bill") and the same benefits, notice and actions. |
+| 176 | `176_Subscription_Manage_Trial_Tasbeeh_202305409` | Manage the active trial. | Same shell with the **Plus trial** card (**3 days left**, Status: Active (Demo), "Trial end: 19 Oct 2026 · demo example"), and a **No payment for this trial** notice. |
+| 177 | `177_Subscription_Cancel_Confirm_Tasbeeh_202305409` | Ask before cancelling, and name the consequence. | The management screen dimmed behind a **confirmation dialog**: "**Cancel demo subscription?**", "You will return to the Free plan (15 cloud AI generations per day). This is a demo, no real payment is affected.", **Cancel demo subscription** destructive and **Keep subscription** dismissal. |
+| 178 | `178_Subscription_Cancelled_Tasbeeh_202305409` | Confirm the cancellation and the plan returned to. | **Manage subscription** heading, "You're back on the Free plan.", **Demo subscription cancelled** toast, **Current plan** card (Free, BHD 0, 15 cloud AI generations/day), **Previous subscription** card (Status: Cancelled (Demo)), **No real payment affected** notice, **Back to Plans**, **Return to StudyForge**. |
+| 179 | `179_Checkout_Pro_Tasbeeh_202305409` | Show the monthly Pro order before any payment detail is asked for. | **StudyForge Pro** card with a **Monthly** chip and **BHD 4.900/month**, **Subtotal BHD 4.455 / VAT (10%) BHD 0.445 / Total BHD 4.900**, **Change plan**, **terms checkbox**, **Demo order, no actual charges** notice, **Continue to Payment**, **Cancel**. |
+
 ---
 
 ## A.14 Group M, System, Notifications & Cross-cutting States · owner M1, Saleh · feature F14
@@ -223,9 +239,36 @@ The exhaustive element-by-element legend for every one of the 106 screens is pri
 
 ---
 
-## A.15 Coverage audit
+## A.15 Group N, Admin-Moderated Group Chat (F16) · owner M5, Fatema
 
-Every one of the 17 features has at least three screens. **The table below describes the 106 wireframes in this appendix; the Figma file holds 119 frames, and the 13 F16/F17 frames (groups N and O, 142–154) have no low-fidelity counterpart yet** — the recorded gap, drawn on 15 October 2026. With those two rows included, the table sums to the full **119**.
+| # | Screen | Purpose | Layout and key labelled elements |
+|---|---|---|---|
+| 142 | `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804` | Make the moderator's permanent presence visible, which is the literal "admin always there" requirement. | **Moderator banner** ("Moderated by Haetham", "Admin is always in this space"), **message rows** each with the author's initials, a **pinned announcement** ("Pinned by moderator", "Exam moved to 2 November"), and the **composer**. |
+| 143 | `143_GroupChat_Message_Moderation_Menu_Fatema_202304804` | Give the moderator actions that each name their own consequence. | Long-press **action sheet**: **Hide for everyone** ("Members see a tombstone with your reason"), **Delete** ("Removes it for everyone, permanently"), **Pin to board** ("Makes it the group announcement"), **Flag to admin** ("Raises it to the moderation queue"), with the footnote "Only the moderator sees these options." |
+| 144 | `144_GroupChat_Hidden_Message_Placeholder_Fatema_202304804` | Never let the room silently lose history. | **Tombstone** in place of the body ("Removed by a moderator", "Reason: unsafe content · Haetham · 14:02"), the surrounding messages intact, the footnote "Moderated messages stay in the audit log", and the composer. |
+| 145 | `145_GroupChat_Moderation_Reason_Sheet_Fatema_202304804` | Capture a reason before the action commits. | **Reason sheet** ("Why remove this message?", "The reason is shown to the group and kept in the log"), four reasons (**Spam or advertising**, **Off-topic**, **Unsafe or harmful**, **Other — needs a note**), the **Add a note (optional)** field, **Hide for everyone** primary, and "Recorded in the audit log with your name and the time." |
+| 146 | `146_GroupChat_SlowMode_Muted_Notice_Fatema_202304804` | Explain a restriction instead of failing silently. | **Slow mode** banner ("Slow mode is on", "You can post again in 30 s", a 0:30 countdown), the messages, a **You are muted** banner ("A moderator muted you for 1 hour. You can still read the chat."), "Muted by Haetham · until 15:30", and a composer reading "Muted until 15:30". |
+| 147 | `147_GroupChat_Moderation_Audit_Entry_Fatema_202304804` | Show the append-only record the moderation actions write. | **Moderation log** heading, "Every action taken in this group, newest first", four **audit rows** (HIDDEN / PINNED / FLAGGED, the target message, the reason, the moderator and the time), and the footnote "Append-only — nothing here can be rewritten". |
+
+---
+
+## A.16 Group O, Active Recall Space (F17) · owner M5, Fatema
+
+| # | Screen | Purpose | Layout and key labelled elements |
+|---|---|---|---|
+| 148 | `148_RecallSpace_Home_DueToday_Fatema_202304804` | One queue across every deck, the way Anki's due count works. | **42 cards due today**, **Next due in 3 h**, **state counters** (New 12, Learning 6, Young 18, Mature 6), **Start session** primary, **DECKS IN THE QUEUE** rows with per-deck due counts, "New and review limits apply across all decks". |
+| 149 | `149_RecallSpace_Session_Front_Fatema_202304804` | Ask the question, and say how to see the answer. | **7 of 20 · Learning**, the deck label **CHEMISTRY · TOPIC 4**, the question, "Tap anywhere to reveal the answer", **Reveal answer** primary, "Card 7 of 20 · Chemistry deck", "Close any time — your progress is saved". |
+| 150 | `150_RecallSpace_Session_Back_Rate_Fatema_202304804` | Show the answer and the four ratings, each with the interval it will write. | The answer, its explanation, "Source: p.12", the four ratings **Again <1m · Hard 10m · Good 1d · Easy 1d**, "Each button shows when the card comes back", "Intervals come from the SM-2 engine". |
+| 151 | `151_RecallSpace_Daily_Limits_Fatema_202304804` | Expose the scheduling settings in the app's own vocabulary. | **New cards / day 20**, **Maximum reviews / day 200**, **Learning steps 1m → 10m**, **Graduate after 1 day**, **Mature after 21 days**, **Save options**, and "Defaults match Anki: 1 min then 10 min, 20 new cards." |
+| 152 | `152_RecallSpace_Stats_Fatema_202304804` | Retention and maturity, measured rather than asserted. | **86% True retention over 30 days**, **CARD MATURITY** counters (Mature 134, Young 88), "222 cards in the Recall Space", a **REVIEWS THIS MONTH** heatmap ("Darker means more cards reviewed"), and a **7-day streak** card with the longest streak this term. |
+| 153 | `153_RecallSpace_Filter_By_Deck_Fatema_202304804` | Scope the queue without leaving the Recall Space. | A **deck list** with selection ticks and live due counts (Chemistry 14, Biology 9, Physics 11, Mathematics 8), **Apply** and **Clear**, and "23 cards due in the selected decks". |
+| 154 | `154_RecallSpace_EmptyState_Fatema_202304804` | The nothing-due state, with the streak preserved. | **✓ Nothing due right now**, "You have reviewed everything the scheduler asked for today", **Next card in 2 h 15 m**, "Tomorrow: 42 cards across 6 decks", **7-day streak kept**, and **Browse decks**. |
+
+---
+
+## A.17 Coverage audit
+
+Every one of the 17 features has at least three screens, and every built screen now has a low-fidelity wireframe: **the table below describes the 130 wireframes in this appendix, and the Figma file holds 123 frames.** The gap recorded on 15 October 2026 — that the 13 F16/F17 frames had no wireframe — was **closed on 24 October 2026**, together with the eleven F13 subscription-state screens that replaced group L's first cut.
 
 | Group | Area | Owner | Screens | Frames |
 |---|---|---|---|---|
@@ -240,56 +283,54 @@ Every one of the 17 features has at least three screens. **The table below descr
 | I | Collaboration: folders, groups, bookmarks | M4 Shahad | 81–97 | 16 |
 | J | Tutor Content Studio | M2 Mohammed | 99–105 | 6 |
 | K | Admin Content Management | M4 Shahad | 109–115 | 5 |
-| L | Subscription & Payments | M3 Tasbeeh | 118–126 | 7 |
+| L | Subscription & Payments | M3 Tasbeeh | 155–157, 172–179 | 11 |
 | M | System, Notifications & States | M1 Saleh | 128–141 | 8 |
 | N | Group chat & moderation (F16) | M5 Fatema | 142–147 | 6 |
 | O | Active recall space (F17) | M5 Fatema | 148–154 | 7 |
-| | **Total** | | | **119** |
+| | **Total** | | | **123** |
 
 **Wireframes per developer**, matching the ownership in `docs/02-FEATURE-LIST-OWNERSHIP.md`. These
-count the **106 low-fidelity wireframes**, not the prototype: the Figma file holds **119** frames,
-and M5's 13 (F16, F17) have no wireframe yet — the gap recorded in `figma-audit.md` and `docs/03`
-§3, not a zero contribution:
+count the **130 low-fidelity wireframes**, not the prototype (the Figma file holds **123** frames):
 
 | Member | Student ID | Wireframes | Feature areas |
 |---|---|---|---|
 | M1 Saleh Abdulla | `202300540` | 36 | F01, F02, F07 home, F14, cross-cutting states |
 | M2 Mohammed Almadhoon | `202401702` | 31 | F03, F04, F05, F11, F15 (co) |
-| M3 Tasbeeh Saeed | `202305409` | 18 | F06, F07, F13, F15 (co) |
+| M3 Tasbeeh Saeed | `202305409` | 29 | F06, F07, F13, F15 (co) |
 | M4 Shahad Ashoor | `202305767` | 21 | F08, F09, F10, F12 |
-| M5 Fatema Ghareeb | `202304804` | **0** | F16, F17 — **no wireframe yet** (13 prototype frames) |
-| | | **106** | the four rows above |
+| M5 Fatema Ghareeb | `202304804` | **13** | F16, F17 — drawn 24 October 2026 from her own prototype screens |
+| | | **130** | the five rows above |
 
 **State coverage required by the brief** (loading · empty · error · success · offline · permission):
 
 | State | Screens |
 |---|---|
-| Loading / in progress | `27`, `28`, `36`, `44`, `53`, `64`, `124` |
-| Empty | `42` (no cards due), `82` (folder with no items), `95` (no collections) |
-| Error | `30` (unsupported format), `41` (AI quota exceeded), `126` (payment declined), `134` (server retry) |
-| Success | `29` (upload), `37` (summary), `48` (session), `58` (quiz), `125` (receipt) |
+| Loading / in progress | `27`, `28`, `36`, `44`, `53`, `64`, `124`, `173` (simulated payment processing) |
+| Empty | `42` (no cards due), `82` (folder with no items), `95` (no collections), `154` (nothing due in the Recall Space) |
+| Error | `30` (unsupported format), `41` (AI quota exceeded), `126` (payment declined), `134` (server retry), `173` (simulated payment failure) |
+| Success | `29` (upload), `37` (summary), `48` (session), `58` (quiz), `125` (receipt), `157` (trial activated), `178` (subscription cancelled) |
 | Offline | `133` (offline banner and sync queue) |
 | Permission | `129` (notification primer) |
 | Corrective feedback | `55` (correct), `56` (incorrect), with the explanation and citation for each |
-| Confirmation before loss | `57` (submit with unanswered), `141` (sign out) |
+| Confirmation before loss | `57` (submit with unanswered), `141` (sign out), `177` (cancel the demo subscription) |
 | Accessibility proof | `138` (large text AX3), `139` (Arabic RTL) |
 
 ---
 
-## A.16 Where the exportable figures come from
+## A.18 Where the exportable figures come from
 
-**Status: exported, 8 October 2026.** The 106 wireframes and the 15 flow diagrams are the figures for Design Document section 10 and section 9, and they have been exported from the live Figma file through the Figma MCP server, not by hand:
+**Status: re-exported, 24 October 2026.** The 130 wireframes and the 17 flow diagrams are the figures for Design Document section 10 and section 9, and they have been exported from the live Figma file through the Figma MCP server, not by hand:
 
-1. **106 wireframe frames** at 2× PNG into `figures/`, named exactly as the Figma frames are (`LF_01_Splash_Logo_Saleh_202300540.png` and so on, one per screen). Each export is the frame plus its legend panel, so the numbered callouts and the element legend stay with the drawing. 1720 × 1920 px each.
-2. **15 flow diagram frames** at 2× PNG into the same directory, named `FLOW_Fnn_…png`, one per feature.
+1. **130 wireframe frames** at 2× PNG into `figures/`, named exactly as the Figma frames are (`LF_01_Splash_Logo_Saleh_202300540.png` and so on, one per screen). Each export is the frame plus its legend panel, so the numbered callouts and the element legend stay with the drawing. 1720 × 1920 px each.
+2. **17 flow diagram frames** at 2× PNG into the same directory, named `FLOW_Fnn_…png`, one per feature.
 3. **Supplementary exports** that are page furniture rather than figures: `LF_00_PageHeader_StudyForge.png` and `F00_FlowDiagrams_Header_StudyForge.png`.
 4. **The navigation map, the states panel, the design system sheet, the glass reference and the cover** are exported into `../figures/`, because they belong to sections 10, 11 and 12 rather than to the mockups appendix.
 
-Figure numbering: the 15 flows are Figures 9.1 to 9.15, the states panel is Figure 10.1, the 106 wireframes are Figures 10.2 to 10.107 in screen order (indexed in `DESIGN-DOCUMENT.md` §10.4), the navigation map is Figure 11.1, and the design system and glass sheets are Figures 12.1 and 12.2. The complete list, with statuses, is the document's "List of figures".
+Figure numbering: the 17 flows are Figures 9.1 to 9.17, the states panel is Figure 10.1, the 130 wireframes are Figures 10.2 to 10.131 in screen order (indexed in `DESIGN-DOCUMENT.md` §10.4), the navigation map is Figure 11.1, and the design system and glass sheets are Figures 12.1 and 12.2. The complete list, with statuses, is the document's "List of figures".
 
 The exports are counted and checked by `bash tools/check-submission.sh`, and the measurements behind them are recorded in `../../prototype/figma-audit.md`.
 
-The high-fidelity, interactive version is the same file's page `3 · Screens (all features)`; it is delivered as the Project Prototype, not as document figures, so the document stays a **low-fidelity** mockups section as the brief intends. Page `6 · Dark Mode Variants (P9-12)` holds the 119 dark variants, which are also prototype evidence rather than document figures.
+The high-fidelity, interactive version is the same file's page `3 · Screens (all features)`; it is delivered as the Project Prototype, not as document figures, so the document stays a **low-fidelity** mockups section as the brief intends. Page `6 · Dark Mode Variants (P9-12)` holds **130** dark variants: one for each of the **123 built screens**, plus the **7 retained** from the superseded F13 first cut (`DARK_118`, `DARK_120`–`DARK_122`, `DARK_124`–`DARK_126`), kept as the record of that pass exactly as their wireframes are on page 5. Each is a clone of its light screen with the `Dark` mode of the `Color` variable collection set explicitly and the dark canvas gradient applied; the eleven F13 screens added in the 24 October rework (`155`–`157`, `172`–`179`) were given their variants the same day.
 
 
 
