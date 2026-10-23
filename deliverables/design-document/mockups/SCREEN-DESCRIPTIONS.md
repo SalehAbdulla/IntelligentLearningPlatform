@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| **Frames** | **106** wireframes, one per screen, covering all **15** features (F01–F15) |
+| **Frames** | **106** wireframes, one per screen, covering **15** features (F01–F15). Three counts appear in this appendix and each counts something different: **154** is the planned screen inventory in `docs/03`, **119** is the frames built in Figma, and **106** is the wireframes described here |
 | **Page** | Figma page `5 · Low-Fi Wireframes`, 4 wireframes per row, ordered by screen number |
 | **Naming** | `NN_ScreenName_FirstName_StudentID`, exactly as the brief requires. Every frame carries a real student ID, so authorship is visible at a glance |
 | **Each wireframe** | A greyscale drawing of the screen, with **numbered callout badges** on the key UI elements |
@@ -39,7 +39,7 @@ The exhaustive element-by-element legend for every one of the 106 screens is pri
 | 07 | `07_Login_Saleh_202300540` | Returning-user sign-in, including the failure path. | **Email field**, **password field**, **Log in** primary, inline **error example** ("Incorrect email or password"), **Forgot password** link, **Face ID** affordance. |
 | 08 | `08_ForgotPassword_Request_Saleh_202300540` | Start a password reset. | **Email field**, **Send reset link** primary. |
 | 09 | `09_ForgotPassword_Confirm_Saleh_202300540` | Confirm the link was sent, and set the expectation. | **Check mark**, **"Check your inbox"**, **60-minute expiry** note, **Back to log in**. |
-| 10 | `10_RoleSelect_Saleh_202300540` | Choose the role that routes the whole app. Four roles are supported. | Three **role cards** (Student, Tutor, Admin) each with a one-line description and an icon, **Continue as student** primary. |
+| 10 | `10_RoleSelect_Saleh_202300540` | Choose the role that routes the whole app. **Three roles are selectable here** — the fourth role the brief counts, Study Group Member, is a capability layered on Student rather than a separate account, so it is not a card (Design Document §6). | Three **role cards** (Student, Tutor, Admin) each with a one-line description and an icon, **Continue as student** primary. |
 
 ---
 
@@ -225,7 +225,7 @@ The exhaustive element-by-element legend for every one of the 106 screens is pri
 
 ## A.15 Coverage audit
 
-Every one of the 17 features has at least three screens, and the counts below sum to the **119 frames** in the file. Groups **N** (F16, frames 142–147) and **O** (F17, frames 148–154) were drawn on 15 October 2026, adding the final 13.
+Every one of the 17 features has at least three screens. **The table below describes the 106 wireframes in this appendix; the Figma file holds 119 frames, and the 13 F16/F17 frames (groups N and O, 142–154) have no low-fidelity counterpart yet** — the recorded gap, drawn on 15 October 2026. With those two rows included, the table sums to the full **119**.
 
 | Group | Area | Owner | Screens | Frames |
 |---|---|---|---|---|
@@ -242,16 +242,23 @@ Every one of the 17 features has at least three screens, and the counts below su
 | K | Admin Content Management | M4 Shahad | 109–115 | 5 |
 | L | Subscription & Payments | M3 Tasbeeh | 118–126 | 7 |
 | M | System, Notifications & States | M1 Saleh | 128–141 | 8 |
-| | **Total** | | | **106** |
+| N | Group chat & moderation (F16) | M5 Fatema | 142–147 | 6 |
+| O | Active recall space (F17) | M5 Fatema | 148–154 | 7 |
+| | **Total** | | | **119** |
 
-**Frames per developer**, matching the ownership in `docs/02-FEATURE-LIST-OWNERSHIP.md`:
+**Wireframes per developer**, matching the ownership in `docs/02-FEATURE-LIST-OWNERSHIP.md`. These
+count the **106 low-fidelity wireframes**, not the prototype: the Figma file holds **119** frames,
+and M5's 13 (F16, F17) have no wireframe yet — the gap recorded in `figma-audit.md` and `docs/03`
+§3, not a zero contribution:
 
-| Member | Student ID | Frames | Feature areas |
+| Member | Student ID | Wireframes | Feature areas |
 |---|---|---|---|
 | M1 Saleh Abdulla | `202300540` | 36 | F01, F02, F07 home, F14, cross-cutting states |
 | M2 Mohammed Almadhoon | `202401702` | 31 | F03, F04, F05, F11, F15 (co) |
-| M3 Tasbeeh Saeed | `202300549` | 18 | F06, F07, F13, F15 (co) |
+| M3 Tasbeeh Saeed | `202305409` | 18 | F06, F07, F13, F15 (co) |
 | M4 Shahad Ashoor | `202305767` | 21 | F08, F09, F10, F12 |
+| M5 Fatema Ghareeb | `202304804` | **0** | F16, F17 — **no wireframe yet** (13 prototype frames) |
+| | | **106** | the four rows above |
 
 **State coverage required by the brief** (loading · empty · error · success · offline · permission):
 
