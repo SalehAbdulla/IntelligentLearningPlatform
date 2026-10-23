@@ -13,7 +13,7 @@
 > **Re-run this audit** whenever the Figma file changes, and change the date below. A stale
 > audit is worse than no audit.
 
-**Audit date:** 15 October 2026 · **Auditor:** M1 Saleh Abdulla (202300540) · **File revision:** the revision that adds groups N and O (F16, F17) — 119 screens, 17 feature flows
+**Audit date:** 24 October 2026 · **Auditor:** M1 Saleh Abdulla (202300540) · **File revision:** the revision that adds the F16/F17 and F13 low-fidelity wireframes — 123 screens, 130 wireframes, 130 dark variants, 17 feature flows
 
 > **Re-run on 15 Oct 2026** after F16 and F17 were drawn and wired. Every number below was
 > measured again from the live file on that date; none of them is carried over.
@@ -32,25 +32,29 @@ P9-12 dark mode variants: PASS
 
 | Item | Requirement | Measured | Result |
 |---|---|---|---|
-| **P9-06** | Every frame named `NN_ScreenName_FirstName_StudentID` | **119 of 119** frames match the rule, 0 violations | ✅ PASS |
-| **P9-06b** | Authorship visible per member | Saleh `202300540` 36 · Mohammed `202401702` 31 · Tasbeeh `202300549` 18 · Shahad `202305767` 21 · **Fatema `202304804` 13** (sum 119) | ✅ PASS |
+| **P9-06** | Every frame named `NN_ScreenName_FirstName_StudentID` | **123 of 123** frames match the rule, 0 violations | ✅ PASS |
+| **P9-06b** | Authorship visible per member | Saleh `202300540` 36 · Mohammed `202401702` 31 · Tasbeeh `202305409` 22 · Shahad `202305767` 21 · **Fatema `202304804` 13** (sum 123) | ✅ PASS |
 | **P9-07** | Prototype wiring, no dead ends | **320** reactions across the screens (was 296), **110** distinct destination frames, 9 frames that are never a click target: `24`, `30`, `41`, `77`, `78`, `88`, `126`, `133`, `134`, every one of them a named flow start point. **No screen has zero reactions** | ✅ PASS |
 | **P9-07b** | Hotspot placement | **111** screens carry their hotspots on real elements (buttons, tab items, list rows, modal actions) and **8** are deliberately tap-anywhere: `27`, `28`, `46`, `59`, `124`, `128`, `138`, `139` | ✅ PASS |
-| **P9-08** | Every screen is a fixed iOS frame | **119 of 119** frames measure exactly **390 × 844** | ✅ PASS |
+| **P9-08** | Every screen is a fixed iOS frame | **122 of 123** frames measure exactly **390 × 844**. ⚠️ **One exception, found on 24 Oct 2026:** `172_Checkout_ExamBoost_Tasbeeh_202305409` measures **390 × 980** (the extra height was needed for the one-time-purchase breakdown). Its low-fidelity wireframe is drawn at the standard 390 × 844 | ⚠️ PASS with one stated exception |
+| **P9-08b** | No clipped content inside the wireframes | **130 of 130** wireframes contain their content. **Five pre-existing overflows were found and repaired on 24 Oct 2026** — long single-line text nodes that ran past the 390 px frame edge and were visibly clipped on export: `LF_46` (`55:2431`), `LF_47` (`55:2451`, which also collided with its legend), `LF_93` (`57:707`), `LF_124` (`55:4360`) and `LF_126` (`55:4432`). Each was re-wrapped inside its frame and its figure re-exported | ✅ PASS |
 | **P9-11** | Accessibility and RTL proof frames | `138_Accessibility_LargeText_Example_Saleh_202300540` and `139_RTL_Arabic_Example_Saleh_202300540` both exist | ✅ PASS |
-| **P9-12** | Dark-mode screen variants | Figma page `6 · Dark Mode Variants (P9-12)` holds **119** variants, one per screen, and **119 of 119** carry the `Dark` mode of the `Color` variable collection set explicitly | ✅ PASS |
-| **Mockups** | 106 low-fidelity wireframes | Figma page `5 · Low-Fi Wireframes` holds **106** wireframe frames (107 children including the page header), each with its numbered callouts and legend panel. ⚠️ **Groups N and O have no wireframe yet — see the gap below** | ⚠️ PASS with a stated gap |
+| **P9-12** | Dark-mode screen variants | Figma page `6 · Dark Mode Variants (P9-12)` holds **130** variants: one for each of the **123 built screens**, plus the **7 retained** from the superseded F13 first cut (`DARK_118`, `DARK_120`–`DARK_122`, `DARK_124`–`DARK_126`), kept as the record of that pass just as their wireframes are on page 5. Every one carries the `Dark` mode of the `Color` variable collection set explicitly, with the dark canvas gradient applied to the clone. The 11 F13 screens added in the 24 Oct 2026 rework were given their variants the same day | ✅ PASS |
+| **Mockups** | 130 low-fidelity wireframes | Figma page `5 · Low-Fi Wireframes` holds **130** wireframe frames (131 children including the page header), each with its numbered callouts and legend panel — every built screen, groups A–O. ✅ **The N/O gap recorded on 15 Oct 2026 was closed on 24 Oct 2026** (see below) | ✅ PASS |
 | **Flow diagrams** | One per feature | Figma page `2 · Flow Overview` holds **17** `FLOW_Fnn_…` diagrams (F01–F17) plus the global navigation map and the four system diagrams of Figures 5.1, 8.1, 14.1 and 14.2 | ✅ PASS |
-| **Figures** | 2× PNG exports for the document | **130** PNGs in `mockups/figures/` (107 wireframe exports + 17 flow diagrams + the system diagrams, navigation map, states panel, design-system sheet and cover), the smallest **1720 px** wide, clearing the 150 dpi floor | ✅ PASS |
+| **Figures** | 2× PNG exports for the document | **154** PNGs in `mockups/figures/` (130 wireframe exports + 17 flow diagrams + the four system diagrams, navigation map, flow-diagrams header and wireframe-page header), the smallest **1720 px** wide, clearing the 150 dpi floor | ✅ PASS |
 
-### The one gap this re-run found
+### The gap this audit found, and its closure
 
-**Groups N and O have no low-fidelity wireframes.** The 106 wireframes on page `5` cover F01–F15
-only. The supervisor's answer at Design Document §3.3 (question 5) was explicit that
-**low-fidelity is what the mockup component expects**, so the 13 new screens should get a
-low-fidelity counterpart before the prototype is submitted. It is recorded in
-[`docs/03`](../../docs/03-SCREEN-INVENTORY.md) §3 and in the Design Document §10.1 as **M5's work**,
-and it is deliberately not ticked here.
+**Closed 24 October 2026.** The 15 October re-run found that **groups N and O had no low-fidelity wireframes** — the 106 wireframes on page `5` covered F01–F15 only — and that the supervisor's answer at Design Document §3.3 (question 5) made **low-fidelity what the mockup component expects**. That gap is now closed:
+
+| Added | Frames | Why |
+|---|---|---|
+| F16 moderation wireframes | `LF_142`–`LF_147` | The 13 F16/F17 screens had no low-fidelity counterpart |
+| F17 Recall Space wireframes | `LF_148`–`LF_154` | Same gap |
+| F13 subscription-state wireframes | `LF_155`–`LF_157`, `LF_172`–`LF_179` | The 24 Oct 2026 F13 rework replaced screens 118/120–126 with 11 new screens |
+
+Page `5` therefore holds **130 wireframes** (131 nodes with the page header), and page `6` holds **130 dark variants**, one per built screen. **What is still open** is the `.fig` re-export, recorded in [`figma-link.txt`](figma-link.txt) §9.
 
 ### What the re-run also had to fix
 
@@ -118,7 +122,7 @@ above. Two rendered proofs are stored in `deliverables/prototype/dark-mode-proof
 > first drawn with **literal hex fills**, so their dark variants rendered dark text on a dark
 > canvas — the mode switch had nothing to recolour. All **478** paints across those frames were
 > bound to the `Color` variables before the variants were regenerated, which is what makes the
-> **119 of 119** figure above true rather than nominal. The binding used an **explicit
+> **130 of 130** figure above true rather than nominal. The binding used an **explicit
 > hex-to-variable map** rather than a hex lookup: five variables share `#ffffff` (`onError`,
 > `surface`, `glass/surface`, `glass/strong`, `glass/border`), and a first-match lookup silently
 > bound card surfaces to `onError`.
