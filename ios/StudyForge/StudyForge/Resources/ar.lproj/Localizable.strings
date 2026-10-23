@@ -420,6 +420,8 @@
 "plan.addSubject"      = "إضافة";
 "plan.availabilityHeading" = "كم ساعة في الأسبوع؟";
 "plan.deadlineHeading" = "متى اختبارك القادم؟";
+"plan.examDatesHeading" = "متى اختباراتك؟";
+"plan.examDateLabel"    = "تاريخ الاختبار";
 "plan.noDeadline"      = "لا يوجد موعد نهائي";
 "plan.intensityHeading" = "ما مدى الكثافة؟";
 "plan.intensity.light" = "خفيفة";
