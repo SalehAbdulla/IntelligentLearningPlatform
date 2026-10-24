@@ -26,6 +26,13 @@ points of confusion, and recording them is what earns the marks, not hiding them
 | [`sus-questionnaire.md`](sus-questionnaire.md) | The ten standard SUS items and the scoring rule | Completed by each participant |
 | [`participant-log.md`](participant-log.md) | The anonymised participant table (P1–P5) | Facilitator, on the day |
 | [`results.md`](results.md) | Task success, time on task, confusion, the SUS score and the changes made | Facilitator, after the session |
+| [`recruit-message.md`](recruit-message.md) | The message to send to recruit the five participants, a slot table, and what to do the moment a slot is confirmed | Send now, before the slots fill |
+| [`responses.md`](responses.md) | Where the ten SUS responses per participant are typed, so the score is arithmetic rather than judgement | Facilitator, after each session |
+| [`StudyForge-Usability-Packet.docx`](StudyForge-Usability-Packet.docx) | The printable pack: facilitator guide and scoring rule, then the consent sheet, questionnaire and log sheet to print once per participant. Rebuilt by `bash tools/build-usability-pack.sh` | Print before the session |
+
+The score itself is not done by hand: `python3 tools/usability-score.py research/usability/responses.md`
+applies Brooke (1996) exactly and prints the participant table, the score with its band, the task
+table and the paragraph for §17.3.
 
 ## The short version of the method
 
