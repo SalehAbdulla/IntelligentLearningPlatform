@@ -52,9 +52,13 @@ can see exactly what changed.
 2. The interactive file (.fig)
 ------------------------------
 Deliverable       : deliverables/prototype/StudyForge.fig
-Status            : DONE. Exported from the Figma desktop app on 8 Oct 2026, 01:15.
-Size              : 1,201,229 bytes (1.2 MB)
-Verified contents : canvas.fig (1,195,619 bytes), thumbnail.png, meta.json, images/
+Status            : DONE. RE-EXPORTED from the Figma desktop app on 24 Oct 2026, 02:01
+                    (meta.json records exported_at 2026-10-23T23:01:26Z). This revision
+                    carries every change made on 24 Oct: the 130 wireframes, the 130
+                    dark variants, the corrected cover counts, and the F16/F17
+                    attribution change.
+Size              : 1,830,424 bytes (1.8 MB)
+Verified contents : canvas.fig (1,782,246 bytes), thumbnail.png (47,153 bytes), meta.json, images/
 Note              : the .fig is excluded from git by .gitignore
                     (deliverables/**/*.fig) because it is submitted through the
                     portal, not through the repository. Keep the file itself safe:
@@ -158,8 +162,8 @@ Screens built (123), by group and owner
   H AI Study Companion (F15)    73-78      M2 + M3
   I Collaboration               81-97      M4 Shahad
   K Admin Content Management    109-115    M4 Shahad
-  N Moderated Group Chat (F16)  142-147    M5 Fatema
-  O Active Recall Space (F17)   148-154    M5 Fatema
+  N Moderated Group Chat (F16)  142-147    M1 Saleh   (F16 owner M5)
+  O Active Recall Space (F17)   148-154    M3 Tasbeeh (F17 owner M5)
 
 Cover: the team table on page 0 lists all FIVE members, including M5 Fatema
 Ghareeb (202304804). It previously listed four and omitted her; corrected
@@ -218,7 +222,7 @@ Every frame follows the brief's rule exactly:
 Examples: 03_Onboarding_HowItWorks_Saleh_202300540,
           57_Quiz_Submit_Confirm_Mohammed_202401702,
           93_GroupSpace_SharedQuiz_Live_Shahad_202305767,
-          124_Payment_Processing_Tasbeeh_202300549
+          124_Payment_Processing_Tasbeeh_202305409
 
 Low-fidelity frames use the prefix LF_, Wire_ and Legend_ so they can never be
 confused with a prototype screen.
@@ -264,7 +268,12 @@ right-to-left Arabic proof is a built frame (139).
       `tools/check-submission.sh` reads this box (pred_share), so it is the only
       evidence that counts for this item.
   [x] Figma -> File -> Save local copy... -> deliverables/prototype/StudyForge.fig
-      (done 8 Oct 2026, 1.2 MB, verified as a real Figma export)
+      (done 8 Oct 2026, 1.2 MB; **RE-EXPORTED 24 Oct 2026, 1,830,424 bytes**,
+      verified as a real Figma export: canvas.fig + thumbnail.png + meta.json.
+      The saved copy landed in the repository ROOT and was moved into
+      deliverables/prototype/ the same day — at the root it is NOT covered by the
+      `.gitignore` rule `deliverables/**/*.fig`, so it would have committed a
+      1.8 MB binary to the repository)
   [x] Export the 130 wireframes and 17 flow diagrams at 2x PNG into
       deliverables/design-document/mockups/figures/ (re-exported 24 Oct 2026 by
       script through the Figma MCP server: 154 PNGs in that folder, 1720 x 1920
@@ -281,12 +290,13 @@ right-to-left Arabic proof is a built frame (139).
       file does not have — and now matches the seven pages actually present.
       Verified by screenshot after the edit.
   [ ] Usability test with 5 users and a SUS score (docs/01 P9-03/04)
-  [ ] **Re-export StudyForge.fig. Now MORE urgent than before.** The .fig on disk
-      was exported 8 Oct 2026, so it predates BOTH page 6 (the dark-mode variants)
-      AND the cover correction above. Re-export it after the next Figma change so
-      the .fig and the shared link show the same revision.
+  [x] **Re-export StudyForge.fig — DONE 24 Oct 2026.** The 8 Oct copy predated page 6
+      (the dark-mode variants), the cover correction, the 130-wireframe expansion
+      and the F16/F17 attribution change. The file on disk now records
+      `exported_at 2026-10-23T23:01:26Z`, so the `.fig` and the shared link show the
+      same revision. Re-export it again after any further Figma change.
   [x] The Design Document PDF export (rebuilt 24 Oct 2026: `bash tools/build-pdf.sh`,
-      194 pages, 158 figures, 36 external links, 24.7 MB — rebuilt after the 130
+      196 pages, 159 figures, 36 external links, 25.0 MB — rebuilt after the 130
       wireframes were re-exported and the counts corrected)
 
 The audited numbers behind this document, with what was and was not measured, are
