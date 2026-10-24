@@ -3,7 +3,7 @@
 The exported PDF is built from the Markdown source in this folder, not assembled by hand.
 
 - `DESIGN-DOCUMENT.md`               the source of truth for the document (all 19 sections)
-- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 194 pages, its Appendix A carries every one of the 158 figures one per page at print resolution, fonts embedded by the browser, links live (36 external). It is **gitignored on purpose** (`.gitignore` line 79: the PDF goes through the portal, not git), which is exactly why the build is a script: the PDF is reproducible from the Markdown on any machine, and the tool is what gets reviewed here
+- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 196 pages, its Appendix A carries every one of the 159 figures one per page at print resolution, fonts embedded by the browser, links live (36 external), and a **running header on every page** (app name + logo) with `Page X of Y` in the footer. It is **gitignored on purpose** (`.gitignore` line 79: the PDF goes through the portal, not git), which is exactly why the build is a script: the PDF is reproducible from the Markdown on any machine, and the tool is what gets reviewed here
 - `mockups/`                         ✅ the low-fidelity mockups deliverable: `SCREEN-DESCRIPTIONS.md` (purpose, layout and named UI elements for all **130** wireframes) + `figures/` with the **154 exported 2× PNGs** (130 wireframes, 17 flow diagrams, the four system diagrams drawn 8 Oct 2026, the navigation map and two page headers)
 - `figures/`                         ✅ the document figures that are not mockups: the Figma cover, the design system sheet, the glass reference and the cross-cutting states panel
 
@@ -26,11 +26,14 @@ page 1 names the app and that the last page carries a figure caption.
 tutor interview, the usability section and the figures its own List of figures marks as
 to-draw; a PDF exported before those land is stale evidence rather than a finished one.
 
-**Known gap.** Chromium's command-line printer cannot add page numbers or a running header, and
-a CSS `position: fixed` header repeats unreliably (measured: it appeared on two of three test
-pages, so it was not used). If the marker wants page numbers, or the "app name in the header of
-every page" the document's own cover note promises, run the build with `--html <dir>` and print
-`<dir>/index.html` from a browser with "Headers and footers" switched on.
+**The running header and page numbers are now in the export — this gap is closed.** Chromium's
+command-line printer cannot add either, and a CSS `position: fixed` header repeats unreliably
+(measured: two of three test pages), so the build adds them a different way: step 4 of
+`tools/build-pdf.sh` drives the DevTools Protocol through `tools/pdf-headers.js`, whose
+`Page.printToPDF` accepts a `headerTemplate` and a `footerTemplate`. Every page therefore carries
+the app name and the logo, and the footer carries `Page X of Y` — which is what the brief asks for
+and what the document's own cover note promises. Pass `--no-headers` to build without them, and
+`--html <dir>` still keeps the print-ready HTML as the manual fallback.
 
 `DESIGN-DOCUMENT.md` is the single source of truth for the submitted PDF, assembled from
 `../../../docs/` (which remains the working planning set).
