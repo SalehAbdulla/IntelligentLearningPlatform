@@ -6,8 +6,8 @@ Phase 1 (Mockups, 8 marks, the largest single rubric block).
 
 | File | Contents |
 |---|---|
-| `SCREEN-DESCRIPTIONS.md` | **The written half.** Purpose, layout and named key UI elements for all **106** screens, grouped by feature (A–M), plus the coverage audit, the state-coverage audit and the export instructions. |
-| `figures/` | ✅ **the exported 2× PNGs**: 106 wireframes, the 15 flow diagrams, the four system diagrams drawn 8 Oct 2026 (the core learning loop, the RAG pipeline, the system architecture and the AI router decision tree), the navigation map and the two page headers (128 files). Each wireframe is 1720 × 1920 px and the diagrams are 2160 px wide, so they clear 150 dpi. The states panel, the design system sheet, the glass reference and the cover are in `../design-document/figures/` |
+| `SCREEN-DESCRIPTIONS.md` | **The written half.** Purpose, layout and named key UI elements for all **130** wireframes, grouped by feature (A–O), plus the coverage audit, the state-coverage audit and the export instructions. |
+| `figures/` | ✅ **the exported 2× PNGs**: 130 wireframes, the 17 flow diagrams, the four system diagrams drawn 8 Oct 2026 (the core learning loop, the RAG pipeline, the system architecture and the AI router decision tree), the navigation map and the two page headers (154 files). Each wireframe is 1720 × 1920 px and the diagrams are 2160 px wide, so they clear 150 dpi. The states panel, the design system sheet, the glass reference and the cover are in `../design-document/figures/` |
 
 ## Where the mockups themselves live
 
@@ -16,8 +16,8 @@ cannot drift out of sync with the high-fidelity prototype:
 
 | Figma page | Contents |
 |---|---|
-| `5 · Low-Fi Wireframes` | **106 wireframes**, 4 per row, each with **numbered callout badges** and a **legend panel** naming every element and its function |
-| `2 · Flow Overview` | the global **navigation map** plus **15 per-feature flow diagrams** |
+| `5 · Low-Fi Wireframes` | **130 wireframes**, 4 per row, each with **numbered callout badges** and a **legend panel** naming every element and its function |
+| `2 · Flow Overview` | the global **navigation map** plus **17 per-feature flow diagrams** |
 
 Link: `deliverables/prototype/figma-link.txt`.
 
@@ -33,11 +33,11 @@ benefit, because a change to a screen changes its wireframe too.
 
 | Rubric point | Where |
 |---|---|
-| Coverage of assigned features | All 17 features — **119 frames built**, including groups N and O (F16, F17) drawn 15 Oct 2026; per-owner counts in `SCREEN-DESCRIPTIONS.md` §A.15 |
-| All necessary screens | 13 groups A–M, listed in §A.15 |
-| Clear navigation / screen flow | 15 per-feature flow diagrams + the global navigation map on Figma page 2 |
+| Coverage of assigned features | All 17 features — **123 frames built**, including groups N and O (F16, F17) drawn 15 Oct 2026 and the eleven F13 subscription states reworked 24 Oct 2026; per-owner counts in `SCREEN-DESCRIPTIONS.md` §A.17 |
+| All necessary screens | 15 groups A–O, listed in §A.17 |
+| Clear navigation / screen flow | 17 per-feature flow diagrams + the global navigation map on Figma page 2 |
 | Label UI elements clearly | Numbered callout badges on every wireframe, mapped to the legend panel beside it |
-| Screen descriptions, purpose + layout | `SCREEN-DESCRIPTIONS.md` §A.2–§A.14 |
+| Screen descriptions, purpose + layout | `SCREEN-DESCRIPTIONS.md` §A.2–§A.16 |
 | Element functions explained | The legend panel states the **type** and the **function** of every numbered element |
 | Error and feedback states | 7 in-progress, 3 empty, 4 error, 5 success, offline, permission, 2 corrective-feedback, 2 confirmation, 2 accessibility-proof screens — see §A.15 |
 | Neatness / professionalism | Greyscale only, one shared 4 pt grid, consistent gaps, ordered numbering, no overlap |

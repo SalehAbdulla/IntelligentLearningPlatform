@@ -152,7 +152,7 @@ Exit 0 = safe to commit and push. Exit 1 = stop and fix.
 | **Handle** | M5 |
 | **Features** | **F16** Admin-Moderated Group Chat · **F17** Active Recall Space |
 | **Primary tester for** | **F01** (M1's auth) · **F05** (M2's quiz) · **F13** (M3's payments) |
-| **Figma frame suffix** | `Fatema_202304804` — frames **142–154**, groups **N** and **O** |
+| **Figma frames** | **None carry your name.** The F16/F17 frames — screens `142`–`154`, their dark variants and their wireframes — were drawn by **M1 (F16)** and **M3 (F17)** on 24 Oct 2026 and are named for them. You own both features; the frames are credited to whoever drew them |
 | **Team role** | Collaboration & Recall lead |
 
 You own **two** features, the rubric's minimum, and both are **net-new**: each brings its own
@@ -307,7 +307,7 @@ Tests use **Swift Testing** (`@Suite` / `@Test`), never XCTest. Follow the exist
 | `research/testing/F01-fatema.md`, `F05-fatema.md`, `F13-fatema.md` | test logs. **You are the primary tester for F01, F05 and F13** — nobody tests a feature they developed. Record the exact steps you ran, the observed result, any defect found, and whether it is fixed. Finding a real defect beats a clean pass, but never invent one |
 | `research/reviews/*` | notes on the AI-generated code you reviewed and corrected |
 | `research/cheatsheets/fatema.md` | keep the quick-reference current for F16 and F17 |
-| The Figma file | frames **142–154** named `…_Fatema_202304804` (groups N and O) |
+| The Figma file | frames **142–154** (groups N and O) carry **M1's and M3's** names, not yours — you own the features, they drew the frames |
 
 `research/testing/` and `research/reviews/` may not exist yet — create them, and name files
 distinctly (e.g. `F01-fatema.md`) so nobody collides.

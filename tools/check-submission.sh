@@ -109,7 +109,7 @@ pred_appendix_a() {
   local n
   n=$(ls -1 "$FIGS"/LF_*.png 2>/dev/null | grep -v 'LF_00_PageHeader' | wc -l | tr -d ' ')
   [ -f "$MOCK" ] || { note "$MOCK is missing"; return 1; }
-  [ "${n:-0}" -ge 106 ] || { note "only ${n:-0} wireframe exports in $FIGS"; return 1; }
+  [ "${n:-0}" -ge 130 ] || { note "only ${n:-0} wireframe exports in $FIGS"; return 1; }
   note "$MOCK plus ${n} exported wireframes"
   return 0
 }
@@ -211,20 +211,48 @@ pred_share() {
 pred_mockups() {
   local n
   n=$(ls -1 "$FIGS"/LF_*.png 2>/dev/null | grep -v 'LF_00_PageHeader' | wc -l | tr -d ' ')
-  [ "${n:-0}" -ge 106 ] || { note "only ${n:-0} of 106 wireframes exported"; return 1; }
+  [ "${n:-0}" -ge 130 ] || { note "only ${n:-0} of 130 wireframes exported"; return 1; }
   return 0
 }
 
 pred_flows() {
   local n
   n=$(ls -1 "$FIGS"/FLOW_F*.png 2>/dev/null | wc -l | tr -d ' ')
-  [ "${n:-0}" -ge 15 ] || { note "only ${n:-0} of 15 flow diagrams exported"; return 1; }
+  [ "${n:-0}" -ge 17 ] || { note "only ${n:-0} of 17 flow diagrams exported"; return 1; }
   return 0
 }
 
 pred_coverage() {
   grep -q '88' "$MOCK" || { note "no F09 group-space screens in $MOCK"; return 1; }
   grep -q '57' "$MOCK" || { note "the quiz submit-confirm screen is missing from $MOCK"; return 1; }
+  return 0
+}
+
+pred_bundle() {
+  # The bundle and the zip are tracked, so the team sees the submission from a clone. That
+  # only helps while the copy is current, and a stale zip is worse than no zip because it
+  # still looks like the submission. Compare every carried file with its source, byte for
+  # byte. The bundle's own README is skipped: it has no source counterpart.
+  local zip="deliverables/StudyForge-Submission.zip" tmp rc=0
+  [ -s "$zip" ] || { note "$zip is missing"; return 1; }
+  tmp="$(mktemp -d)"
+  if ! unzip -q -o "$zip" -d "$tmp" >/dev/null 2>&1; then
+    note "$zip does not extract"; rm -rf "$tmp"; return 1
+  fi
+  cmp -s "$tmp/01-Design-Document/StudyForge-Design-Document.pdf" "deliverables/design-document/StudyForge-Design-Document.pdf" || rc=1
+  cmp -s "$tmp/01-Design-Document/DESIGN-DOCUMENT.md" "deliverables/design-document/DESIGN-DOCUMENT.md" || rc=1
+  cmp -s "$tmp/03-Prototype/StudyForge.fig" "deliverables/prototype/StudyForge.fig" || rc=1
+  cmp -s "$tmp/03-Prototype/figma-link.txt" "deliverables/prototype/figma-link.txt" || rc=1
+  diff -r -q --exclude='.DS_Store' "$tmp/01-Design-Document/figures" "deliverables/design-document/figures" >/dev/null 2>&1 || rc=1
+  diff -r -q --exclude='.DS_Store' "$tmp/02-Mockups/figures" "deliverables/design-document/mockups/figures" >/dev/null 2>&1 || rc=1
+  diff -r -q --exclude='.DS_Store' "$tmp/03-Prototype/dark-mode-proof" "deliverables/prototype/dark-mode-proof" >/dev/null 2>&1 || rc=1
+  rm -rf "$tmp"
+  [ "$rc" -eq 0 ] || {
+    note "the tracked zip is stale: at least one carried file differs from its source."
+    note "Rebuild and verify it with:  bash tools/build-bundle.sh"
+    return 1
+  }
+  note "the tracked zip matches the sources byte for byte"
   return 0
 }
 
@@ -245,7 +273,7 @@ dd-appendix-a|Appendix A, the labelled screen descriptions|machine|pred_appendix
 dd-figures|PDF export with embedded fonts|machine|pred_figures|Figures at 150 dpi, figure list, table list, PDF
 dd-dossier|research/dossier.md|machine|pred_dossier|research/dossier.md exists
 dd-market|Re-verify the section 2 market figures|human|pred_market|Section 2 market figures verified
-dd-count|Reconcile the section 1 claim|machine|pred_count|106-screen count reconciled in section 1
+dd-count|Reconcile the section 1 claim|machine|pred_count|123-screen count reconciled in section 1
 p9-0304|P9-03/04|human|pred_usability|P9-03/04 usability test and SUS score
 p9-06|P9-06|audit|pred_p906|P9-06 frame-naming audit
 p9-07|P9-07|audit|pred_p907|P9-07 hotspot and link audit
@@ -257,9 +285,10 @@ p9-14|P9-14|machine|pred_fig_file|P9-14 StudyForge.fig exported
 p9-17|P9-17|machine|pred_figma_link|P9-17 figma-link.txt assembled
 p9-1819|P9-18/19|human|pred_tag|P9-18/19 submit and tag prototype-v1
 p9-share|Human only:|human|pred_share|Figma link permission set to Can view
-new-mockups|Phase 1 mockups|machine|pred_mockups|106 low-fidelity wireframes exported
-new-flows|15 per-feature flow diagrams|machine|pred_flows|15 per-feature flow diagrams exported
+new-mockups|Phase 1 mockups|machine|pred_mockups|130 low-fidelity wireframes exported
+new-flows|17 per-feature flow diagrams|machine|pred_flows|17 per-feature flow diagrams exported
 new-holes|closed two coverage holes|machine|pred_coverage|F09 screens and 57 present in the mockups
+bundle-fresh|bundle and its zip stay in step|machine|pred_bundle|the tracked submission zip matches the sources byte for byte
 "
 
 

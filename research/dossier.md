@@ -97,8 +97,8 @@ checked, which is why the cells name the source to check instead of quoting a fi
 |---|---|---|---|---|
 | V1 | Size of the tertiary-education population in Bahrain | Bahrain Ministry of Education / Information and eGovernment Authority open data | M1 | ✅ **VERIFIED — 60,723 enrolled students, academic year 2025/2026** (public 41,824 + private 18,899). Source: **iGA Bahrain Open Data Portal**, dataset `23-hec_students-in-higher-education-institutions-by-academic-programme-sex0`, summing all 16 records for `academic_year = 2025/2026`; dataset last processed 27 Sep 2026, retrieved 15 Oct 2026 |
 | V2 | Smartphone and mobile-internet penetration in Bahrain | Bahrain Telecommunications Regulatory Authority (TRA) quarterly market report | M1 | ✅ **VERIFIED — 144.5 mobile lines per 100 inhabitants, 2025.** **2,316,986 mobile phone lines** (TRA, annual series 2016–2025, via the iGA open-data portal) against a **population of 1,603,260** (iGA, June 2025). ⚠️ This is *mobile-line* penetration, the closest primary-source proxy; the TRA's own smartphone/mobile-broadband split lives in its quarterly report, which blocks scripted requests (see the note below) |
-| V3 | Growth of digital learning in the GCC | A named industry report (for example a regional e-learning market study) with a publication year, not a blog | M4 | ⬜ to verify |
-| V4 | Bahrain digital-payments context, cited as local context | **Resolution No. 43** as published in the official gazette, plus the Central Bank of Bahrain rulebook for the payment rails named in F13 | M3 | ⬜ to verify |
+| V3 | Growth of digital learning in the GCC | A named industry report (for example a regional e-learning market study) with a publication year, not a blog | M4 | ✅ **VERIFIED — the GCC e-learning market reached USD 7.7 billion in 2025, and is forecast to grow at a 13.46% CAGR over 2026–2034.** Source: **IMARC Group**, *GCC E-Learning Market Size, Share, Trends and Forecast by Learning Type, Sector, Product Type, Technology, and Country, 2026–2034* — a named industry report with a stated publication year (**press release dated 25 May 2026**), retrieved 23 Oct 2026. Corroborating named report, same direction: **Technavio**, *E-Learning Market in GCC — Size and Forecast 2025–2029* |
+| V4 | Bahrain digital-payments context, cited as local context | **Resolution No. 43** as published in the official gazette, plus the Central Bank of Bahrain rulebook for the payment rails named in F13 | M3 | ✅ **VERIFIED — Ministerial Resolution No. (43) of 2024**, issued by the **Minister of Industry and Commerce**, published in the **Official Gazette, Issue No. 3753, Thursday 13 June 2024**: every commercial entity registered with the MOIC must hold a **dedicated business bank account** and process its payments **through licensed financial institutions**, and the resolution directs establishments to **adopt electronic payment systems**. The rails F13 names (Tap card acquiring, BenefitPay) sit under the **Central Bank of Bahrain Rulebook, Volume 5 (Specialised Licensees) — Payment Service Provider module**, version **5 February 2026**. Sources retrieved 23 Oct 2026; see the note below for the exact references |
 | V5 | Cost of the cloud AI tiers the router falls back to | The providers' published price lists, checked on the day of export | M2 | ✅ **VERIFIED — the free tier is genuinely $0, and the paid rate is quantified. Gemini 2.5 Flash-Lite: free of charge on the free tier; paid $0.10 / 1M input tokens and $0.40 / 1M output tokens.** At the project's own task sizes that is **≈ $0.0008 per generation**, so even the *paid* rate at the stated ceiling of <100 calls/day is **≈ $0.08/day (≈ $2.40/month)**. Source: Google's published Gemini Developer API price list, retrieved 15 Oct 2026 |
 
 #### How V1 was verified, reproducibly
@@ -160,6 +160,58 @@ Population, June 2025: **1,603,260** total — of whom **746,097 Bahraini** and 
 > 2. **The population denominator is a mid-year estimate** (June 2025), and the mobile-lines figure
 >    is an annual one, so the ratio mixes two reference periods. The ratio is stable enough for the
 >    argument; the *sources* are what a marker should check, and both are cited above.
+
+#### How V3 and V4 were verified, reproducibly
+
+**Both were verified on 23 Oct 2026 by M1 (Saleh Abdulla, `202300540`) — not by the members the
+table names as owners.** The submission deadline moved to Saturday 24 Oct and both rows were still
+open, so the verification was done rather than left standing. **M4 and M3 own the claims; the
+sources below are what a marker should check.**
+
+**V3 — the GCC e-learning figure.** §2.3 needs a *named industry report with a publication year*,
+not a blog. It is cited from one, with a second named report agreeing on the direction:
+
+| | |
+|---|---|
+| **Publisher and report** | **IMARC Group**, *GCC E-Learning Market Size, Share, Trends and Forecast by Learning Type, Sector, Product Type, Technology, and Country, 2026–2034* |
+| **Publication** | press release dated **25 May 2026** |
+| **Figure** | **USD 7.7 billion** in **2025**, forecast at a **13.46% CAGR over 2026–2034** |
+| **Corroborating** | **Technavio**, *E-Learning Market in GCC — Size and Forecast 2025–2029* — a named report with a stated forecast period. Its headline rate could not be read from the page in this pass, so **no figure is asserted from it** |
+| **Retrieved** | 23 Oct 2026 |
+
+> **Honest framing of what this is.** Both are **commercial market-research vendors**, not
+> statistical agencies — which is what the row asked for, but it is *not* the same class of source
+> as V1 and V2, which are government open data. The document therefore uses the figure as **market
+> direction with a citation**, not as a precise claim about Bahrain, and it states the GCC-wide
+> scope rather than blurring it into a local one.
+
+**V4 — Resolution No. 43 and the payment rails.** Two separate references were required, and both
+are now pinned:
+
+| | |
+|---|---|
+| **The resolution** | **Ministerial Resolution No. (43) of 2024**, Minister of Industry and Commerce |
+| **Published in** | **Official Gazette, Issue No. 3753 — Thursday 13 June 2024** |
+| **What it requires** | every commercial entity registered with the MOIC holds a **dedicated business bank account**; payments are processed **through licensed financial institutions**; establishments are directed to **adopt electronic payment systems** |
+| **Implementation** | recorded in the **CBB Rulebook** as **24 July 2025** |
+| **The rails F13 names** | card acquiring through **Tap** and **BenefitPay** sit under the **CBB Rulebook, Volume 5 (Specialised Licensees) — Payment Service Provider (PSP) module**, version **5 February 2026** |
+| **Retrieved** | 23 Oct 2026 |
+
+```bash
+# the rulebook module that governs the rails F13 uses — the citation, not just a claim
+curl -sI 'https://www.cbb.gov.bh/wp-content/uploads/2026/02/Volume-5_PSP-Module_5-Feb-26.pdf'
+#   → HTTP 200 · application/pdf · 1,376,295 bytes
+
+# the resolution itself is published by the ministry under the gazette issue in its filename:
+#   moic.gov.bh → "قرار وزير الصناعة والتجارة رقم (43) لسنة 2024" · العدد 3753 · الخميس 13 يونيو 2024
+```
+
+> **One caveat, stated rather than buried.** The ministry serves that PDF with an anti-bot response
+> to scripted requests (**HTTP 403** — the same behaviour V2 hit on the TRA's site), so the
+> resolution's **obligations** were read from a law firm's analysis of it (**Raees + Co**, *Legal
+> Update: New Financial Obligations For Commercial Entities In Bahrain*, Legal 500, 29 Nov 2024),
+> while the **citation** — number, issuer, gazette issue and date — comes from the ministry's own
+> published filename. The PDF is the primary source and opens normally in a browser.
 
 #### How V5 was verified, reproducibly
 
