@@ -17,7 +17,7 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 | **Tagline** | Turn any material into mastery. |
 | **Client brief** | Project Brief 2, Intelligent Learning Platform |
 | **Module** | IT8108, Bahrain Polytechnic, Year 3 |
-| **Team (5 members)** | Saleh Abdulla (202300540) · Mohammed Almadhoon (202401702) · Tasbeeh Saeed (202300549) · Shahad Ashoor (202305767) · Fatema Ghareeb (202304804) |
+| **Team (5 members)** | Saleh Abdulla (202300540) · Mohammed Almadhoon (202401702) · Tasbeeh Saeed (202305409) · Shahad Ashoor (202305767) · Fatema Ghareeb (202304804) |
 | **Tutors** | Haetham Alhaddad (Coordinator) · Ghassan AlShajjar |
 | **Platform** | iOS 26.0+ · SwiftUI · Swift 6 · Xcode 27 · Firebase (Spark, no-cost tier) |
 | **SDGs** | SDG 4 (Quality Education) · SDG 9 (Industry, Innovation & Infrastructure) · SDG 10 (Reduced Inequalities) |
@@ -75,7 +75,7 @@ commitment to the marker rather than a gate the script enforces.
 | 11.2 | The core learning loop, restated in the navigation context (same artwork as Figure 5.1) | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
 | 12.1 | The design system sheet: colour variables, type ramp, spacing, radius, elevation | [figures/01_DesignSystem_Saleh_202300540.png](figures/01_DesignSystem_Saleh_202300540.png) | ✅ exported |
 | 12.2 | The glass and depth reference: blur, hairline border, dual shadow, inner light edge | [figures/02_GlassAndDepth_Saleh_202300540.png](figures/02_GlassAndDepth_Saleh_202300540.png) | ✅ exported |
-| 13.1 | A provenance citation chip and confidence band on a generated quiz answer | ⬜ to capture from the app | ⬜ pending |
+| 13.1 | The provenance citation chip and its confidence band, on prototype screens 38 and 59 | [figures/13_Provenance_Citation_StudyForge.png](figures/13_Provenance_Citation_StudyForge.png) | ✅ exported |
 | 14.1 | The system architecture: app, backend, AI tiers | [mockups/figures/ARCH_SystemArchitecture_StudyForge.png](mockups/figures/ARCH_SystemArchitecture_StudyForge.png) | ✅ exported |
 | 14.2 | The AI router decision tree | [mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png](mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png) | ✅ exported |
 
@@ -382,7 +382,7 @@ Goal: keep content correct, safe and compliant, and answer any question about wh
 
 The brief requires a structured feature list with name, user role, main task, flow, developer and tester, using at least three roles, with each student developing at least two features and one approved advanced feature co-owned by one or two developers. The table below satisfies every clause.
 
-**Legend.** *Flow* is written as `trigger → step → … → outcome`. Developers and testers use the roster handles: **M1** Saleh Abdulla (202300540) · **M2** Mohammed Almadhoon (202401702) · **M3** Tasbeeh Saeed (202300549) · **M4** Shahad Ashoor (202305767). **Nobody tests a feature they developed.**
+**Legend.** *Flow* is written as `trigger → step → … → outcome`. Developers and testers use the roster handles: **M1** Saleh Abdulla (202300540) · **M2** Mohammed Almadhoon (202401702) · **M3** Tasbeeh Saeed (202305409) · **M4** Shahad Ashoor (202305767). **Nobody tests a feature they developed.**
 
 | ID | Feature | Role | Main task | Flow | Developer | Tester |
 |---|---|---|---|---|---|---|
@@ -445,7 +445,7 @@ deliverables and the interface contract are in **§8.4**; the dependencies this 
 | F16 | Admin-Moderated Group Chat | Admin, Study Group Member | Talk to a study group inside a chat an admin moderates and is always present in | Open group chat → admin presence banner → post and read messages → moderator pins an announcement → hide, delete or flag any message with a reason → tombstone shown → action written to the audit log | M5 | M4 |
 | F17 | Active Recall Space (Anki-style spaced repetition) | Student | Review everything due across every deck in one place, the way Anki does | Recall Space home → due-today counts by card state → filter by deck or tag → session → flip → rate Again/Hard/Good/Easy with the next interval shown → learning steps graduate the card → summary → retention, heatmap and streak | M5 | M2 |
 
-**Workload balance:** every member owns at least two features (M1: 3, M2: 4 plus shared F15, M3: 3 plus shared F15, M4: 4, M5: 2), meeting the rubric minimum of two per student. M5's two are both **net-new** — a new module, 13 new frames, new rules and new tests each — and she also carries a three-feature testing rotation, so effort is balanced even though feature count is not; the full frames-and-testers view is in [doc 02 §3](../../docs/02-FEATURE-LIST-OWNERSHIP.md). **Advanced feature:** F15, co-owned by M2 and M3, whose feature areas are deliberately disjoint so neither can block the other.
+**Workload balance:** every member owns at least two features (M1: 3, M2: 4 plus shared F15, M3: 3 plus shared F15, M4: 4, M5: 2), meeting the rubric minimum of two per student. M5's two are both **net-new** — a new module, its own security rules and tests each — and she also carries a three-feature testing rotation, so effort is balanced even though feature count is not; the 13 F16/F17 frames were drawn by M1 and M3 and are credited to them, not to her. The full frames-and-testers view is in [doc 02 §3](../../docs/02-FEATURE-LIST-OWNERSHIP.md). **Advanced feature:** F15, co-owned by M2 and M3, whose feature areas are deliberately disjoint so neither can block the other.
 
 **Sub-tasks and edge cases.** Each of the 17 features is expanded into an ordered sub-task list with explicit edge cases and error handling, and the Firestore collections it touches. These expansions are what the prototype's error and feedback states are built from. The full expansion is maintained in `docs/02-FEATURE-LIST-OWNERSHIP.md` §6 and is reproduced feature by feature alongside the mockups in §10.
 
@@ -582,14 +582,14 @@ Every step above has at least one designed error or empty state, since the brief
 | 9.13 | F13 Subscription and payments | [FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png](mockups/figures/FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png) |
 | 9.14 | F14 Notifications and reminders | [FLOW_F14_Notifications_Reminders_Saleh.png](mockups/figures/FLOW_F14_Notifications_Reminders_Saleh.png) |
 | 9.15 | F15 AI study companion (advanced) | [FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png](mockups/figures/FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png) |
-| 9.16 | F16 Admin-moderated group chat | [FLOW_F16_Moderated_Group_Chat_Fatema.png](mockups/figures/FLOW_F16_Moderated_Group_Chat_Fatema.png) |
-| 9.17 | F17 Active recall space | [FLOW_F17_Active_Recall_Space_Fatema.png](mockups/figures/FLOW_F17_Active_Recall_Space_Fatema.png) |
+| 9.16 | F16 Admin-moderated group chat | [FLOW_F16_Moderated_Group_Chat_Saleh.png](mockups/figures/FLOW_F16_Moderated_Group_Chat_Saleh.png) |
+| 9.17 | F17 Active recall space | [FLOW_F17_Active_Recall_Space_Tasbeeh.png](mockups/figures/FLOW_F17_Active_Recall_Space_Tasbeeh.png) |
 
 ## 10. Low-fidelity mockups
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804`. The file holds **123 frames** across the feature groups below, plus **130 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (154 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Saleh_202300540`. The file holds **123 frames** across the feature groups below, plus **130 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (154 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
@@ -615,16 +615,16 @@ The prototype is built in a single Figma file with one **page per owner**, so au
 **Group L, superseded 24 October 2026.** The seven first-cut F13 screens (`118`, `120`–`122`, `124`–`126`) were replaced by eleven subscription-state screens (`155`–`157`, `172`–`179`) as the feature was reworked around an explicitly **simulated** payment flow: study-to-unlock and trial activation, the Exam Boost one-time purchase, the Pro monthly checkout, the processing-then-failure state, and subscription management through to cancellation. The wireframes for the retired seven (`LF_118`, `LF_120`–`LF_122`, `LF_124`–`LF_126`) are **kept on page 5 as the design record of that first pass**, and the eleven current screens each have a wireframe of their own.
 
 
-**Groups N and O — built 15 October 2026.** The two features added with the fifth member are drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**, and then to **123** once group L was reworked:
+**Groups N and O — built 15 October 2026.** The two features added with the fifth member are drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**, and then to **123** once group L was reworked. The frames carry the members who drew them (`Saleh_202300540` for F16, `Tasbeeh_202305409` for F17) while the **features** remain M5's:
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
 | N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
 | O | Active Recall Space (F17) | M5 | 148–154 | 7 |
 
-**The low-fidelity gap is closed (24 October 2026).** Page `5 · Low-Fi Wireframes` now carries **130 wireframes**, so every built screen has a low-fidelity counterpart. The original 106 are joined by the **13 F16/F17 wireframes** (`LF_142`–`LF_147`, `LF_148`–`LF_154`) that the 15 October audit recorded as missing, and by the **11 F13 subscription-state wireframes** (`LF_155`–`LF_157`, `LF_172`–`LF_179`) drawn from the current prototype screens. The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, which is why the 24 new screens were given low-fidelity counterparts rather than left as finished screens only. The two N and O rows above are therefore no longer a stated gap.
+**The low-fidelity gap is closed (24 October 2026).** Page `5 · Low-Fi Wireframes` now carries **130 wireframes**, so every built screen has a low-fidelity counterpart. The original 106 are joined by the **13 F16/F17 wireframes** (`LF_142`–`LF_147`, `LF_148`–`LF_154`) that the 15 October audit recorded as missing, and by the **11 F13 subscription-state wireframes** (`LF_155`–`LF_157`, `LF_172`–`LF_179`) drawn from the current prototype screens. The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, which is why the 24 new screens were given low-fidelity counterparts rather than left as finished screens only. The two N and O rows above are therefore no longer a stated gap. Because the brief names every frame **by developer**, the whole F16/F17 Figma set — the 13 screens, their 13 dark variants and the 13 wireframes — carries `Saleh_202300540` for F16 and `Tasbeeh_202305409` for F17, the two members who drew it; M5 owns both features and her contribution is recorded where it lies, in the two Swift modules and her three-feature testing rotation.
 
-Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 22 · M4 Shahad 21 · M5 Fatema 13** — **123** in total. The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
+Frames per developer: **M1 Saleh 42 · M2 Mohammed 31 · M3 Tasbeeh 29 · M4 Shahad 21 · M5 Fatema 0** — **123** in total. The split follows the brief's *named-by-developer* rule, so it counts who drew each frame rather than who owns the feature: M5 owns F16 and F17 and her contribution is their two Swift modules and her three-feature testing rotation, while the 13 F16/F17 frames were drawn by M1 (F16) and M3 (F17). The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
@@ -739,21 +739,21 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.48 | `57` | [LF_57_Quiz_Submit_Confirm_Mohammed_202401702.png](mockups/figures/LF_57_Quiz_Submit_Confirm_Mohammed_202401702.png) |
 | 10.49 | `58` | [LF_58_Quiz_Results_Scorecard_Mohammed_202401702.png](mockups/figures/LF_58_Quiz_Results_Scorecard_Mohammed_202401702.png) |
 | 10.50 | `59` | [LF_59_Quiz_Review_Answers_Explanations_Mohammed_202401702.png](mockups/figures/LF_59_Quiz_Review_Answers_Explanations_Mohammed_202401702.png) |
-| 10.51 | `60` | [LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549.png](mockups/figures/LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549.png) |
-| 10.52 | `61` | [LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202300549.png](mockups/figures/LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202300549.png) |
-| 10.53 | `62` | [LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549.png](mockups/figures/LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549.png) |
-| 10.54 | `63` | [LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549.png](mockups/figures/LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549.png) |
-| 10.55 | `64` | [LF_64_StudyPlan_Generating_Tasbeeh_202300549.png](mockups/figures/LF_64_StudyPlan_Generating_Tasbeeh_202300549.png) |
-| 10.56 | `65` | [LF_65_StudyPlan_Calendar_Week_Tasbeeh_202300549.png](mockups/figures/LF_65_StudyPlan_Calendar_Week_Tasbeeh_202300549.png) |
-| 10.57 | `68` | [LF_68_StudyPlan_Session_Detail_Tasbeeh_202300549.png](mockups/figures/LF_68_StudyPlan_Session_Detail_Tasbeeh_202300549.png) |
-| 10.58 | `69` | [LF_69_Progress_Dashboard_Tasbeeh_202300549.png](mockups/figures/LF_69_Progress_Dashboard_Tasbeeh_202300549.png) |
-| 10.59 | `70` | [LF_70_Progress_WeaknessRadar_Tasbeeh_202300549.png](mockups/figures/LF_70_Progress_WeaknessRadar_Tasbeeh_202300549.png) |
+| 10.51 | `60` | [LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202305409.png](mockups/figures/LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202305409.png) |
+| 10.52 | `61` | [LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202305409.png](mockups/figures/LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202305409.png) |
+| 10.53 | `62` | [LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202305409.png](mockups/figures/LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202305409.png) |
+| 10.54 | `63` | [LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202305409.png](mockups/figures/LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202305409.png) |
+| 10.55 | `64` | [LF_64_StudyPlan_Generating_Tasbeeh_202305409.png](mockups/figures/LF_64_StudyPlan_Generating_Tasbeeh_202305409.png) |
+| 10.56 | `65` | [LF_65_StudyPlan_Calendar_Week_Tasbeeh_202305409.png](mockups/figures/LF_65_StudyPlan_Calendar_Week_Tasbeeh_202305409.png) |
+| 10.57 | `68` | [LF_68_StudyPlan_Session_Detail_Tasbeeh_202305409.png](mockups/figures/LF_68_StudyPlan_Session_Detail_Tasbeeh_202305409.png) |
+| 10.58 | `69` | [LF_69_Progress_Dashboard_Tasbeeh_202305409.png](mockups/figures/LF_69_Progress_Dashboard_Tasbeeh_202305409.png) |
+| 10.59 | `70` | [LF_70_Progress_WeaknessRadar_Tasbeeh_202305409.png](mockups/figures/LF_70_Progress_WeaknessRadar_Tasbeeh_202305409.png) |
 | 10.60 | `73` | [LF_73_Coach_Home_Mohammed_202401702.png](mockups/figures/LF_73_Coach_Home_Mohammed_202401702.png) |
 | 10.61 | `74` | [LF_74_Coach_Chat_Conversation_Mohammed_202401702.png](mockups/figures/LF_74_Coach_Chat_Conversation_Mohammed_202401702.png) |
 | 10.62 | `75` | [LF_75_Coach_ExplainLevel_Toggle_Mohammed_202401702.png](mockups/figures/LF_75_Coach_ExplainLevel_Toggle_Mohammed_202401702.png) |
 | 10.63 | `76` | [LF_76_Coach_Citation_SourceSheet_Mohammed_202401702.png](mockups/figures/LF_76_Coach_Citation_SourceSheet_Mohammed_202401702.png) |
-| 10.64 | `77` | [LF_77_Coach_StudyPath_Recommended_Tasbeeh_202300549.png](mockups/figures/LF_77_Coach_StudyPath_Recommended_Tasbeeh_202300549.png) |
-| 10.65 | `78` | [LF_78_Coach_QuizMe_Voice_Tasbeeh_202300549.png](mockups/figures/LF_78_Coach_QuizMe_Voice_Tasbeeh_202300549.png) |
+| 10.64 | `77` | [LF_77_Coach_StudyPath_Recommended_Tasbeeh_202305409.png](mockups/figures/LF_77_Coach_StudyPath_Recommended_Tasbeeh_202305409.png) |
+| 10.65 | `78` | [LF_78_Coach_QuizMe_Voice_Tasbeeh_202305409.png](mockups/figures/LF_78_Coach_QuizMe_Voice_Tasbeeh_202305409.png) |
 | 10.66 | `81` | [LF_81_Folder_Shared_List_Shahad_202305767.png](mockups/figures/LF_81_Folder_Shared_List_Shahad_202305767.png) |
 | 10.67 | `82` | [LF_82_Folder_Detail_Shahad_202305767.png](mockups/figures/LF_82_Folder_Detail_Shahad_202305767.png) |
 | 10.68 | `83` | [LF_83_Folder_Create_Edit_Shahad_202305767.png](mockups/figures/LF_83_Folder_Create_Edit_Shahad_202305767.png) |
@@ -781,13 +781,13 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.90 | `111` | [LF_111_Admin_User_Detail_Shahad_202305767.png](mockups/figures/LF_111_Admin_User_Detail_Shahad_202305767.png) |
 | 10.91 | `112` | [LF_112_Admin_Moderation_Queue_Shahad_202305767.png](mockups/figures/LF_112_Admin_Moderation_Queue_Shahad_202305767.png) |
 | 10.92 | `115` | [LF_115_Admin_AIConfig_Settings_Shahad_202305767.png](mockups/figures/LF_115_Admin_AIConfig_Settings_Shahad_202305767.png) |
-| 10.93 | `118` | [LF_118_Paywall_Plans_Tasbeeh_202300549.png](mockups/figures/LF_118_Paywall_Plans_Tasbeeh_202300549.png) |
-| 10.94 | `120` | [LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202300549.png](mockups/figures/LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202300549.png) |
-| 10.95 | `121` | [LF_121_Payment_Method_Select_Tasbeeh_202300549.png](mockups/figures/LF_121_Payment_Method_Select_Tasbeeh_202300549.png) |
-| 10.96 | `122` | [LF_122_Payment_Card_Entry_Tasbeeh_202300549.png](mockups/figures/LF_122_Payment_Card_Entry_Tasbeeh_202300549.png) |
-| 10.97 | `124` | [LF_124_Payment_Processing_Tasbeeh_202300549.png](mockups/figures/LF_124_Payment_Processing_Tasbeeh_202300549.png) |
-| 10.98 | `125` | [LF_125_Payment_Success_Receipt_Tasbeeh_202300549.png](mockups/figures/LF_125_Payment_Success_Receipt_Tasbeeh_202300549.png) |
-| 10.99 | `126` | [LF_126_Payment_Failed_Retry_Tasbeeh_202300549.png](mockups/figures/LF_126_Payment_Failed_Retry_Tasbeeh_202300549.png) |
+| 10.93 | `118` | [LF_118_Paywall_Plans_Tasbeeh_202305409.png](mockups/figures/LF_118_Paywall_Plans_Tasbeeh_202305409.png) |
+| 10.94 | `120` | [LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202305409.png](mockups/figures/LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202305409.png) |
+| 10.95 | `121` | [LF_121_Payment_Method_Select_Tasbeeh_202305409.png](mockups/figures/LF_121_Payment_Method_Select_Tasbeeh_202305409.png) |
+| 10.96 | `122` | [LF_122_Payment_Card_Entry_Tasbeeh_202305409.png](mockups/figures/LF_122_Payment_Card_Entry_Tasbeeh_202305409.png) |
+| 10.97 | `124` | [LF_124_Payment_Processing_Tasbeeh_202305409.png](mockups/figures/LF_124_Payment_Processing_Tasbeeh_202305409.png) |
+| 10.98 | `125` | [LF_125_Payment_Success_Receipt_Tasbeeh_202305409.png](mockups/figures/LF_125_Payment_Success_Receipt_Tasbeeh_202305409.png) |
+| 10.99 | `126` | [LF_126_Payment_Failed_Retry_Tasbeeh_202305409.png](mockups/figures/LF_126_Payment_Failed_Retry_Tasbeeh_202305409.png) |
 | 10.100 | `128` | [LF_128_Notifications_Inbox_Saleh_202300540.png](mockups/figures/LF_128_Notifications_Inbox_Saleh_202300540.png) |
 | 10.101 | `129` | [LF_129_Notification_Permission_Request_Saleh_202300540.png](mockups/figures/LF_129_Notification_Permission_Request_Saleh_202300540.png) |
 | 10.102 | `132` | [LF_132_Global_Search_Saleh_202300540.png](mockups/figures/LF_132_Global_Search_Saleh_202300540.png) |
@@ -796,25 +796,25 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.105 | `138` | [LF_138_Accessibility_LargeText_Example_Saleh_202300540.png](mockups/figures/LF_138_Accessibility_LargeText_Example_Saleh_202300540.png) |
 | 10.106 | `139` | [LF_139_RTL_Arabic_Example_Saleh_202300540.png](mockups/figures/LF_139_RTL_Arabic_Example_Saleh_202300540.png) |
 | 10.107 | `141` | [LF_141_Logout_Confirm_Saleh_202300540.png](mockups/figures/LF_141_Logout_Confirm_Saleh_202300540.png) |
-| 10.108 | `142` | [LF_142_GroupChat_Moderator_Presence_Banner_Fatema_202304804.png](mockups/figures/LF_142_GroupChat_Moderator_Presence_Banner_Fatema_202304804.png) |
-| 10.109 | `143` | [LF_143_GroupChat_Message_Moderation_Menu_Fatema_202304804.png](mockups/figures/LF_143_GroupChat_Message_Moderation_Menu_Fatema_202304804.png) |
-| 10.110 | `144` | [LF_144_GroupChat_Hidden_Message_Placeholder_Fatema_202304804.png](mockups/figures/LF_144_GroupChat_Hidden_Message_Placeholder_Fatema_202304804.png) |
-| 10.111 | `145` | [LF_145_GroupChat_Moderation_Reason_Sheet_Fatema_202304804.png](mockups/figures/LF_145_GroupChat_Moderation_Reason_Sheet_Fatema_202304804.png) |
-| 10.112 | `146` | [LF_146_GroupChat_SlowMode_Muted_Notice_Fatema_202304804.png](mockups/figures/LF_146_GroupChat_SlowMode_Muted_Notice_Fatema_202304804.png) |
-| 10.113 | `147` | [LF_147_GroupChat_Moderation_Audit_Entry_Fatema_202304804.png](mockups/figures/LF_147_GroupChat_Moderation_Audit_Entry_Fatema_202304804.png) |
-| 10.114 | `148` | [LF_148_RecallSpace_Home_DueToday_Fatema_202304804.png](mockups/figures/LF_148_RecallSpace_Home_DueToday_Fatema_202304804.png) |
-| 10.115 | `149` | [LF_149_RecallSpace_Session_Front_Fatema_202304804.png](mockups/figures/LF_149_RecallSpace_Session_Front_Fatema_202304804.png) |
-| 10.116 | `150` | [LF_150_RecallSpace_Session_Back_Rate_Fatema_202304804.png](mockups/figures/LF_150_RecallSpace_Session_Back_Rate_Fatema_202304804.png) |
-| 10.117 | `151` | [LF_151_RecallSpace_Daily_Limits_Fatema_202304804.png](mockups/figures/LF_151_RecallSpace_Daily_Limits_Fatema_202304804.png) |
-| 10.118 | `152` | [LF_152_RecallSpace_Stats_Fatema_202304804.png](mockups/figures/LF_152_RecallSpace_Stats_Fatema_202304804.png) |
-| 10.119 | `153` | [LF_153_RecallSpace_Filter_By_Deck_Fatema_202304804.png](mockups/figures/LF_153_RecallSpace_Filter_By_Deck_Fatema_202304804.png) |
-| 10.120 | `154` | [LF_154_RecallSpace_EmptyState_Fatema_202304804.png](mockups/figures/LF_154_RecallSpace_EmptyState_Fatema_202304804.png) |
+| 10.108 | `142` | [LF_142_GroupChat_Moderator_Presence_Banner_Saleh_202300540.png](mockups/figures/LF_142_GroupChat_Moderator_Presence_Banner_Saleh_202300540.png) |
+| 10.109 | `143` | [LF_143_GroupChat_Message_Moderation_Menu_Saleh_202300540.png](mockups/figures/LF_143_GroupChat_Message_Moderation_Menu_Saleh_202300540.png) |
+| 10.110 | `144` | [LF_144_GroupChat_Hidden_Message_Placeholder_Saleh_202300540.png](mockups/figures/LF_144_GroupChat_Hidden_Message_Placeholder_Saleh_202300540.png) |
+| 10.111 | `145` | [LF_145_GroupChat_Moderation_Reason_Sheet_Saleh_202300540.png](mockups/figures/LF_145_GroupChat_Moderation_Reason_Sheet_Saleh_202300540.png) |
+| 10.112 | `146` | [LF_146_GroupChat_SlowMode_Muted_Notice_Saleh_202300540.png](mockups/figures/LF_146_GroupChat_SlowMode_Muted_Notice_Saleh_202300540.png) |
+| 10.113 | `147` | [LF_147_GroupChat_Moderation_Audit_Entry_Saleh_202300540.png](mockups/figures/LF_147_GroupChat_Moderation_Audit_Entry_Saleh_202300540.png) |
+| 10.114 | `148` | [LF_148_RecallSpace_Home_DueToday_Tasbeeh_202305409.png](mockups/figures/LF_148_RecallSpace_Home_DueToday_Tasbeeh_202305409.png) |
+| 10.115 | `149` | [LF_149_RecallSpace_Session_Front_Tasbeeh_202305409.png](mockups/figures/LF_149_RecallSpace_Session_Front_Tasbeeh_202305409.png) |
+| 10.116 | `150` | [LF_150_RecallSpace_Session_Back_Rate_Tasbeeh_202305409.png](mockups/figures/LF_150_RecallSpace_Session_Back_Rate_Tasbeeh_202305409.png) |
+| 10.117 | `151` | [LF_151_RecallSpace_Daily_Limits_Tasbeeh_202305409.png](mockups/figures/LF_151_RecallSpace_Daily_Limits_Tasbeeh_202305409.png) |
+| 10.118 | `152` | [LF_152_RecallSpace_Stats_Tasbeeh_202305409.png](mockups/figures/LF_152_RecallSpace_Stats_Tasbeeh_202305409.png) |
+| 10.119 | `153` | [LF_153_RecallSpace_Filter_By_Deck_Tasbeeh_202305409.png](mockups/figures/LF_153_RecallSpace_Filter_By_Deck_Tasbeeh_202305409.png) |
+| 10.120 | `154` | [LF_154_RecallSpace_EmptyState_Tasbeeh_202305409.png](mockups/figures/LF_154_RecallSpace_EmptyState_Tasbeeh_202305409.png) |
 | 10.121 | `155` | [LF_155_StudyToUnlock_Milestones_Tasbeeh_202305409.png](mockups/figures/LF_155_StudyToUnlock_Milestones_Tasbeeh_202305409.png) |
 | 10.122 | `156` | [LF_156_StudyToUnlock_Completed_Tasbeeh_202305409.png](mockups/figures/LF_156_StudyToUnlock_Completed_Tasbeeh_202305409.png) |
 | 10.123 | `157` | [LF_157_Trial_Activated_Tasbeeh_202305409.png](mockups/figures/LF_157_Trial_Activated_Tasbeeh_202305409.png) |
 | 10.124 | `172` | [LF_172_Checkout_ExamBoost_Tasbeeh_202305409.png](mockups/figures/LF_172_Checkout_ExamBoost_Tasbeeh_202305409.png) |
 | 10.125 | `173` | [LF_173_Payment_Processing_Failed_Tasbeeh_202305409.png](mockups/figures/LF_173_Payment_Processing_Failed_Tasbeeh_202305409.png) |
-| 10.126 | `174` | [LF_174_Subscription_Manage_Monthly_Tasbeeh_202300549.png](mockups/figures/LF_174_Subscription_Manage_Monthly_Tasbeeh_202300549.png) |
+| 10.126 | `174` | [LF_174_Subscription_Manage_Monthly_Tasbeeh_202305409.png](mockups/figures/LF_174_Subscription_Manage_Monthly_Tasbeeh_202305409.png) |
 | 10.127 | `175` | [LF_175_Subscription_Manage_ExamBoost_Tasbeeh_202305409.png](mockups/figures/LF_175_Subscription_Manage_ExamBoost_Tasbeeh_202305409.png) |
 | 10.128 | `176` | [LF_176_Subscription_Manage_Trial_Tasbeeh_202305409.png](mockups/figures/LF_176_Subscription_Manage_Trial_Tasbeeh_202305409.png) |
 | 10.129 | `177` | [LF_177_Subscription_Cancel_Confirm_Tasbeeh_202305409.png](mockups/figures/LF_177_Subscription_Cancel_Confirm_Tasbeeh_202305409.png) |
@@ -917,7 +917,7 @@ Ten concrete, feasible, user-focused innovations, each stated as **Problem, Idea
 
 *Table 13.1, the ten innovations, each with its problem, idea, feasibility and evidence.*
 
-*Figure 13.1, a provenance citation chip and confidence band on a generated quiz answer. Status: ⬜ not yet captured; the component itself is built in the app (F03 and F05) and the same treatment is visible on the summary result screen `37` and the quiz review screen `59`.*
+*Figure 13.1, the provenance citation chip and its confidence band, captured from the two prototype screens that carry it: `38_Summary_Provenance_Citation` (the chip beside `Relevance 0.92`, the confidence band) and `59_Quiz_Review_Answers_Explanations` (the same chip on a generated quiz answer). The component is implemented in the app under F03 and F05; these captures are from the Figma prototype because the app's summary screen cannot be driven from the command line — there is no tap automation in this environment — and that limitation is stated here rather than glossed over.*
 
 ## 14. Technical architecture
 
@@ -1113,7 +1113,7 @@ Each feature maps to its screens, the Firestore collections it touches, and the 
 ### Appendix D, prototype artefact
 
 - Figma file (view link): `https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv`
-- Prototype export: `deliverables/prototype/StudyForge.fig` (produced at Gate 2, 12 Nov 2026)
+- Prototype export: `deliverables/prototype/StudyForge.fig` (1.8 MB, re-exported from the Figma desktop app on 24 October 2026; `meta.json` records `exported_at 2026-10-23T23:01:26Z`, so it matches the shared link)
 - Both the link text document and the `.fig` file are submitted, as the brief requires both.
 
 ### Appendix E, AI tool use disclosure
