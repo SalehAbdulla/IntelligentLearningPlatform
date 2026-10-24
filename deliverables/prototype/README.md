@@ -5,7 +5,7 @@ shared URL, delivered in a text document.
 
 | # | File | Status |
 |---|---|---|
-| 1 | `StudyForge.fig` | ✅ **done**, 1.8 MB, **re-exported 24 Oct 2026** (`meta.json` records `exported_at 2026-10-23T23:01:26Z`), replacing the 8 Oct copy that predated page 6, the cover fix and the 130-wireframe expansion. Verified as a real Figma export (`canvas.fig`, `thumbnail.png`, `meta.json`). Excluded from git by `.gitignore` (`deliverables/**/*.fig`), so it is submitted through the portal only — **re-export it if the Figma file changes again**. |
+| 1 | `StudyForge.fig` | ✅ **done**, 1.8 MB, **re-exported 24 Oct 2026** (`meta.json` records `exported_at 2026-10-23T23:01:26Z`), replacing the 8 Oct copy that predated page 6, the cover fix and the 130-wireframe expansion. Verified as a real Figma export (`canvas.fig`, `thumbnail.png`, `meta.json`). **Kept out of git as a loose file** (`deliverables/**/*.fig`): 1.8 MB of binary that is already inside the committed submission zip, so a clone gets it with `unzip deliverables/StudyForge-Submission.zip 03-Prototype/StudyForge.fig`. **Re-export it if the Figma file changes again**, and re-zip so the tracked copy matches. |
 | 2 | `figma-link.txt` | ✅ **done**, the text document: shared URL, access notes, the four end-to-end chains, and an accurate account of what is wired. |
 
 ## Current state of the prototype (verified against the live file)
