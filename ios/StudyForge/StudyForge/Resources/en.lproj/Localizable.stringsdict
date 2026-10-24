@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Plural rules for the verification resend countdown (A06).
+
+	  WHY THIS FILE EXISTS
+	  Localizable.strings holds `"auth.verify.resendIn" = "You can resend in %d seconds"`,
+	  which renders as **"You can resend in 1 seconds"** on the final tick. The countdown is
+	  the one place a student is staring at the screen waiting, so the error is both visible
+	  and badly timed.
+
+	  A `count == 1 ?` branch in Swift would fix English and be **wrong in Arabic**, which has
+	  six plural categories rather than two. This file is the mechanism iOS provides for that:
+	  NSLocalizedString consults a .stringsdict in preference to .strings, and
+	  `String(format:)` resolves the `%#@…@` placeholder using the rule for the current
+	  language. `L10n.string(_:)` already goes through both, so **no Swift change is needed**.
+
+	  The key here must match the one in Localizable.strings. The .strings entry is kept as a
+	  non-plural fallback for any language that has no .stringsdict.
+	-->
+	<key>auth.verify.resendIn</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@seconds@</string>
+		<key>seconds</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>You can resend in 1 second</string>
+			<key>other</key>
+			<string>You can resend in %d seconds</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

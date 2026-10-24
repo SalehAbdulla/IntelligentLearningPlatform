@@ -39,6 +39,10 @@ struct AuthFlowView: View {
                 onForgotPassword: { path.append(.forgotPassword) },
                 onCreateAccount: { path.append(.signUp) }
             )
+            // DEBUG only: the `key` toolbar button, so a demo can become any of the four
+            // seeded accounts without typing an address and a password. It sits on the
+            // LOG-IN root because that is the screen every signed-out branch starts from.
+            .developerAccountSwitcher(container)
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .signUp:

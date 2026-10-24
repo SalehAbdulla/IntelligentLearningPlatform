@@ -27,10 +27,13 @@
 #   (macOS, for the downscale) and one Chromium browser. Missing sips or browser is a hard
 #   error rather than a silent degradation.
 #
-# HONEST LIMIT, stated rather than hidden: Chromium's command-line printer cannot add page
+# HONEST LIMIT, and how it is now closed: Chromium's command-line printer cannot add page
 #   numbers or running headers, and a CSS position:fixed header repeated unreliably when it
-#   was measured (two of three test pages), so it is not used. Re-run with --html <dir> and
-#   print the generated HTML from a browser to get "Page X of Y" and a running header.
+#   was measured (two of three test pages). So the header is added a different way: step 4
+#   drives the DevTools Protocol through tools/pdf-headers.js, whose Page.printToPDF accepts
+#   headerTemplate and footerTemplate. The brief asks for the app name and logo in a header on
+#   every page, and that is what the default build now produces. The plain CLI print is still
+#   there as the fallback, and --no-headers selects it deliberately.
 
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
@@ -39,12 +42,14 @@ DOC="deliverables/design-document/DESIGN-DOCUMENT.md"
 OUT="deliverables/design-document/StudyForge-Design-Document.pdf"   # the submission filename
 APPENDIX=1
 HTML_DIR=""
+HEADERS=1   # the brief asks for the app name and logo in a header on every page; see step 4
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --text-only) APPENDIX=0; shift ;;
     --out) OUT="${2:-}"; [[ -n "$OUT" ]] || { echo "--out needs a path" >&2; exit 2; }; shift 2 ;;
     --html) HTML_DIR="${2:-}"; [[ -n "$HTML_DIR" ]] || { echo "--html needs a directory" >&2; exit 2; }; shift 2 ;;
+    --no-headers) HEADERS=0; shift ;;
     *) echo "unknown argument '$1'" >&2; exit 2 ;;
   esac
 done
@@ -229,12 +234,32 @@ print_attempt() {
   [[ -s "$OUT" ]]
 }
 
-PRINTED=0
-for mode in "--headless=new" "--headless"; do
-  for profile in "--no-first-run" "--no-first-run --user-data-dir=$TMP/profile"; do
-    if print_attempt $mode $profile; then PRINTED=1; break 2; fi
+# The running header and the page numbers. The brief asks for the app name and logo in a header
+# on every page; Chromium's `--print-to-pdf` has no header-template flag, so tools/pdf-headers.js
+# drives the DevTools Protocol instead, where `Page.printToPDF` accepts headerTemplate and
+# footerTemplate. If that path is unavailable (no node, no magick, or the printer fails) the
+# script falls through to the plain CLI print below — faster, but with no header and no page
+# numbers. Pass --no-headers to force that path deliberately, e.g. for a quick draft.
+HEADER_PRINTED=0
+LOGO_SRC="ios/StudyForge/StudyForge/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
+if [[ "$HEADERS" -eq 1 ]] && command -v node >/dev/null 2>&1 && [[ -f tools/pdf-headers.js ]]; then
+  LOGO=""
+  if [[ -f "$LOGO_SRC" ]] && command -v magick >/dev/null 2>&1; then
+    magick "$LOGO_SRC" -resize x30 -strip "$TMP/logo30.png" >/dev/null 2>&1 && LOGO="$TMP/logo30.png"
+  fi
+  info "printing with the running header (app name + logo) and page numbers"
+  if node tools/pdf-headers.js "$TMP/index.html" "$OUT" "$LOGO"; then HEADER_PRINTED=1; fi
+  [[ "$HEADER_PRINTED" -eq 1 ]] || info "the header printer did not finish; using the plain CLI print instead"
+fi
+
+PRINTED=$HEADER_PRINTED
+if [[ "$PRINTED" -eq 0 ]]; then
+  for mode in "--headless=new" "--headless"; do
+    for profile in "--no-first-run" "--no-first-run --user-data-dir=$TMP/profile"; do
+      if print_attempt $mode $profile; then PRINTED=1; break 2; fi
+    done
   done
-done
+fi
 if [[ "$PRINTED" -eq 0 ]]; then
   KEEP_TMP=1
   die "the browser did not produce a PDF in ${BROWSER_WAIT}s per attempt (a fresh profile can hang).
@@ -282,16 +307,22 @@ fi
 ok "wrote $OUT"
 
 # ── 6. the human print path, on request ─────────────────────────────────
-# Keeping the HTML next to its images is what makes the browser print route (page numbers,
-# running headers) available without re-running the whole build.
+# The default build already carries the running header and page numbers (step 4). Keeping the
+# HTML next to its images is still useful: it is the checkable artefact the PDF is printed
+# from, and a browser print is the manual fallback if the CDP path is unavailable.
 if [[ -n "$HTML_DIR" ]]; then
   mkdir -p "$HTML_DIR"
   cp "$TMP/index.html" "$HTML_DIR/index.html"
   [[ -d "$TMP/print" ]] && cp -R "$TMP/print" "$HTML_DIR/"
   ok "print-ready HTML: $HTML_DIR/index.html"
   info "  open -a \"Brave Browser\" \"$HTML_DIR/index.html\"  then Print, Save as PDF,"
-  info "  with 'Headers and footers' switched on: that adds page numbers and the app name."
+  info "  with 'Headers and footers' switched on, if the header printer could not run."
 fi
 
-info "Chromium's command-line printer cannot add page numbers or running headers. If the"
-info "marker wants them, re-run with --html <dir> and print the generated HTML from a browser."
+if [[ "$HEADER_PRINTED" -eq 1 ]]; then
+  info "the running header (app name + logo) and 'Page X of Y' are in this export, added"
+  info "through tools/pdf-headers.js. --no-headers builds without them."
+else
+  info "this export has no running header or page numbers: the header printer did not run."
+  info "Re-run without --no-headers, or use --html <dir> and print from a browser."
+fi

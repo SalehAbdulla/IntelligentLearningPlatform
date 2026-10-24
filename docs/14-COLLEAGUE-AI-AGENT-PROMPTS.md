@@ -7,7 +7,7 @@
 | Member | Handle | Student ID | Handover file | Their features |
 |---|---|---|---|---|
 | **Mohammed Almadhoon** | M2 | `202401702` | [TODO-M2-mohammed.md](TODO-M2-mohammed.md) | F03 · F04 · F05 · F11 · F15 (co) |
-| **Tasbeeh Saeed** | M3 | `202300549` | [TODO-M3-tasbeeh.md](TODO-M3-tasbeeh.md) | F06 · F07 · F13 · F15 (co) |
+| **Tasbeeh Saeed** | M3 | `202305409` | [TODO-M3-tasbeeh.md](TODO-M3-tasbeeh.md) | F06 · F07 · F13 · F15 (co) |
 | **Shahad Ashoor** | M4 | `202305767` | [TODO-M4-shahad.md](TODO-M4-shahad.md) | F08 · F09 · F10 · F12 |
 | **Fatema Ghareeb** | M5 | `202304804` | [TODO-M5-fatema.md](TODO-M5-fatema.md) | F16 · F17 |
 
@@ -75,7 +75,16 @@ repository. The guard forbids touching the `.xcodeproj` regardless.
 | **May add new files in** | `…/Core/AI/`, `…/Features/{Flashcards,Summaries,Quizzes,Tutor}/`, `StudyForgeTests/` | `…/Core/{Planning,Payments}/`, `…/Features/{StudyPlan,Progress,Subscription}/`, `StudyForgeTests/` | `…/Core/{Groups,Bookmarks,Folders}/`, `…/Features/{Folders,Bookmarks,Admin}/`, `StudyForgeTests/` | `…/Core/Groups/Moderation/`, `…/Core/Recall/`, `…/Features/Groups/Moderation/`, `…/Features/Recall/`, `StudyForgeTests/` |
 | **Primary tester for** | F06, F12, F17 | F02, F08, F10, F14 | F04, F11, F16 | F01, F05, F13 |
 | **May touch, with care** | `AppContainer.swift`, `en/ar Localizable.strings` | same | same | same |
-| **Off limits to all** | `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`, `README.md`, `.mailmap`, `*.xcodeproj` | | | |
+| **Off limits to all** | `docs/`, `deliverables/`, `backend/`, `tools/`, `.github/`, `README.md`, `.mailmap`, `*.xcodeproj` — **this is the M2–M5 rule.** `check-lane.sh owner` treats the first five, plus `research/` and the repo-level files, as **the owner's own lane**; only `*.xcodeproj` is off limits to everyone. See the note below | | | |
+
+> **Correction, 18 Oct 2026: `backend/` was forbidden to *everyone*, including the owner.** That
+> contradicted [doc 10 §4](../docs/10-SPRINT-PLAN.md), which assigns **M1** the Firebase project and
+> the rules skeleton in **S0**, and the security audit plus rules re-test in **S5** — the lane map
+> forbade the one directory the plan gives the owner. `tools/check-lane.sh` now lists `backend/` in
+> the owner's `OWNED_DIRS` and drops it from the owner's `FORBIDDEN_RE`. **It stays forbidden for
+> M2–M5**, who never need it: their work is in `ios/`, and the emulator means they can run and test
+> everything locally without touching the project. Verified both ways — the owner sees `yours`, and
+> `check-lane.sh M2` still prints `FORBIDDEN` for the same files.
 
 > **The one shared directory, and how it stays safe.** `Core/Groups/` and `Features/Groups/`
 > are split by *file*, not by directory: **M4 owns the F09 group-space and live-quiz files at
@@ -106,6 +115,9 @@ the shared file from their diffs entirely.
 | `tools/todos.sh` | Lists every in-code TODO grouped by owner |
 | `python3 tools/check-strings.py` | English/Arabic key parity (910 keys) after any `.strings` change |
 | `python3 tools/verify-docs.py` | Internal links, screen inventory, ownership integrity |
+| `bash tools/check-submission.sh` | **The pre-submission gate.** Runs `verify-docs`, `check-strings`, `check-tokens` and `check-release`, then every section 4 and 5 item against its evidence. Exits non-zero while anything is open |
+| `bash tools/check-tokens.sh` | Colour-token parity between `docs/06` section 1.1 and `ColorTokens.swift` |
+| `bash tools/check-release.sh` | **New.** Fails when a whole directory exists on `develop` and is absent from `main`. Added after `main` was found **233 commits behind**, missing four evidence folders, unnoticed across 30 releases |
 
 ---
 

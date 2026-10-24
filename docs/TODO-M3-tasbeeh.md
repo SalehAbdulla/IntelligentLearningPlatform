@@ -1,4 +1,4 @@
-# TODO — Tasbeeh Saeed · M3 · `202300549`
+# TODO — Tasbeeh Saeed · M3 · `202305409`
 
 > **Hand this entire file to your AI coding agent.** It is self-contained: identity,
 > the rules, your features, your open TODOs, the git protocol, and the definition of
@@ -9,6 +9,28 @@
 > [doc 02](02-FEATURE-LIST-OWNERSHIP.md) §2 and §7 for ownership and the test rotation,
 > and **[CONTRIBUTING.md](../CONTRIBUTING.md)** for the full guide: setup, conventions,
 > testing, evidence, troubleshooting and VIVA readiness.
+
+---
+
+## ⚡ The four things that actually go wrong — read this before anything else
+
+**Every problem a member has hit so far has been one of these four.** They take ten minutes to get
+right, and they are what the Sprints mark — **10%, assessed individually** — is read from.
+
+| # | Do this | **Not** this | What goes wrong otherwise |
+|---|---|---|---|
+| **1** | `git config --local user.email "202305409@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody. `.mailmap` cannot rescue an address that was never yours |
+| **2** | `bash tools/new-branch.sh feat/F06-study-plan` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
+| **3** | `bash tools/commit.sh <file> "feat(F06): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
+| **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew |
+
+> **The one-line version:** *set your identity, branch with the tool, commit with the tool, open the
+> PR.* In that order, every time.
+
+> **And expect your PR to sit "blocked" until it has one approving review.** `develop` requires it
+> ([doc 12 §3.1](12-GIT-WORKFLOW.md)) and GitHub will not let you merge it yourself. **That is the
+> process working, not a rejection.** Post the link in the group chat and it gets reviewed — but plan
+> for the review to take a day, so a PR opened the night before a deadline will not be merged by it.
 
 ---
 
@@ -105,7 +127,7 @@ If the push is rejected, rebase again. **Never force-push.**
 
 ```bash
 git config --local user.name  "Tasbeeh Saeed"
-git config --local user.email "202300549@student.polytechnic.bh"
+git config --local user.email "202305409@student.polytechnic.bh"
 ```
 
 Every commit must be attributable to me. My **Sprints mark is 10% and assessed per
@@ -234,6 +256,8 @@ Rules that are enforced, not advisory:
 
 ## 6. Verify before claiming anything is done
 
+### If you are on a Mac
+
 ```bash
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO
@@ -242,16 +266,38 @@ xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' test
 ```
 
-The whole suite must pass — it is **723 tests today**, and my change should raise that
-number. Then:
+### If you are on Windows — **CI is your build machine**
+
+**Xcode is macOS-only, so `xcodebuild` cannot run on your machine at all.** Do not try to
+install it; there is no Windows version and no emulator that runs an iOS Simulator. Push your
+branch instead — CI builds and tests it on a real macOS runner, for free.
 
 ```bash
-bash tools/check-lane.sh M3      # lane still clean
-bash tools/todos.sh              # my open count went DOWN
-bash tools/run-ios.sh            # see the planner actually running
+bash tools/check-lane.sh M3      # lane still clean. Needs WSL or Git Bash — see docs/18
+python3 tools/verify-docs.py     # docs, links and ownership integrity
+python3 tools/check-strings.py   # only if you touched .strings or .stringsdict
+bash tools/todos.sh              # my open count went DOWN, not up
+
+git push                         # CI starts automatically
+gh pr checks                     # THE VERDICT
 ```
 
-Never commit a red build. If the build or a test fails, fix it first.
+The suite is **808 tests in 128 suites**, and my change should raise that number. If CI is red:
+
+```bash
+gh run view <run-id> --log-failed              # the failing steps
+gh run download <run-id> -n xcodebuild-log     # the raw log, when that is not enough
+```
+
+> **Never write "the build passes" unless `gh pr checks` says so.** Quote the CI result or say
+> that CI has not run yet. This is the one rule that makes the evidence worth anything, and it
+> is the rule an AI agent breaks by default — it will happily tell you something works because
+> the code looks right.
+
+**Full guide for a Windows machine, written for your agent to read:**
+[`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md).
+
+Never commit a red build. If CI or a test fails, fix it first.
 
 ---
 

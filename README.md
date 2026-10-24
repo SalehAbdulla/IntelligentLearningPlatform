@@ -58,11 +58,13 @@
 |---|---|---|---|---|---|
 | **M1** | **Saleh Abdulla** | `202300540` | Data, Auth & Admin lead | F01, F02, F14 | `Saleh_202300540` |
 | **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` |
-| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` |
+| **M3** | **Tasbeeh Saeed** | `202305409` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202305409` |
 | **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` |
 | **M5** | **Fatema Ghareeb** | `202304804` | Collaboration & Recall lead | **F16**, **F17** | `Fatema_202304804` |
 
 All placeholder names have been replaced. The workstream of the **then-empty** fifth seat (F11/F12/F13) was redistributed by adjacency and **stays** redistributed; M5 owns the two features added with her, F16 and F17. See [doc 02 §2.1](docs/02-FEATURE-LIST-OWNERSHIP.md).
+
+> **M3's student ID was corrected on 23 Oct 2026** — `202300549` → **`202305409`**, two digits had been transposed. Every **identity** reference, every **frame suffix** and the tooling now carry the corrected ID. The old address survives in exactly one place and for one reason: her twelve commits that were already merged are authored under it, so `.mailmap` keeps it as an **alias** to stop `git shortlog` orphaning them — **do not delete that line**. Dated evidence written before the correction (sprint logs, testing sheets, the F15 approval request) keeps the ID it was written with; that is the record, not an oversight.
 
 
 ---
@@ -89,6 +91,7 @@ All placeholder names have been replaced. The workstream of the **then-empty** f
 | [14, Per-member AI-agent handover](docs/14-COLLEAGUE-AI-AGENT-PROMPTS.md) | The disjoint file-lane map + `tools/check-lane.sh`, so four agents can work at once without conflicts |
 | [15, Project Briefing](docs/15-PROJECT-BRIEFING.md) | **Plain-language summary in three parts:** what the project is about, the 17 features, and the interview questions. Start here for interview prep or VIVA revision |
 | [16, Team Kickoff](docs/16-TEAM-KICKOFF.md) | **One page, read it first this week:** what changed, your lane, the five commands, the two rules that cost marks, the deadlines |
+| [18, Windows Contributing](docs/18-WINDOWS-CONTRIBUTING.md) | **For the four members on Windows:** CI is your build machine, what you can and cannot verify locally, and the six rules that make agent-written code trustworthy |
 | [TODO M2](docs/TODO-M2-mohammed.md) · [TODO M3](docs/TODO-M3-tasbeeh.md) · [TODO M4](docs/TODO-M4-shahad.md) · [TODO M5](docs/TODO-M5-fatema.md) | **The handover file to give each member's AI agent** — identity, lane, features, TODOs, git protocol, definition of done |
 
 ---
@@ -158,9 +161,9 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 |---|---|---|
 | Individual App | 10% | ✅ complete |
 | iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: **F01 to F17** implemented; builds and passes **808 unit tests** |
-| Sprints (individual) | 10% | ⚠️ **at risk, but no longer for access:** all five members hold write access (verified 15 Oct 2026), so **the blocker is gone** — yet **only M1 has authored commits**. Teammate evidence cannot be created at the end; it has to exist throughout the sprint, and the commit timestamps are what a marker reads |
-| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/`; **tutor interview done and transcribed** (13 Oct). **7 of the 26 submission checks are still open, all of them human** — the written **F15 approval**, the **§17.3 usability test** (pack ready in `research/usability/`, and one test clears **two** checks), **2 market figures** (V3/V4), the **second-reader content audit**, the **PDF rebuild**, **submit + `prototype-v1` tag**, and the **Figma share permission**. Run `bash tools/check-submission.sh` for the live list |
-| Prototype (Figma) | 10% | 🟨 in progress: **119 screens built** of a **154-frame inventory**, and **interactive** (**320 prototype connections**, 110 of 119 reachable, zero dead ends); **106 low-fidelity wireframes**, **all 17 flow diagrams** and **119 dark-mode variants**. F16/F17's 13 frames (groups N and O) were drawn and wired 15 Oct 2026; their low-fidelity wireframes are still to do. See `deliverables/prototype/figma-link.txt` |
+| Sprints (individual) | 10% | ⚠️ **at risk, but no longer for access:** all five members hold write access (verified 16 Oct 2026), so **the blocker is gone** — yet **only M1 has authored commits**. Teammate evidence cannot be created at the end; it has to exist throughout the sprint, and the commit timestamps are what a marker reads |
+| Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/`; **tutor interview done and transcribed** (13 Oct); **PDF rebuilt 24 Oct 2026** — 196 pages, 159 figures, a running header and `Page X of Y` on every page; **submission bundle assembled** in `deliverables/submission/`. `bash tools/check-submission.sh` clears **26 of its 29 items** and **the 3 open are human-only** — the **§17.3 usability test** (counted twice; the pack is ready in `research/usability/`) and **P9-18/19, the portal submission itself** (`prototype-v1` is tagged and pushed). Run the gate for the live list |
+| Prototype (Figma) | 10% | 🟨 in progress: **123 screens built** of a **154-frame inventory**, and **interactive** — **320 prototype connections** and **110 of 119 reachable, zero dead ends**, both as measured in the **15 Oct 2026** audit, with the screens added since not yet re-measured (see `deliverables/prototype/figma-link.txt` §9); **130 low-fidelity wireframes**, **all 17 flow diagrams** and **130 dark-mode variants**. F16/F17's 13 frames (groups N and O) were drawn and wired on 15 Oct 2026, and their low-fidelity wireframes followed on 24 Oct 2026 together with 11 more for the reworked F13 subscription states. See `deliverables/prototype/figma-link.txt` |
 
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
@@ -177,5 +180,5 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 - ✅ Team names/IDs inserted, 5 members, the brief's own default group size
 - ✅ Cline agent skills installed (`.agents/skills/`, `skills-lock.json`)
 - ✅ **Tutor interview conducted** — Tuesday 13 October 2026, 2:40 pm, all five members present; five questions and the supervisor's answers transcribed in [`research/interviews/`](research/interviews/README.md)
-- ⬜ **Written F15 advanced-feature approval** — a rubric requirement; being requested from the tutor by email
+- ✅ **Written F15 advanced-feature approval** — the rubric requirement; the request and the tutor's reply are transcribed in [`research/interviews/f15-advanced-feature-approval.md`](research/interviews/f15-advanced-feature-approval.md)
 - ⬜ Usability test with 5 users and a SUS score (Design Document §17.3)

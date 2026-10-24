@@ -108,7 +108,7 @@ So the working app is the most important deliverable, and Figma is not.
 
 ### 1.7 Where we are now
 
-- **Figma prototype:** 106 screens built and interactive, with 106 rough wireframes and 15 flow diagrams.
+- **Figma prototype:** 123 screens built and interactive, with 130 rough wireframes and 17 flow diagrams.
 - **iPhone app:** F01 to F15 implemented, it builds, and 723 unit tests pass.
 - **Design document:** draft assembled, waiting on the tutor interview for section 3.
 - **Sprints:** in progress. Only one member currently has commits in git, which is a real risk.
@@ -119,7 +119,7 @@ So the working app is the most important deliverable, and Figma is not.
 |---|---|---|---|---|
 | **M1** | Saleh Abdulla | 202300540 | Data, auth and admin | F01, F02, F14 |
 | **M2** | Mohammed Almadhoon | 202401702 | AI/ML and tutor tools | F03, F04, F05, F11, F15 (shared) |
-| **M3** | Tasbeeh Saeed | 202300549 | Architecture and payments | F06, F07, F13, F15 (shared) |
+| **M3** | Tasbeeh Saeed | 202305409 | Architecture and payments | F06, F07, F13, F15 (shared) |
 | **M4** | Shahad Ashoor | 202305767 | UI/UX, collaboration and admin | F08, F09, F10, F12 |
 
 ---

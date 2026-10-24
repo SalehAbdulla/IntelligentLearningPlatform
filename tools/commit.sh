@@ -102,16 +102,26 @@ check_secret() {
 
   [[ -f "$path" ]] || return 0
 
-  # Strip the known-public values first, then scan what remains. A file holding ONLY an
-  # allowlisted value passes; a file holding one alongside a real key still fails, because
-  # the real key survives the strip.
-  local scrubbed
-  scrubbed="$(cat "$path")"
-  for public_value in "${PUBLIC_VALUE_ALLOWLIST[@]}"; do
-    scrubbed="${scrubbed//$public_value/}"
-  done
+  # Scan by STREAMING the file, never by reading it into a shell variable. The earlier
+  # form ("scrubbed=$(cat "$path")" plus a ${scrubbed//value/} rewrite per allowlisted
+  # value) did O(file size) work in bash string operations and hung outright on the
+  # 25 MB design-document PDF and the 43 MB submission zip committed on 24 Oct 2026 —
+  # a silent hang with no output at all, which is worse than a slow scan.
+  # Semantics are unchanged: -o prints each match, the allowlisted values are dropped
+  # exactly, and anything left over fails. -a treats a binary as text, so the zip is
+  # still scanned rather than skipped.
+  local allow_re hits
+  allow_re="$(IFS='|'; printf '%s' "${PUBLIC_VALUE_ALLOWLIST[*]}")"
+  # `|| true` matters: a clean file makes grep exit 1, and under this script's
+  # `set -euo pipefail` that would kill the commit silently — the bug that made
+  # every commit fail on 24 Oct 2026 until it was found.
+  hits="$(grep -aoEI "$SECRET_BODY_RE" "$path" 2>/dev/null || true)"
+  if [[ -n "$allow_re" && -n "$hits" ]]; then
+    hits="$(printf '%s\n' "$hits" | grep -vxE "$allow_re" || true)"
+  fi
+  hits="$(printf '%s\n' "$hits" | sort -u | head -5 || true)"
 
-  if printf '%s' "$scrubbed" | grep -qEI "$SECRET_BODY_RE"; then
+  if [[ -n "$hits" ]]; then
     die "'$path' appears to contain a key or private key. Remove it before committing.
     If the value is public by design, add it to PUBLIC_VALUE_ALLOWLIST in tools/commit.sh
     with a written justification — do not use --no-verify."
