@@ -78,6 +78,9 @@ backend/rules-tests/.coverage/
 deliverables/**/*.fig
 deliverables/**/*.pdf
 deliverables/**/export/
+# The assembled submission bundle and its zip are staged for the portal, not git.
+deliverables/submission/
+deliverables/*.zip
 !deliverables/prototype/figma-link.txt
 !deliverables/design-document/README.md
 !deliverables/prototype/README.md
