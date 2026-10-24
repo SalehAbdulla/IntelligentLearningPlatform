@@ -228,6 +228,34 @@ pred_coverage() {
   return 0
 }
 
+pred_bundle() {
+  # The bundle and the zip are tracked, so the team sees the submission from a clone. That
+  # only helps while the copy is current, and a stale zip is worse than no zip because it
+  # still looks like the submission. Compare every carried file with its source, byte for
+  # byte. The bundle's own README is skipped: it has no source counterpart.
+  local zip="deliverables/StudyForge-Submission.zip" tmp rc=0
+  [ -s "$zip" ] || { note "$zip is missing"; return 1; }
+  tmp="$(mktemp -d)"
+  if ! unzip -q -o "$zip" -d "$tmp" >/dev/null 2>&1; then
+    note "$zip does not extract"; rm -rf "$tmp"; return 1
+  fi
+  cmp -s "$tmp/01-Design-Document/StudyForge-Design-Document.pdf" "deliverables/design-document/StudyForge-Design-Document.pdf" || rc=1
+  cmp -s "$tmp/01-Design-Document/DESIGN-DOCUMENT.md" "deliverables/design-document/DESIGN-DOCUMENT.md" || rc=1
+  cmp -s "$tmp/03-Prototype/StudyForge.fig" "deliverables/prototype/StudyForge.fig" || rc=1
+  cmp -s "$tmp/03-Prototype/figma-link.txt" "deliverables/prototype/figma-link.txt" || rc=1
+  diff -r -q --exclude='.DS_Store' "$tmp/01-Design-Document/figures" "deliverables/design-document/figures" >/dev/null 2>&1 || rc=1
+  diff -r -q --exclude='.DS_Store' "$tmp/02-Mockups/figures" "deliverables/design-document/mockups/figures" >/dev/null 2>&1 || rc=1
+  diff -r -q --exclude='.DS_Store' "$tmp/03-Prototype/dark-mode-proof" "deliverables/prototype/dark-mode-proof" >/dev/null 2>&1 || rc=1
+  rm -rf "$tmp"
+  [ "$rc" -eq 0 ] || {
+    note "the tracked zip is stale: at least one carried file differs from its source."
+    note "Rebuild and verify it with:  bash tools/build-bundle.sh"
+    return 1
+  }
+  note "the tracked zip matches the sources byte for byte"
+  return 0
+}
+
 pred_p906() { pred_audit P9-06; }
 pred_p907() { pred_audit P9-07; }
 pred_p908() { pred_audit P9-08; }
@@ -260,6 +288,7 @@ p9-share|Human only:|human|pred_share|Figma link permission set to Can view
 new-mockups|Phase 1 mockups|machine|pred_mockups|130 low-fidelity wireframes exported
 new-flows|17 per-feature flow diagrams|machine|pred_flows|17 per-feature flow diagrams exported
 new-holes|closed two coverage holes|machine|pred_coverage|F09 screens and 57 present in the mockups
+bundle-fresh|bundle and its zip stay in step|machine|pred_bundle|the tracked submission zip matches the sources byte for byte
 "
 
 
