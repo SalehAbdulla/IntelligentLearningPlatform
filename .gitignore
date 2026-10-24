@@ -73,14 +73,17 @@ firebase-export-*/
 # Rules-test reports
 backend/rules-tests/.coverage/
 
-# ── Deliverables: large binaries (keep the source, not the exports) ────────
-# The .fig and the final PDF are submitted through the portal, not git.
-deliverables/**/*.fig
-deliverables/**/*.pdf
+# ── Deliverables: the graded artefacts ARE tracked ─────────────────────────
+# Reversed on 24 Oct 2026. This block used to read "keep the source, not the
+# exports", leaving the .fig, the PDF, the bundle and the zip out of git on the
+# grounds that they go through the portal. The cost of that: M2-M5 could not see
+# the submission from a clone, and reproducing it needs Node plus a Chromium, so
+# all four travel with the repository now.
+# Stated plainly: every committed PDF is another ~25 MB blob in history and every
+# zip another ~43 MB, so commit them at milestones, not on every rebuild -
+# `bash tools/build-pdf.sh` regenerates both from the tracked Markdown.
+# Still ignored: the Figma "export" scratch directory.
 deliverables/**/export/
-# The assembled submission bundle and its zip are staged for the portal, not git.
-deliverables/submission/
-deliverables/*.zip
 !deliverables/prototype/figma-link.txt
 !deliverables/design-document/README.md
 !deliverables/prototype/README.md
