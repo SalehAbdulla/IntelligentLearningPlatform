@@ -3,9 +3,26 @@
 The exported PDF is built from the Markdown source in this folder, not assembled by hand.
 
 - `DESIGN-DOCUMENT.md`               the source of truth for the document (all 19 sections)
-- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 196 pages, its Appendix A carries every one of the 159 figures one per page at print resolution, fonts embedded by the browser, links live (36 external), and a **running header on every page** (app name + logo) with `Page X of Y` in the footer. **It is committed** (since 24 Oct 2026, so a reviewer opens it straight from a clone; it is inside `deliverables/StudyForge-Submission.zip` too). It stays reproducible: `bash tools/build-pdf.sh` regenerates this exact export from the tracked Markdown and figures on any machine. Because each committed copy is ~25 MB of history, commit it at milestones rather than on every rebuild.
+- `StudyForge-Design-Document.docx`   ✅ **the editable export the portal asks for**, built by `bash tools/build-docx.sh` from the university's own template (`tools/templates/IT8108-Design-Document-Template.docx`): the template's cover page filled in (app logo, app name, module, semester, Group ID, Section, Project Brief, Tutor, Submission Date, and the five-member Student ID and Name table), the template's heading and table styles, its running header on every page, its page-number footer, and Appendix A with all 159 figures one per page. **It is committed** so the team can open it from a clone. One caveat: Group ID and Section are the two cover fields the repository does not hold, so they are built from the environment (`GROUP_ID=S3-G4 SECTION="Section 3" bash tools/build-docx.sh`); until then the cover carries the template's own placeholders.
+- `StudyForge-Design-Document.pdf`   ✅ **the submission export**, built by `bash tools/build-pdf.sh`: 197 pages, its Appendix A carries every one of the 159 figures one per page at print resolution, fonts embedded by the browser, links live (36 external), and a **running header on every page** (app name + logo) with `Page X of Y` in the footer. **It is committed** (since 24 Oct 2026, so a reviewer opens it straight from a clone; it is inside `deliverables/StudyForge-Submission.zip` too). It stays reproducible: `bash tools/build-pdf.sh` regenerates this exact export from the tracked Markdown and figures on any machine. Because each committed copy is ~25 MB of history, commit it at milestones rather than on every rebuild.
 - `mockups/`                         ✅ the low-fidelity mockups deliverable: `SCREEN-DESCRIPTIONS.md` (purpose, layout and named UI elements for all **130** wireframes) + `figures/` with the **154 exported 2× PNGs** (130 wireframes, 17 flow diagrams, the four system diagrams drawn 8 Oct 2026, the navigation map and two page headers)
 - `figures/`                         ✅ the document figures that are not mockups: the Figma cover, the design system sheet, the glass reference and the cross-cutting states panel
+
+## Rebuilding the Word document
+
+```bash
+bash tools/build-docx.sh                      # the .docx the portal asks for, with Appendix A
+bash tools/build-docx.sh --text-only          # body only, no appendix: a fast draft
+bash tools/build-docx.sh --check              # rebuild to a temp file and compare with the committed one
+GROUP_ID=S3-G4 SECTION="Section 3" bash tools/build-docx.sh   # fill the two cover fields
+```
+
+The pipeline is Markdown → pandoc, with a reference document derived from the university's
+template (`tools/templates/IT8108-Design-Document-Template.docx`) so the output carries the
+template's styles, running header and page-number footer rather than pandoc's defaults. The
+script verifies what it produced: heading styles, the template's table style on every table,
+the figure count, the header and footer parts, and that the two cover fields are no longer the
+template's placeholders. Requires `pandoc` (`brew install pandoc`).
 
 ## Rebuilding the PDF
 
