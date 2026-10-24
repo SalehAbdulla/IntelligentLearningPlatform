@@ -23,7 +23,7 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 | **SDGs** | SDG 4 (Quality Education) · SDG 9 (Industry, Innovation & Infrastructure) · SDG 10 (Reduced Inequalities) |
 | **Design Document due** | 22 October 2026, 23:55 |
 | **Prototype (Figma) due** | 12 November 2026, 23:55 |
-| **Document version** | 1.2 (Gate 1 draft: figure and table lists, all figures except the two that need the app or a competitor's product captured) |
+| **Document version** | 1.3 (Gate 1 submission, 24 Oct 2026: figure and table lists complete; every figure exported except Figure 4.1, the competitor teardown screenshots, which are still to capture) |
 
 > The app name and logo appear in the header of every page and on the Figma cover, per the identity requirement.
 
