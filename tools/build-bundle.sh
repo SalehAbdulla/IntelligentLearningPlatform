@@ -28,7 +28,7 @@ CHECK_ONLY=0
 if [ "$CHECK_ONLY" -eq 0 ]; then
   echo "── copying the sources into $S"
   mkdir -p "$S/01-Design-Document" "$S/02-Mockups" "$S/03-Prototype"
-  cp "$DD/DESIGN-DOCUMENT.md" "$DD/StudyForge-Design-Document.pdf" "$S/01-Design-Document/"
+  cp "$DD/DESIGN-DOCUMENT.md" "$DD/StudyForge-Design-Document.pdf" "$DD/StudyForge-Design-Document.docx" "$S/01-Design-Document/"
   rm -rf "$S/01-Design-Document/figures"; cp -R "$DD/figures" "$S/01-Design-Document/figures"
   cp "$DD/mockups/SCREEN-DESCRIPTIONS.md" "$S/02-Mockups/"
   rm -rf "$S/02-Mockups/figures"; cp -R "$DD/mockups/figures" "$S/02-Mockups/figures"
@@ -59,6 +59,7 @@ dir()  {
 }
 
 pair "$TMP/01-Design-Document/StudyForge-Design-Document.pdf" "$DD/StudyForge-Design-Document.pdf"
+pair "$TMP/01-Design-Document/StudyForge-Design-Document.docx" "$DD/StudyForge-Design-Document.docx"
 pair "$TMP/01-Design-Document/DESIGN-DOCUMENT.md"             "$DD/DESIGN-DOCUMENT.md"
 pair "$TMP/02-Mockups/SCREEN-DESCRIPTIONS.md"                "$DD/mockups/SCREEN-DESCRIPTIONS.md"
 pair "$TMP/03-Prototype/StudyForge.fig"                      "$PR/StudyForge.fig"
