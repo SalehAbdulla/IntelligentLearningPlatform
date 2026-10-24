@@ -257,7 +257,7 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 - [ ] Figma share set to viewable-by-link and verified in a private window
 - [ ] `.fig` exported **and** the link text document written
 - [ ] Submission package assembled and submitted 24 h early
-- [x] `git tag prototype-v1` — **created and pushed 24 Oct 2026** at `7f15b6d` (an earlier tag pointing at `41bc978` was force-updated, so the tag and the branch head agree)
+- [x] `git tag prototype-v1` — **created and pushed 24 Oct 2026** at `7cd1bb6`, the branch head when the tag was placed (an earlier tag at `41bc978` was force-updated, so the tag and the branch agreed at that point)
 
 ---
 
