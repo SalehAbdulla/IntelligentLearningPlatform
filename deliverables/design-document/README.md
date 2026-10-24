@@ -22,9 +22,11 @@ below ~180 dpi at the largest size the page allows. The script verifies what it 
 page count, JPEG figure streams, links, file size, and (when `pdftotext` is installed) that
 page 1 names the app and that the last page carries a figure caption.
 
-**Rebuild it after every change to `DESIGN-DOCUMENT.md`.** The document is still waiting on the
-tutor interview, the usability section and the figures its own List of figures marks as
-to-draw; a PDF exported before those land is stale evidence rather than a finished one.
+**Rebuild it after every change to `DESIGN-DOCUMENT.md`.** The document is complete apart from the two
+items it names itself: the **§17.3 usability test** (prepared, not yet run) and **Figure 4.1**, the
+competitor teardown screenshots. Everything else in its List of figures is ✅, including Figure 13.1,
+captured 24 Oct 2026. A PDF exported before an edit to the Markdown is stale evidence rather than a
+finished one, so rebuild after every change.
 
 **The running header and page numbers are now in the export — this gap is closed.** Chromium's
 command-line printer cannot add either, and a CSS `position: fixed` header repeats unreliably
