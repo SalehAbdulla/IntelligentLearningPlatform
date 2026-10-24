@@ -38,7 +38,8 @@ Two further notes, both recorded in the documents rather than hidden:
 ## Verification
 
 ```
-bash tools/check-submission.sh   →  25 of 28 checks cleared; the 3 open are human-only
+bash tools/build-bundle.sh       →  the bundle and the zip match the sources byte for byte
+bash tools/check-submission.sh   →  26 of 29 checks cleared; the 3 open are human-only
 python3 tools/verify-docs.py     →  ALL CHECKS PASSED
 ```
 The three open checks are the usability test (counted twice) and **P9-18/19 — the portal submission
@@ -49,6 +50,7 @@ happened, so it stays open until it has.
 
 ```bash
 bash tools/build-pdf.sh                       # rebuild the PDF from DESIGN-DOCUMENT.md
+bash tools/build-bundle.sh                    # re-copy, re-zip and byte-verify this bundle
 python3 tools/build-figure-index.py           # regenerate §10.4 after any figure re-export
 node tools/figma-cli.js export <fileKey> deliverables/design-document/mockups/figures <list.tsv>
 ```
