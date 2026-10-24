@@ -40,7 +40,9 @@
   3. It shows **retention, a review heatmap and a streak**, and every interval still comes from the existing SM-2 engine.
 - **Key source files:**
   - `Core/Recall/RecallQueue.swift` (the cross-deck due-today queue)
-  - `Core/Recall/RecallSettings.swift` (learning steps, daily limits)
+  - `Core/Recall/RecallSettings.swift` (learning steps, daily limits, the four card states)
+  - `Core/Recall/RecallSettingsStore.swift` · `FileRecallSettingsStore.swift` · `InMemoryRecallSettingsStore.swift` (where the learner's options live — the store seam)
+  - `Features/Recall/RecallSpaceViewModel.swift` (O01's presentation logic: one queue across every deck)
   - `Core/Scheduling/SpacedRepetition.swift` (**not mine — I call it, I never duplicate it**)
 - **Firestore collections touched:** `decks/{id}/cards` (the `sr` state gains `learningStep`) · `recallSettings/{uid}`
 - **The hard part and how I solved it:** ordering a queue that mixes **new, learning and review** cards correctly, so a card in a learning step comes back inside the same session while a mature card waits days.
@@ -55,7 +57,7 @@
 
 - **Entry point** → where the screen is registered and how you navigate to it: the Recall Space is reached from the Decks list; the moderation screens are reached from the group chat.
 - **The view** → structure, what it renders from, what it delegates: `GroupChatView` renders the moderator banner and the message list, and delegates every moderation action to `GroupChatViewModel`.
-- **The view model** → state, `LoadState` handling, async calls: `RecallSessionViewModel` owns the queue and the session phase; the store is the `any DeckStore` seam.
+- **The view model** → state, `LoadState` handling, async calls: `RecallSpaceViewModel` reads every deck and the learner's options together, builds the queue once and rebuilds it on a scope or settings change (no second store read); the session screens sit on top of it.
 - **The repository** → the store seam: `ModerationStore` / `RecallSettingsStore`, with File and InMemory implementations, exactly like every other store in this codebase.
 - **The data contract** → which collections, which rules govern them: `groups/{id}/moderation` is append-only; `recallSettings/{uid}` is owner-only.
 - **What happens when it fails** → the specific error path I'd demo: an owner trying to remove the moderator gets a refusal **with the reason shown**, not a silent no-op.
@@ -67,7 +69,7 @@
 | Feature | Screen ID | View file | ViewModel | Repository | Collections |
 |---|---|---|---|---|---|
 | F16 | N01–N06 | `Features/Groups/GroupChatView.swift` | `GroupChatViewModel` | `ModerationStore` | `groups/{id}/moderation` |
-| F17 | O01–O07 | `Features/Recall/` | `RecallSessionViewModel` | `RecallSettingsStore` | `recallSettings/{uid}` |
+| F17 | O01–O07 | `Features/Recall/` (O01 `RecallSpaceView` is the next slice) | `RecallSpaceViewModel` ✓ — the session view model comes with O02 | `RecallSettingsStore` → `FileRecallSettingsStore` · `InMemoryRecallSettingsStore` | `recallSettings/{uid}` |
 
 **Drill:** pick a random row, navigate to the file, and name its collection within ten seconds. Do this weekly.
 
