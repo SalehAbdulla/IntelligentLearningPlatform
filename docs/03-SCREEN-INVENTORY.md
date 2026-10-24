@@ -35,9 +35,11 @@ NN_ScreenName_FirstName_StudentID
 |---|---|---|
 | `{M1}` | Saleh Abdulla | `Saleh_202300540` |
 | `{M2}` | Mohammed Almadhoon | `Mohammed_202401702` |
-| `{M3}` | Tasbeeh Saeed | `Tasbeeh_202300549` |
+| `{M3}` | Tasbeeh Saeed | `Tasbeeh_202305409` |
 | `{M4}` | Shahad Ashoor | `Shahad_202305767` |
-| `{M5}` | Fatema Ghareeb | `Fatema_202304804` |
+| `{M5}` | Fatema Ghareeb | — no frames (the F16/F17 frames are `{M1}` and `{M3}`) |
+
+> **The suffix is the member who drew the frame, not the feature's owner.** Where a feature has more than one contributor the frames are split accordingly: F15 (co-owned M2 + M3) is `LF_73`–`LF_76` Mohammed / `LF_77`–`LF_78` Tasbeeh, and the whole F16/F17 set — the 13 screens `142`–`154`, their 13 dark variants and the 13 wireframes — is `…_Saleh_202300540` for F16 and `…_Tasbeeh_202305409` for F17. Both features remain M5's; she drew none of the frames.
 
 **Worked examples using the real roster**
 
@@ -46,11 +48,11 @@ NN_ScreenName_FirstName_StudentID
 28_MaterialUpload_Processing_OCR_Saleh_202300540
 37_Summary_Result_Mohammed_202401702
 47_Flashcard_Review_Back_Rate_Mohammed_202401702
-65_StudyPlan_Calendar_Week_Tasbeeh_202300549
+65_StudyPlan_Calendar_Week_Tasbeeh_202305409
 93_GroupSpace_SharedQuiz_Live_Shahad_202305767
 115_Admin_AIConfig_Settings_Shahad_202305767
-143_GroupChat_Message_Moderation_Menu_Fatema_202304804
-150_RecallSpace_Session_Back_Rate_Fatema_202304804
+143_GroupChat_Message_Moderation_Menu_Saleh_202300540
+150_RecallSpace_Session_Back_Rate_Tasbeeh_202305409
 ```
 
 Group headings later in this document use the `{M1}` handle for brevity, expand it using the table above before creating the frame in Figma. **Every one of the 154 frames must carry a real name and student ID**, because the brief states: *"all frames/screens must be clearly named by developer, such as Login_Ahmed_2022XXXXX."*
@@ -84,7 +86,7 @@ Group headings later in this document use the `{M1}` handle for brevity, expand 
 
 The page list earlier in this section is the **original 9-page plan**. It was consolidated to one page per prototype concern because **the Figma plugin API cannot create NAVIGATE links across pages**, so all screens must share a page for the prototype to work at all. Ownership is carried by the frame name and the cover table instead.
 
-**✅ Groups N and O are drawn (15 Oct 2026).** F16 and F17's **13 frames (142–154)** are on page `3 · Screens`, taking it from **106 to 119**, and `FLOW_F16` / `FLOW_F17` are on page `2 · Flow Overview`, taking the feature flows from **15 to 17**. All 13 screen frames are named `NN_ScreenName_Fatema_202304804` to the brief's rule, and the two flow diagrams follow the same 1080-wide numbered-step idiom as `FLOW_F01–F15`, each ending in its edge case. Both flow diagrams are exported at 2× into [`deliverables/design-document/mockups/figures/`](../deliverables/design-document/mockups/figures/) as `FLOW_F16_Moderated_Group_Chat_Fatema.png` and `FLOW_F17_Active_Recall_Space_Fatema.png`.
+**✅ Groups N and O are drawn (15 Oct 2026).** F16 and F17's **13 frames (142–154)** are on page `3 · Screens`, taking it from **106 to 119**, and `FLOW_F16` / `FLOW_F17` are on page `2 · Flow Overview`, taking the feature flows from **15 to 17**. All 13 screen frames are named to the brief's rule — `NN_ScreenName_Saleh_202300540` for F16 and `NN_ScreenName_Tasbeeh_202305409` for F17, i.e. **by the member who drew each frame**, while both features remain M5's — and the two flow diagrams follow the same 1080-wide numbered-step idiom as `FLOW_F01–F15`, each ending in its edge case. Both flow diagrams are exported at 2× into [`deliverables/design-document/mockups/figures/`](../deliverables/design-document/mockups/figures/) as `FLOW_F16_Moderated_Group_Chat_Saleh.png` and `FLOW_F17_Active_Recall_Space_Tasbeeh.png`.
 
 > **Still to do for full consistency:** the low-fidelity gap recorded here on 15 October 2026 was **closed on 24 October 2026** — page `5 · Low-Fi Wireframes` now carries **130 wireframes**, adding LF_142–LF_154 for groups N and O and LF_155–LF_157 / LF_172–LF_179 for the reworked F13 subscription states. Every built screen now has a low-fidelity counterpart, and the **dark variants were extended the same day to 130** on page `6`, so P9-12 holds against the 123 built screens.
 
@@ -334,24 +336,24 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
-| N01 | `142_GroupChat_Moderator_Presence_Banner_{M5}` | F16 | P0 | **Persistent moderator banner** across the top of the chat: the admin's avatar with a **shield badge**, "Moderated by <name> · always in this space", and the plain-language reason the moderator cannot be removed. This is the literal *"admin always there"* requirement made visible. |
-| N02 | `143_GroupChat_Message_Moderation_Menu_{M5}` | F16 | P0 | **Long-press action sheet** on any message: **Hide for everyone**, **Delete**, **Pin to board**, **Flag to admin**, each naming its own consequence. Rendered only for the moderator. |
-| N03 | `144_GroupChat_Hidden_Message_Placeholder_{M5}` | F16 | P0 | **Tombstone**: the message body is replaced by "Removed by a moderator", with the **reason** and a **who / when** line, so the room never silently loses history. |
-| N04 | `145_GroupChat_Moderation_Reason_Sheet_{M5}` | F16 | P1 | **Reason capture** before the action commits: a short reason list (spam / off-topic / unsafe / other) plus optional free text, and the **audit-log disclosure** that the action is recorded. |
-| N05 | `146_GroupChat_SlowMode_Muted_Notice_{M5}` | F16 | P1 | **Member-side notice**: "Slow mode is on — you can post again in 30 s", and the muted variant. Explains the restriction rather than failing silently. |
-| N06 | `147_GroupChat_Moderation_Audit_Entry_{M5}` | F16 | P1 | **The audit-log row** this action writes: moderator, target message, action, reason, timestamp. Append-only, so it can never be rewritten. |
+| N01 | `142_GroupChat_Moderator_Presence_Banner_{M1}` | F16 | P0 | **Persistent moderator banner** across the top of the chat: the admin's avatar with a **shield badge**, "Moderated by <name> · always in this space", and the plain-language reason the moderator cannot be removed. This is the literal *"admin always there"* requirement made visible. |
+| N02 | `143_GroupChat_Message_Moderation_Menu_{M1}` | F16 | P0 | **Long-press action sheet** on any message: **Hide for everyone**, **Delete**, **Pin to board**, **Flag to admin**, each naming its own consequence. Rendered only for the moderator. |
+| N03 | `144_GroupChat_Hidden_Message_Placeholder_{M1}` | F16 | P0 | **Tombstone**: the message body is replaced by "Removed by a moderator", with the **reason** and a **who / when** line, so the room never silently loses history. |
+| N04 | `145_GroupChat_Moderation_Reason_Sheet_{M1}` | F16 | P1 | **Reason capture** before the action commits: a short reason list (spam / off-topic / unsafe / other) plus optional free text, and the **audit-log disclosure** that the action is recorded. |
+| N05 | `146_GroupChat_SlowMode_Muted_Notice_{M1}` | F16 | P1 | **Member-side notice**: "Slow mode is on — you can post again in 30 s", and the muted variant. Explains the restriction rather than failing silently. |
+| N06 | `147_GroupChat_Moderation_Audit_Entry_{M1}` | F16 | P1 | **The audit-log row** this action writes: moderator, target message, action, reason, timestamp. Append-only, so it can never be rewritten. |
 
 ### Group O, Active Recall Space (Anki-style) · owner **M5, Fatema** · F17
 
 | ID | Frame | F | Tier | Purpose & key labelled elements |
 |---|---|---|---|---|
-| O01 | `148_RecallSpace_Home_DueToday_{M5}` | F17 | P0 | **One queue across every deck**: due-today total, **state counters** (new / learning / young / mature), **Start** primary, and the next due time when nothing is due. |
-| O02 | `149_RecallSpace_Session_Front_{M5}` | F17 | P0 | **Card front** with the **deck name** and a **state chip**, progress (7 / 20), reveal hint, and close-with-progress-saved. |
-| O03 | `150_RecallSpace_Session_Back_Rate_{M5}` | F17 | P0 | **Answer face** + explanation, **four rating buttons** (Again / Hard / Good / Easy) each showing the **next interval** the SM-2 engine would write, including the sub-day **learning-step** intervals. |
-| O04 | `151_RecallSpace_Daily_Limits_{M5}` | F17 | P1 | **Deck options**: new cards / day, maximum reviews / day, learning steps (1m → 10m), and the graduate interval. Anki's settings, in the app's own vocabulary. |
-| O05 | `152_RecallSpace_Stats_{M5}` | F17 | P1 | **Retention and maturity**: the mature / young split, true-retention percentage, review **heatmap** and **streak**. |
-| O06 | `153_RecallSpace_Filter_By_Deck_{M5}` | F17 | P1 | **Scope the queue** to one deck or tag without leaving the Recall Space, with the filtered due count shown live. |
-| O07 | `154_RecallSpace_EmptyState_{M5}` | F17 | P0 | **Nothing due**: the next due time, the streak preserved, and a link to browse decks. Also demonstrates the offline-first story. |
+| O01 | `148_RecallSpace_Home_DueToday_{M3}` | F17 | P0 | **One queue across every deck**: due-today total, **state counters** (new / learning / young / mature), **Start** primary, and the next due time when nothing is due. |
+| O02 | `149_RecallSpace_Session_Front_{M3}` | F17 | P0 | **Card front** with the **deck name** and a **state chip**, progress (7 / 20), reveal hint, and close-with-progress-saved. |
+| O03 | `150_RecallSpace_Session_Back_Rate_{M3}` | F17 | P0 | **Answer face** + explanation, **four rating buttons** (Again / Hard / Good / Easy) each showing the **next interval** the SM-2 engine would write, including the sub-day **learning-step** intervals. |
+| O04 | `151_RecallSpace_Daily_Limits_{M3}` | F17 | P1 | **Deck options**: new cards / day, maximum reviews / day, learning steps (1m → 10m), and the graduate interval. Anki's settings, in the app's own vocabulary. |
+| O05 | `152_RecallSpace_Stats_{M3}` | F17 | P1 | **Retention and maturity**: the mature / young split, true-retention percentage, review **heatmap** and **streak**. |
+| O06 | `153_RecallSpace_Filter_By_Deck_{M3}` | F17 | P1 | **Scope the queue** to one deck or tag without leaving the Recall Space, with the filtered due count shown live. |
+| O07 | `154_RecallSpace_EmptyState_{M3}` | F17 | P0 | **Nothing due**: the next due time, the streak preserved, and a link to browse decks. Also demonstrates the offline-first story. |
 
 ---
 
@@ -376,7 +378,7 @@ The *Purpose & key labelled elements* column is written to be **copy-pasted dire
 | O | Active Recall Space (Anki-style) | M5 | F17 | 7 | 4 | 3 | 0 |
 | | | | **Total** | **154** | **96** | **57** | **1** |
 
-Per-owner totals (**154** frames across **5** members): **M1, Saleh = 48** · **M2, Mohammed = 41** · **M3, Tasbeeh = 25** · **M4, Shahad = 27** · **M5, Fatema = 13**.
+Per-owner totals (**154** frames across **5** members, counted by who drew each frame): **M1, Saleh = 54** · **M2, Mohammed = 41** · **M3, Tasbeeh = 32** · **M4, Shahad = 27** · **M5, Fatema = 0** — she owns F16 and F17, and the 13 N/O frames were drawn by M1 and M3.
 
 Breakdown: M2's 41 = D(7) + E(9) + F(9) + J(10) + 6 of the 8 advanced-feature frames; M3's 25 = G(13) + L(10) + 2 of the 8 advanced-feature frames (the advanced feature is shared, so its frames split 6/2 to M2/M3). M5's 13 = N(6) + O(7), all authored by her and all new.
 
