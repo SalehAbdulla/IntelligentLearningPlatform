@@ -121,15 +121,15 @@ The exhaustive element-by-element legend for every one of the 130 wireframes is 
 
 | # | Screen | Purpose | Layout and key labelled elements |
 |---|---|---|---|
-| 60 | `60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549` | Wizard 1 of 4: which subjects, at what priority. | **Subject multi-select chips** with a **per-subject priority slider**, **step indicator** (1 of 4), **Continue**. |
-| 61 | `61_StudyPlan_Wizard_Availability_Tasbeeh_202300549` | Wizard 2 of 4: when the student is actually free. | **Weekly availability grid** (days × time blocks, tap-to-toggle), **blocked-days picker**, **Continue**. |
-| 62 | `62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549` | Wizard 3 of 4: the fixed points the planner must respect. | **Deadline list** (Chem Quiz 3, Trees Assignment, Linear Exam) each with a date and a **weighting**, **+ Add deadline**, **Continue**. |
-| 63 | `63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549` | Wizard 4 of 4: how hard, how long, and when to be reminded. | **Intensity segmented control** (Light, Balanced, Intensive), **session-length stepper** (45 min), **reminder-time picker** (18:30), **Generate my plan**. |
-| 64 | `64_StudyPlan_Generating_Tasbeeh_202300549` | Explain what the scheduler is optimising, so the result is trusted. | **"What we optimise"** panel naming spaced-repetition intervals, deadline weighting and review-load balance, **Cancel**. |
-| 65 | `65_StudyPlan_Calendar_Week_Tasbeeh_202300549` | The generated week, as colour-coded blocks. | **Month ›** switcher, **day headers** (Mon–Sun), **session blocks** per subject (DS, Chem, Maths, Quiz), **+ Add session**, **tab bar**. |
-| 68 | `68_StudyPlan_Session_Detail_Tasbeeh_202300549` | Act on one session without leaving the calendar. | **Session title**, **time and duration**, **linked material**, and the actions **Start now**, **Reschedule**, **Skip**, **Mark done**. |
-| 69 | `69_Progress_Dashboard_Tasbeeh_202300549` | Answer "am I on track?" in one screen. | **Stat ring row** (Mastery 64%, Streak 12, 6.5 h this week), **weekly activity chart**, **subjects-in-progress list**, **tab bar**. |
-| 70 | `70_Progress_WeaknessRadar_Tasbeeh_202300549` | Close the measure → adapt loop by naming the weak topics and offering the fix. | **Radar chart** of topic mastery, **weakest-topic cards** with a percentage and the actions **Quiz** and **+Plan**, **tab bar**. |
+| 60 | `60_StudyPlan_Wizard_Subjects_Tasbeeh_202305409` | Wizard 1 of 4: which subjects, at what priority. | **Subject multi-select chips** with a **per-subject priority slider**, **step indicator** (1 of 4), **Continue**. |
+| 61 | `61_StudyPlan_Wizard_Availability_Tasbeeh_202305409` | Wizard 2 of 4: when the student is actually free. | **Weekly availability grid** (days × time blocks, tap-to-toggle), **blocked-days picker**, **Continue**. |
+| 62 | `62_StudyPlan_Wizard_Deadlines_Tasbeeh_202305409` | Wizard 3 of 4: the fixed points the planner must respect. | **Deadline list** (Chem Quiz 3, Trees Assignment, Linear Exam) each with a date and a **weighting**, **+ Add deadline**, **Continue**. |
+| 63 | `63_StudyPlan_Wizard_Intensity_Tasbeeh_202305409` | Wizard 4 of 4: how hard, how long, and when to be reminded. | **Intensity segmented control** (Light, Balanced, Intensive), **session-length stepper** (45 min), **reminder-time picker** (18:30), **Generate my plan**. |
+| 64 | `64_StudyPlan_Generating_Tasbeeh_202305409` | Explain what the scheduler is optimising, so the result is trusted. | **"What we optimise"** panel naming spaced-repetition intervals, deadline weighting and review-load balance, **Cancel**. |
+| 65 | `65_StudyPlan_Calendar_Week_Tasbeeh_202305409` | The generated week, as colour-coded blocks. | **Month ›** switcher, **day headers** (Mon–Sun), **session blocks** per subject (DS, Chem, Maths, Quiz), **+ Add session**, **tab bar**. |
+| 68 | `68_StudyPlan_Session_Detail_Tasbeeh_202305409` | Act on one session without leaving the calendar. | **Session title**, **time and duration**, **linked material**, and the actions **Start now**, **Reschedule**, **Skip**, **Mark done**. |
+| 69 | `69_Progress_Dashboard_Tasbeeh_202305409` | Answer "am I on track?" in one screen. | **Stat ring row** (Mastery 64%, Streak 12, 6.5 h this week), **weekly activity chart**, **subjects-in-progress list**, **tab bar**. |
+| 70 | `70_Progress_WeaknessRadar_Tasbeeh_202305409` | Close the measure → adapt loop by naming the weak topics and offering the fix. | **Radar chart** of topic mastery, **weakest-topic cards** with a percentage and the actions **Quiz** and **+Plan**, **tab bar**. |
 
 ---
 
@@ -141,8 +141,8 @@ The exhaustive element-by-element legend for every one of the 130 wireframes is 
 | 74 | `74_Coach_Chat_Conversation_Mohammed_202401702` | The conversation, with every answer traceable. | **Message bubbles**, **"grounded"** badge, **citation chips** (p.12 cite) under the answer, the **reaction row** (👍 👎 ⧉ copy), **explanation-level segmented control**, **follow-up ask bar**. |
 | 75 | `75_Coach_ExplainLevel_Toggle_Mohammed_202401702` | Re-render the same answer at a different depth, including Arabic. | **Segmented control** (Like I'm 12 · Standard · Exam · العربية), and the **same content re-explained** at two levels side by side. |
 | 76 | `76_Coach_Citation_SourceSheet_Mohammed_202401702` | Show exactly which passage supports the answer. | **Source header** (material · page), **highlighted snippet**, **relevance and confidence** readout, **Open in viewer**. |
-| 77 | `77_Coach_StudyPath_Recommended_Tasbeeh_202300549` | Turn weakness data into an ordered plan. | **Ordered step cards** (Read → Flashcards → Quiz → Review) each with an estimated time, and **Add all to plan**. |
-| 78 | `78_Coach_QuizMe_Voice_Tasbeeh_202300549` | An accessibility and learning-style alternative to typing. | **Microphone** button with a **waveform**, **live transcript** of the question read aloud, **Stop**. |
+| 77 | `77_Coach_StudyPath_Recommended_Tasbeeh_202305409` | Turn weakness data into an ordered plan. | **Ordered step cards** (Read → Flashcards → Quiz → Review) each with an estimated time, and **Add all to plan**. |
+| 78 | `78_Coach_QuizMe_Voice_Tasbeeh_202305409` | An accessibility and learning-style alternative to typing. | **Microphone** button with a **waveform**, **live transcript** of the question read aloud, **Stop**. |
 
 ---
 
@@ -198,13 +198,13 @@ The exhaustive element-by-element legend for every one of the 130 wireframes is 
 
 | # | Screen | Purpose | Layout and key labelled elements |
 |---|---|---|---|
-| 118 | `118_Paywall_Plans_Tasbeeh_202300549` | Present the plans in BHD, without dark patterns or hidden pricing. | **Three plan cards** (Free BHD 0, Plus BHD 1.900, Pro BHD 4.900) each listing what it includes, a **recommended ribbon**, **Choose** primary per card, and the **Current** state on the free plan. |
-| 120 | `120_Checkout_OrderSummary_BHD_Tasbeeh_202300549` | Show the full cost before any payment detail is requested. | **Plan and term header**, **Subtotal BHD 1.727**, **VAT (10%) BHD 0.173**, **Total BHD 1.900**, **promo-code field**, **terms checkbox**, **Proceed to payment** primary. |
-| 121 | `121_Payment_Method_Select_Tasbeeh_202300549` | Let the student pay the way they actually can, in Bahrain. | **Method cards** for **Card** (Visa · Mastercard), **BenefitPay** (redirect to app), **Apple Pay** (Face ID) and **KNET** (Kuwait), a **secure-payment trust row** (🔒 PCI-DSS compliant), **Continue**. |
-| 122 | `122_Payment_Card_Entry_Tasbeeh_202300549` | Enter card details in fields we never see. | **Tap Card SDK fields** for number, expiry and CVV, **Save card for next time** toggle, the **"Card data never touches our servers"** note ("Handled by Tap Payments (PCI-DSS)"), **Pay BHD 1.900** primary. |
-| 124 | `124_Payment_Processing_Tasbeeh_202300549` | Hold the user still during the charge, and promise not to double-charge. | **Progress overlay**, **"You will never be charged twice"** copy, **idempotency-key** note. |
-| 125 | `125_Payment_Success_Receipt_Tasbeeh_202300549` | Confirm the purchase and receipt it properly. | **Success check**, **Receipt card** (Amount BHD 1.900, Method Visa ·· 4242, Reference TAP-8841-2210), **unlocked-features list**, **Done**. |
-| 126 | `126_Payment_Failed_Retry_Tasbeeh_202300549` | A declined payment must not read as a dead end. | **Error mark**, **"Nothing has been charged"** reassurance, **retry guidance**, and the two actions **Retry** and **Try another method**. |
+| 118 | `118_Paywall_Plans_Tasbeeh_202305409` | Present the plans in BHD, without dark patterns or hidden pricing. | **Three plan cards** (Free BHD 0, Plus BHD 1.900, Pro BHD 4.900) each listing what it includes, a **recommended ribbon**, **Choose** primary per card, and the **Current** state on the free plan. |
+| 120 | `120_Checkout_OrderSummary_BHD_Tasbeeh_202305409` | Show the full cost before any payment detail is requested. | **Plan and term header**, **Subtotal BHD 1.727**, **VAT (10%) BHD 0.173**, **Total BHD 1.900**, **promo-code field**, **terms checkbox**, **Proceed to payment** primary. |
+| 121 | `121_Payment_Method_Select_Tasbeeh_202305409` | Let the student pay the way they actually can, in Bahrain. | **Method cards** for **Card** (Visa · Mastercard), **BenefitPay** (redirect to app), **Apple Pay** (Face ID) and **KNET** (Kuwait), a **secure-payment trust row** (🔒 PCI-DSS compliant), **Continue**. |
+| 122 | `122_Payment_Card_Entry_Tasbeeh_202305409` | Enter card details in fields we never see. | **Tap Card SDK fields** for number, expiry and CVV, **Save card for next time** toggle, the **"Card data never touches our servers"** note ("Handled by Tap Payments (PCI-DSS)"), **Pay BHD 1.900** primary. |
+| 124 | `124_Payment_Processing_Tasbeeh_202305409` | Hold the user still during the charge, and promise not to double-charge. | **Progress overlay**, **"You will never be charged twice"** copy, **idempotency-key** note. |
+| 125 | `125_Payment_Success_Receipt_Tasbeeh_202305409` | Confirm the purchase and receipt it properly. | **Success check**, **Receipt card** (Amount BHD 1.900, Method Visa ·· 4242, Reference TAP-8841-2210), **unlocked-features list**, **Done**. |
+| 126 | `126_Payment_Failed_Retry_Tasbeeh_202305409` | A declined payment must not read as a dead end. | **Error mark**, **"Nothing has been charged"** reassurance, **retry guidance**, and the two actions **Retry** and **Try another method**. |
 
 **The F13 set was reworked on 24 October 2026.** The seven screens above were the first cut, and their wireframes (`LF_118`, `LF_120`–`LF_122`, `LF_124`–`LF_126`) are kept on page 5 as the record of that pass. The feature now has eleven screens that follow the **simulated** payment flow end to end — study-to-unlock and trial, a one-time Exam Boost purchase, a monthly Pro checkout, the processing-then-failure state, and subscription management through to cancellation. Every one of them says, on screen, that no real charge is made and no payment provider is contacted.
 
@@ -215,7 +215,7 @@ The exhaustive element-by-element legend for every one of the 130 wireframes is 
 | 157 | `157_Trial_Activated_Tasbeeh_202305409` | Confirm what was activated, and that it was a demo activation. | **Plus trial activated** heading, **Demo activation only** sub-line, **SAMPLE DEMO DATES** card (duration 3 days, activation 16 Oct 2026, trial end 19 Oct 2026, "these are sample dates"), **Plus benefits · demo activation** list, **Return to StudyForge** primary, **Manage subscription** secondary. |
 | 172 | `172_Checkout_ExamBoost_Tasbeeh_202305409` | Show a one-time purchase as clearly one-time. | **Exam Boost Pass** card with a **14 days** chip, **BHD 0.900 (placeholder price)**, "14 days of Plus · one-time access, not recurring", **Subtotal BHD 0.818 / VAT (10%) BHD 0.082 / Total BHD 0.900**, **Change plan**, **terms checkbox**, **Demo order, no actual charges** notice, **Continue to Payment**, **Cancel**. |
 | 173 | `173_Payment_Processing_Failed_Tasbeeh_202305409` | Hold the user still during processing, and warn that a simulated failure follows. | **Processing your demo payment…** heading, **progress bar**, **Demo order** card (Mode: Demo only, Payment: Simulated), **No real money is charged** notice ("a static preview … not a live transaction"). |
-| 174 | `174_Subscription_Manage_Monthly_Tasbeeh_202300549` | Manage the monthly subscription. | **Manage subscription** heading, **Demo subscription** badge, **Current plan** card (Plus Monthly, **BHD 1.900/month**, Status: Active (Demo)), **Plus benefits · demo activation** list, **No real charges** notice, **Cancel demo subscription** destructive primary, **Return to StudyForge**. |
+| 174 | `174_Subscription_Manage_Monthly_Tasbeeh_202305409` | Manage the monthly subscription. | **Manage subscription** heading, **Demo subscription** badge, **Current plan** card (Plus Monthly, **BHD 1.900/month**, Status: Active (Demo)), **Plus benefits · demo activation** list, **No real charges** notice, **Cancel demo subscription** destructive primary, **Return to StudyForge**. |
 | 175 | `175_Subscription_Manage_ExamBoost_Tasbeeh_202305409` | Manage the one-time Exam Boost pass. | Same shell with the **Exam Boost Pass** card (**BHD 0.900**, placeholder price, "14 days left · one-time access, no recurring bill") and the same benefits, notice and actions. |
 | 176 | `176_Subscription_Manage_Trial_Tasbeeh_202305409` | Manage the active trial. | Same shell with the **Plus trial** card (**3 days left**, Status: Active (Demo), "Trial end: 19 Oct 2026 · demo example"), and a **No payment for this trial** notice. |
 | 177 | `177_Subscription_Cancel_Confirm_Tasbeeh_202305409` | Ask before cancelling, and name the consequence. | The management screen dimmed behind a **confirmation dialog**: "**Cancel demo subscription?**", "You will return to the Free plan (15 cloud AI generations per day). This is a demo, no real payment is affected.", **Cancel demo subscription** destructive and **Keep subscription** dismissal. |
@@ -239,30 +239,30 @@ The exhaustive element-by-element legend for every one of the 130 wireframes is 
 
 ---
 
-## A.15 Group N, Admin-Moderated Group Chat (F16) · owner M5, Fatema
+## A.15 Group N, Admin-Moderated Group Chat (F16) · feature owner M5, Fatema · screens and wireframes drawn by M1, Saleh
 
 | # | Screen | Purpose | Layout and key labelled elements |
 |---|---|---|---|
-| 142 | `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804` | Make the moderator's permanent presence visible, which is the literal "admin always there" requirement. | **Moderator banner** ("Moderated by Haetham", "Admin is always in this space"), **message rows** each with the author's initials, a **pinned announcement** ("Pinned by moderator", "Exam moved to 2 November"), and the **composer**. |
-| 143 | `143_GroupChat_Message_Moderation_Menu_Fatema_202304804` | Give the moderator actions that each name their own consequence. | Long-press **action sheet**: **Hide for everyone** ("Members see a tombstone with your reason"), **Delete** ("Removes it for everyone, permanently"), **Pin to board** ("Makes it the group announcement"), **Flag to admin** ("Raises it to the moderation queue"), with the footnote "Only the moderator sees these options." |
-| 144 | `144_GroupChat_Hidden_Message_Placeholder_Fatema_202304804` | Never let the room silently lose history. | **Tombstone** in place of the body ("Removed by a moderator", "Reason: unsafe content · Haetham · 14:02"), the surrounding messages intact, the footnote "Moderated messages stay in the audit log", and the composer. |
-| 145 | `145_GroupChat_Moderation_Reason_Sheet_Fatema_202304804` | Capture a reason before the action commits. | **Reason sheet** ("Why remove this message?", "The reason is shown to the group and kept in the log"), four reasons (**Spam or advertising**, **Off-topic**, **Unsafe or harmful**, **Other — needs a note**), the **Add a note (optional)** field, **Hide for everyone** primary, and "Recorded in the audit log with your name and the time." |
-| 146 | `146_GroupChat_SlowMode_Muted_Notice_Fatema_202304804` | Explain a restriction instead of failing silently. | **Slow mode** banner ("Slow mode is on", "You can post again in 30 s", a 0:30 countdown), the messages, a **You are muted** banner ("A moderator muted you for 1 hour. You can still read the chat."), "Muted by Haetham · until 15:30", and a composer reading "Muted until 15:30". |
-| 147 | `147_GroupChat_Moderation_Audit_Entry_Fatema_202304804` | Show the append-only record the moderation actions write. | **Moderation log** heading, "Every action taken in this group, newest first", four **audit rows** (HIDDEN / PINNED / FLAGGED, the target message, the reason, the moderator and the time), and the footnote "Append-only — nothing here can be rewritten". |
+| 142 | `142_GroupChat_Moderator_Presence_Banner_Saleh_202300540` | Make the moderator's permanent presence visible, which is the literal "admin always there" requirement. | **Moderator banner** ("Moderated by Haetham", "Admin is always in this space"), **message rows** each with the author's initials, a **pinned announcement** ("Pinned by moderator", "Exam moved to 2 November"), and the **composer**. |
+| 143 | `143_GroupChat_Message_Moderation_Menu_Saleh_202300540` | Give the moderator actions that each name their own consequence. | Long-press **action sheet**: **Hide for everyone** ("Members see a tombstone with your reason"), **Delete** ("Removes it for everyone, permanently"), **Pin to board** ("Makes it the group announcement"), **Flag to admin** ("Raises it to the moderation queue"), with the footnote "Only the moderator sees these options." |
+| 144 | `144_GroupChat_Hidden_Message_Placeholder_Saleh_202300540` | Never let the room silently lose history. | **Tombstone** in place of the body ("Removed by a moderator", "Reason: unsafe content · Haetham · 14:02"), the surrounding messages intact, the footnote "Moderated messages stay in the audit log", and the composer. |
+| 145 | `145_GroupChat_Moderation_Reason_Sheet_Saleh_202300540` | Capture a reason before the action commits. | **Reason sheet** ("Why remove this message?", "The reason is shown to the group and kept in the log"), four reasons (**Spam or advertising**, **Off-topic**, **Unsafe or harmful**, **Other — needs a note**), the **Add a note (optional)** field, **Hide for everyone** primary, and "Recorded in the audit log with your name and the time." |
+| 146 | `146_GroupChat_SlowMode_Muted_Notice_Saleh_202300540` | Explain a restriction instead of failing silently. | **Slow mode** banner ("Slow mode is on", "You can post again in 30 s", a 0:30 countdown), the messages, a **You are muted** banner ("A moderator muted you for 1 hour. You can still read the chat."), "Muted by Haetham · until 15:30", and a composer reading "Muted until 15:30". |
+| 147 | `147_GroupChat_Moderation_Audit_Entry_Saleh_202300540` | Show the append-only record the moderation actions write. | **Moderation log** heading, "Every action taken in this group, newest first", four **audit rows** (HIDDEN / PINNED / FLAGGED, the target message, the reason, the moderator and the time), and the footnote "Append-only — nothing here can be rewritten". |
 
 ---
 
-## A.16 Group O, Active Recall Space (F17) · owner M5, Fatema
+## A.16 Group O, Active Recall Space (F17) · feature owner M5, Fatema · screens and wireframes drawn by M3, Tasbeeh
 
 | # | Screen | Purpose | Layout and key labelled elements |
 |---|---|---|---|
-| 148 | `148_RecallSpace_Home_DueToday_Fatema_202304804` | One queue across every deck, the way Anki's due count works. | **42 cards due today**, **Next due in 3 h**, **state counters** (New 12, Learning 6, Young 18, Mature 6), **Start session** primary, **DECKS IN THE QUEUE** rows with per-deck due counts, "New and review limits apply across all decks". |
-| 149 | `149_RecallSpace_Session_Front_Fatema_202304804` | Ask the question, and say how to see the answer. | **7 of 20 · Learning**, the deck label **CHEMISTRY · TOPIC 4**, the question, "Tap anywhere to reveal the answer", **Reveal answer** primary, "Card 7 of 20 · Chemistry deck", "Close any time — your progress is saved". |
-| 150 | `150_RecallSpace_Session_Back_Rate_Fatema_202304804` | Show the answer and the four ratings, each with the interval it will write. | The answer, its explanation, "Source: p.12", the four ratings **Again <1m · Hard 10m · Good 1d · Easy 1d**, "Each button shows when the card comes back", "Intervals come from the SM-2 engine". |
-| 151 | `151_RecallSpace_Daily_Limits_Fatema_202304804` | Expose the scheduling settings in the app's own vocabulary. | **New cards / day 20**, **Maximum reviews / day 200**, **Learning steps 1m → 10m**, **Graduate after 1 day**, **Mature after 21 days**, **Save options**, and "Defaults match Anki: 1 min then 10 min, 20 new cards." |
-| 152 | `152_RecallSpace_Stats_Fatema_202304804` | Retention and maturity, measured rather than asserted. | **86% True retention over 30 days**, **CARD MATURITY** counters (Mature 134, Young 88), "222 cards in the Recall Space", a **REVIEWS THIS MONTH** heatmap ("Darker means more cards reviewed"), and a **7-day streak** card with the longest streak this term. |
-| 153 | `153_RecallSpace_Filter_By_Deck_Fatema_202304804` | Scope the queue without leaving the Recall Space. | A **deck list** with selection ticks and live due counts (Chemistry 14, Biology 9, Physics 11, Mathematics 8), **Apply** and **Clear**, and "23 cards due in the selected decks". |
-| 154 | `154_RecallSpace_EmptyState_Fatema_202304804` | The nothing-due state, with the streak preserved. | **✓ Nothing due right now**, "You have reviewed everything the scheduler asked for today", **Next card in 2 h 15 m**, "Tomorrow: 42 cards across 6 decks", **7-day streak kept**, and **Browse decks**. |
+| 148 | `148_RecallSpace_Home_DueToday_Tasbeeh_202305409` | One queue across every deck, the way Anki's due count works. | **42 cards due today**, **Next due in 3 h**, **state counters** (New 12, Learning 6, Young 18, Mature 6), **Start session** primary, **DECKS IN THE QUEUE** rows with per-deck due counts, "New and review limits apply across all decks". |
+| 149 | `149_RecallSpace_Session_Front_Tasbeeh_202305409` | Ask the question, and say how to see the answer. | **7 of 20 · Learning**, the deck label **CHEMISTRY · TOPIC 4**, the question, "Tap anywhere to reveal the answer", **Reveal answer** primary, "Card 7 of 20 · Chemistry deck", "Close any time — your progress is saved". |
+| 150 | `150_RecallSpace_Session_Back_Rate_Tasbeeh_202305409` | Show the answer and the four ratings, each with the interval it will write. | The answer, its explanation, "Source: p.12", the four ratings **Again <1m · Hard 10m · Good 1d · Easy 1d**, "Each button shows when the card comes back", "Intervals come from the SM-2 engine". |
+| 151 | `151_RecallSpace_Daily_Limits_Tasbeeh_202305409` | Expose the scheduling settings in the app's own vocabulary. | **New cards / day 20**, **Maximum reviews / day 200**, **Learning steps 1m → 10m**, **Graduate after 1 day**, **Mature after 21 days**, **Save options**, and "Defaults match Anki: 1 min then 10 min, 20 new cards." |
+| 152 | `152_RecallSpace_Stats_Tasbeeh_202305409` | Retention and maturity, measured rather than asserted. | **86% True retention over 30 days**, **CARD MATURITY** counters (Mature 134, Young 88), "222 cards in the Recall Space", a **REVIEWS THIS MONTH** heatmap ("Darker means more cards reviewed"), and a **7-day streak** card with the longest streak this term. |
+| 153 | `153_RecallSpace_Filter_By_Deck_Tasbeeh_202305409` | Scope the queue without leaving the Recall Space. | A **deck list** with selection ticks and live due counts (Chemistry 14, Biology 9, Physics 11, Mathematics 8), **Apply** and **Clear**, and "23 cards due in the selected decks". |
+| 154 | `154_RecallSpace_EmptyState_Tasbeeh_202305409` | The nothing-due state, with the streak preserved. | **✓ Nothing due right now**, "You have reviewed everything the scheduler asked for today", **Next card in 2 h 15 m**, "Tomorrow: 42 cards across 6 decks", **7-day streak kept**, and **Browse decks**. |
 
 ---
 
@@ -290,16 +290,27 @@ Every one of the 17 features has at least three screens, and every built screen 
 | | **Total** | | | **123** |
 
 **Wireframes per developer**, matching the ownership in `docs/02-FEATURE-LIST-OWNERSHIP.md`. These
-count the **130 low-fidelity wireframes**, not the prototype (the Figma file holds **123** frames):
+count the **130 low-fidelity wireframes**, not the prototype (the Figma file holds **123** frames).
+Naming follows the brief's rule, which is **by developer**, not by feature owner — so the F16/F17
+wireframes carry the members who drew them (see the note under the table):
 
 | Member | Student ID | Wireframes | Feature areas |
 |---|---|---|---|
-| M1 Saleh Abdulla | `202300540` | 36 | F01, F02, F07 home, F14, cross-cutting states |
+| M1 Saleh Abdulla | `202300540` | 42 | F01, F02, F07 home, F14, cross-cutting states, **F16 wireframes** |
 | M2 Mohammed Almadhoon | `202401702` | 31 | F03, F04, F05, F11, F15 (co) |
-| M3 Tasbeeh Saeed | `202305409` | 29 | F06, F07, F13, F15 (co) |
+| M3 Tasbeeh Saeed | `202305409` | 36 | F06, F07, F13, F15 (co), **F17 wireframes** |
 | M4 Shahad Ashoor | `202305767` | 21 | F08, F09, F10, F12 |
-| M5 Fatema Ghareeb | `202304804` | **13** | F16, F17 — drawn 24 October 2026 from her own prototype screens |
+| M5 Fatema Ghareeb | `202304804` | 0 | no wireframes — F16 and F17 are her features, and her **13 prototype screens (142–154) are the source** M1 and M3 drew from |
 | | | **130** | the five rows above |
+
+> **Why M5's frame count is zero while F16/F17 are her features.** The brief requires every frame
+> to be *"clearly named by developer"*, and this file applies that literally: F15, the other
+> multi-contributor feature, is split the same way (`LF_73`–`LF_76` Mohammed, `LF_77`–`LF_78`
+> Tasbeeh). The whole F16/F17 Figma set — the 13 prototype screens (`142`–`154`), their 13 dark
+> variants and the 13 wireframes — was drawn by **M1 (F16)** and **M3 (F17)**, so those frames
+> carry those two names. M5 owns both **features**, and her contribution is recorded where it
+> lies: two net-new Swift modules (`Core/Groups/Moderation/`, `Core/Recall/`) and a full
+> three-feature testing rotation (F01, F05, F13) — see `docs/02` §2.1.
 
 **State coverage required by the brief** (loading · empty · error · success · offline · permission):
 
