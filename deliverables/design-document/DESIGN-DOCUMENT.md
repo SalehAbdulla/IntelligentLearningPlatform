@@ -31,6 +31,7 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 
 List of figures · List of tables
 
+Template compliance map
 1. Executive summary
 2. Background research: the problem, who is affected, and why it matters
 3. Tutor interview: questions asked and summary of responses
@@ -119,6 +120,35 @@ per-screen figure index is §10.4.
 
 The title-page metadata block above is part of the front matter and is deliberately not
 numbered.
+
+---
+
+## Template compliance map
+
+The IT8108 template fixes five sections and their sub-headings. This document is written as a
+fuller, rubric-mapped document, so this table states where each section the template asks for is
+answered. Nothing the template requires is missing; the additional sections are additions, which
+the template permits: *"You may amend it, but make sure to include all the sections shown in this
+template."*
+
+| Template section | Template sub-heading | Answered in |
+|---|---|---|
+| **Background Research** | Problem and Target Users | §2 Background research: the problem, who is affected, and why it matters, including the stakeholder map and the target users |
+| | App Purpose and Goals | §5 App purpose, goals, intended impact and success metrics; the SDG link is in §2.4 |
+| | Supporting Research | §2, the cited evidence for each claim, and §18 References |
+| | Competitive Edge | §4 Competitive analysis |
+| | Tutor Interview Summary | §3 Tutor interview: questions asked and summary of responses |
+| **Feature List** | User Roles | §6 User roles and personas |
+| | Feature Summary | §7 Feature list, whose first table is the 17-feature summary |
+| | Feature Details | §7 and §8 Advanced feature specification (F15, AI Study Companion) |
+| **Mockups** | Navigation Flow | §11 Navigation map; §9 Feature flows carries the per-feature flows |
+| | Feature and Screen mockups | §10 Low-fidelity mockups: the 123 designed screens and the 130 exported wireframes |
+| **Innovation** | the section itself | §13 Innovation |
+| **References** | the section itself | §18 References |
+
+The cover page of the submitted Word document reproduces the template's cover page: app logo, app
+name, module and semester, then Group ID, Section, Project Brief, Tutor and Submission Date, and
+the five-member Student ID and Name table.
 
 ---
 
