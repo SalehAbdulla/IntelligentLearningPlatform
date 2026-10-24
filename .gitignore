@@ -73,17 +73,20 @@ firebase-export-*/
 # Rules-test reports
 backend/rules-tests/.coverage/
 
-# ── Deliverables: the graded artefacts ARE tracked ─────────────────────────
-# Reversed on 24 Oct 2026. This block used to read "keep the source, not the
-# exports", leaving the .fig, the PDF, the bundle and the zip out of git on the
-# grounds that they go through the portal. The cost of that: M2-M5 could not see
-# the submission from a clone, and reproducing it needs Node plus a Chromium, so
-# all four travel with the repository now.
-# Stated plainly: every committed PDF is another ~25 MB blob in history and every
-# zip another ~43 MB, so commit them at milestones, not on every rebuild -
-# `bash tools/build-pdf.sh` regenerates both from the tracked Markdown.
-# Still ignored: the Figma "export" scratch directory.
+# ── Deliverables: the zip is tracked, the loose artefacts are not ──────────
+# Decided 24 Oct 2026. The submission zip carries every graded artefact inside
+# it - the PDF, the .fig, the bundle and the 154 mockup figures - so ONE tracked
+# ~43 MB file gives M2-M5 the entire submission from a clone, while the loose
+# copies stay out of history: the PDF alone would be ~25 MB per version and the
+# .fig ~1.8 MB, and both are already inside that zip.
+# So `deliverables/StudyForge-Submission.zip` IS committed. The PDF, the .fig and
+# the bundle remain reproducible (`bash tools/build-pdf.sh` from the tracked
+# Markdown and figures) and are extracted from the zip when needed:
+#   unzip deliverables/StudyForge-Submission.zip 01-Design-Document/StudyForge-Design-Document.pdf
+deliverables/**/*.fig
+deliverables/**/*.pdf
 deliverables/**/export/
+deliverables/submission/
 !deliverables/prototype/figma-link.txt
 !deliverables/design-document/README.md
 !deliverables/prototype/README.md
