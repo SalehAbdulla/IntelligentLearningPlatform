@@ -63,7 +63,7 @@ pass in the 60% App Implementation & Demonstration.
 |---|---|
 | **M1** Saleh Abdulla `202300540` | F01 Auth & Onboarding · F02 Upload & Library · F14 Notifications |
 | **M2** Mohammed Almadhoon `202401702` | F03 Summary · F04 Flashcards · F05 Quiz · F11 Tutor Studio · F15 Companion (co) |
-| **M3** Tasbeeh Saeed `202300549` | F06 Study Plan · F07 Progress · F13 Payments · F15 Companion (co) |
+| **M3** Tasbeeh Saeed `202305409` | F06 Study Plan · F07 Progress · F13 Payments · F15 Companion (co) |
 | **M4** Shahad Ashoor `202305767` | F08 Folders · F09 Group Spaces · F10 Bookmarks · F12 Admin |
 | **M5** Fatema Ghareeb `202304804` | F16 Admin-Moderated Group Chat · F17 Active Recall Space |
 
@@ -108,9 +108,16 @@ git config --local user.email "202401702@student.polytechnic.bh"
 |---|---|---|---|
 | M1 | Saleh Abdulla | `202300540` | `202300540@student.polytechnic.bh` |
 | M2 | Mohammed Almadhoon | `202401702` | `202401702@student.polytechnic.bh` |
-| M3 | Tasbeeh Saeed | `202300549` | `202300549@student.polytechnic.bh` |
+| M3 | Tasbeeh Saeed | `202305409` | `202305409@student.polytechnic.bh` |
 | M4 | Shahad Ashoor | `202305767` | `202305767@student.polytechnic.bh` |
 | M5 | Fatema Ghareeb | `202304804` | `202304804@student.polytechnic.bh` |
+
+> **M3's ID was corrected on 23 Oct 2026:** `202300549` → **`202305409`**, two digits had been
+> transposed. Use the corrected one from now on. Her twelve **already-merged** commits are authored
+> under the old address, and `.mailmap` maps it onto the new one so `git shortlog` still credits
+> her — **do not remove that alias line**, and do not "tidy" it: it is the only thing keeping
+> twelve commits attributed. Dated evidence written before the correction (sprint logs, testing
+> sheets, the F15 approval request) keeps the ID it was written with.
 
 > **Never** commit under someone else's identity, and **never** push another member's
 > work under your own name. Both are treated as fabrication.
