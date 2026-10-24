@@ -104,6 +104,56 @@ struct RecallSettings: Equatable, Sendable, Codable {
         self.matureAfterDays = max(graduate, matureAfterDays)
     }
 
+    /// The stored field names. Declared rather than synthesised because `init(from:)` below
+    /// reads them by hand.
+    private enum CodingKeys: String, CodingKey {
+        case learningStepMinutes
+        case newCardsPerDay
+        case maxReviewsPerDay
+        case graduatingIntervalDays
+        case matureAfterDays
+    }
+
+    /// Reads a stored document through the initializer above, so the clamping runs on the way IN.
+    ///
+    /// WHY THIS IS NOT LEFT TO THE COMPILER
+    /// ------------------------------------
+    /// A synthesised `Decodable` conformance writes each field straight into the property and
+    /// never calls `init`, so the guarantee at the top of this type — "a value decoded from an
+    /// older or hand-edited document" is clamped — was not true for the one input that needs it.
+    /// The consequence is not a wrong number: `RecallQueueBuilder` passes `maxReviewsPerDay` to
+    /// `prefix(_:)`, and a negative value there TRAPS. A learner with a truncated or edited
+    /// document would get a crash on launch instead of a screen. Delegating to `init` keeps a
+    /// single place that owns the invariants, so they cannot drift from the decode path.
+    ///
+    /// A field the document does not carry falls back to its default rather than failing the
+    /// whole read: a document written by an older build simply predates that field, and refusing
+    /// it would turn an upgrade into an error state.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // Spelled `RecallSettings()` rather than `.default` because this is the value the
+        // defaults are being read FROM, not a value being produced.
+        let fallback = RecallSettings()
+
+        self.init(
+            learningStepMinutes: try container.decodeIfPresent(
+                [Int].self, forKey: .learningStepMinutes
+            ) ?? fallback.learningStepMinutes,
+            newCardsPerDay: try container.decodeIfPresent(
+                Int.self, forKey: .newCardsPerDay
+            ) ?? fallback.newCardsPerDay,
+            maxReviewsPerDay: try container.decodeIfPresent(
+                Int.self, forKey: .maxReviewsPerDay
+            ) ?? fallback.maxReviewsPerDay,
+            graduatingIntervalDays: try container.decodeIfPresent(
+                Int.self, forKey: .graduatingIntervalDays
+            ) ?? fallback.graduatingIntervalDays,
+            matureAfterDays: try container.decodeIfPresent(
+                Int.self, forKey: .matureAfterDays
+            ) ?? fallback.matureAfterDays
+        )
+    }
+
     /// How many learning steps a card must clear before it graduates.
     var stepCount: Int { learningStepMinutes.count }
 
