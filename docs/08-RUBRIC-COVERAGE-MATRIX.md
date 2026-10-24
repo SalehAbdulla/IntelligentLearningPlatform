@@ -78,8 +78,8 @@ backed by something a marker can open.
 | Row | Status | Evidence now in place |
 |---|---|---|
 | c1 | ✅ | 17 per-feature flow diagrams on Figma page `2 · Flow Overview`, each ending in its error/edge case, plus a grouped frame set per feature |
-| c2 | ✅ | **106 low-fi wireframes**; every feature has **3–16** screens (`SCREEN-DESCRIPTIONS.md` §A.15) |
-| c3 | ✅ | `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.2–§A.14: purpose **and** layout for all **106** wireframes |
+| c2 | ✅ | **130 low-fi wireframes**; every feature has **3–18** screens (`SCREEN-DESCRIPTIONS.md` §A.17) |
+| c3 | ✅ | `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.2–§A.16: purpose **and** layout for all **130** wireframes |
 | c4 | ✅ | Numbered callout badges on every wireframe, mapped to a legend panel that gives each element's **type** and **function** |
 | c5 | ✅ | Figma page `5 · Low-Fi Wireframes`, greyscale, generated from the same geometry as the prototype |
 | c6 | ✅ | Coverage audit §A.17, navigation map + 17 flow diagrams, labelled elements, descriptions |
@@ -238,7 +238,7 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 - [ ] All 89 P0 screens exist in low fidelity, described and labelled
 - [ ] 17 feature flow diagrams + 1 global navigation map
 - [ ] 10 innovation items each state relevance, feasibility and evidence
-- [ ] Cover page + header on every page carry the app name and logo
+- [x] Cover page + header on every page carry the app name and logo — **closed 24 Oct 2026:** `tools/build-pdf.sh` now adds the header (app name + app-icon logo) and `Page X of Y` to every page through `tools/pdf-headers.js`; verified with `pdftotext` on pages 2 and 100 of the export
 - [ ] TOC, figure list and table list auto-generated
 - [ ] Harvard references with in-text citations
 - [ ] Spot-check 5 screens: is every UI element labelled *and* is its function explained?
