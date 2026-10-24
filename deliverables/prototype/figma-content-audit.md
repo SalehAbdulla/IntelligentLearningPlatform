@@ -67,9 +67,16 @@ The *Frames per developer* table carried **`202300549`** for M3. Her student ID 
 **`202305409`** on 23 Oct 2026 (`docs/TODOLIST.md` §0), and the roster, `CONTRIBUTING.md`,
 `docs/02` and the tooling all carry the new one — making this table the last place asserting the old
 ID as an **identity**.
-**Fixed.** The **frame suffix** `Tasbeeh_202300549` is deliberately **unchanged**: that is an
-artifact *name*, not an identity, and renaming it means editing the Figma file and rebuilding the
-PDF. That decision is recorded in `docs/TODOLIST.md` §0 rather than left as an inconsistency.
+**Fixed (identity), then revisited (artifact names).** On 23 Oct 2026 the identity was corrected and
+the **frame suffix** `Tasbeeh_202300549` was deliberately left **unchanged** — an artifact *name*, not
+an identity, and renaming it meant editing the Figma file and rebuilding the PDF.
+**Reversed on 24 Oct 2026.** The suffix *was* renamed to `Tasbeeh_202305409` across the file: the
+cover's team table was still displaying the **transposed ID as an identity** (the front page a marker
+opens first), the page-3 screens were already mostly `202305409`, and the artifact names now match the
+corrected roster. 40 nodes were renamed (2 screens, 19 wireframes with their titles and legend
+children, 19 dark variants) and 20 figures re-exported. The old address is still the one in
+`.mailmap`, because that is what her twelve merged commits are authored under — see the alias note in
+`docs/02` §2.
 
 ### F4 — a table of four members that summed to 106, with no note saying why (content)
 *Frames per developer* named M1–M4 and totalled 106, which reads as *"M5 drew nothing"*. True of the
