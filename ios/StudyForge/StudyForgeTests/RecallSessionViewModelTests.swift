@@ -358,15 +358,15 @@ struct RecallSessionViewModelTests {
 
         #expect(
             viewModel.preview(for: .hard)
-               RecallSessionViewModel.RatingPreview(staysInSteps: true, stepMinutes: 1, intervalDays: nil)
+             ==  RecallSessionViewModel.RatingPreview(staysInSteps: true, stepMinutes: 1, intervalDays: nil)
         )
         #expect(
             viewModel.preview(for: .good)
-               RecallSessionViewModel.RatingPreview(staysInSteps: true, stepMinutes: 10, intervalDays: nil)
+             ==  RecallSessionViewModel.RatingPreview(staysInSteps: true, stepMinutes: 10, intervalDays: nil)
         )
         #expect(
             viewModel.preview(for: .easy)
-              RecallSessionViewModel.RatingPreview(staysInSteps: false, stepMinutes: nil, intervalDays: 1)
+             == RecallSessionViewModel.RatingPreview(staysInSteps: false, stepMinutes: nil, intervalDays: 1)
         )
 
         let review = reviewState()
