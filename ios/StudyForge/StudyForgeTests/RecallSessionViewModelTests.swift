@@ -356,19 +356,19 @@ struct RecallSessionViewModelTests {
     func previews() {
         let (viewModel, _) = makeSession(cards: [card(id: "c1")])
 
-#expect(viewModel.preview(for: .hard) == RatingPreview(
+#expect(viewModel.preview(for: .hard) == RecallSessionViewModel.RatingPreview(
     staysInSteps: true,
     stepMinutes: 1,
     intervalDays: nil
 ))
 
-#expect(viewModel.preview(for: .good) == RatingPreview(
+#expect(viewModel.preview(for: .good) == RecallSessionViewModel.RatingPreview(
     staysInSteps: true,
     stepMinutes: 10,
     intervalDays: nil
 ))
 
-#expect(viewModel.preview(for: .easy) == RatingPreview(
+#expect(viewModel.preview(for: .easy) == RecallSessionViewModel.RatingPreview(
     staysInSteps: false,
     stepMinutes: nil,
     intervalDays: 1
