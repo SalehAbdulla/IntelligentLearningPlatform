@@ -230,33 +230,33 @@ Full detail: [doc 10](10-SPRINT-PLAN.md). **Four separate marks, one per member.
 
 ### Gate 1 · Design Document (before 21 Oct)
 
-- [ ] Every ⬜ row in §2–§7 above is now ✅, or consciously accepted as a lost mark
-- [ ] Tutor interview **questions AND responses** are in the document
-- [ ] Written tutor approval for the F15 advanced feature is recorded
-- [ ] Every one of the 17 features has all seven required columns populated
-- [ ] Workload balance is stated, not just implied
-- [ ] All 89 P0 screens exist in low fidelity, described and labelled
-- [ ] 17 feature flow diagrams + 1 global navigation map
-- [ ] 10 innovation items each state relevance, feasibility and evidence
+- [ ] Every ⬜ row in §2–§7 above is now ✅, or consciously accepted as a lost mark — **reconciled 28 Oct 2026: stays open, and it is the one box that must.** The rows still ⬜ are the ones whose evidence is a *person* — the sprint artefacts, the usability session, the portal submission — not an artefact that can be checked from the repository.
+- [x] Tutor interview **questions AND responses** are in the document — **verified 28 Oct 2026:** [`research/interviews/tutor-interview-transcript.md`](../research/interviews/tutor-interview-transcript.md) holds **five** questions with their responses, and Design Document **§3.3** carries Table 3.3 recording what each answer changed in the design.
+- [x] Written tutor approval for the F15 advanced feature is recorded — **verified 28 Oct 2026:** [`research/interviews/f15-advanced-feature-approval.md`](../research/interviews/f15-advanced-feature-approval.md) records **Ghassan AlShajjar** (Tutor, EDICT Programming) approving **in writing on 15 Oct 2026**, with the three conditions and where each one is met; Design Document **§3.4** cites it.
+- [x] Every one of the 17 features has all seven required columns populated — **verified 28 Oct 2026:** the [doc 02](02-FEATURE-LIST-OWNERSHIP.md) §4 table carries **7 columns** and **17 feature rows** (F01–F17), each populated.
+- [x] Workload balance is stated, not just implied — **verified 28 Oct 2026:** [doc 02 §3](02-FEATURE-LIST-OWNERSHIP.md) carries the weighting column and states the position outright — *"feature count alone is not the fairness metric"* — balancing feature count, frame count, risk ownership (F15, F13), interaction complexity and how much of the work is net-new.
+- [x] All 89 P0 screens exist in low fidelity, described and labelled — **verified 28 Oct 2026:** [doc 03](03-SCREEN-INVENTORY.md) puts the P0 floor at **89** screens, and [`SCREEN-DESCRIPTIONS.md`](../deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md) describes **130** wireframes across all 17 features, each with numbered callout badges and a legend panel naming every element and its type.
+- [x] 17 feature flow diagrams + 1 global navigation map — **verified 28 Oct 2026:** **17** `FLOW_F*.png` files plus `02_NavigationMap_StudyForge.png` in `deliverables/design-document/mockups/figures/`, and the gate's `new-flows` check fails below 17.
+- [x] 10 innovation items each state relevance, feasibility and evidence — **verified 28 Oct 2026:** Design Document **§13** presents exactly **ten** items in Table 13.1, each with its **Problem, Idea, Feasibility and Evidence** columns populated.
 - [x] Cover page + header on every page carry the app name and logo — **closed 24 Oct 2026:** `tools/build-pdf.sh` now adds the header (app name + app-icon logo) and `Page X of Y` to every page through `tools/pdf-headers.js`; verified with `pdftotext` on pages 2 and 100 of the export
-- [ ] TOC, figure list and table list auto-generated
-- [ ] Harvard references with in-text citations
-- [ ] Spot-check 5 screens: is every UI element labelled *and* is its function explained?
-- [ ] PDF exported, fonts embedded, images ≥150 dpi, links live
+- [x] TOC, figure list and table list auto-generated — **verified 28 Oct 2026:** `## Table of contents` (line 30), `## List of figures` (line 57) and `## List of tables` (line 89) are all present in the Markdown, and `tools/build-figure-index.py` plus `tools/build-pdf.sh` regenerate the lists from the figures at build time.
+- [ ] Harvard references with in-text citations — **reconciled 28 Oct 2026: the list is right, the citations are not.** Design Document **§18** carries **12** properly Harvard-formatted entries (author-date, italicised titles, `pp.` ranges, the Bahrain data-protection statute, and WCAG 2.2 with an access date). **But the document cites them only three times in text** — two parenthetical `(Author, Year)` and one narrative `Author (Year)` — across ~197 pages. This is the cheapest real gap in Gate 1: the references exist and the claims resting on them are in the document; what is missing is the pointer at each claim.
+- [x] Spot-check 5 screens: is every UI element labelled *and* is its function explained? — **spot-checked 28 Oct 2026 on screens 35, 36, 37, 38 and 41** (§A.5, Group D, M2's F03). Every one holds: each row carries a **Purpose** stating the screen's function in a sentence, and a **Layout and key labelled elements** column naming every element in bold. *Limit:* checked against `SCREEN-DESCRIPTIONS.md` rather than against the rendered frames.
+- [x] PDF exported, fonts embedded, images ≥150 dpi, links live — **verified 28 Oct 2026 by the gate:** `dd-figures` passes (*"Figures at 150 dpi, figure list, table list, PDF"*, smallest exported figure **1704 px** wide), fonts are embedded by the browser at build time, and the export carries **36 live external links**.
 
 ### Gate 2 · Prototype (before 11 Nov)
 
-- [ ] All 17 features designed and **reachable by clicking**
-- [ ] Every hotspot clicked at least once (no dead ends)
-- [ ] 4 end-to-end chains work: onboarding→home · upload→summary→folder · quiz→results→re-plan · paywall→receipt
-- [ ] Every frame named `NN_ScreenName_FirstName_StudentID`, audited
-- [ ] Overflow set on every frame · starting frame set
-- [ ] Error, empty, loading, offline and success states all present
-- [ ] Dark mode + RTL + AX3 frames present
-- [ ] Usability test with 5 users completed; SUS score calculated
-- [ ] Figma share set to viewable-by-link and verified in a private window
-- [ ] `.fig` exported **and** the link text document written
-- [ ] Submission package assembled and submitted 24 h early
+- [x] All 17 features designed and **reachable by clicking** — **verified 28 Oct 2026, with the limit stated:** [`figma-link.txt`](../deliverables/prototype/figma-link.txt) §9 records **110 of the 119** screens reachable by clicking alone; the remaining **9** (24, 30, 41, 77, 78, 88, 126, 133, 134) are state, error and secondary screens, each a **named flow start point** so it is directly reachable in the player, and *"no screen is a dead end"*. **Not re-measured since the F13 rework (24 Oct):** page 3 now holds **123** screens, so that figure predates the eleven new F13 screens.
+- [x] Every hotspot clicked at least once (no dead ends) — **verified 28 Oct 2026:** the gate's `p9-07` **hotspot and link audit** passes, and the reachability audit closes with *"No screen is a dead end."*
+- [x] 4 end-to-end chains work — **verified 28 Oct 2026:** `figma-link.txt` documents all four with their screen sequences — **Chain 1** onboarding→home (01→02→03→04→05→06→07), **Chain 2** upload→generated artefact, **Chain 3** quiz→adaptive re-plan, **Chain 4** paywall→entitlement (121→122→124→125).
+- [x] Every frame named `NN_ScreenName_FirstName_StudentID`, audited — **verified 28 Oct 2026:** the gate's `p9-06` frame-naming audit passes.
+- [x] Overflow set on every frame · starting frame set — **verified 28 Oct 2026:** the gate's `p9-08` overflow audit passes.
+- [x] Error, empty, loading, offline and success states all present — **verified 28 Oct 2026 in the exported frames:** error (`LF_30_MaterialUpload_Error_UnsupportedFormat`, `LF_41_Summary_Error_QuotaExceeded`, `LF_134_Error_Server_Retry`), empty (`LF_154_RecallSpace_EmptyState`), offline (`LF_133_Error_NoInternet_OfflineBanner`), loading (the "Generating" screens 36 and 44) and success (`48_Flashcard_Session_Summary`), plus Group M's 14 cross-cutting state frames ([doc 09](09-RISKS-OPEN-QUESTIONS.md) D28).
+- [x] Dark mode + RTL + AX3 frames present — **verified 28 Oct 2026:** the gate's `p9-11` (frames `138_Accessibility_LargeText_Example` and `139_RTL_Arabic_Example`) and `p9-12` (**106** dark-mode variants, one per screen) both pass.
+- [ ] Usability test with 5 users completed; SUS score calculated — **reconciled 28 Oct 2026: the pack is ready, the session has not run.** `research/usability/` holds the protocol, facilitator script, consent form, the SUS questionnaire **with its exact scoring rule**, the participant log and the results template; `results.md` and `responses.md` are empty. **No score is recorded, deliberately** — a figure entered before the session would be invented. This is the same item as the gate's `dd-usability`/`p9-0304`, and one of only three keeping the submission gate red.
+- [x] Figma share set to viewable-by-link and verified in a private window — **verified 28 Oct 2026:** the gate's `p9-share` passes, and the record of **17 Oct 2026** shows the check that matters was made with the **token-free** URL (`https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv` — no `?t=`, no `node-id`), because a token-bearing link can open a file whose link sharing is off and proves nothing.
+- [x] `.fig` exported **and** the link text document written — **verified 28 Oct 2026:** the gate's `p9-14` (1,830,424 bytes, `meta.json` recording `exported_at 2026-10-23T23:01:26Z`) and `p9-17` (`deliverables/prototype/figma-link.txt`) both pass.
+- [ ] Submission package assembled and submitted 24 h early — **reconciled 28 Oct 2026: assembled, not submitted, and no longer early.** `deliverables/submission/` is assembled and tracked, `deliverables/StudyForge-Submission.zip` is byte-compared against its sources by the gate's `bundle-fresh` check, and `prototype-v1` is tagged and pushed. **The portal submission itself is still open** (the gate's `p9-1819`), and the design-document deadline (**22 Oct 2026, 23:55**) has passed, so the "24 h early" half cannot be recovered — only recorded honestly.
 - [x] `git tag prototype-v1` — **created and pushed 24 Oct 2026** at `7cd1bb6`, the branch head when the tag was placed (an earlier tag at `41bc978` was force-updated, so the tag and the branch agreed at that point)
 
 ---
