@@ -40,6 +40,32 @@
 > **And one thing only you can write:** `research/sprints/sprint-1/mohammed-contribution.md` is still an **empty template** — headers and column titles, no rows. Your 36 commits are attributable and real, but the Sprints component (**10%, assessed per person**) is read off that file. One row per session, with the commit as the evidence.
 
 > ## ⚑ 28 Oct 2026 (second note) — tier 1 is the demo's blocker, and the SDK route is closed
+> **STATUS, 28 Oct 2026: this is IMPLEMENTED — by the owner, as a recorded lane exception, because
+> tier 1 was the demo's blocker.** `Core/AI/GeminiCloudProvider.swift` now calls the Gemini
+> Developer API over `URLSession`, it is wired in `AppContainer`, the build is clean and **845 tests
+> pass**. **Do not rebuild it.** The exception is recorded in [`docs/TODOLIST.md` §0](TODOLIST.md)
+> beside the J02 entry, with the guard's refusal and the authorisation both on the record.
+>
+> **What is still yours in F15, and it is the part that needs your judgement:**
+>
+> 1. **The `AITier.swift:114` marker is now stale** — the engine it asks for exists, so the marker
+>    is describing a gap that has closed. Deleting it is your one-line commit, in your file, and it
+>    is the marker a reviewer looks for.
+> 2. **`PromptTemplates.swift:22` — the Firestore-backed `PromptTemplateStore`.** Still open, still
+>    yours, and still the difference between fixing a prompt with a document and fixing it with a
+>    release.
+> 3. **`AIRouter.standard` still registers `MockProvider` at tier 1.** That is deliberate: previews
+>    and the test suites construct their own routers and depend on it, and the app no longer uses
+>    `standard()`. If you want previews to exercise the real tier, that is your call in your file.
+> 4. **A test for the new provider** in `StudyForgeTests/`: that the router chooses `.firebaseAI`
+>    when the provider reports available, and falls through with a **named** reason when no key is
+>    configured. `GeminiCloudProvider` takes an injected `AICloudConfiguration` and `URLSession`
+>    precisely so this is testable with no network and no key.
+>
+> Everything below is kept as the reasoning of record — it is why the SDK route was rejected, and
+> that reasoning still applies to anyone tempted to try it again.
+>
+
 >
 > **The problem, measured today.** In the Simulator the app's AI is stand-in output, not AI: tier 0
 > (Apple Foundation Models) **cannot run in the Simulator**, and tier 1 is
