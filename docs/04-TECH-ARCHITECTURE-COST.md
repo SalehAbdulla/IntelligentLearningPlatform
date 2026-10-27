@@ -117,10 +117,20 @@
 | Long documents (> context window) | **T2 Cloud Function** | T1 (chunked) | Server-side chunk-and-merge |
 | Community moderation | **T2 Cloud Function** | - | Must be server-side and auditable |
 
-> **S0 note, tier 1 is temporarily the mock.** The Firebase SDK is not wired in yet,
-> so `AIRouter.standard` registers `MockProvider` at tier 1. This is what lets every AI
-> screen be built and demoed in the Simulator, where tier 0 cannot run.
-> `FirebaseAIProvider` replaces it in S1 with no change to the protocol or to any caller.
+> **S0 note, tier 1 is the mock — and 28 Oct 2026 turns that from a plan into the demo's blocker.**
+> The Firebase SDK is not wired in, so `AIRouter.standard` registers
+> `MockProvider(tier: .firebaseAI, latency: .milliseconds(400))`. That is what lets every AI screen
+> be built and previewed — **but it also means that in the Simulator, where tier 0 cannot run,
+> summaries, cards and quizzes are deterministic stand-in output rather than AI.**
+>
+> This note previously read *"`FirebaseAIProvider` replaces it in S1 with no change to the protocol
+> or to any caller."* **That did not happen, and the obvious way to make it happen is closed to the
+> whole team:** adding the Firebase AI Logic product requires editing `StudyForge.xcodeproj`, and
+> `tools/check-lane.sh` makes **`*.xcodeproj` forbidden to every member, including the owner**
+> (measured 28 Oct 2026). **So the route is not the SDK.** It is a direct call to the Gemini
+> Developer API over `URLSession` from a provider behind the same `AIProvider` seam, with the key
+> injected from configuration — no package, no project edit, and it works in the Simulator. That
+> work is specified turnkey in [docs/TODO-M2-mohammed.md](TODO-M2-mohammed.md).
 > See the [S0 spike report](../research/spikes/foundation-models.md).
 
 ### Why this is defensible engineering, not decoration
@@ -274,7 +284,7 @@ ios/StudyForge/
 │   ├── App/                    StudyForgeApp.swift · AppContainer.swift · RootView.swift · RoleRouter.swift
 │   ├── Core/
 │   │   ├── AI/                 AIProvider.swift · AITier.swift · AIGenerationModels.swift
-│   │   │                       OnDeviceProvider.swift · MockProvider.swift · FirebaseAIProvider.swift
+│   │   │                       OnDeviceProvider.swift · MockProvider.swift · (GeminiCloudProvider.swift — NOT YET BUILT: tier 1 is the mock, see the tier-1 note in §3)
 │   │   │                       AIRouter.swift · AICostGovernor.swift · PromptTemplates.swift
 │   │   ├── AI/Retrieval/       Chunker.swift · EmbeddingIndex.swift · Retriever.swift
 │   │   ├── Auth/               AuthService.swift · AuthStateStream.swift · CustomClaims.swift
