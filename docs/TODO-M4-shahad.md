@@ -12,6 +12,38 @@
 
 ---
 
+## ⚑ 28 Oct 2026 — nothing of yours is in the repository yet. Here is the smallest real first commit.
+
+**Verified against the remote today:**
+
+| What | Measured |
+|---|---|
+| Commits | `git log --all --no-merges --author=202305767` returns **0** |
+| Branches | **no branch of yours exists on `origin`** — 21 branches, none matching `feat/F(08\|09\|10\|12)-` |
+| Pull requests | **none opened from your account** |
+| Your artefacts | `research/sprints/sprint-1/shahad-contribution.md` and `research/cheatsheets/shahad.md` are still **empty templates** |
+
+**That is now the whole of the Sprints risk.** M2 has **36** commits, M3 has **12** (both features merged) and M5 has **22** — and the Sprints component is **10%, assessed per person**, read off `git shortlog`. This is not a statement about your work; it is that the repository cannot see it, and a mark cannot be read from a branch that does not exist.
+
+**The first commit, ready to run** — your starter brief from [doc 13](13-PER-MEMBER-TASKS.md), made turnkey:
+
+| | |
+|---|---|
+| **Feature** | **F10** Bookmarks — yours |
+| **The problem** | `ios/StudyForge/StudyForge/Core/Bookmarks/BookmarkStore.swift:14` — the bookmarks screen shows an **empty store** today, so a Firestore implementation behind the existing protocol is what makes it demonstrable and what survives a reinstall |
+| **Your files** | `Core/Bookmarks/` (yours) · `Features/Bookmarks/*` (already written against the protocol) · `App/AppContainer.swift` — the one **declared SHARED file**, so a 1–2 line edit, and rebase before pushing |
+| **Acceptance** | a Swift Testing case proving a **round-trip** (write, read back, owner-only), and the `TODO(M4 · F10)` marker deleted in its own commit |
+| **Run this** | `bash tools/new-branch.sh feat/F10-firestore-bookmarks` → `bash tools/check-lane.sh M4` → `bash tools/commit.sh <file> "feat(F10): add a Firestore-backed BookmarkStore"` → `gh pr create --base develop --fill` **the same day** |
+
+**Then the other two, both in your lane and both already marked:** `Core/Groups/StudyGroup.swift:34` (the `PresenceProvider` seam) and `Core/Groups/LiveQuizSession.swift:16` (reconnect and resync for a disconnected player) — both **F09**, which is yours too.
+
+**And the two things only you can do:**
+- **Your test logs.** You are the named tester for **F01, F04, F05 and F11**, and `research/testing/` holds **no log from you** (only M1's four). One log per feature, from a real run.
+- **The sprint review recording.** [Doc 13 §M4](13-PER-MEMBER-TASKS.md) assigns you coordinating it, and it is one of the three artefacts missing from **every** sprint folder (`board.png`, `review.mp4`, `retro.md`). Every member must be filmed demoing their own work — which the VIVA (60%, must pass) needs as much as the sprint does.
+
+---
+
+
 ## ⚡ The four things that actually go wrong — read this before anything else
 
 **Every problem a member has hit so far has been one of these four.** They take ten minutes to get
