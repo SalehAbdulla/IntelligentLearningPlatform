@@ -13,6 +13,36 @@
 
 ---
 
+## ⚑ 28 Oct 2026 — 22 commits, CI green, and no pull request. This is the only thing between your work and your mark.
+
+**Verified against the remote today:**
+
+| What | Measured |
+|---|---|
+| Your branch | `feat/F17-recall-space` — **22 commits**, authored 24–27 Oct, **16 files, +2,866**: F16's append-only moderation log and its `GroupChatViewModel` moderation seam, F17's `RecallSpaceViewModel` and `RecallSessionViewModel`, and **five test files** |
+| Your CI | **your last two runs passed**, on 27 Oct — after eight red or cancelled runs on 26 Oct, so the branch is green *now* |
+| Your PR | **none exists.** `gh pr list --head feat/F17-recall-space` returns only **#86**, merged on 15 Oct — and that was **M1's scaffolding on the same branch**, so it contains none of your work |
+| Your merge | **clean.** `git merge-tree --write-tree origin/develop origin/feat/F17-recall-space` reports **no conflicts**, so nothing needs fixing first |
+
+**That is the whole gap.** The feature exists, the tests exist, the CI is green — and because no pull request exists, none of it is reviewable, mergeable, or visible to anyone who is not already looking at the branch.
+
+**Do this first, today — one command, about ten minutes:**
+
+```bash
+gh pr create --base develop --head feat/F17-recall-space --fill
+gh pr checks --watch
+```
+
+Then **post the link in the group chat**: `develop` requires **one approving review**, and nobody can review a pull request that does not exist.
+
+**Then, in the same week:**
+- `research/sprints/sprint-2/fatema-contribution.md` is still an **empty template**. One row per session, each pointing at the real commit — that file is what the **10% Sprints mark** is read from, and it cannot be back-filled at the end without reading as fabricated.
+- You are the **named tester** for **F01, F05 and F13**, and `research/testing/` holds **no log from you**. One log per feature, from a real run.
+- Your cheat sheet (`research/cheatsheets/fatema.md`) is **already filled and dated** — the only one that is. Keep it current to the freeze.
+
+---
+
+
 ## ⚡ The four things that actually go wrong — read this before anything else
 
 **Every problem a member has hit so far has been one of these four.** They take ten minutes to get
