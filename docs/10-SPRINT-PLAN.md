@@ -190,12 +190,12 @@ Each member keeps their own log per sprint. This is the artefact you hand over i
 
 A sprint counts as complete only when **all** of these hold:
 
-- [ ] The sprint's **demoable outcome actually demos**, live, from the real app
-- [ ] Every member demonstrated something they personally built or fixed
-- [ ] Every member's contribution log is written and evidence-linked
-- [ ] Slipped scope is explicitly recorded and re-planned (not silently dropped)
-- [ ] The app builds clean on `main` with **zero warnings** and tests passing
-- [ ] Sprint artefacts committed to `research/sprints/sprint-<N>/`
+- [ ] The sprint's **demoable outcome actually demos**, live, from the real app — **reconciled 28 Oct 2026: not yet.** [`research/demo/regression-log.md`](../research/demo/regression-log.md) carries the eight-step table with **ten blank run rows** and an empty failure table, so no live run is recorded anywhere. The run sheet, the per-step fallback lines and the injected-failure plan are ready; the runs are not.
+- [ ] Every member demonstrated something they personally built or fixed — **reconciled 28 Oct 2026: not yet.** No `review.mp4` and no `review/` exists in the tree, and `board.png` and `retro.md` are absent from all three sprint folders. [Doc 11 §4](11-APP-IMPLEMENTATION-VIVA.md) gives every member a slot in the five-minute demo, so the *intent* is recorded — but nothing is filmed.
+- [ ] Every member's contribution log is written and evidence-linked — **reconciled 28 Oct 2026: 1 of 5.** `research/sprints/sprint-1/saleh-contribution.md` is filled from real commits on **7, 8, 14 and 15 Oct**. The other four — `mohammed`, `tasbeeh` and `shahad` in sprint-1, `fatema` in sprint-2 — are **empty templates** (headers and column titles, no rows), and `sprint-2/saleh-contribution.md` is empty as well.
+- [ ] Slipped scope is explicitly recorded and re-planned (not silently dropped) — **reconciled 28 Oct 2026: recorded, but not as a sprint slip.** Three deferrals are on the record in [doc 09](09-RISKS-OPEN-QUESTIONS.md): **D28** (the Group M frame rebalance, deferred to the prototype submission), **Q11** (the B03 exam-date pickers deferred to F06) and **R25's Option 1** (wiring the two caps, kept as follow-on work). What is missing is the per-sprint line: *"Slipped scope recorded and re-planned"* is unchecked in **all three** `research/sprints/sprint-<N>/goal.md` files. The decision register is the stronger artefact — the sprint files should point at it rather than restate it.
+- [x] The app builds clean on `main` with **zero warnings** and tests passing — **verified 28 Oct 2026 from CI, not from a local build.** `main` is **0 commits behind `develop`** (`git rev-list --count origin/main..origin/develop`), and its latest run — the #144 merge, run `40118660391` — concluded **success**, with `Test Suite 'All tests' passed` and **0 occurrences of `warning:`** in the 4,680-line job log. The four `error:` strings in that log are a workflow `echo`, the script's own grep pattern, and the Foundation symbol `readDataUpToLength:error:` — **none is a compiler error**. *Limit stated rather than hidden:* CI sets no warnings-as-errors flag, so "zero warnings" rests on the log containing none, not on the build refusing them.
+- [ ] Sprint artefacts committed to `research/sprints/sprint-<N>/` — **reconciled 28 Oct 2026: the files are committed, the set is incomplete.** Present and tracked: `sprint-0/goal.md`; `sprint-1/goal.md` plus the four sprint-1 contribution files; `sprint-2/goal.md` plus two sprint-2 files. **Absent from every sprint: `board.png`, `review.mp4`/`review/`, and `retro.md`** — the same three artefacts that hold the two boxes above open.
 
 
 ---
