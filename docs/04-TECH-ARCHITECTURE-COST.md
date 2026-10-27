@@ -129,9 +129,10 @@
 > `tools/check-lane.sh` makes **`*.xcodeproj` forbidden to every member, including the owner**
 > (measured 28 Oct 2026). **So the route is not the SDK.** It is a direct call to the Gemini
 > Developer API over `URLSession` from a provider behind the same `AIProvider` seam, with the key
-> injected from configuration — no package, no project edit, and it works in the Simulator. That
-> work is specified turnkey in [docs/TODO-M2-mohammed.md](TODO-M2-mohammed.md).
-> See the [S0 spike report](../research/spikes/foundation-models.md).
+> injected from configuration — no package, no project edit, and it works in the Simulator.
+> **Built on 28 Oct 2026** as `Core/AI/GeminiCloudProvider.swift`, wired in `AppContainer`,
+> verified by a clean build and 845 passing tests. The lane exception is recorded in
+> [docs/TODOLIST.md](TODOLIST.md) §0. See the [S0 spike report](../research/spikes/foundation-models.md).
 
 ### Why this is defensible engineering, not decoration
 
