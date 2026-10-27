@@ -40,11 +40,21 @@ final class MockProfileService: ProfileService {
     /// depends on: a read after a PARTIAL wizard returns a partial document, and a read after
     /// all three steps returns a complete one. A mock that always answered "complete" would
     /// make the gate untestable.
-    private let stored = Mutex<StoredProfile?>(nil)
+    private let stored: Mutex<StoredProfile?>
 
-    init(latency: Duration = .milliseconds(150), outcome: Outcome = .succeed) {
+    init(
+        latency: Duration = .milliseconds(150),
+        outcome: Outcome = .succeed,
+        seededProfile: StoredProfile? = nil
+    ) {
         self.latency = latency
         self.outcome = Mutex(outcome)
+        // `seededProfile` is how a DEMO opens on the dashboard instead of the wizard: without it
+        // the mock answers "no document", which is right for a test and wrong for a demo that has
+        // to start where the run sheet says it starts. It is a parameter rather than a default
+        // because a mock that always answered "complete" would make the profile gate untestable —
+        // the reason `stored` is a whole document and not a derived flag.
+        self.stored = Mutex(seededProfile)
     }
 
     // MARK: - ProfileService
