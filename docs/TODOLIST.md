@@ -110,7 +110,7 @@ Verified: `grep -rn 'TODO(M1' ios/` returns **nothing**, and `bash tools/todos.s
 ### M2, Mohammed Almadhoon
 
 - [ ] `PromptTemplates.swift:22` add a `PromptTemplateStore` protocol and a Firestore-backed implementation (F15)
-- [ ] `AITier.swift:114` implement the planned tier engine behind the `AIProvider` seam (F15)
+- [ ] `AITier.swift:114` implement the planned tier engine behind the `AIProvider` seam (F15) — **and 28 Oct 2026 makes this demo-critical: in the Simulator, tier 0 cannot run and this tier is `MockProvider`, so the app's AI is deterministic stand-in output.** **The Firebase AI Logic route is closed to the whole team** — adding that product needs a `*.xcodeproj` edit, and the guard forbids that file to *every member including the owner* — so the route is a direct Gemini call over `URLSession`, which needs no package and works in the Simulator. Specified turnkey in [`docs/TODO-M2-mohammed.md`](TODO-M2-mohammed.md)
 - [ ] `FlashcardReviewViewModel.swift:119` track "Hard" separately from "correct" in SM-2 (F04)
 
 ### M3, Tasbeeh Saeed
