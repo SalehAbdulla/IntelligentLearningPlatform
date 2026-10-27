@@ -12,6 +12,34 @@
 
 ---
 
+> ## ⚑ 28 Oct 2026 — your work is done, it merges cleanly, and two things stand between it and your mark
+>
+> **Verified against the remote today, not read off a status line:**
+>
+> | What | Measured |
+> |---|---|
+> | Your branch | `feat/F03-ai-summary` — **36 commits**, 18–22 Oct, **21 files, +2,897/−1**: the whole F03 summary feature plus two test files |
+> | Your PR | **#135** — `MERGEABLE`, **CI green** (`Repo checks`, `iOS build and test` 11–13 min, GitGuardian), waiting on **one approving review** |
+> | Your messages | **all 36 are Conventional Commits**, under your student identity. The five that were not (`view`, `configure view`, `edit sheet`, `quate view`, `source sheet`) **are gone** — that finding is closed |
+> | Your merge | **clean.** `git merge-tree --write-tree origin/develop origin/feat/F03-ai-summary` reports **no conflicts**, so there is nothing to repair before merging |
+>
+> **One real risk in your lane, and it is not a mistake you made.** Your branch is **148 commits behind `develop`** (fork point `afd293f`, 23 Oct). The consequence is narrow but it matters: the `tools/check-lane.sh` on your branch predates the 23 Oct lane fix, so your **local** guard does not know that `Features/Library/MaterialLibraryView.swift` is yours — which is why `check-lane.sh M2` reports it OUT OF LANE. **PR #131 fixes exactly that**, and it is waiting on a review too.
+>
+> **Do these two things, in this order:**
+>
+> 1. **Get one review on PR #135.** Post the link in the group chat. A teammate reviewing it is worth more than the merge itself, because *their* review is *their* sprint evidence. Merging it turns 36 commits from "work that exists" into "work that counts".
+> 2. **Before your next feature, branch from fresh `develop`** — not from the old branch:
+>
+>    ```bash
+>    git switch develop && git pull
+>    bash tools/new-branch.sh feat/F04-hard-grade-tracking
+>    ```
+>
+>    Then take the F04 starter brief in [doc 13 §Starter briefs](13-PER-MEMBER-TASKS.md): track the **"Hard"** grade separately from "correct" in SM-2, at `FlashcardReviewViewModel.swift:119`.
+>
+> **And one thing only you can write:** `research/sprints/sprint-1/mohammed-contribution.md` is still an **empty template** — headers and column titles, no rows. Your 36 commits are attributable and real, but the Sprints component (**10%, assessed per person**) is read off that file. One row per session, with the commit as the evidence.
+
+
 > ## ⚠️ READ THIS FIRST IF YOU HAVE `feat/F03-AI-SUMMARY` CHECKED OUT
 >
 > **Your branch was rewritten on 23 Oct 2026 by Saleh (M1), with the authorisation recorded in
