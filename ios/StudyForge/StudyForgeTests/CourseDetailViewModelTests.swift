@@ -126,7 +126,7 @@ struct CourseDetailViewModelTests {
         await approvalModel.load()
         approvalModel.inviteName = "Sami"
         approvalModel.inviteNumber = "202300010"
-        await approvalModel.invite()
+        _ = await approvalModel.invite()
 
         #expect(approvalModel.enrollments.first?.status == .pending)
     }
