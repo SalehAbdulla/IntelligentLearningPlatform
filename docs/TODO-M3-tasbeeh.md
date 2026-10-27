@@ -263,6 +263,31 @@ method select, card entry, processing, receipt, and the failed-retry path. Files
 there. **Ask before starting it** — it has an external dependency (a Tap sandbox account,
 docs/09 R22).
 
+### ⚑ 28 Oct 2026 — R25 is DECIDED, and the fix is yours. It is under an hour, inside your lane.
+
+**R25** (docs/09 §1) is the highest-scoring open risk on the register and **its owner is you**:
+the paywall advertises **three** plan limits and only **one** is enforced. The owner decided it on
+**28 Oct 2026 — Option 2: stop advertising the two limits the app does not enforce** — and
+deliberately did **not** write it, because `Features/Subscription/` and `Core/Payments/` are your
+lane, and because this is the one change that turns a promise the product does not keep into a
+claim it does. **Two files, no new dependency, one test** — the cheapest real contribution left on
+the project, and it is F13, your feature.
+
+| | |
+|---|---|
+| **Files** | `Features/Subscription/PlanCompareView.swift` (lines 45–46) · `Features/Subscription/PaymentViewModel.swift` (lines 157–158) |
+| **The seam** | both call `plan.includedMaterials` / `plan.includedGroupSpaces`, which exist **only for display**: `grep -rn 'includedMaterials' ios/` outside `PaymentCatalogue` and the tests returns these two files and nothing else. **Do not delete the `PaymentCatalogue` values or their tests** — `PaymentCatalogueTests` asserts 20/200/∞ and 1/5/∞, and those assertions stay green |
+| **What to do** | remove the *materials* and *group spaces* comparison rows from `PlanCompareView`'s table and from `PaymentViewModel`'s `DetailRow` list, so the paywall sells what is genuinely metered (**AI generations/day**, which *is* enforced by `AICostGovernor`) and what is genuinely unlimited (**on-device AI, on every tier including Free**). If it reads thin without them, say so in the plan and let the owner decide — do not silently keep a row you cannot enforce |
+| **Acceptance test** | a Swift Testing case asserting the entitlement rows **no longer contain** the `materials` and `groups` ids while the AI-allowance row **still does**. Update the existing tests that assert the old rows rather than deleting them |
+| **Branch / commit** | `bash tools/new-branch.sh feat/F13-paywall-honest-limits` · `feat(F13): stop advertising the two plan limits the app does not enforce` |
+| **Done when** | `grep -rn 'includedMaterials\|includedGroupSpaces' ios/StudyForge/StudyForge/Features/` returns **nothing**, the tests above pass, and the R25 line in `docs/TODOLIST.md` §8 can be ticked |
+
+> **Why this is a contribution and not a tidy-up.** A marker reads the paywall and asks *"is the
+> limit enforced, or just displayed?"* — one grep away. Option 1 (wiring the caps) is the better
+> end state and is recorded as follow-on work, but it crosses `Features/Materials/` and
+> `Features/Groups/` and cannot be done honestly in the time left. **Option 2 is the fix that
+> cannot make the product dishonest.**
+
 **Planner determinism — non-negotiable.** `StudyPlanner` already has passing tests. NO
 unseeded randomness, and NO reading the machine's clock inside the scheduling maths. If
 the planner needs "now", it must be **injectable** so a test can pin it. Write the test at
