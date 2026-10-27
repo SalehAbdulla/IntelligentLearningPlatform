@@ -279,7 +279,14 @@ final class AppContainer {
         // Defaulted so a container built for a preview or a test needs no disk: see `materials`.
         materials: any MaterialStore = InMemoryMaterialStore(),
         summaries: any SummaryStore = InMemorySummaryStore(),
-        ai: AIRouter = AIRouter.standard(governor: AICostGovernor()),
+        // Tier 1 is the real Gemini engine, not the mock: the demo runs in the Simulator, where
+        // tier 0 cannot run, so a mock here would make every summary, card and quiz stand-in
+        // content. `GeminiCloudProvider` reports unavailable until a key is configured, and the
+        // router then falls through with a NAMED reason instead of failing at the tap.
+        ai: AIRouter = AIRouter(
+            providers: [.onDevice: OnDeviceProvider(), .firebaseAI: GeminiCloudProvider()],
+            governor: AICostGovernor()
+        ),
         decks: any DeckStore = InMemoryDeckStore(),
         quizzes: any QuizStore = InMemoryQuizStore(),
         studyPlans: any StudyPlanStore = InMemoryStudyPlanStore(),
