@@ -13,6 +13,7 @@
 | Field | Value |
 |---|---|
 | **Build** | commit `________`, installed with `bash tools/run-device.sh` |
+| **Launch state** | `xcrun simctl launch <device> com.studyforge.app -seedDemo` — **verified 28 Oct 2026:** opens **signed in as the demo student with a finished profile**, so step 1 lands on the dashboard instead of the profile wizard. `-seedDemo` also seeds the library with `Material.samples`. **DEBUG only**, like every other hatch: a shipping build must never fabricate a session |
 | **Device** | |
 | **Rehearsal count** | ____ / 3 |
 | **Backup recording** | `________` (see [`backup-capture.md`](backup-capture.md)) |
@@ -37,6 +38,8 @@ One slide: the study-chaos problem, then the one-loop claim.
 ### 0:25–0:40 · Sign in as a student — **M1**
 
 Login → student dashboard with real seeded data.
+
+> **Measured 28 Oct 2026, in the Simulator, launched with `-seedDemo`:** the dashboard opens signed in as **Sara Ali**, with the streak badge and the four quick actions (Upload · Summarise · Quizzes · Study plan), and **`Study plan` reads "No plan yet"** while **`Flashcards · Due` reads 0**. That is the app's *designed* empty state rather than a broken screen — and for this script it may be the better opening, because step 2 is the upload that fills it. **If the demo needs the dashboard pre-populated instead, that is a seed across the plan, progress and deck stores — three types outside M1's lane**, so it is a decision rather than a defect, recorded in [docs/TODOLIST.md §7](../../docs/TODOLIST.md).
 
 > **If sign-in fails:** *"The account is already signed in — here's the dashboard."* (Rehearsed: the
 > app is left **already signed in** as the student before the demo starts, so this step is a
