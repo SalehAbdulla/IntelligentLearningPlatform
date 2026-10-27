@@ -39,6 +39,45 @@
 >
 > **And one thing only you can write:** `research/sprints/sprint-1/mohammed-contribution.md` is still an **empty template** — headers and column titles, no rows. Your 36 commits are attributable and real, but the Sprints component (**10%, assessed per person**) is read off that file. One row per session, with the commit as the evidence.
 
+> ## ⚑ 28 Oct 2026 (second note) — tier 1 is the demo's blocker, and the SDK route is closed
+>
+> **The problem, measured today.** In the Simulator the app's AI is stand-in output, not AI: tier 0
+> (Apple Foundation Models) **cannot run in the Simulator**, and tier 1 is
+> `MockProvider(tier: .firebaseAI, latency: .milliseconds(400))` inside `AIRouter.standard`.
+> `MockProvider`'s own header says the mock exists *because* "tier 0 cannot run in the Simulator, and
+> tier 1 needs Firebase credentials" — and its output is deterministic on purpose, so the same source
+> text always yields the same cards. **The demo runs in the Simulator, so summaries, flashcards and
+> quizzes are mock content**, and a marker who asks *"is that real AI?"* gets an honest no.
+> This is `AITier.swift:114`, **your** open TODO, and it is now the highest-value work in your lane.
+>
+> **The obvious route is closed — for the whole team, not just you.** Firebase AI Logic needs the
+> `firebase-ai` product added to `StudyForge.xcodeproj`, and `tools/check-lane.sh` makes
+> **`*.xcodeproj` forbidden to every member, including the owner** (measured 28 Oct 2026: a new file
+> under `Core/AI/` is refused for the owner, and the guard's own message is *"ask the team. Do not
+> force it"*). **So do not plan on the SDK.** The project currently links only `FirebaseAuth`,
+> `FirebaseFirestore` and `FirebaseFunctions`.
+>
+> **The route that works: call Gemini over `URLSession`. No SDK, no project edit, works in the Simulator.**
+>
+> | | |
+> |---|---|
+> | **New file** | `ios/StudyForge/StudyForge/Core/AI/GeminiCloudProvider.swift` — conforms to `AIProvider`, registered at `.firebaseAI` |
+> | **Endpoint** | `POST https://generativelanguage.googleapis.com/v1beta/models/<model>:generateContent`, with the key in the **`x-goog-api-key` header** — not a URL query, which leaks into logs and proxies |
+> | **Structured output** | send `generationConfig.responseMimeType = "application/json"` **and** a `responseSchema`, so the `@Generable` shapes in `AIGenerationModels.swift` map straight onto the response |
+> | **Availability** | report `.unavailable(.notImplemented)` when no key is configured, so the router falls through with a **named** reason instead of failing at the tap |
+> | **The key** | **not** in the app source. `Core/Config/` (M1's lane) holds the seam; the value comes from `Info.plist`/xcconfig and is never committed — and `tools/commit.sh` scans every staged file for keys and will refuse a commit that contains one |
+> | **Wiring** | one line in `AppContainer.swift` — **a declared SHARED file**, so a 1–2 line edit, rebase before pushing: `ai: AIRouter = AIRouter(providers: [.onDevice: OnDeviceProvider(), .firebaseAI: GeminiCloudProvider()], governor: AICostGovernor())`. **You do not need to touch `AIRouter.standard`**, so your own previews keep working |
+> | **Acceptance** | a test in `StudyForgeTests/` proving (a) the router chooses `.firebaseAI` when the cloud provider reports available and tier 0 is unavailable, and (b) with no key configured it reports unavailable and the router falls through with a named reason. Then **delete the `TODO(M2 · F15)` marker in `AITier.swift`** in its own commit |
+> | **Branch / commit** | `bash tools/new-branch.sh feat/F15-cloud-ai-tier` · `feat(F15): serve tier 1 from the Gemini API instead of the mock` |
+> | **Done when** | a summary generated **in the Simulator** is real model output, and the tier badge reads the cloud tier rather than the mock |
+>
+> **Why this is worth doing before anything else in your lane:** the demo *is* the assessment, and
+> this is the one gap where the app looks finished and is not. Everything else in F15 is polish by
+> comparison. **The costs are real and already handled:** an API key has to exist, and the free tier
+> is rate-limited by RPM/RPD/TPM — which is exactly what `AICostGovernor` and the SHA-256
+> content-hash cache were built for, so the refusal path is already written and tested.
+
+
 
 > ## ⚠️ READ THIS FIRST IF YOU HAVE `feat/F03-AI-SUMMARY` CHECKED OUT
 >
