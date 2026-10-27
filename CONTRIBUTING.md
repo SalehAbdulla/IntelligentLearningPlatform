@@ -112,6 +112,13 @@ git config --local user.email "202401702@student.polytechnic.bh"
 | M4 | Shahad Ashoor | `202305767` | `202305767@student.polytechnic.bh` |
 | M5 | Fatema Ghareeb | `202304804` | `202304804@student.polytechnic.bh` |
 
+> **M3's ID was corrected on 23 Oct 2026:** `202300549` → **`202305409`**, two digits had been
+> transposed. Use the corrected one from now on. Her twelve **already-merged** commits are authored
+> under the old address, and `.mailmap` maps it onto the new one so `git shortlog` still credits
+> her — **do not remove that alias line**, and do not "tidy" it: it is the only thing keeping
+> twelve commits attributed. Dated evidence written before the correction (sprint logs, testing
+> sheets, the F15 approval request) keeps the ID it was written with.
+
 > **Never** commit under someone else's identity, and **never** push another member's
 > work under your own name. Both are treated as fabrication.
 

@@ -42,16 +42,16 @@ Saleh Abdulla <202300540@student.polytechnic.bh> <saleh@example.com>
 Mohammed Almadhoon <202401702@student.polytechnic.bh> <mohammedalmadhoon000@gmail.com>
 
 # ---------------------------------------------------------------------------
-#  M3 — Tasbeeh Saeed  (202305409)
-#  Her student ID was recorded as 202300549 until 23 Oct 2026 — the digits were
-#  transposed, and she asked for the correction. **The old address stays below as an
-#  alias, and that line is load-bearing:** her F06 and F07 commits are already merged
-#  into `develop` under it, and rewriting merged history is not an option (docs/12 §5).
-#  Deleting the alias would orphan them, because the individual Sprints mark is read
-#  off `git shortlog`, which is exactly what this file feeds.
-#  The capitalised domain is aliased as well, so the address resolves whichever case
-#  she types — `tools/check-commits.sh` matches the RESOLVED address, and its pattern
-#  is case-sensitive on the domain.
+#  M3 — Tasbeeh Saeed  (202305409; the pre-correction 202300549 kept as an alias)
+#  Her student ID was recorded as 202300549 until 23 Oct 2026 — two digits were
+#  transposed. The old address stays below as an alias, and that line is
+#  load-bearing: her F06 and F07 commits are already merged into `develop` under
+#  it, and rewriting merged history is not an option (docs/12 §5). Deleting it
+#  would orphan those commits from `git shortlog`, which is exactly what the
+#  individual Sprints mark is read from.
+#  The capitalised domain is aliased as well, so the address resolves whichever
+#  case she types — `tools/check-commits.sh` matches the RESOLVED address, and
+#  its domain pattern is case-sensitive.
 # ---------------------------------------------------------------------------
 Tasbeeh Saeed <202305409@student.polytechnic.bh>
 Tasbeeh Saeed <202305409@student.polytechnic.bh> <202300549@student.polytechnic.bh>

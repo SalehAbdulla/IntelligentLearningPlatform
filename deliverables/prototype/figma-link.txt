@@ -52,9 +52,13 @@ can see exactly what changed.
 2. The interactive file (.fig)
 ------------------------------
 Deliverable       : deliverables/prototype/StudyForge.fig
-Status            : DONE. Exported from the Figma desktop app on 8 Oct 2026, 01:15.
-Size              : 1,201,229 bytes (1.2 MB)
-Verified contents : canvas.fig (1,195,619 bytes), thumbnail.png, meta.json, images/
+Status            : DONE. RE-EXPORTED from the Figma desktop app on 24 Oct 2026, 02:01
+                    (meta.json records exported_at 2026-10-23T23:01:26Z). This revision
+                    carries every change made on 24 Oct: the 130 wireframes, the 130
+                    dark variants, the corrected cover counts, and the F16/F17
+                    attribution change.
+Size              : 1,830,424 bytes (1.8 MB)
+Verified contents : canvas.fig (1,782,246 bytes), thumbnail.png (47,153 bytes), meta.json, images/
 Note              : the .fig is excluded from git by .gitignore
                     (deliverables/**/*.fig) because it is submitted through the
                     portal, not through the repository. Keep the file itself safe:
@@ -99,15 +103,15 @@ Page 1 - Design System             38 colour variables (Light + Dark modes),
                                    spacing and radius variables, 11 text styles,
                                    4 glass effect styles, plus a Glass & Depth
                                    reference frame
-Page 2 - Flow Overview             global navigation map + 15 per-feature flow
+Page 2 - Flow Overview             global navigation map + 17 per-feature flow
                                    diagrams (F01-F15), each ending in the error
                                    or edge case the flow must survive
-Page 3 - Screens (all features)    119 high-fidelity screens, every feature
+Page 3 - Screens (all features)    123 high-fidelity screens, every feature
                                    group A-O. This is the interactive prototype
 Page 4 - States & Prototype Wiring state/error/loading/success kits, RTL and
                                    accessibility proof
-Page 5 - Low-Fi Wireframes         107 nodes: LF_00_PageHeader_StudyForge plus 106
-                                   low-fidelity wireframes, one per screen, named
+Page 5 - Low-Fi Wireframes         131 nodes: LF_00_PageHeader_StudyForge plus 130
+                                   low-fidelity wireframes, one per built screen, named
                                    LF_NN_ScreenName_FirstName_StudentID.
                                    The same 106 frames ship as PNGs in
                                    deliverables/design-document/mockups/figures/
@@ -125,18 +129,26 @@ Page 5 - Low-Fi Wireframes         107 nodes: LF_00_PageHeader_StudyForge plus 1
                                    106 frames. Corrected in place rather than
                                    deleted, so a reader who saw the earlier
                                    revision can see exactly what changed.
-                                   The one real gap: groups N and O (F16/F17,
-                                   frames 142-154) have no low-fidelity wireframe
-                                   yet — the numbering stops at LF_94. That gap is
-                                   still open, and it is listed at the end of this
-                                   document.
-Page 6 - Dark Mode Variants        119 dark-mode variants, one per screen, each a
+                                   The gap recorded here on 15-17 Oct 2026 — that
+                                   groups N and O (F16/F17, frames 142-154) had no
+                                   low-fidelity wireframe — was CLOSED on 24 October
+                                   2026. Page 5 now carries LF_142-LF_147 and
+                                   LF_148-LF_154 (the 13 F16/F17 wireframes) and
+                                   LF_155-LF_157 plus LF_172-LF_179 (the 11 F13
+                                   subscription-state wireframes), taking the page
+                                   from 106 to 130 wireframes. Every built screen now
+                                   has a low-fidelity counterpart.
+Page 6 - Dark Mode Variants        130 dark-mode variants, one per built screen, each a
                                    clone of its light screen with the Dark mode of
-                                   the Color variable collection set explicitly.
-                                   Closes P9-12. Page 3 is untouched, so the 119
-                                   prototype frames keep their audited names.
+                                   the Color variable collection set explicitly and
+                                   the dark canvas gradient applied to the clone.
+                                   Closes P9-12. Page 3 is untouched, so the
+                                   prototype frames keep their audited names. The 11
+                                   F13 screens added in the 24 Oct 2026 rework
+                                   (155-157, 172-179) were given their variants the
+                                   same day, so page 6 matches page 3's 123 screens.
 
-Screens built (119), by group and owner
+Screens built (123), by group and owner
   A Onboarding & Auth           01-10      M1 Saleh
   B Profile & Settings          11-18      M1 Saleh
   C Courses & Library           24-34      M1 Saleh
@@ -146,12 +158,12 @@ Screens built (119), by group and owner
   F Quizzes                     51-59      M2 Mohammed
   J Tutor Content Studio        99-105     M2 Mohammed
   G Study Plan & Progress       60-70      M3 Tasbeeh
-  L Subscription & Payments     118-126    M3 Tasbeeh
+  L Subscription & Payments     155-157, 172-179   M3 Tasbeeh
   H AI Study Companion (F15)    73-78      M2 + M3
   I Collaboration               81-97      M4 Shahad
   K Admin Content Management    109-115    M4 Shahad
-  N Moderated Group Chat (F16)  142-147    M5 Fatema
-  O Active Recall Space (F17)   148-154    M5 Fatema
+  N Moderated Group Chat (F16)  142-147    M1 Saleh   (F16 owner M5)
+  O Active Recall Space (F17)   148-154    M3 Tasbeeh (F17 owner M5)
 
 Cover: the team table on page 0 lists all FIVE members, including M5 Fatema
 Ghareeb (202304804). It previously listed four and omitted her; corrected
@@ -189,11 +201,17 @@ Navigation model implemented:
     generating to result transitions, the payment processing to receipt, and
     tab switches
 
-Click reachability: 110 of 119 screens are reachable by clicking alone. The
+Click reachability: 110 of the 119 screens that existed at the 15 Oct 2026 audit are reachable by clicking alone. The
 remaining 9 (24, 30, 41, 77, 78, 88, 126, 133, 134) are state, error and
 secondary screens that a user reaches only in a specific situation; each one is
 a named flow start point so it is directly reachable in the prototype player.
 No screen is a dead end.
+
+> **Not re-measured since the F13 rework (24 Oct 2026).** Page 3 now holds **123** screens:
+> the seven first-cut F13 screens were replaced by eleven new ones, a net +4. Their
+> reachability and their hotspot placement are **not** included in the 110-of-119 figure
+> above, and the reaction count in section 5 is likewise the 15 Oct measurement. Re-run
+> `figma-audit.md`'s measurement scripts before quoting either number again.
 
 6. Frame naming
 ---------------
@@ -204,7 +222,7 @@ Every frame follows the brief's rule exactly:
 Examples: 03_Onboarding_HowItWorks_Saleh_202300540,
           57_Quiz_Submit_Confirm_Mohammed_202401702,
           93_GroupSpace_SharedQuiz_Live_Shahad_202305767,
-          124_Payment_Processing_Tasbeeh_202300549
+          124_Payment_Processing_Tasbeeh_202305409
 
 Low-fidelity frames use the prefix LF_, Wire_ and Legend_ so they can never be
 confused with a prototype screen.
@@ -217,7 +235,7 @@ shadow and an inner light edge. Palette built on the Apple system-blue family;
 brand blue #0062CC was chosen over Apple's #007AFF because #007AFF measures
 4.0:1 on white and `primary` is used as text in 26 places, whereas #0062CC
 measures 5.80:1. A complete light and dark mode is defined, and as of 8 Oct 2026
-the dark mode is also *drawn*: 119 dark variants on page 6.
+the dark mode is also *drawn*: 130 dark variants on page 6.
 
 Correction for accuracy, measured on 8 Oct 2026: inside each screen, the
 surfaces, cards, text and decorative blobs are variable-bound (48 of 49 nodes
@@ -250,13 +268,19 @@ right-to-left Arabic proof is a built frame (139).
       `tools/check-submission.sh` reads this box (pred_share), so it is the only
       evidence that counts for this item.
   [x] Figma -> File -> Save local copy... -> deliverables/prototype/StudyForge.fig
-      (done 8 Oct 2026, 1.2 MB, verified as a real Figma export)
-  [x] Export the 106 wireframes and 15 flow diagrams at 2x PNG into
-      deliverables/design-document/mockups/figures/ (done 8 Oct 2026 by script
-      through the Figma MCP server: 121 PNGs, 1720 x 1920 px each, plus the
-      navigation map, the states panel, the design system sheet, the glass
-      reference and the cover in deliverables/design-document/figures/)
-  [x] Dark-mode screen variants (done 15 Oct 2026: 119 variants on Figma page 6,
+      (done 8 Oct 2026, 1.2 MB; **RE-EXPORTED 24 Oct 2026, 1,830,424 bytes**,
+      verified as a real Figma export: canvas.fig + thumbnail.png + meta.json.
+      The saved copy landed in the repository ROOT and was moved into
+      deliverables/prototype/ the same day — at the root it is NOT covered by the
+      `.gitignore` rule `deliverables/**/*.fig`, so it would have committed a
+      1.8 MB binary to the repository)
+  [x] Export the 130 wireframes and 17 flow diagrams at 2x PNG into
+      deliverables/design-document/mockups/figures/ (re-exported 24 Oct 2026 by
+      script through the Figma MCP server: 154 PNGs in that folder, 1720 x 1920
+      px each, plus the navigation map, the states panel, the design system
+      sheet, the glass reference and the cover in
+      deliverables/design-document/figures/)
+  [x] Dark-mode screen variants (done 15 Oct 2026, extended 24 Oct 2026: 130 variants on Figma page 6,
       measured in deliverables/prototype/figma-audit.md, with two rendered
       proofs in deliverables/prototype/dark-mode-proof/)
   [x] **Cover corrected, 16 Oct 2026.** The team table on page 0 listed FOUR
@@ -266,13 +290,14 @@ right-to-left Arabic proof is a built frame (139).
       file does not have — and now matches the seven pages actually present.
       Verified by screenshot after the edit.
   [ ] Usability test with 5 users and a SUS score (docs/01 P9-03/04)
-  [ ] **Re-export StudyForge.fig. Now MORE urgent than before.** The .fig on disk
-      was exported 8 Oct 2026, so it predates BOTH page 6 (the dark-mode variants)
-      AND the cover correction above. Re-export it after the next Figma change so
-      the .fig and the shared link show the same revision.
-  [x] The Design Document PDF export (done 16 Oct 2026: `bash tools/build-pdf.sh`,
-      168 pages, 134 figures, 32 external links, 20.9 MB — rebuilt after the F15
-      approval and its three conditions landed)
+  [x] **Re-export StudyForge.fig — DONE 24 Oct 2026.** The 8 Oct copy predated page 6
+      (the dark-mode variants), the cover correction, the 130-wireframe expansion
+      and the F16/F17 attribution change. The file on disk now records
+      `exported_at 2026-10-23T23:01:26Z`, so the `.fig` and the shared link show the
+      same revision. Re-export it again after any further Figma change.
+  [x] The Design Document PDF export (rebuilt 24 Oct 2026: `bash tools/build-pdf.sh`,
+      196 pages, 159 figures, 36 external links, 25.0 MB — rebuilt after the 130
+      wireframes were re-exported and the counts corrected)
 
 The audited numbers behind this document, with what was and was not measured, are
 recorded in deliverables/prototype/figma-audit.md. `bash tools/check-submission.sh`
@@ -286,6 +311,9 @@ P1 variant, not a happy path, and every one of the 15 features built so far alre
 has its happy path built and linked. Groups N and O — F16 (Admin-Moderated Group
 Chat) and F17 (Active Recall Space) — were drawn on 15 Oct 2026 as frames 142-154
 and are exported as FLOW_F16_Moderated_Group_Chat_Fatema.png and
-FLOW_F17_Active_Recall_Space_Fatema.png. Their low-fidelity wireframes are the one
-piece still outstanding.
+FLOW_F17_Active_Recall_Space_Fatema.png. Their low-fidelity wireframes were added
+on 24 Oct 2026 as LF_142-LF_154, together with the eleven F13 subscription-state
+wireframes (LF_155-LF_157, LF_172-LF_179), so no built screen is now without a
+low-fidelity counterpart. What remains on the prototype side is the dark variant
+for those eleven F13 screens.
 
