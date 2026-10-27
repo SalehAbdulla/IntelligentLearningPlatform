@@ -63,24 +63,24 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 
 **Goal:** remove every unknown that could block work later. When this phase ends, no one should have to ask "what's the app called?" or "what's the bundle ID?".
 
-- [ ] `P0-01` Create repo structure (`docs/`, `deliverables/`, `ios/`, `backend/`, `research/`)
-- [ ] `P0-02` Add `.gitignore` excluding `GoogleService-Info.plist`, `*.xcuserdata`, secrets, `.env`, **verify no key is ever committed**
+- [x] `P0-01` Create repo structure (`docs/`, `deliverables/`, `ios/`, `backend/`, `research/`) — **verified 28 Oct 2026:** all five exist and are tracked.
+- [x] `P0-02` Add `.gitignore` excluding `GoogleService-Info.plist`, `*.xcuserdata`, secrets, `.env`, **verify no key is ever committed** — **verified 28 Oct 2026:** 9 matching rules in `.gitignore`, and the "no key" half is **enforced rather than promised** — `tools/commit.sh` scans every staged file for keys and refuses the commit, with a written allowlist for values that are public by design.
 - [x] `P0-03` Verify toolchain: Xcode 27.0 · iOS 26.5 + 27.0 simulators · Swift 6.4 · Figma.app · Node 24.15 ✅
-- [ ] `P0-04` Create Firebase project `studyforge-it8108` on the **Spark (no-cost)** plan
-- [ ] `P0-05` Register iOS app, bundle ID `com.studyforge.app`, download `GoogleService-Info.plist`
-- [ ] `P0-06` Enable: Auth (Email/Password + Sign in with Apple), Firestore, Storage (**bucket region `us-central1`**, required to stay inside the free tier), FCM, Analytics, Crashlytics, App Check
-- [ ] `P0-07` Install Firebase CLI (`npm i -g firebase-tools`), log in, run `firebase init`
-- [ ] `P0-08` **Freeze the app name:** StudyForge (and confirm no trademark clash)
-- [ ] `P0-09` Design 3 logo concepts → team vote → export `@1x/@2x/@3x` PNG + SVG + 1024×1024 app icon
-- [ ] `P0-10` Freeze palette, type scale and spacing grid → [doc 06](06-DESIGN-SYSTEM.md)
-- [ ] `P0-11` **Fill the real team names + student IDs** into [doc 02 §2](02-FEATURE-LIST-OWNERSHIP.md) ⚠️ *blocks Figma frame naming*
-- [ ] `P0-12` Create the Figma file with the **10 pages** from [doc 03 §1](03-SCREEN-INVENTORY.md)
-- [ ] `P0-13` Publish Figma **styles** (colour, text, effect) + skeleton component library
-- [ ] `P0-14` Book the **tutor interview** (target: early W1) and circulate the question list
-- [ ] `P0-15` Install the Cline agent skills in [doc 07](07-CLINE-SKILLS-AND-TOOLING.md)
-- [ ] `P0-16` Create the shared drive: `deliverables/`, `research/meeting-notes/`, `research/interviews/`
-- [ ] `P0-17` Register a **Tap Payments sandbox** account and request test keys (`pk_test_…`)
-- [ ] `P0-18` Confirm all 5 members have Xcode installed and can build the empty project
+- [x] `P0-04` Create Firebase project `studyforge-it8108` on the **Spark (no-cost)** plan — **verified 28 Oct 2026:** `backend/.firebaserc` names `studyforge-it8108`, and [doc 09](09-RISKS-OPEN-QUESTIONS.md) R21 records `billingEnabled: false` **verified against the API**, so it is on the no-cost plan as specified.
+- [x] `P0-05` Register iOS app, bundle ID `com.studyforge.app`, download `GoogleService-Info.plist` — **verified 28 Oct 2026:** `PRODUCT_BUNDLE_IDENTIFIER = com.studyforge.app` in the Xcode project. *Limit:* the plist is correctly gitignored, so its presence cannot be evidenced from the repository — and should not be.
+- [ ] `P0-06` Enable: Auth (Email/Password + Sign in with Apple), Firestore, Storage (**bucket region `us-central1`**, required to stay inside the free tier), FCM, Analytics, Crashlytics, App Check — **reconciled 28 Oct 2026: three of the seven have code evidence, four have none.** Auth (**34 files**), Firestore (**31**) and Storage (**26**) are demonstrably in use; **FCM, Analytics, Crashlytics and App Check return 0 files**. Console enablement is not repository-verifiable, and notifications are **local, not push** (`NotificationViewModel`), so an unused FCM is consistent rather than broken. **Cannot be ticked as written** — if the console state matters, it needs a screenshot in `deliverables/`, not a code claim.
+- [x] `P0-07` Install Firebase CLI (`npm i -g firebase-tools`), log in, run `firebase init` — **verified 28 Oct 2026:** `backend/firebase.json` configures the Firestore rules and indexes, the Storage rules, the `studyforge` functions codebase and the emulator suite, so `init` ran and the result is committed.
+- [x] `P0-08` **Freeze the app name:** StudyForge (and confirm no trademark clash) — **verified 28 Oct 2026:** StudyForge is the name in the app, the design document, the Figma cover and the README, and [doc 09](09-RISKS-OPEN-QUESTIONS.md) **D1** records the choice against the alternatives considered.
+- [ ] `P0-09` Design 3 logo concepts → team vote → export `@1x/@2x/@3x` PNG + SVG + 1024×1024 app icon — **reconciled 28 Oct 2026: the shipped icon exists, the export set does not.** `Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png` is in the app and ships. But a search of `deliverables/` finds **no `@1x/@2x/@3x` PNG set, no SVG and no logo-concept artefacts**, and no record of a three-concept team vote. **Say which it is** — if the concepts live only in Figma, record that here; if they do not exist, the box is honest as an open item.
+- [x] `P0-10` Freeze palette, type scale and spacing grid → [doc 06](06-DESIGN-SYSTEM.md) — **verified 28 Oct 2026:** doc 06 holds all three, and **`bash tools/check-tokens.sh` gates the claim** — 21 colour tokens agree between doc 06 and `ColorTokens.swift` on every run, and the check is wired into the submission gate.
+- [x] `P0-11` **Fill the real team names + student IDs** into [doc 02 §2](02-FEATURE-LIST-OWNERSHIP.md) ⚠️ *blocks Figma frame naming* — **verified 28 Oct 2026:** all five members are listed with real names, student IDs and frame-name suffixes, and `tools/verify-docs.py` **fails** if a roster entry goes missing.
+- [ ] `P0-12` Create the Figma file with the **10 pages** from [doc 03 §1](03-SCREEN-INVENTORY.md) — **reconciled 28 Oct 2026: the file has seven pages and this line asks for ten.** `deliverables/prototype/figma-link.txt` documents *"the seven pages, each directly reachable"* and records that an earlier nine-page description **was wrong and has been corrected to match the file**. The file and the plan disagree, and **the plan is the stale half** — decide which is right, then correct the other. Do not tick this as though ten pages existed.
+- [x] `P0-13` Publish Figma **styles** (colour, text, effect) + skeleton component library — **verified 28 Oct 2026:** `figma-link.txt` records page 1's design system — **38 colour variables** (Light + Dark modes), spacing and radius variables, **11 text styles**, **4 glass effect styles** and a Glass & Depth component set.
+- [x] `P0-14` Book the **tutor interview** (target: early W1) and circulate the question list — **verified 28 Oct 2026:** held **Tuesday 13 October 2026** with all five members present, and [`research/interviews/tutor-interview-transcript.md`](../research/interviews/tutor-interview-transcript.md) holds the five questions with their responses.
+- [x] `P0-15` Install the Cline agent skills in [doc 07](07-CLINE-SKILLS-AND-TOOLING.md) — **verified 28 Oct 2026:** `skills-lock.json` is tracked and pins the installed skills; doc 07 is the record.
+- [x] `P0-16` Create the shared drive: `deliverables/`, `research/meeting-notes/`, `research/interviews/` — **verified 28 Oct 2026:** all three exist and are tracked, along with `research/{demo,testing,reviews,usability,sprints}/`.
+- [ ] `P0-17` Register a **Tap Payments sandbox** account and request test keys (`pk_test_…`) — **reconciled 28 Oct 2026: the integration is built; the account is not evidenceable from here.** `backend/functions/src/index.ts` declares three Firebase secrets — `TAP_SECRET_KEY`, `TAP_WEBHOOK_SECRET`, `TAP_MERCHANT_ID` — and calls `https://api.tap.company/v2/charges`, so the sandbox path is real code rather than a mock. **The keys are correctly absent from the repository** (a committed secret would be the worse failure), so *"was a sandbox account registered"* is an account fact, not a repository one. Sandbox-only is the deliberate, documented boundary — [doc 09](09-RISKS-OPEN-QUESTIONS.md) **R6**, **D5**, **Q3**.
+- [ ] `P0-18` Confirm all 5 members have Xcode installed and can build the empty project — **reconciled 28 Oct 2026: false for four of the five members, and deliberately superseded.** [`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md) opens with *"Four of the five members work on **Windows**"* and *"Xcode is macOS-only. There is no workaround, no Windows port, and no emulator that runs an [iOS simulator]"*. The project's answer was **CI as the shared build machine** (`.github/workflows/ios.yml`: a macOS build plus the full test suite on every push and PR), so the box's *intent* — everyone can build and verify — is met even though its letter is not.
 
 **Exit gate:** identity frozen · roster filled · Firebase project live · Figma file ready · interview booked.
 
@@ -162,20 +162,20 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 
 **Goal:** one PDF, structurally identical to the 19-section plan in [doc 00 §11](00-MASTER-PLAN.md), submitted with a **24-hour buffer**.
 
-- [ ] `P4-01` Build the Word/Pages master file with the heading style ladder **first** (formatting must be systemic, not per-section)
-- [ ] `P4-02` Create the cover page: app name, logo, tagline, team table with IDs, module, tutors, date
-- [ ] `P4-03` Auto-generate table of contents, figure list and table list (never type these by hand)
-- [ ] `P4-04` Drop in sections 1–6 (research, interview, competitive analysis, purpose, personas)
-- [ ] `P4-05` Drop in section 7–8 (feature list table + advanced feature spec)
-- [ ] `P4-06` Drop in sections 9–11 (flows, low-fi mockups, navigation map)
-- [ ] `P4-07` Drop in sections 12–16 (design system, innovation, architecture, accessibility, ethics)
-- [ ] `P4-08` Drop in sections 17–19 (testing, references, appendix)
-- [ ] `P4-09` Formatting pass: header on every page, page numbers, caption numbering, Harvard references, no orphan headings
-- [ ] `P4-10` **Cross-check every rubric bullet** in [doc 08](08-RUBRIC-COVERAGE-MATRIX.md) → tick the evidence column
-- [ ] `P4-11` Two members read the whole document cold and flag anything unclear or unjustified
-- [ ] `P4-12` Export to PDF; verify fonts embedded, images ≥150 dpi, file size sane, links live
-- [ ] `P4-13` **Submit by Wed 21 Oct, 23:55** (a day early, buffer against the portal failing)
-- [ ] `P4-14` Tag the submission in git: `git tag design-doc-v1` and archive the source files
+- [x] `P4-01` Build the Word/Pages master file with the heading style ladder **first** (formatting must be systemic, not per-section) — **verified 28 Oct 2026:** the master is [`deliverables/design-document/DESIGN-DOCUMENT.md`](../deliverables/design-document/DESIGN-DOCUMENT.md) and the Word export is generated from it by `bash tools/build-docx.sh` **into the university's own template**, so the heading ladder is the template's styles rather than per-section formatting. *Limit:* the ladder is inherited from the template, not authored in the Markdown.
+- [x] `P4-02` Create the cover page: app name, logo, tagline, team table with IDs, module, tutors, date — **verified 28 Oct 2026:** the cover carries **app name, tagline, client brief, module, all five members with student IDs, both tutors** (Haetham Alhaddad · Ghassan AlShajjar), the platform, the three SDGs, both due dates and the document version.
+- [x] `P4-03` Auto-generate table of contents, figure list and table list (never type these by hand) — **verified 28 Oct 2026:** `## Table of contents` (line 30), `## List of figures` (57) and `## List of tables` (89) are present, and `tools/build-figure-index.py` regenerates the lists from the figures at build time.
+- [x] `P4-04` Drop in sections 1–6 (research, interview, competitive analysis, purpose, personas) — **verified 28 Oct 2026:** §§1–6 present.
+- [x] `P4-05` Drop in section 7–8 (feature list table + advanced feature spec) — **verified 28 Oct 2026:** §§7–8 present.
+- [x] `P4-06` Drop in sections 9–11 (flows, low-fi mockups, navigation map) — **verified 28 Oct 2026:** §§9–11 present.
+- [x] `P4-07` Drop in sections 12–16 (design system, innovation, architecture, accessibility, ethics) — **verified 28 Oct 2026:** §§12–16 present.
+- [x] `P4-08` Drop in sections 17–19 (testing, references, appendix) — **verified 28 Oct 2026:** §§17–19 present. **All nineteen numbered sections exist** (`## 1.` … `## 19.`), so every drop-in landed.
+- [x] `P4-09` Formatting pass: header on every page, page numbers, caption numbering, Harvard references, no orphan headings — **verified 28 Oct 2026:** the header and `Page X of Y` footer are applied to **every** page by `tools/pdf-headers.js` (verified with `pdftotext` on pages 2 and 100 of the export), **27** `Table` captions are numbered, every figure is enumerated in the List of figures, and §18 is the Harvard reference list. *Limit:* **"no orphan headings" is a visual property and is not machine-checked** — nothing here claims otherwise.
+- [x] `P4-10` **Cross-check every rubric bullet** in [doc 08](08-RUBRIC-COVERAGE-MATRIX.md) → tick the evidence column — **verified 28 Oct 2026:** doc 08 *is* that cross-check, and it was **reconciled the same day** — 19 of its 23 Gate 1 / Gate 2 boxes now carry a dated verdict **and the artefact each was checked against**; the 4 that stay open are named there with their gaps.
+- [ ] `P4-11` Two members read the whole document cold and flag anything unclear or unjustified — **reconciled 28 Oct 2026: one second reader, and only for the mockups.** The content audit records M1 as a genuine second reader for **70 of the 106** wireframes (he drew the other 36) and **names the 36 that still need somebody else**. **No record exists of a member reading the whole document cold.** The box is half-met; the 36 named frames are the concrete remainder.
+- [x] `P4-12` Export to PDF; verify fonts embedded, images ≥150 dpi, file size sane, links live — **verified 28 Oct 2026:** the PDF is built (**26,269,669 bytes**, ≈25.1 MB), fonts are embedded by the browser at build time, the smallest exported figure is **1704 px** wide (clearing 150 dpi), and **36 external links** are live. The gate's `dd-figures` check re-verifies all of it on every run.
+- [ ] `P4-13` **Submit by Wed 21 Oct, 23:55** (a day early, buffer against the portal failing) — **reconciled 28 Oct 2026: the deadline passed and the portal submission is still open.** The document deadline was **22 Oct 2026, 23:55**; the bundle is assembled, tracked and byte-compared by the gate, and both `design-doc-v1` and `prototype-v1` are tagged — **but the submission itself has not been recorded** (the gate's `p9-1819`). This is one of only three items keeping the submission gate red, and the only one that is not a document problem.
+- [x] `P4-14` Tag the submission in git: `git tag design-doc-v1` and archive the source files — **verified 28 Oct 2026:** **both tags exist** — `design-doc-v1` and `prototype-v1` — and the sources are archived under `deliverables/`.
 
 **Exit gate:** 🚩 PDF submitted 21 Oct · every rubric bullet has traceable evidence.
 
