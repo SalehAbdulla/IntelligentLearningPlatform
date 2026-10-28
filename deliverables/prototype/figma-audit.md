@@ -83,9 +83,11 @@ Page 3 · Screens (all features)     123 numbered frames      (agrees with P9-06
   Group M  (M1, F14)                  8 of 14   128,129,132,133,134,138,139,141
                                                      absent 130,131,135,136,137,140, all P1
 
-Page 1 · Design System              2 boards, 13 frames, 0 COMPONENT, 0 COMPONENT_SET
+Page 1 · Design System              2 boards · 2 frames + 17 COMPONENT, 0 COMPONENT_SET
+  components                        Button/{Primary,Secondary,Destructive} · Chip/{Default,Tag}
+                                    · Input/Text · 11 × Glass/{Card,Surface}
   variables                         3 collections / 52: Color 38 (Light + Dark), Spacing 9, Radius 5
-  bindings                          139 nodes carry a variable binding
+  bindings                          139 nodes carry a variable binding (all survived)
   styles                            11 text · 4 effect · 0 paint
 
 Overflow                            NONE on 122 frames; VERTICAL on 172 (set 28 Oct, see below)
@@ -98,9 +100,17 @@ Page 0 · Cover & Legend             00_Cover_StudyForge, 67 nodes, full team le
 
 **Four findings, recorded because each one cost marks or was about to:**
 
-1. **P5-01 is partial.** The component library is **13 frames on two boards with no `COMPONENT`
-   node at all**, so its variants cannot be reused or restyled in one place — which is the point of
-   the item.
+1. **P5-01's library was artwork, and is now components.** The page held **13 frames and 0
+   `COMPONENT` nodes**, so nothing could be reused or restyled in one place. It now holds **17 named
+   components** plus the 2 boards: three button variants, two chips, a text input and eleven glass
+   surfaces. Every one kept its exact position and size, its children, its fills and its **55 child
+   effects** (the `LAYER_BLUR` glow, `BACKGROUND_BLUR`, the dual `DROP_SHADOW`, the `INNER_SHADOW`),
+   and all **139 variable bindings** survived. **The item stays open** because the boards carry six
+   of the fifteen element types it lists, and 3 of the 5 button variants. **Consequence recorded:**
+   a component draws its name on the canvas, so the two board figures in
+   `deliverables/design-document/figures/` — and the submitted PDF built from them — show the boards
+   *without* labels. They were left as the document's dated snapshot; regenerating them without
+   rebuilding the PDF would only have moved the disagreement.
 2. **P5-14 was recorded as NOT DONE, and that was WRONG — corrected here the same day.** The first
    pass read `reaction.transition`, which is `null` on **every** reaction in this file, and reported
    *"0 of 298 carry a transition"*. The transition lives on **`action.transition`**. Read correctly:
