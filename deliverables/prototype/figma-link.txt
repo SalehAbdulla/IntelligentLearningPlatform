@@ -280,7 +280,12 @@ right-to-left Arabic proof is a built frame (139).
       reachable in the prototype viewer — the P5-12 fix; and (2) the design-system page was
       componentised, 0 -> 17 named COMPONENT nodes converted in place with every position,
       size, child, fill, effect and variable binding preserved — the P5-01 work. **Both are in
-      the export above.** It landed in the repository ROOT again and was moved here on
+      the export above.**
+      **STALE AGAIN SINCE THAT EXPORT:** the library was then extended from 17 to **24**
+      components by promoting eleven elements out of the screens by cloning (list row, tab bar,
+      progress ring, flashcard, quiz option, stat tile, dialog), with the screens themselves
+      untouched — verified. **A further re-export is outstanding.** It landed in the repository
+      ROOT again and was moved here on
       28 Oct 2026: the same trap this section already records, and worth repeating because it
       is now enforced — `tools/check-lane.sh` reports a root `StudyForge.fig` as **OUT OF LANE
       for every member**, so it cannot be committed from there at all. No screen, frame size,
