@@ -83,14 +83,14 @@ Page 3 · Screens (all features)     123 numbered frames      (agrees with P9-06
   Group M  (M1, F14)                  8 of 14   128,129,132,133,134,138,139,141
                                                      absent 130,131,135,136,137,140, all P1
 
-Page 1 · Design System              2 boards · 2 frames + 24 COMPONENT, 0 COMPONENT_SET
+Page 1 · Design System              2 boards · 2 frames + 25 COMPONENT, 0 COMPONENT_SET
   components                        Button/{Primary,Secondary,Destructive} · Chip/{Default,Tag}
-                                    · Input/Text · List/Row · Navigation/TabBar · Progress/Ring
-                                    · Flashcard/Card · Quiz/Option · Tile/Stat · Sheet/Dialog
-                                    · 11 × Glass/{Card,Surface}
-  promoted from the screens         11 of the 24, by cloning — the screens are untouched
+                                    · Input/Text · List/Row · Navigation/{TabBar,TopBar}
+                                    · Progress/Ring · Flashcard/Card · Quiz/Option · Tile/Stat
+                                    · Sheet/Dialog · 11 × Glass/{Card,Surface}
+  promoted from the screens         12 of the 25, by cloning — the screens are untouched
   variables                         3 collections / 52: Color 38 (Light + Dark), Spacing 9, Radius 5
-  bindings                          175 nodes carry a variable binding (139 before the promotion)
+  bindings                          177 nodes carry a variable binding (139 before the promotion)
   styles                            11 text · 4 effect · 0 paint
   board size                        1400 x 2700 (was 1400 x 1900)
 
@@ -104,21 +104,23 @@ Page 0 · Cover & Legend             00_Cover_StudyForge, 67 nodes, full team le
 
 **Four findings, recorded because each one cost marks or was about to:**
 
-1. **P5-01's library was artwork, and is now 24 components.** The page held **13 frames and 0
-   `COMPONENT` nodes**, so nothing could be reused or restyled in one place. It now holds **24 named
+1. **P5-01's library was artwork, and is now 25 components.** The page held **13 frames and 0
+   `COMPONENT` nodes**, so nothing could be reused or restyled in one place. It now holds **25 named
    components** plus the 2 boards, covering **12 of the 15 element types** the item lists — three
-   button variants, two chips, a text input, a list row, the tab bar, a progress ring, a flashcard,
-   a quiz option, a stat tile, a dialog, and eleven glass surfaces. **Eleven were promoted from the
-   screens by cloning**, and the screens are **untouched**: verified afterwards as still 123 screens
-   with group counts 10/8/10/8, 37 Smart Animate reactions and frame 172's overflow all unchanged.
-   The board's variable bindings grew 139 → 175 because the clones carried theirs. **What is still
-   missing is a fact about the design, not a gap in the work:** there is no **nav bar** to promote
-   (screen `16_Profile_View` carries an avatar and greeting header, not an app bar), and the
-   **empty-state block, toast and skeleton** were never drawn as elements. **Consequence recorded:**
-   a component draws its name on the canvas, so the two board figures in
-   `deliverables/design-document/figures/` — and the submitted PDF built from them — show the boards
-   *without* labels. They were left as the document's dated snapshot; regenerating them without
-   rebuilding the PDF would only have moved the disagreement.
+   button variants, two chips, a text input, a list row, the tab bar, the nav bar, a progress ring, a
+   flashcard, a quiz option, a stat tile, a dialog, and eleven glass surfaces. **Twelve were promoted
+   from the screens by cloning**, and the screens are **untouched**: verified afterwards as still 123
+   screens with group counts 10/8/10/8, 37 Smart Animate reactions and frame 172's overflow all
+   unchanged. The board's variable bindings grew 139 → 177 because the clones carried theirs. **What
+   is still missing is a design decision rather than a measurement:** the **empty-state block, toast
+   and skeleton** were never drawn as elements, so closing those three means *drawing* new artwork.
+   The **nav bar** sat in this list for part of 28 Oct 2026 — the claim that none existed came from
+   checking only `16_Profile_View` (an avatar and greeting header); a real one was then found on the
+   material detail viewer and promoted as `Navigation/TopBar`. **Consequence recorded:** a component
+   draws its name on the canvas, so the two board figures in `deliverables/design-document/figures/`
+   — and the submitted PDF built from them — show the boards *without* labels. They were left as the
+   document's dated snapshot; regenerating them without rebuilding the PDF would only have moved the
+   disagreement.
 2. **P5-14 was recorded as NOT DONE, and that was WRONG — corrected here the same day.** The first
    pass read `reaction.transition`, which is `null` on **every** reaction in this file, and reported
    *"0 of 298 carry a transition"*. The transition lives on **`action.transition`**. Read correctly:
