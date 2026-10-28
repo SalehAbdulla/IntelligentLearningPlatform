@@ -34,6 +34,47 @@ right, and they are what the Sprints mark — **10%, assessed individually** —
 
 ---
 
+## ⚡ DO THIS FIRST — a review today (15 minutes, and it unblocks the whole team)
+
+**Added 28 Oct 2026 by M1.** Five pull requests are `MERGEABLE` and **not one of them has a single
+review**. `develop` requires one approving review, so nothing can merge — including the one-line
+change that unblocks the rest. Yours would be the first pair of eyes the team has had.
+
+```bash
+bash tools/review-packet.sh 146     # start here — one line, about fifteen seconds to read
+bash tools/review-packet.sh 131     # the big one: the rules, the CI step, the AI lane
+bash tools/review-packet.sh 145     # docs only, no code
+bash tools/review-packet.sh 135     # F03 AI summaries — Mohammed's screens
+bash tools/review-packet.sh 134     # F06 — the two exam-date copy keys, YOUR feature
+```
+
+The packet prints what the PR *claims*, the files where the risk is (biggest diffs first), the tests
+that are the proof, and the three questions to answer. Then leave the review:
+
+```bash
+gh pr review <number> --approve --body "Reviewed. Checked: ..."
+gh pr review <number> --comment --body "path/File.swift:120 — <what is wrong>"
+```
+
+**`--comment` is a real outcome.** Finding something is worth more than an approval nobody meant, and
+it still counts as your work. What is **not** an outcome is an approval produced by the packet and not
+by reading the diff.
+
+**#134 is your own feature** — `F06`, the two exam-date copy keys — so reviewing it is also the
+quickest way to see what "done" looks like in this repository before you write your own.
+
+### Then the part that actually carries your mark
+
+**Your lane has shipped nothing.** Measured 28 Oct 2026: **0 branches, 0 commits, 0 reviews**, and
+`research/sprints/sprint-1/tasbeeh-contribution.md` is still empty. The Sprints component is **10%,
+assessed per person**, and the VIVA (60%) has to be passed by every member — so a tidy repository with
+your name absent from it is the one outcome this file exists to prevent.
+
+**Start with R25 in [§3](#3-my-open-todos-confirm-with-bash-toolstodossh)** — it is decided, it is
+under an hour, and it is inside your lane.
+
+---
+
 ## 0. THE TWO RULES THAT KEEP US OUT OF CONFLICT — read this before anything
 
 Three members will run AI agents against this repository **at the same time**. Two
