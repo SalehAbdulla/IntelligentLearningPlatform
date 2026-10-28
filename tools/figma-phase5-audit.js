@@ -63,26 +63,48 @@ out.tallest = numbered
   .sort((a, b) => b.h - a.h)
   .slice(0, 3);
 
-// ── transitions (P5-14), with "no transition object" told apart from "instant" ──
-let withTransition = 0;
-let nullTransition = 0;
+// ── transitions (P5-14) ───────────────────────────────────────────────────
+// THE TRAP, and it produced a wrong verdict that reached the repo before it was caught:
+// the transition is on the ACTION (`r.action.transition`), not on the reaction
+// (`r.transition`, which is `null` on every reaction in this file). Reading the reaction
+// field reports "0 of 298 carry a transition" and supports a confident, false
+// "P5-14 NOT DONE" — which is exactly what it did on 28 Oct 2026, and it nearly caused an
+// edit to a submitted prototype to fix a problem that did not exist. Read the action.
+let reactions = 0;
 const types = {};
-const walk = n => {
-  if (n.reactions) {
-    for (const r of n.reactions) {
-      if (r.transition) {
-        withTransition += 1;
-        const t = r.transition.type || 'UNSET';
-        types[t] = (types[t] || 0) + 1;
-      } else {
-        nullTransition += 1;
+const smartPairs = [];
+const smartReactions = [];
+for (const f of numbered) {
+  for (const d of f.findAll(() => true)) {
+    if (!d.reactions) continue;
+    for (const r of d.reactions) {
+      reactions += 1;
+      const tr = r.action && r.action.transition;
+      const t = tr ? (tr.type || 'UNSET') : 'NO_TRANSITION_OBJECT';
+      types[t] = (types[t] || 0) + 1;
+      if (t === 'SMART_ANIMATE') {
+        const dest = r.action.destinationId
+          ? numbered.find(x => x.id === r.action.destinationId)
+          : null;
+        smartPairs.push(num(f) + '->' + (dest ? num(dest) : '?'));
+        smartReactions.push({
+          from: num(f),
+          to: dest ? num(dest) : null,
+          on: d.name,
+          duration: tr.duration,
+          easing: tr.easing ? tr.easing.type : null,
+        });
       }
     }
   }
-  if (n.children) for (const c of n.children) walk(c);
+}
+out.transitions = {
+  reactions,
+  types,
+  smartAnimateReactions: smartReactions.length,
+  distinctSmartPairs: [...new Set(smartPairs)].sort(),
+  sample: smartReactions.slice(0, 5),
 };
-for (const c of screens.children) walk(c);
-out.transitions = { withTransition, nullTransition, types };
 
 // ── the design system (P5-01, P5-02) ───────────────────────────────────────
 const ds = byName['1 · Design System'];
