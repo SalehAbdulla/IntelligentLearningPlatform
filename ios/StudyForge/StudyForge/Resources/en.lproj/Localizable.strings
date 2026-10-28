@@ -421,6 +421,8 @@
 "plan.addSubject"      = "Add";
 "plan.availabilityHeading" = "How many hours a week?";
 "plan.deadlineHeading" = "When's your next exam?";
+"plan.examDatesHeading" = "When are your exams?";
+"plan.examDateLabel"    = "Exam date";
 "plan.noDeadline"      = "No deadline";
 "plan.intensityHeading" = "How intensely?";
 "plan.intensity.light" = "Light";

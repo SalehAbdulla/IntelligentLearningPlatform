@@ -441,6 +441,13 @@ enum L10n: String, CaseIterable, Sendable {
     case planAddSubject      = "plan.addSubject"
     case planAvailabilityHeading = "plan.availabilityHeading"
     case planDeadlineHeading = "plan.deadlineHeading"
+    // The per-course exam-date rows on the wizard's deadline step (F06). They exist so that the
+    // row's heading says what the rows are, and so the date control can be told apart from the
+    // toggle above it — both were labelled with the subject alone, which reads as the same
+    // control twice. Adding the keys is M1's lane (`Core/Localisation/` and `Resources/`); using
+    // them is a two-line change in `Features/StudyPlan/StudyPlanWizardView.swift`, which is M3's.
+    case planExamDatesHeading = "plan.examDatesHeading"
+    case planExamDateLabel    = "plan.examDateLabel"
     case planNoDeadline      = "plan.noDeadline"
     case planIntensityHeading = "plan.intensityHeading"
     case planIntensityLight  = "plan.intensity.light"
