@@ -129,11 +129,13 @@ Page 0 · Cover & Legend             00_Cover_StudyForge, 67 nodes, full team le
    re-exported at **1,830,424 bytes**, which is the size of the committed `StudyForge.fig`. Both
    statements were written on 24 Oct, and the audit text was written before the export ran.
 
-> **The `.fig` is stale again as of 28 October 2026.** Finding 3 changed the live file, so the
-> committed `StudyForge.fig` no longer matches it. The re-export is manual (Figma → *File* → *Save
-> local copy…*) and is **outstanding** — recorded here rather than left for someone to discover. The
-> P9 measurements above are **unaffected**: no frame's size, name or wiring changed, so P9-06,
-> P9-07, P9-08, P9-11 and P9-12 still describe the file as it stands.
+> **The `.fig` was re-exported on 28 October 2026 and is current again** — **1,785,516 bytes**,
+> written 28 Oct 15:00, carrying both changes from this pass (finding 3 and the componentisation in
+> finding 1). The export landed in the repository root and was moved into `deliverables/prototype/`;
+> worth knowing that `tools/check-lane.sh` reports a root `StudyForge.fig` as **OUT OF LANE for every
+> member**, so it cannot be committed from there. The P9 measurements above are **unaffected**: no
+> frame's size, name or wiring changed, so P9-06, P9-07, P9-08, P9-11 and P9-12 still describe the
+> file as it stands.
 
 **And one cross-reference that does not resolve.** [`docs/03` §1](../../docs/03-SCREEN-INVENTORY.md)
 says *"the exact list of unbuilt screen numbers is recorded in `deliverables/prototype/figma-link.txt`
