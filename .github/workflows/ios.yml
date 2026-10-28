@@ -155,6 +155,32 @@ jobs:
       - name: Colour-token parity
         run: bash tools/check-tokens.sh
 
+      # ── The payment rules, where they cannot be skipped either ─────────────
+      # Until this step existed, `tsc --noEmit` was the bar for `backend/functions` and the payment
+      # logic — the signature check, the price resolution, the VAT arithmetic, the idempotency rule,
+      # the refund precondition — was provable only by reading it.
+      #
+      # `npm test` compiles and runs Node's OWN test runner: no new dependency, no Firebase
+      # project, no credentials, no network. It catches the two classes of bug that reading does
+      # not — the arithmetic (VAT is inclusive, so the tax inside a 1.900 total is 173 fils, not
+      # 190) and the CONTRACT between the Swift price table and this one, which no compiler sees.
+      #
+      # Node 22 is pinned rather than inherited from the runner because `engines.node` says 22 and
+      # the runner's default drifts: a test suite that depends on the image's Node is a suite that
+      # goes red for a reason unrelated to the change.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: backend/functions/package-lock.json
+
+      - name: Cloud Functions payment rules
+        run: |
+          set -euo pipefail
+          cd backend/functions
+          npm ci --no-audit --no-fund
+          npm test
+
       - name: main has not structurally drifted from develop
         run: |
           git fetch origin main develop --depth=1 2>/dev/null || true
