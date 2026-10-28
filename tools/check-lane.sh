@@ -116,6 +116,24 @@ case "$MEMBER" in
       )
       TOUCH=(
         "ios/StudyForge/StudyForge/Core/ContentHash.swift"
+        # The Tier-1 cloud AI provider, written by the owner on 27–28 Oct 2026. A NEW file inside
+        # M2's Core/AI/ — not an edit to any of his five files, so there is nothing of his to
+        # collide with; M2 has no cloud-provider work in his lane brief (docs/TODO-M2); and the app
+        # needs a path off the mock AI before the VIVA.
+        #
+        # It arrives as its OWN change on `develop` because that is the only way it can work at
+        # all: the lane guard is read from the BASE branch (`check-commits.sh` reads it through
+        # `rules_file`), so an entry added inside the pull request it protects has no effect.
+        # MEASURED, not assumed — PR #131 stayed OUT OF LANE on this file with the entry present
+        # in its own branch, and went green only once this landed. That property is what stops a
+        # member relaxing the rule that judges them, so it is a feature to work with rather than
+        # around.
+        #
+        # Same shape as M2's Coach entries below: a file no lane covered, with nobody able to land
+        # it legitimately. Revertible by deleting these lines — the code is finished and tested
+        # either way (`StudyForgeTests/GeminiCloudProviderTests.swift`, 13 tests), and if the team
+        # would rather M2 owned the file, moving it to his branch is the whole of the fix.
+        "ios/StudyForge/StudyForge/Core/AI/GeminiCloudProvider.swift"
       )
       NEW=() ;;
   M2) NAME="Mohammed Almadhoon"; ID=202401702; WHO=mohammed
