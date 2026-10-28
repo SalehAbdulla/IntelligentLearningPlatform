@@ -32,7 +32,19 @@ import { defineSecret } from 'firebase-functions/params';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import {
+  PLANS,
+  TAP_CURRENCY,
+  TAP_STATUS,
+  canRefund,
+  filsToBhd,
+  isLiveChargeStatus,
+  periodEnd,
+  resolveAmount,
+  revokedSubscription,
+  vatPortionOf,
+  verifyTapSignature,
+} from './payments.js';
 
 initializeApp();
 
@@ -78,64 +90,19 @@ export const onUserCreate = beforeUserCreated(async () => ({
 }));
 
 /** Plan catalogue. Mirrors docs/04 §6. Prices are VAT-inclusive, in BHD fils. */
-const PLANS: Record<string, { monthly: number; annual: number }> = {
-  plus: { monthly: 1900, annual: 19000 },
-  pro: { monthly: 4900, annual: 49000 },
-};
-
+// The price table, the VAT rate, the status vocabulary and the payment RULES live in
+// `payments.ts`, which has no Firebase in it — so `npm test` proves them with no project, no
+// credentials and no network. This file keeps only what has to talk to the outside world.
 /** Tap REST base. The trailing slash on create matters (ported from the `beyond` integration). */
 const TAP_API = 'https://api.tap.company/v2/charges';
 /** Tap's refund endpoint. Same trailing-slash rule as charges, same `beyond` port. */
 const TAP_REFUNDS_API = 'https://api.tap.company/v2/refunds';
 /** Tap hosted payment page: the student pays on Tap's page, then Tap redirects back. */
 const TAP_SOURCE_ALL = 'src_all';
-/** BHD has THREE decimal places; Tap expects a decimal amount, not fils. */
-const TAP_CURRENCY = 'BHD';
-/** Bahrain VAT, mirroring `PaymentCatalogue.vatPercent` in the app. Baked into the price. */
-const VAT_PERCENT = 10;
 /** Where Tap sends the student back. Set TAP_REDIRECT_URL in the function env. */
 const TAP_RETURN_URL = process.env.TAP_REDIRECT_URL ?? 'https://studyforge.app/payment/return';
 /** Where Tap posts async status updates (this webhook). Set TAP_WEBHOOK_URL in the env. */
 const TAP_WEBHOOK_URL = process.env.TAP_WEBHOOK_URL ?? '';
-
-/** The Tap charge statuses, so a webhook for any of them is handled knowingly. */
-const TAP_STATUS = {
-  initiated: 'INITIATED',
-  captured: 'CAPTURED',
-  /**
-   * LOWERCASE on purpose, and not a typo. `FirestoreSubscriptionStore.status(from:)` in the app
-   * matches the literal `"refunded"` — an uppercase value would fall through to `.failed`, and a
-   * refunded receipt would read to the student as a failed payment. The app's decoder is the
-   * contract, so Tap's uppercase vocabulary stops at the boundary.
-   */
-  refunded: 'refunded',
-} as const;
-
-/** Fils to a Tap BHD amount with three decimals: 1900 -> 1.9 (serialised as "1.900" by Tap). */
-function filsToBhd(fils: number): number {
-  return Number((fils / 1000).toFixed(3));
-}
-
-/** One month or one year after `start`, by calendar. In step with the app's periodEnd. */
-function periodEnd(term: 'monthly' | 'annual', start: Date): Date {
-  const end = new Date(start);
-  if (term === 'annual') end.setUTCFullYear(end.getUTCFullYear() + 1);
-  else end.setUTCMonth(end.getUTCMonth() + 1);
-  return end;
-}
-
-/**
- * Verifies Tap's `X-Tap-Signature` header: HMAC-SHA256 of the RAW request body with the
- * webhook secret, hex-encoded, compared in constant time. Ported from the working `beyond`
- * verification, which is the only thing standing between a stranger and a free Pro plan.
- */
-function verifyTapSignature(rawBody: string, header: string | undefined, secret: string): boolean {
-  if (!header || !secret) return false;
-  const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
-  const a = Buffer.from(expected, 'utf8');
-  const b = Buffer.from(header, 'utf8');
-  return a.length === b.length && timingSafeEqual(a, b);
-}
 
 // ═════════════ 1. createCharge — keeps the secret key server-side ═════════════
 
@@ -166,7 +133,13 @@ export const createCharge = onCall(
       throw new HttpsError('invalid-argument', 'Unknown billing term.');
     }
 
-    const amount = PLANS[planId]![term];
+    // The price is resolved from the SERVER's own table — the client sends a plan id and a term
+    // and nothing else, so a tampered price in the app is ignored because it is never read. The
+    // guard makes a plan with no price for this term fail loudly instead of charging zero.
+    const amount = resolveAmount(planId, term);
+    if (amount === undefined) {
+      throw new HttpsError('invalid-argument', 'That plan has no price for that term.');
+    }
 
     // IDEMPOTENCY, ENFORCED HERE RATHER THAN ASSERTED.
     //
@@ -190,7 +163,7 @@ export const createCharge = onCall(
     // Only a charge that is still LIVE blocks a new one. A DECLINED or FAILED attempt has to stay
     // retryable, or a student whose card was refused once could never pay at all — which is why
     // this is a status check rather than merely "a row exists".
-    if (prior && (priorStatus === TAP_STATUS.initiated || priorStatus === TAP_STATUS.captured)) {
+    if (prior && isLiveChargeStatus(priorStatus)) {
       return {
         tapChargeId: String(prior.get('tapChargeId') ?? prior.id),
         redirectURL: (prior.get('redirectURL') as string | null) ?? null,
@@ -357,8 +330,10 @@ export const tapWebhook = onRequest(
           plan: planId,
           term,
           amountFils: expectedFils,
-          // The VAT portion inside the total, so the app's receipt adds up.
-          vatFils: Math.round((expectedFils * VAT_PERCENT) / (100 + VAT_PERCENT)),
+          // The VAT portion inside the total, so the app's receipt adds up. `vatPortionOf` is the
+          // same arithmetic the app's receipt uses, and it is tested against a wrong-inclusive
+          // formula that would otherwise overstate the tax by 10%.
+          vatFils: vatPortionOf(expectedFils),
           currency: TAP_CURRENCY,
           status: TAP_STATUS.captured,
           tapChargeId: chargeId,
@@ -433,9 +408,10 @@ export const refundCharge = onCall(
     if (!snap.exists) {
       throw new HttpsError('not-found', 'No such charge.');
     }
-    // Only a CAPTURED charge has money to return. Refunding an INITIATED one would race the
-    // webhook, and the student could end up entitled AND refunded.
-    if (snap.get('status') !== TAP_STATUS.captured) {
+    // Only a CAPTURED charge has money to return — `canRefund` owns that rule and the tests pin
+    // it. Refunding an INITIATED one would race the webhook, and the student could end up
+    // entitled AND refunded.
+    if (!canRefund(String(snap.get('status') ?? ''))) {
       throw new HttpsError('failed-precondition', 'Only a captured charge can be refunded.');
     }
     const uid = String(snap.get('uid') ?? '');
@@ -494,17 +470,13 @@ export const refundCharge = onCall(
         { merge: true },
       );
 
-      // Back to free, and EXPIRED rather than CANCELLED: `Subscription.isEntitled` treats a
-      // cancelled plan as entitled until `periodEnd`, which is right for a cancel and wrong for a
-      // refund — the access has to end now. `periodEnd` moves to now for the same reason, so no
-      // reader can find a live window.
+      // Back to free, and EXPIRED rather than CANCELLED — `revokedSubscription` owns that decision
+      // and `payments.test.ts` pins it, `periodEnd` included: leaving the old end in place would
+      // read as entitled on paper even though the plan says expired.
       tx.set(
         db.collection('subscriptions').doc(uid),
         {
-          plan: 'free',
-          status: 'expired',
-          periodEnd: now,
-          autoRenews: false,
+          ...revokedSubscription(now),
           refundedAt: now,
           updatedAt: now,
         },
