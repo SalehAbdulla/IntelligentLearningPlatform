@@ -339,6 +339,25 @@ bash tools/new-branch.sh feat/F04-sm2-scheduling
 ```
 Creates a correctly-named branch from an up-to-date `develop` and pushes it with upstream tracking.
 
+### `tools/review-packet.sh`, everything a reviewer needs, on one screen
+
+```bash
+bash tools/review-packet.sh            # list the open pull requests
+bash tools/review-packet.sh 135        # the packet for one of them
+```
+
+**Why it exists.** `develop` requires one approving review, and the Sprints component is **10%,
+assessed per person** — so a review is at once the project's bottleneck and a member's cheapest
+legitimate piece of evidence. What stops reviews happening is not reluctance: it is that a
+**36-commit, 2,897-line pull request looks like an afternoon**. It is not. It is three questions and
+a diff, and this prints the three questions, the files where the risk actually is (biggest diffs
+first), the tests that are the proof, the CI result, and the exact commands — including
+`gh pr review`, because the last step is the one people stall on.
+
+**It is not a review.** An approval produced by this output and not by reading the diff is worse
+than no approval — it is the one thing on this project that cannot be undone. The tool removes the
+excuse, not the work.
+
 ---
 
 ## 8. Command cheat sheet
