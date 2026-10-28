@@ -38,9 +38,16 @@
 #                request that INTRODUCES a change to the rules is judged by the rules already on
 #                the base branch, so nobody can relax the rule that judges them.
 #
-#   The LANE check reads the CURRENT CHECKOUT, because that is what `tools/check-lane.sh` does.
-#   In CI that is the branch under test, which is correct. When auditing somebody else's branch
-#   locally, check that branch out first, or run this from a scratch clone.
+#   The LANE check INSPECTS the current checkout, because that is what `tools/check-lane.sh` does
+#   — the files it judges are the branch under test. The GUARD ITSELF, though, is read through
+#   `rules_file` (see LANE_GUARD below), so under `--rules-ref` it is the BASE branch's copy that
+#   runs. That distinction is load-bearing, and it was worth MEASURING rather than assuming: a
+#   lane entry added on a feature branch has NO effect on that branch, which is exactly what makes
+#   the guard bootstrap-safe — nobody can widen their own lane inside the pull request it would
+#   let them land. (Observed on PR #131: a file stayed OUT OF LANE with the entry present in the
+#   branch, and cleared only once the entry landed on `develop` — PR #146.)
+#   When auditing somebody else's branch locally, check that branch out first, or run this from a
+#   scratch clone.
 #
 # EXCEPTIONS
 #   `tools/commit-hygiene-allowlist.txt` names individual commits that are exempt, each with a
