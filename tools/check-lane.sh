@@ -181,6 +181,12 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForgeTests/StudyPlannerTests.swift"
         "ios/StudyForge/StudyForgeTests/NotificationViewModelTests.swift"
         "ios/StudyForge/StudyForgeTests/CohortSnapshotTests.swift"
+        # F13's AI-allowance behaviour. `Core/AI/AICostGovernor.swift` is M2's, but the daily
+        # budget RESET is what the paywall's ONE enforced limit rests on (R25, docs/09 §1), so the
+        # test file is M3's. Added 28 Oct 2026 at M3's request, after she found this file in NO
+        # lane at all — which meant the test named by her own TODO could not be written by anyone,
+        # and she had to invent a differently-named suite to stay compliant.
+        "ios/StudyForge/StudyForgeTests/AICostGovernorTests.swift"
       )
       NEW=(
         "ios/StudyForge/StudyForge/Core/Planning/"
@@ -352,7 +358,13 @@ while IFS= read -r f; do
     continue
   fi
   if [[ "$f" == research/sprints/* ]]; then
-    if [[ "$f" == *"-$WHO-contribution.md" ]]; then grn "  yours         $f"
+    # The file is `research/sprints/<sprint>/<who>-contribution.md` — the naming the owner used
+    # when he created them. This rule required a HYPHEN in front of the name
+    # (`*-<who>-contribution.md`), which no member's own log has ever matched, so **every member
+    # was refused their own contribution log** — measured 28 Oct 2026 on M3's, and true of M2's,
+    # M4's and M5's by the same pattern. The log is the evidence for the 10% Sprints mark, so the
+    # guard was blocking the one file it exists to protect. Both spellings are accepted now.
+    if [[ "$f" == *"/$WHO-contribution.md" || "$f" == *"-$WHO-contribution.md" ]]; then grn "  yours         $f"
     else red "  NOT YOURS     $f"; FAILED=1; fi
     continue
   fi
