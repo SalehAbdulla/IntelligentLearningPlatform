@@ -54,7 +54,7 @@ P9-12 dark mode variants: PASS
 | F17 Recall Space wireframes | `LF_148`–`LF_154` | Same gap |
 | F13 subscription-state wireframes | `LF_155`–`LF_157`, `LF_172`–`LF_179` | The 24 Oct 2026 F13 rework replaced screens 118/120–126 with 11 new screens |
 
-Page `5` therefore holds **130 wireframes** (131 nodes with the page header), and page `6` holds **130 dark variants**, one per built screen. **What is still open** is the `.fig` re-export, recorded in [`figma-link.txt`](figma-link.txt) §9.
+Page `5` therefore holds **130 wireframes** (131 nodes with the page header), and page `6` holds **130 dark variants**, one per built screen. The `.fig` re-export is **done** — recorded in [`figma-link.txt`](figma-link.txt) §9 as re-exported on 24 October 2026 at 1,830,424 bytes, which is the size of the committed file. (This line previously said the export was *"still open"*; it was written on the same day, before the export ran. Corrected 28 Oct 2026.)
 
 ### What the re-run also had to fix
 
@@ -65,6 +65,52 @@ to the `Color` variables, and the dark variants were regenerated from the bound 
 binding used an **explicit hex-to-variable map**, not a hex lookup — five variables share
 `#ffffff` (`onError`, `surface`, `glass/surface`, `glass/strong`, `glass/border`) and a
 first-match lookup silently bound card surfaces to `onError`.
+
+## Phase 5 re-measurement, 28 October 2026
+
+> **Why this section exists.** The Phase 5 block in [`docs/01` §8](../../docs/01-ROADMAP-PHASES-TODOLIST.md)
+> carried **16 unticked boxes** while this file reported PASSes and `prototype-v1` was tagged, so
+> there was no way to tell which of the two was right. Everything below was measured from the live
+> file on **28 October 2026** with a read-only Plugin API script, the same way the rest of this file
+> was measured — and the script is committed as [`tools/figma-phase5-audit.js`](../../tools/figma-phase5-audit.js)
+> so the numbers can be re-run rather than believed. The verdicts they support are in `docs/01` §8.
+
+```text
+Page 3 · Screens (all features)     123 numbered frames      (agrees with P9-06's 123 of 123)
+  Group A  (M1, F01)                 10 of 10   01-10
+  Group B  (M1, F01 F14)              8 of 13   11-18        absent 19-23, all P1
+  Group C  (M1, F02)                 10 of 11   24-31,33,34  absent 32, P1
+  Group M  (M1, F14)                  8 of 14   128,129,132,133,134,138,139,141
+                                                     absent 130,131,135,136,137,140, all P1
+
+Page 1 · Design System              2 boards, 13 frames, 0 COMPONENT, 0 COMPONENT_SET
+  variables                         3 collections / 52: Color 38 (Light + Dark), Spacing 9, Radius 5
+  bindings                          139 nodes carry a variable binding
+  styles                            11 text · 4 effect · 0 paint
+
+Overflow                            overflowDirection NONE on 123 of 123 frames
+Transitions                         298 reactions on page 3, 0 carrying a transition object
+Tallest frame                       172_Checkout_ExamBoost 390 x 980; the other 122 are 390 x 844
+Page 0 · Cover & Legend             00_Cover_StudyForge, 67 nodes, full team legend
+```
+
+**Three findings, recorded because each one was about to cost marks or already had:**
+
+1. **P5-14 is not done.** **0 of 298** reactions carry any transition object, so Smart Animate's own
+   floor of five is unmet. Two independent scans agree.
+2. **P5-01 is partial.** The component library is **13 frames on two boards with no `COMPONENT`
+   node at all**, so its variants cannot be reused or restyled in one place — which is the point of
+   the item.
+3. **The `.fig` note further up this file was stale and is corrected here.** It said the re-export
+   was *"still open"*; [`figma-link.txt`](figma-link.txt) §9 records it **done on 24 October 2026**,
+   re-exported at **1,830,424 bytes**, which is the size of the committed `StudyForge.fig`. Both
+   statements were written on 24 Oct, and the audit text was written before the export ran.
+
+**And one cross-reference that does not resolve.** [`docs/03` §1](../../docs/03-SCREEN-INVENTORY.md)
+says *"the exact list of unbuilt screen numbers is recorded in `deliverables/prototype/figma-link.txt`
+§9"*. **It is not there** — §9 holds the sharing-permission and `.fig`-export items, and no list of
+screen numbers. The measured set above is what the file actually supports: **123 built, and every
+absent number in M1's four ranges is P1**. The doc 03 sentence is corrected in this same pass.
 
 ## What this audit does not cover
 
