@@ -88,23 +88,42 @@ Page 1 · Design System              2 boards, 13 frames, 0 COMPONENT, 0 COMPONE
   bindings                          139 nodes carry a variable binding
   styles                            11 text · 4 effect · 0 paint
 
-Overflow                            overflowDirection NONE on 123 of 123 frames
-Transitions                         298 reactions on page 3, 0 carrying a transition object
+Overflow                            NONE on 122 frames; VERTICAL on 172 (set 28 Oct, see below)
+Transitions                         226 reactions across the 123 screens
+                                      37 SMART_ANIMATE across 32 distinct pairs · 189 DISSOLVE
+                                      · 0 with no transition object
 Tallest frame                       172_Checkout_ExamBoost 390 x 980; the other 122 are 390 x 844
 Page 0 · Cover & Legend             00_Cover_StudyForge, 67 nodes, full team legend
 ```
 
-**Three findings, recorded because each one was about to cost marks or already had:**
+**Four findings, recorded because each one cost marks or was about to:**
 
-1. **P5-14 is not done.** **0 of 298** reactions carry any transition object, so Smart Animate's own
-   floor of five is unmet. Two independent scans agree.
-2. **P5-01 is partial.** The component library is **13 frames on two boards with no `COMPONENT`
+1. **P5-01 is partial.** The component library is **13 frames on two boards with no `COMPONENT`
    node at all**, so its variants cannot be reused or restyled in one place — which is the point of
    the item.
-3. **The `.fig` note further up this file was stale and is corrected here.** It said the re-export
+2. **P5-14 was recorded as NOT DONE, and that was WRONG — corrected here the same day.** The first
+   pass read `reaction.transition`, which is `null` on **every** reaction in this file, and reported
+   *"0 of 298 carry a transition"*. The transition lives on **`action.transition`**. Read correctly:
+   **37 Smart Animate reactions across 32 distinct pairs**, `EASE_OUT`, 0.30–0.35 s, with the
+   remaining 189 reactions `DISSOLVE` and **nothing left instant**. The false verdict had already
+   reached `docs/01` and was one step from an edit to this prototype to fix a problem that did not
+   exist — the read-back is what stopped it. The trap is now written into
+   [`tools/figma-phase5-audit.js`](../../tools/figma-phase5-audit.js).
+3. **One frame was unreachable, and is now fixed.** `172_Checkout_ExamBoost_Tasbeeh_202305409` is
+   **390 × 980** against an 844 device, so its bottom **136 px** could not be reached in the
+   prototype viewer. Its overflow is now set to **`VERTICAL`** (Figma's *Scroll*), verified by
+   read-back, with the other **122 frames untouched**. That is the only change this pass made to the
+   file.
+4. **The `.fig` note further up this file was stale and is corrected here.** It said the re-export
    was *"still open"*; [`figma-link.txt`](figma-link.txt) §9 records it **done on 24 October 2026**,
    re-exported at **1,830,424 bytes**, which is the size of the committed `StudyForge.fig`. Both
    statements were written on 24 Oct, and the audit text was written before the export ran.
+
+> **The `.fig` is stale again as of 28 October 2026.** Finding 3 changed the live file, so the
+> committed `StudyForge.fig` no longer matches it. The re-export is manual (Figma → *File* → *Save
+> local copy…*) and is **outstanding** — recorded here rather than left for someone to discover. The
+> P9 measurements above are **unaffected**: no frame's size, name or wiring changed, so P9-06,
+> P9-07, P9-08, P9-11 and P9-12 still describe the file as it stands.
 
 **And one cross-reference that does not resolve.** [`docs/03` §1](../../docs/03-SCREEN-INVENTORY.md)
 says *"the exact list of unbuilt screen numbers is recorded in `deliverables/prototype/figma-link.txt`
