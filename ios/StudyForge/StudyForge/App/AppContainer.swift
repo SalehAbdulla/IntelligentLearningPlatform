@@ -279,7 +279,14 @@ final class AppContainer {
         // Defaulted so a container built for a preview or a test needs no disk: see `materials`.
         materials: any MaterialStore = InMemoryMaterialStore(),
         summaries: any SummaryStore = InMemorySummaryStore(),
-        ai: AIRouter = AIRouter.standard(governor: AICostGovernor()),
+        // Tier 1 is the real Gemini engine, not the mock: the demo runs in the Simulator, where
+        // tier 0 cannot run, so a mock here would make every summary, card and quiz stand-in
+        // content. `GeminiCloudProvider` reports unavailable until a key is configured, and the
+        // router then falls through with a NAMED reason instead of failing at the tap.
+        ai: AIRouter = AIRouter(
+            providers: [.onDevice: OnDeviceProvider(), .firebaseAI: GeminiCloudProvider()],
+            governor: AICostGovernor()
+        ),
         decks: any DeckStore = InMemoryDeckStore(),
         quizzes: any QuizStore = InMemoryQuizStore(),
         studyPlans: any StudyPlanStore = InMemoryStudyPlanStore(),
@@ -474,6 +481,27 @@ extension AppContainer {
             #endif
             return FileMaterialStore()
         }()
+
+        // `-seedDemo` opens the app in the state the DEMO starts in: a verified student whose
+        // profile is FINISHED, so the gate does not send them to the wizard, with a library that
+        // is already populated. The run sheet's step 1 is *"sign in as a student → dashboard with
+        // real seeded data"*, and without this the only way to reach that state is to complete the
+        // wizard and import a PDF by hand on every fresh simulator — which is also why the app is
+        // normally left signed in before a demo rather than signed into.
+        //
+        // Same kind of hatch as the two below, and DEBUG-only for the same reason: it FABRICATES
+        // a session and a profile, and a shipping build must never do that.
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-seedDemo") {
+            return AppContainer(
+                environment: environment,
+                firebaseSource: source,
+                auth: MockAuthService(initialState: .signedIn(.preview), latency: .zero),
+                profile: MockProfileService(latency: .zero, seededProfile: .preview),
+                materials: InMemoryMaterialStore(seededWith: Material.samples)
+            )
+        }
+        #endif
 
         #if DEBUG
         // `-seedProfileSetup` opens B01 (the profile wizard's academic step).

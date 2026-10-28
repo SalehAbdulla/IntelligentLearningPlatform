@@ -91,6 +91,57 @@ jobs:
         with:
           fetch-depth: 0          # check-release compares main against develop
 
+      # ── The log-level rules, where they cannot be skipped ──────────────────
+      # See tools/check-commits.sh for what it refuses and why. Three details matter here:
+      #
+      #   · IT RUNS FIRST, BEFORE `check-release`. That is not stylistic. The release step fetches
+      #     `main` and `develop` with `--depth=1`, which makes this checkout SHALLOW and turns
+      #     `origin/develop` into a grafted boundary with no parents — and a range measured from a
+      #     boundary commit is not "what this branch brings", it is the whole repository.
+      #     **Measured on this check's first three runs: 1345, then 14, then 1348 commits judged
+      #     against a branch that has 13.** The shallow guard below makes the step safe wherever it
+      #     is placed; the ordering keeps it honest as well.
+      #   · `--rules-ref` makes the BASE branch's rules judge the branch — its message pattern,
+      #     its allowlist, its lane guard and its `.mailmap`. Without it, the pull request that
+      #     changed a rule would be the one deciding whether it applies.
+      #   · the range is `origin/$BASE..HEAD` from the FRESHLY FETCHED base tip, never from
+      #     `github.event.pull_request.base.sha`. That SHA is the base as it was when the pull
+      #     request was OPENED, so a range from it sweeps in everything develop gained since —
+      #     including pull-request merge commits, which are authored by GitHub and are nobody's
+      #     work. Also measured: run 2 failed on `196bf0b`, the merge commit of PR #130.
+      #
+      # This is the check that would have caught `feat/F03-AI-SUMMARY` on the day it was pushed:
+      # five subjects that are not Conventional Commits, a personal author address, and — once a
+      # PR exists — an out-of-lane file. It exists because tools/commit.sh and tools/check-lane.sh
+      # are LOCAL tools, and a member who never runs them was contradicted by nothing at all
+      # (docs/12 §3.1: a rule that can be silently bypassed is not a rule).
+      - name: Commit hygiene (identity, message, lane)
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          # `set -e` matters: without it a failed fetch is invisible and the range silently
+          # becomes something other than this branch. The tool refuses an implausible range as
+          # well, so this cannot fail quietly in either direction.
+          set -euo pipefail
+          if [ -f "$(git rev-parse --git-dir)/shallow" ]; then
+            echo "::warning::checkout is shallow — unshallowing so the range means what it says"
+            git fetch --unshallow --no-tags origin 2>/dev/null || true
+          fi
+          BASE="${BASE_REF:-develop}"
+          git fetch --no-tags origin "refs/heads/$BASE:refs/remotes/origin/$BASE"
+          echo "origin/$BASE resolves to $(git rev-parse --short "origin/$BASE")"
+          if [ -n "$BASE_REF" ]; then
+            RANGE="origin/$BASE..HEAD"
+            BRANCH="$HEAD_REF"
+          else
+            RANGE="$(git merge-base "origin/$BASE" HEAD)..HEAD"
+            BRANCH="$REF_NAME"
+          fi
+          echo "judging $RANGE — $(git rev-list --no-merges --count "$RANGE") non-merge commits on '$BRANCH'"
+          bash tools/check-commits.sh --range "$RANGE" --branch "$BRANCH" --rules-ref "origin/$BASE"
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -103,6 +154,32 @@ jobs:
 
       - name: Colour-token parity
         run: bash tools/check-tokens.sh
+
+      # ── The payment rules, where they cannot be skipped either ─────────────
+      # Until this step existed, `tsc --noEmit` was the bar for `backend/functions` and the payment
+      # logic — the signature check, the price resolution, the VAT arithmetic, the idempotency rule,
+      # the refund precondition — was provable only by reading it.
+      #
+      # `npm test` compiles and runs Node's OWN test runner: no new dependency, no Firebase
+      # project, no credentials, no network. It catches the two classes of bug that reading does
+      # not — the arithmetic (VAT is inclusive, so the tax inside a 1.900 total is 173 fils, not
+      # 190) and the CONTRACT between the Swift price table and this one, which no compiler sees.
+      #
+      # Node 22 is pinned rather than inherited from the runner because `engines.node` says 22 and
+      # the runner's default drifts: a test suite that depends on the image's Node is a suite that
+      # goes red for a reason unrelated to the change.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: backend/functions/package-lock.json
+
+      - name: Cloud Functions payment rules
+        run: |
+          set -euo pipefail
+          cd backend/functions
+          npm ci --no-audit --no-fund
+          npm test
 
       - name: main has not structurally drifted from develop
         run: |

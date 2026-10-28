@@ -12,6 +12,148 @@
 
 ---
 
+> ## ⚑ 28 Oct 2026 — your work is done, it merges cleanly, and two things stand between it and your mark
+>
+> **Verified against the remote today, not read off a status line:**
+>
+> | What | Measured |
+> |---|---|
+> | Your branch | `feat/F03-ai-summary` — **36 commits**, 18–22 Oct, **21 files, +2,897/−1**: the whole F03 summary feature plus two test files |
+> | Your PR | **#135** — `MERGEABLE`, **CI green** (`Repo checks`, `iOS build and test` 11–13 min, GitGuardian), waiting on **one approving review** |
+> | Your messages | **all 36 are Conventional Commits**, under your student identity. The five that were not (`view`, `configure view`, `edit sheet`, `quate view`, `source sheet`) **are gone** — that finding is closed |
+> | Your merge | **clean.** `git merge-tree --write-tree origin/develop origin/feat/F03-ai-summary` reports **no conflicts**, so there is nothing to repair before merging |
+>
+> **One real risk in your lane, and it is not a mistake you made.** Your branch is **148 commits behind `develop`** (fork point `afd293f`, 23 Oct). The consequence is narrow but it matters: the `tools/check-lane.sh` on your branch predates the 23 Oct lane fix, so your **local** guard does not know that `Features/Library/MaterialLibraryView.swift` is yours — which is why `check-lane.sh M2` reports it OUT OF LANE. **PR #131 fixes exactly that**, and it is waiting on a review too.
+>
+> **Do these two things, in this order:**
+>
+> 1. **Get one review on PR #135.** Post the link in the group chat. A teammate reviewing it is worth more than the merge itself, because *their* review is *their* sprint evidence. Merging it turns 36 commits from "work that exists" into "work that counts".
+> 2. **Before your next feature, branch from fresh `develop`** — not from the old branch:
+>
+>    ```bash
+>    git switch develop && git pull
+>    bash tools/new-branch.sh feat/F04-hard-grade-tracking
+>    ```
+>
+>    Then take the F04 starter brief in [doc 13 §Starter briefs](13-PER-MEMBER-TASKS.md): track the **"Hard"** grade separately from "correct" in SM-2, at `FlashcardReviewViewModel.swift:119`.
+>
+> **And one thing only you can write:** `research/sprints/sprint-1/mohammed-contribution.md` is still an **empty template** — headers and column titles, no rows. Your 36 commits are attributable and real, but the Sprints component (**10%, assessed per person**) is read off that file. One row per session, with the commit as the evidence.
+
+> ## ⚑ 28 Oct 2026 (second note) — tier 1 is the demo's blocker, and the SDK route is closed
+> **STATUS, 28 Oct 2026: this is IMPLEMENTED — by the owner, as a recorded lane exception, because
+> tier 1 was the demo's blocker.** `Core/AI/GeminiCloudProvider.swift` now calls the Gemini
+> Developer API over `URLSession`, it is wired in `AppContainer`, the build is clean and **845 tests
+> pass**. **Do not rebuild it.** The exception is recorded in [`docs/TODOLIST.md` §0](TODOLIST.md)
+> beside the J02 entry, with the guard's refusal and the authorisation both on the record.
+>
+> **What is still yours in F15, and it is the part that needs your judgement:**
+>
+> 1. **The `AITier.swift:114` marker is now stale** — the engine it asks for exists, so the marker
+>    is describing a gap that has closed. Deleting it is your one-line commit, in your file, and it
+>    is the marker a reviewer looks for.
+> 2. **`PromptTemplates.swift:22` — the Firestore-backed `PromptTemplateStore`.** Still open, still
+>    yours, and still the difference between fixing a prompt with a document and fixing it with a
+>    release.
+> 3. **`AIRouter.standard` still registers `MockProvider` at tier 1.** That is deliberate: previews
+>    and the test suites construct their own routers and depend on it, and the app no longer uses
+>    `standard()`. If you want previews to exercise the real tier, that is your call in your file.
+> 4. **A test for the new provider** in `StudyForgeTests/`: that the router chooses `.firebaseAI`
+>    when the provider reports available, and falls through with a **named** reason when no key is
+>    configured. `GeminiCloudProvider` takes an injected `AICloudConfiguration` and `URLSession`
+>    precisely so this is testable with no network and no key.
+>
+> Everything below is kept as the reasoning of record — it is why the SDK route was rejected, and
+> that reasoning still applies to anyone tempted to try it again.
+>
+
+>
+> **The problem, measured today.** In the Simulator the app's AI is stand-in output, not AI: tier 0
+> (Apple Foundation Models) **cannot run in the Simulator**, and tier 1 is
+> `MockProvider(tier: .firebaseAI, latency: .milliseconds(400))` inside `AIRouter.standard`.
+> `MockProvider`'s own header says the mock exists *because* "tier 0 cannot run in the Simulator, and
+> tier 1 needs Firebase credentials" — and its output is deterministic on purpose, so the same source
+> text always yields the same cards. **The demo runs in the Simulator, so summaries, flashcards and
+> quizzes are mock content**, and a marker who asks *"is that real AI?"* gets an honest no.
+> This is `AITier.swift:114`, **your** open TODO, and it is now the highest-value work in your lane.
+>
+> **The obvious route is closed — for the whole team, not just you.** Firebase AI Logic needs the
+> `firebase-ai` product added to `StudyForge.xcodeproj`, and `tools/check-lane.sh` makes
+> **`*.xcodeproj` forbidden to every member, including the owner** (measured 28 Oct 2026: a new file
+> under `Core/AI/` is refused for the owner, and the guard's own message is *"ask the team. Do not
+> force it"*). **So do not plan on the SDK.** The project currently links only `FirebaseAuth`,
+> `FirebaseFirestore` and `FirebaseFunctions`.
+>
+> **The route that works: call Gemini over `URLSession`. No SDK, no project edit, works in the Simulator.**
+>
+> | | |
+> |---|---|
+> | **New file** | `ios/StudyForge/StudyForge/Core/AI/GeminiCloudProvider.swift` — conforms to `AIProvider`, registered at `.firebaseAI` |
+> | **Endpoint** | `POST https://generativelanguage.googleapis.com/v1beta/models/<model>:generateContent`, with the key in the **`x-goog-api-key` header** — not a URL query, which leaks into logs and proxies |
+> | **Structured output** | send `generationConfig.responseMimeType = "application/json"` **and** a `responseSchema`, so the `@Generable` shapes in `AIGenerationModels.swift` map straight onto the response |
+> | **Availability** | report `.unavailable(.notImplemented)` when no key is configured, so the router falls through with a **named** reason instead of failing at the tap |
+> | **The key** | **not** in the app source. `Core/Config/` (M1's lane) holds the seam; the value comes from `Info.plist`/xcconfig and is never committed — and `tools/commit.sh` scans every staged file for keys and will refuse a commit that contains one |
+> | **Wiring** | one line in `AppContainer.swift` — **a declared SHARED file**, so a 1–2 line edit, rebase before pushing: `ai: AIRouter = AIRouter(providers: [.onDevice: OnDeviceProvider(), .firebaseAI: GeminiCloudProvider()], governor: AICostGovernor())`. **You do not need to touch `AIRouter.standard`**, so your own previews keep working |
+> | **Acceptance** | a test in `StudyForgeTests/` proving (a) the router chooses `.firebaseAI` when the cloud provider reports available and tier 0 is unavailable, and (b) with no key configured it reports unavailable and the router falls through with a named reason. Then **delete the `TODO(M2 · F15)` marker in `AITier.swift`** in its own commit |
+> | **Branch / commit** | `bash tools/new-branch.sh feat/F15-cloud-ai-tier` · `feat(F15): serve tier 1 from the Gemini API instead of the mock` |
+> | **Done when** | a summary generated **in the Simulator** is real model output, and the tier badge reads the cloud tier rather than the mock |
+>
+> **Why this is worth doing before anything else in your lane:** the demo *is* the assessment, and
+> this is the one gap where the app looks finished and is not. Everything else in F15 is polish by
+> comparison. **The costs are real and already handled:** an API key has to exist, and the free tier
+> is rate-limited by RPM/RPD/TPM — which is exactly what `AICostGovernor` and the SHA-256
+> content-hash cache were built for, so the refusal path is already written and tested.
+
+
+
+> ## ⚠️ READ THIS FIRST IF YOU HAVE `feat/F03-AI-SUMMARY` CHECKED OUT
+>
+> **Your branch was rewritten on 23 Oct 2026 by Saleh (M1), with the authorisation recorded in
+> [`docs/TODOLIST.md` §0](TODOLIST.md), and its name was corrected the same day** —
+> `feat/F03-AI-SUMMARY` → **`feat/F03-ai-summary`**, because an uppercase slug is what
+> `tools/new-branch.sh` refuses. **Your clone now points at commits that no longer exist on the
+> remote, under a branch name that no longer exists either.** These commands fix both:
+>
+> ```bash
+> git fetch origin
+> git branch -m feat/F03-AI-SUMMARY feat/F03-ai-summary   # only if that name is checked out
+> git branch -u origin/feat/F03-ai-summary feat/F03-ai-summary
+> git reset --hard origin/feat/F03-ai-summary
+> git remote prune origin
+> ```
+>
+> **Before you run that: if you have any local work you have not pushed, stop and say so first.**
+> The old line now exists in exactly two places — your clone, and a bundle Saleh holds
+> (`.git/F03-before-rewrite.bundle`, head `5e4a94e`) — so moving your work across *before* the
+> reset is much easier than after it.
+>
+> **What changed, and why.** The branch had been created from `main` instead of `develop`, so it
+> carried **67 commits**: your 36, plus main's entire release line. Three measured consequences:
+> the lane guard refused you a file that is yours, GitGuardian went red on one of Saleh's earlier
+> commits (PR #34) that your branch happened to contain, and `tools/check-commits.sh` reported
+> **5 message failures** — `view`, `configure view`, `edit sheet`, `quate view`, `source sheet` —
+> plus a personal author address.
+>
+> The branch was **rebased onto `develop`**, the five subjects were **reworded from each commit's
+> own diff**, and **author *and* committer were set to `Mohammed Almadhoon
+> <202401702@student.polytechnic.bh>`** — the identity the Sprints mark is read from. Your pull
+> request — now **#135**, because renaming the branch closed #132 — shows **36 commits instead of
+> 67**, and the tool reports **0 message failures and 0 identity failures**.
+>
+> **Nothing about your code changed.** Verified before the push, not after: the branch's net
+> change is **byte-identical** — the same 21 files, the same **+2897/−1**. Only the log moved, and
+> your commit dates are unchanged, so the sprint timeline still reads honestly.
+>
+> **This is not a correction of you.** You were committing under the identity this file used to
+> tell you to use, on a branch created the way the handover used to describe it. Both were
+> documentation defects, and both are now fixed in this file.
+>
+> **One thing stays red, and it is not yours to fix:** `bash tools/check-lane.sh M2` still reports
+> `Features/Library/MaterialLibraryView.swift` as OUT OF LANE until **PR #131** merges and you
+> merge `develop` into your branch. That file *is* yours — the corrected guard is simply not on
+> `develop` yet.
+
+---
+
 ## ⚡ The four things that actually go wrong — read this before anything else
 
 **Every problem a member has hit so far has been one of these four.** They take ten minutes to get
@@ -97,12 +239,21 @@ Never `git switch develop` to "just quickly fix something". Never `git push orig
 
 **You may modify these** (and nothing else):
 
-| Area | Files |
+| Area | Yours |
 |---|---|
-| F15 AI | `Core/AI/PromptTemplates.swift` · `Core/AI/AITier.swift` · `Core/AI/AIRouter.swift` · `Core/AI/AIProvider.swift` · `Core/AI/OnDeviceProvider.swift` |
-| F15 admin config | `Core/Admin/AIConfiguration.swift` |
-| F04 / F03 / F05 flashcards | everything in `Features/Flashcards/` |
+| **F03 · F04 · F05 · F11 — everything in these directories** | `Core/AI/` · `Core/Flashcards/` · `Core/Quizzes/` · `Core/Scheduling/` · `Core/Summaries/` · `Core/Tutor/` · `Features/Flashcards/` · `Features/Quizzes/` · `Features/Summaries/` · `Features/Tutor/` |
+| F15 admin config | `Core/Admin/AIConfiguration.swift` — the one file of yours inside M4's `Core/Admin/` |
+| F15 Coach UI (screens 73–76, 79, 80) | `Features/Coach/CoachHomeView.swift` · `CoachHomeViewModel.swift` · `CoachChatView.swift` · `CoachChatViewModel.swift` · `CitationSheetView.swift` |
+| F03's entry point | `Features/Library/MaterialLibraryView.swift` — a one-line seam inside the owner's directory |
 | Tests | `StudyForgeTests/AIRouterTests.swift` · `AIVocabularyTests.swift` · `FlashcardReviewViewModelTests.swift` · `FlashcardGenerateViewModelTests.swift` · `SummaryFlowViewModelTests.swift` |
+| **NOT yours, inside your own directories** | `Core/Tutor/CohortSnapshot.swift` is **M3's** (F07) |
+
+> **Corrected 22 Oct 2026 — your lane used to be a list of individual files, and it was too small.**
+> An audit of the tracked tree found **167 of the 394 app files were in no lane at all**, including
+> `Core/Scheduling/SpacedRepetition.swift` — which *your own starter brief* tells you to hand-write —
+> and the whole Coach UI behind screens 73–76, 79 and 80, which docs/03 assigns to you by name. Your
+> lane is now the **directories** your five features live in, existing files and new ones alike, with
+> the exception named above. Full detail: [doc 14 §2](14-COLLEAGUE-AI-AGENT-PROMPTS.md).
 
 **You may add NEW files** inside: `Core/AI/` · `Features/Flashcards/` ·
 `Features/Summaries/` · `Features/Quizzes/` · `Features/Tutor/` · `StudyForgeTests/`

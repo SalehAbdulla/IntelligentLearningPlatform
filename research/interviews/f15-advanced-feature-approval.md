@@ -13,7 +13,7 @@
 | **Requested by** | M1, Saleh Abdulla (`202300540`) |
 | **Requested at** | Thursday 15 October 2026, 1:11 pm |
 | **Feature** | **F15, AI Study Companion** — retrieval-augmented generation + adaptive coach |
-| **Developers** | **M2 Mohammed Almadhoon** (`202401702`) + **M3 Tasbeeh Saeed** (`202300549`) — exactly two, the maximum the brief allows |
+| **Developers** | **M2 Mohammed Almadhoon** (`202401702`) + **M3 Tasbeeh Saeed** (`202305409`) — exactly two, the maximum the brief allows |
 | **Verdict** | ✅ **Approved** — *"The idea is approved"* |
 
 ---
@@ -54,7 +54,7 @@
 > It answers only from a student's own uploaded files, shows the source of each answer, and builds
 > an adaptive revision path from their quiz results.
 >
-> It will be built by Mohammed Almadhoon (202401702) and Tasbeeh Saeed (202300549), which is the
+> It will be built by Mohammed Almadhoon (202401702) and Tasbeeh Saeed (202305409), which is the
 > maximum the brief allows. A one-line reply is enough.
 >
 > If you feel it is not advanced enough, we will promote F09 (the live group revision arena)

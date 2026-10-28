@@ -54,7 +54,7 @@ P9-12 dark mode variants: PASS
 | F17 Recall Space wireframes | `LF_148`–`LF_154` | Same gap |
 | F13 subscription-state wireframes | `LF_155`–`LF_157`, `LF_172`–`LF_179` | The 24 Oct 2026 F13 rework replaced screens 118/120–126 with 11 new screens |
 
-Page `5` therefore holds **130 wireframes** (131 nodes with the page header), and page `6` holds **130 dark variants**, one per built screen. **What is still open** is the `.fig` re-export, recorded in [`figma-link.txt`](figma-link.txt) §9.
+Page `5` therefore holds **130 wireframes** (131 nodes with the page header), and page `6` holds **130 dark variants**, one per built screen. The `.fig` re-export is **done** — recorded in [`figma-link.txt`](figma-link.txt) §9 as re-exported on 24 October 2026 at 1,830,424 bytes, which is the size of the committed file. (This line previously said the export was *"still open"*; it was written on the same day, before the export ran. Corrected 28 Oct 2026.)
 
 ### What the re-run also had to fix
 
@@ -65,6 +65,91 @@ to the `Color` variables, and the dark variants were regenerated from the bound 
 binding used an **explicit hex-to-variable map**, not a hex lookup — five variables share
 `#ffffff` (`onError`, `surface`, `glass/surface`, `glass/strong`, `glass/border`) and a
 first-match lookup silently bound card surfaces to `onError`.
+
+## Phase 5 re-measurement, 28 October 2026
+
+> **Why this section exists.** The Phase 5 block in [`docs/01` §8](../../docs/01-ROADMAP-PHASES-TODOLIST.md)
+> carried **16 unticked boxes** while this file reported PASSes and `prototype-v1` was tagged, so
+> there was no way to tell which of the two was right. Everything below was measured from the live
+> file on **28 October 2026** with a read-only Plugin API script, the same way the rest of this file
+> was measured — and the script is committed as [`tools/figma-phase5-audit.js`](../../tools/figma-phase5-audit.js)
+> so the numbers can be re-run rather than believed. The verdicts they support are in `docs/01` §8.
+
+```text
+Page 3 · Screens (all features)     123 numbered frames      (agrees with P9-06's 123 of 123)
+  Group A  (M1, F01)                 10 of 10   01-10
+  Group B  (M1, F01 F14)              8 of 13   11-18        absent 19-23, all P1
+  Group C  (M1, F02)                 10 of 11   24-31,33,34  absent 32, P1
+  Group M  (M1, F14)                  8 of 14   128,129,132,133,134,138,139,141
+                                                     absent 130,131,135,136,137,140, all P1
+
+Page 1 · Design System              2 boards · 2 frames + 24 COMPONENT, 0 COMPONENT_SET
+  components                        Button/{Primary,Secondary,Destructive} · Chip/{Default,Tag}
+                                    · Input/Text · List/Row · Navigation/TabBar · Progress/Ring
+                                    · Flashcard/Card · Quiz/Option · Tile/Stat · Sheet/Dialog
+                                    · 11 × Glass/{Card,Surface}
+  promoted from the screens         11 of the 24, by cloning — the screens are untouched
+  variables                         3 collections / 52: Color 38 (Light + Dark), Spacing 9, Radius 5
+  bindings                          175 nodes carry a variable binding (139 before the promotion)
+  styles                            11 text · 4 effect · 0 paint
+  board size                        1400 x 2700 (was 1400 x 1900)
+
+Overflow                            NONE on 122 frames; VERTICAL on 172 (set 28 Oct, see below)
+Transitions                         226 reactions across the 123 screens
+                                      37 SMART_ANIMATE across 32 distinct pairs · 189 DISSOLVE
+                                      · 0 with no transition object
+Tallest frame                       172_Checkout_ExamBoost 390 x 980; the other 122 are 390 x 844
+Page 0 · Cover & Legend             00_Cover_StudyForge, 67 nodes, full team legend
+```
+
+**Four findings, recorded because each one cost marks or was about to:**
+
+1. **P5-01's library was artwork, and is now 24 components.** The page held **13 frames and 0
+   `COMPONENT` nodes**, so nothing could be reused or restyled in one place. It now holds **24 named
+   components** plus the 2 boards, covering **12 of the 15 element types** the item lists — three
+   button variants, two chips, a text input, a list row, the tab bar, a progress ring, a flashcard,
+   a quiz option, a stat tile, a dialog, and eleven glass surfaces. **Eleven were promoted from the
+   screens by cloning**, and the screens are **untouched**: verified afterwards as still 123 screens
+   with group counts 10/8/10/8, 37 Smart Animate reactions and frame 172's overflow all unchanged.
+   The board's variable bindings grew 139 → 175 because the clones carried theirs. **What is still
+   missing is a fact about the design, not a gap in the work:** there is no **nav bar** to promote
+   (screen `16_Profile_View` carries an avatar and greeting header, not an app bar), and the
+   **empty-state block, toast and skeleton** were never drawn as elements. **Consequence recorded:**
+   a component draws its name on the canvas, so the two board figures in
+   `deliverables/design-document/figures/` — and the submitted PDF built from them — show the boards
+   *without* labels. They were left as the document's dated snapshot; regenerating them without
+   rebuilding the PDF would only have moved the disagreement.
+2. **P5-14 was recorded as NOT DONE, and that was WRONG — corrected here the same day.** The first
+   pass read `reaction.transition`, which is `null` on **every** reaction in this file, and reported
+   *"0 of 298 carry a transition"*. The transition lives on **`action.transition`**. Read correctly:
+   **37 Smart Animate reactions across 32 distinct pairs**, `EASE_OUT`, 0.30–0.35 s, with the
+   remaining 189 reactions `DISSOLVE` and **nothing left instant**. The false verdict had already
+   reached `docs/01` and was one step from an edit to this prototype to fix a problem that did not
+   exist — the read-back is what stopped it. The trap is now written into
+   [`tools/figma-phase5-audit.js`](../../tools/figma-phase5-audit.js).
+3. **One frame was unreachable, and is now fixed.** `172_Checkout_ExamBoost_Tasbeeh_202305409` is
+   **390 × 980** against an 844 device, so its bottom **136 px** could not be reached in the
+   prototype viewer. Its overflow is now set to **`VERTICAL`** (Figma's *Scroll*), verified by
+   read-back, with the other **122 frames untouched**. That is the only change this pass made to the
+   file.
+4. **The `.fig` note further up this file was stale and is corrected here.** It said the re-export
+   was *"still open"*; [`figma-link.txt`](figma-link.txt) §9 records it **done on 24 October 2026**,
+   re-exported at **1,830,424 bytes**, which is the size of the committed `StudyForge.fig`. Both
+   statements were written on 24 Oct, and the audit text was written before the export ran.
+
+> **The `.fig` was re-exported on 28 October 2026 and is current again** — **1,785,516 bytes**,
+> written 28 Oct 15:00, carrying both changes from this pass (finding 3 and the componentisation in
+> finding 1). The export landed in the repository root and was moved into `deliverables/prototype/`;
+> worth knowing that `tools/check-lane.sh` reports a root `StudyForge.fig` as **OUT OF LANE for every
+> member**, so it cannot be committed from there. The P9 measurements above are **unaffected**: no
+> frame's size, name or wiring changed, so P9-06, P9-07, P9-08, P9-11 and P9-12 still describe the
+> file as it stands.
+
+**And one cross-reference that does not resolve.** [`docs/03` §1](../../docs/03-SCREEN-INVENTORY.md)
+says *"the exact list of unbuilt screen numbers is recorded in `deliverables/prototype/figma-link.txt`
+§9"*. **It is not there** — §9 holds the sharing-permission and `.fig`-export items, and no list of
+screen numbers. The measured set above is what the file actually supports: **123 built, and every
+absent number in M1's four ranges is P1**. The doc 03 sentence is corrected in this same pass.
 
 ## What this audit does not cover
 

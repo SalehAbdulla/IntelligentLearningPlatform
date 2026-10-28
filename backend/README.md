@@ -32,7 +32,7 @@ The configuration is written and the rules are **verified against the emulator**
 | `firestore.indexes.json` | 10 composite indexes — no cold-query crashes | ✅ |
 | `storage.rules` | Owner-only paths plus shared-folder grants resolved from Firestore | ✅ 18 tests |
 | `rules-tests/` | Emulator suites, **negative tests first** | ✅ |
-| `functions/src/index.ts` | `createCharge` + `tapWebhook` (Tap Company, **implemented**) and `rollupDailyMetrics` (skeleton) | ✅ payments · ⚠️ rollup S4 |
+| `functions/src/index.ts` | **Five functions, all implemented**: `onUserCreate` (the role claim), `createCharge` (server-resolved price, **enforced idempotency**), `tapWebhook` (HMAC-verified), `refundCharge` (admin-only, one transaction) and `rollupDailyMetrics` (nightly, chunked) | ✅ 36 payment-rule tests · ⚠️ not deployed |
 | `functions/.env.example` | Required secrets, documented; the real `.env` is gitignored | ✅ |
 
 Full schema, role model and rule rationale: [docs/05-DATA-MODEL-SECURITY.md](../docs/05-DATA-MODEL-SECURITY.md).
@@ -41,10 +41,16 @@ Full schema, role model and rule rationale: [docs/05-DATA-MODEL-SECURITY.md](../
 
 1. **The Tap payment functions are implemented but not deployed.** `createCharge` and
    `tapWebhook` are ported from a working Tap Company integration (Bearer `sk_` key,
-   `POST /v2/charges`, and `X-Tap-Signature` HMAC-SHA256 over the raw body). They compile
-   clean (`tsc`) but cannot deploy without the Blaze plan plus a budget alert and spend cap
-   (docs/04 §5) and Tap secret keys from a merchant account (docs/09 Q2/Q3).
-   `rollupDailyMetrics` remains a skeleton (Sprint S4). Nothing here pretends otherwise.
+   `POST /v2/charges`, and `X-Tap-Signature` HMAC-SHA256 over the raw body). Their payment
+   **rules are tested** — `cd functions && npm test`, 36 tests on Node's own runner, with no
+   project, credentials or network — but they cannot deploy without the Blaze plan plus a
+   budget alert and spend cap (docs/04 §5) and Tap secret keys from a merchant account
+   (docs/09 Q2/Q3). **Corrected 28 Oct 2026: `rollupDailyMetrics` is NOT a skeleton.** This file
+   said it was, in two places, while `docs/TODOLIST.md` had it ticked and the code was a real
+   `onSchedule` roll-up — it reads the activity and quiz windows, groups them by user, chunks the
+   writes so the 300 s timeout holds, and records each run in `aiConfig/rollupStatus` so a silent
+   failure is visible. **What remains is deployment, not implementation.** Nothing here pretends
+   otherwise.
 2. **The Storage emulator prints a Java warning** on newer JDKs
    (`sun.misc.Unsafe::arrayBaseOffset` from protobuf). It is a deprecation notice from
    the emulator's own dependency, not a failure — all 18 Storage tests pass. If a future
@@ -60,6 +66,9 @@ npm install                       # firebase-tools + @firebase/rules-unit-testin
 npm test                          # both suites
 npm run test:firestore            # 40 tests
 npm run test:storage              # 18 tests (needs Firestore too — see below)
+
+# ── the Cloud Functions payment rules (Node's own runner: no emulator, no credentials) ──
+cd functions && npm test          # 36 tests — signature, prices, VAT, refunds
 
 # ── local development ──
 npm run emulators                 # auth + firestore + storage, with the emulator UI

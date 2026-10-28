@@ -32,7 +32,19 @@ import { defineSecret } from 'firebase-functions/params';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import {
+  PLANS,
+  TAP_CURRENCY,
+  TAP_STATUS,
+  canRefund,
+  filsToBhd,
+  isLiveChargeStatus,
+  periodEnd,
+  resolveAmount,
+  revokedSubscription,
+  vatPortionOf,
+  verifyTapSignature,
+} from './payments.js';
 
 initializeApp();
 
@@ -78,55 +90,19 @@ export const onUserCreate = beforeUserCreated(async () => ({
 }));
 
 /** Plan catalogue. Mirrors docs/04 §6. Prices are VAT-inclusive, in BHD fils. */
-const PLANS: Record<string, { monthly: number; annual: number }> = {
-  plus: { monthly: 1900, annual: 19000 },
-  pro: { monthly: 4900, annual: 49000 },
-};
-
+// The price table, the VAT rate, the status vocabulary and the payment RULES live in
+// `payments.ts`, which has no Firebase in it — so `npm test` proves them with no project, no
+// credentials and no network. This file keeps only what has to talk to the outside world.
 /** Tap REST base. The trailing slash on create matters (ported from the `beyond` integration). */
 const TAP_API = 'https://api.tap.company/v2/charges';
+/** Tap's refund endpoint. Same trailing-slash rule as charges, same `beyond` port. */
+const TAP_REFUNDS_API = 'https://api.tap.company/v2/refunds';
 /** Tap hosted payment page: the student pays on Tap's page, then Tap redirects back. */
 const TAP_SOURCE_ALL = 'src_all';
-/** BHD has THREE decimal places; Tap expects a decimal amount, not fils. */
-const TAP_CURRENCY = 'BHD';
-/** Bahrain VAT, mirroring `PaymentCatalogue.vatPercent` in the app. Baked into the price. */
-const VAT_PERCENT = 10;
 /** Where Tap sends the student back. Set TAP_REDIRECT_URL in the function env. */
 const TAP_RETURN_URL = process.env.TAP_REDIRECT_URL ?? 'https://studyforge.app/payment/return';
 /** Where Tap posts async status updates (this webhook). Set TAP_WEBHOOK_URL in the env. */
 const TAP_WEBHOOK_URL = process.env.TAP_WEBHOOK_URL ?? '';
-
-/** The Tap charge statuses, so a webhook for any of them is handled knowingly. */
-const TAP_STATUS = {
-  initiated: 'INITIATED',
-  captured: 'CAPTURED',
-} as const;
-
-/** Fils to a Tap BHD amount with three decimals: 1900 -> 1.9 (serialised as "1.900" by Tap). */
-function filsToBhd(fils: number): number {
-  return Number((fils / 1000).toFixed(3));
-}
-
-/** One month or one year after `start`, by calendar. In step with the app's periodEnd. */
-function periodEnd(term: 'monthly' | 'annual', start: Date): Date {
-  const end = new Date(start);
-  if (term === 'annual') end.setUTCFullYear(end.getUTCFullYear() + 1);
-  else end.setUTCMonth(end.getUTCMonth() + 1);
-  return end;
-}
-
-/**
- * Verifies Tap's `X-Tap-Signature` header: HMAC-SHA256 of the RAW request body with the
- * webhook secret, hex-encoded, compared in constant time. Ported from the working `beyond`
- * verification, which is the only thing standing between a stranger and a free Pro plan.
- */
-function verifyTapSignature(rawBody: string, header: string | undefined, secret: string): boolean {
-  if (!header || !secret) return false;
-  const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
-  const a = Buffer.from(expected, 'utf8');
-  const b = Buffer.from(header, 'utf8');
-  return a.length === b.length && timingSafeEqual(a, b);
-}
 
 // ═════════════ 1. createCharge — keeps the secret key server-side ═════════════
 
@@ -157,11 +133,46 @@ export const createCharge = onCall(
       throw new HttpsError('invalid-argument', 'Unknown billing term.');
     }
 
-    const amount = PLANS[planId]![term];
+    // The price is resolved from the SERVER's own table — the client sends a plan id and a term
+    // and nothing else, so a tampered price in the app is ignored because it is never read. The
+    // guard makes a plan with no price for this term fail loudly instead of charging zero.
+    const amount = resolveAmount(planId, term);
+    if (amount === undefined) {
+      throw new HttpsError('invalid-argument', 'That plan has no price for that term.');
+    }
 
-    // Idempotency: a retried tap must not produce a second charge.
+    // IDEMPOTENCY, ENFORCED HERE RATHER THAN ASSERTED.
+    //
+    // This used to be a comment and nothing else: the key was only SENT to Tap as a reference, and
+    // no code ever checked it. So *"a retried tap must not produce a second charge"* was a claim the
+    // implementation did not keep — and a double-tap is the easiest way to take a student's money
+    // twice, which is the one failure a payment flow cannot survive. The check is now ours, and it
+    // costs one indexed read.
     const idempotencyKey =
       `${uid}:${planId}:${term}:${new Date().toISOString().slice(0, 10)}`;
+
+    const existing = await db
+      .collection('payments')
+      .where('idempotencyKey', '==', idempotencyKey)
+      .limit(1)
+      .get();
+
+    const prior = existing.docs[0];
+    const priorStatus = prior ? String(prior.get('status') ?? '') : '';
+
+    // Only a charge that is still LIVE blocks a new one. A DECLINED or FAILED attempt has to stay
+    // retryable, or a student whose card was refused once could never pay at all — which is why
+    // this is a status check rather than merely "a row exists".
+    if (prior && isLiveChargeStatus(priorStatus)) {
+      return {
+        tapChargeId: String(prior.get('tapChargeId') ?? prior.id),
+        redirectURL: (prior.get('redirectURL') as string | null) ?? null,
+        status: priorStatus,
+        // Tells the caller this is the SAME charge, so a UI that wants to say so can. The app's
+        // `ChargeTicket` ignores unknown fields, so this is additive rather than a breaking change.
+        reused: true,
+      };
+    }
 
     // POST to Tap. The amount is resolved HERE from PLANS, so a tampered price in the app is
     // ignored. Ported from the working `beyond` Tap integration (goSell hosted page): Tap wants
@@ -319,8 +330,10 @@ export const tapWebhook = onRequest(
           plan: planId,
           term,
           amountFils: expectedFils,
-          // The VAT portion inside the total, so the app's receipt adds up.
-          vatFils: Math.round((expectedFils * VAT_PERCENT) / (100 + VAT_PERCENT)),
+          // The VAT portion inside the total, so the app's receipt adds up. `vatPortionOf` is the
+          // same arithmetic the app's receipt uses, and it is tested against a wrong-inclusive
+          // formula that would otherwise overstate the tax by 10%.
+          vatFils: vatPortionOf(expectedFils),
           currency: TAP_CURRENCY,
           status: TAP_STATUS.captured,
           tapChargeId: chargeId,
@@ -358,7 +371,140 @@ export const tapWebhook = onRequest(
   },
 );
 
-// ═════════════ 3. rollupDailyMetrics — nightly aggregation ═════════════
+// ═════════════ 3. refundCharge — the other half of F13 ═════════════
+
+/**
+ * Refunds a captured charge and takes the entitlement back with it.
+ *
+ * WHY THIS EXISTS AT ALL: docs/02 §F13 lists *"refund path"* among the flow's edge cases, and the
+ * feature's whole claim is that the server owns the entitlement. A payment system that can take
+ * money and never give it back is not half a feature, it is an asymmetry — and the money and the
+ * access have to move together or neither should move.
+ *
+ * ADMIN ONLY, and that is a product decision rather than a limitation: a refund is money leaving
+ * the business, so it is never self-serve. The role is read from the CUSTOM CLAIM, which the client
+ * cannot set (docs/05 §2.1) — the same rule the webhook relies on.
+ *
+ * PORTED FROM THE `beyond` INTEGRATION for the endpoint and the body shape
+ * (`POST /v2/refunds/` with `charge_id`), exactly as the charge endpoint was.
+ */
+export const refundCharge = onCall(
+  { secrets: [TAP_SECRET_KEY] },
+  async (request) => {
+    if (request.auth?.token?.role !== 'admin') {
+      throw new HttpsError('permission-denied', 'Only an admin can refund a charge.');
+    }
+
+    const { tapChargeId, reason } = (request.data ?? {}) as {
+      tapChargeId?: string;
+      reason?: string;
+    };
+    if (!tapChargeId) {
+      throw new HttpsError('invalid-argument', 'Which charge should be refunded?');
+    }
+
+    const payRef = db.collection('payments').doc(tapChargeId);
+    const snap = await payRef.get();
+    if (!snap.exists) {
+      throw new HttpsError('not-found', 'No such charge.');
+    }
+    // Only a CAPTURED charge has money to return — `canRefund` owns that rule and the tests pin
+    // it. Refunding an INITIATED one would race the webhook, and the student could end up
+    // entitled AND refunded.
+    if (!canRefund(String(snap.get('status') ?? ''))) {
+      throw new HttpsError('failed-precondition', 'Only a captured charge can be refunded.');
+    }
+    const uid = String(snap.get('uid') ?? '');
+    if (!uid) {
+      throw new HttpsError('failed-precondition', 'The charge has no owner to unentitle.');
+    }
+
+    // FULL REFUND, and deliberately no `amount`.
+    //
+    // Tap's CHARGE api takes BHD as a decimal with three places — `filsToBhd` exists for exactly
+    // that — while a refund amount is documented as a minor-unit integer. Guessing between the two
+    // is how a refund silently becomes 1000x or 1/1000x: a wrong number that looks plausible.
+    // Omitting the field returns exactly what was taken, so the ambiguity cannot bite. A PARTIAL
+    // refund needs those units confirmed against Tap's documentation first, and is recorded as
+    // follow-on work rather than guessed here.
+    const response = await fetch(`${TAP_REFUNDS_API}/`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${TAP_SECRET_KEY.value()}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        charge_id: tapChargeId,
+        currency: TAP_CURRENCY,
+        reason: reason ?? 'requested_by_admin',
+        metadata: { uid, refundedBy: request.auth.uid },
+      }),
+    });
+
+    const refund = (await response.json()) as {
+      id?: string;
+      status?: string;
+      errors?: unknown;
+    };
+    if (!response.ok || refund.errors) {
+      throw new HttpsError('internal', `Tap refund failed (HTTP ${response.status}).`);
+    }
+
+    // Revoke in ONE transaction, and only if the payment is still captured — so a second call
+    // cannot revoke twice, and the money and the access move together or not at all.
+    const now = new Date();
+    await db.runTransaction(async (tx) => {
+      const fresh = await tx.get(payRef);
+      if (fresh.get('status') === TAP_STATUS.refunded) return;
+
+      tx.set(
+        payRef,
+        {
+          // Lowercase, because the app's decoder matches that literal — see TAP_STATUS.refunded.
+          status: TAP_STATUS.refunded,
+          tapRefundId: refund.id ?? null,
+          refundedAt: now,
+          refundReason: reason ?? null,
+        },
+        { merge: true },
+      );
+
+      // Back to free, and EXPIRED rather than CANCELLED — `revokedSubscription` owns that decision
+      // and `payments.test.ts` pins it, `periodEnd` included: leaving the old end in place would
+      // read as entitled on paper even though the plan says expired.
+      tx.set(
+        db.collection('subscriptions').doc(uid),
+        {
+          ...revokedSubscription(now),
+          refundedAt: now,
+          updatedAt: now,
+        },
+        { merge: true },
+      );
+
+      // The server already writes an audit entry when it GRANTS an entitlement. Taking one back is
+      // at least as interesting, and the pair is what makes the money trail readable.
+      tx.set(db.collection('auditLog').doc(), {
+        actor: request.auth?.uid,
+        action: 'entitlement.revoked',
+        uid,
+        tapChargeId,
+        tapRefundId: refund.id ?? null,
+        reason: reason ?? null,
+        at: now,
+      });
+    });
+
+    // The claim is the authority for the AI quota, so it has to move with the document — the same
+    // two-step the webhook performs in the other direction.
+    await getAuth().setCustomUserClaims(uid, { plan: 'free' });
+
+    return { tapRefundId: refund.id ?? null, status: refund.status ?? null };
+  },
+);
+
+// ═════════════ 4. rollupDailyMetrics — nightly aggregation ═════════════
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 /** Bahrain is UTC+3 with no daylight saving, so a fixed offset is exact. */

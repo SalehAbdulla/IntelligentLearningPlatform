@@ -87,6 +87,11 @@ bash tools/todos.sh              # your open count should go DOWN, not up
 gh pr checks                     # the fast answer: which jobs passed or failed
 ```
 
+> **And since 22 Oct 2026 CI is a REQUIRED check on `develop`** (`Repo checks` and
+> `iOS build and test`), so a red run does not merely advise — **it blocks the merge**.
+> `gh pr checks` is therefore literally the verdict, not a summary of one. You cannot merge past
+> a failure, and you should not ask anyone to: read the failure, fix it, push again.
+
 **CI also runs on the push itself, before any pull request exists** — on every `feat/`, `fix/`,
 `docs/`, `chore/`, `release/` and `hotfix/` branch. So **you do not have to open a PR to find out
 whether your branch builds, and you should not wait for one:**

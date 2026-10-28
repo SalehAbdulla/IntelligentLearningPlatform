@@ -94,9 +94,20 @@ the owner may push directly, while every other account still has to go through a
 |---|---|---|
 | Pull request required before merging | ✅ all members | ✅ all members |
 | **Approvals required before merging** | none enforced | **✅ 1 — and any member may approve** (added 15 Oct 2026) |
+| **Required status checks before merging** | none | **✅ `Repo checks` + `iOS build and test`** (added 22 Oct 2026) |
 | Admin enforcement (`enforce_admins`) | ❌ off, owner exempt by decision | ❌ off, owner exempt by decision |
 | Force-push blocked | ✅ | ✅ |
 | Branch deletion blocked | ✅ | ✅ |
+
+> **CI is a gate now, not a verdict somebody chooses to read (22 Oct 2026).** `develop` requires
+> **`Repo checks`** and **`iOS build and test`** to pass before a pull request can be merged. This
+> closes the dangerous half of [doc 09 R26](09-RISKS-OPEN-QUESTIONS.md): until now a red build
+> could be merged, which is the one failure CI was added to prevent for the four members who
+> cannot run Xcode. Two details are deliberate. **`strict=false`**, so a green pull request is not
+> invalidated every time `develop` moves — a 12-minute re-run per merge is how a gate becomes
+> something people route around. And **`enforce_admins` stays off**, so the owner hotfix path
+> below still exists. What CI cannot check is whether the code is any *good*, which is what the
+> required review is for.
 
 > **Why `develop` requires one approval, and why it is not "only the owner may merge".** The
 > Sprints component (10%) is read from the **review trail**, and the comprehension contract says
@@ -171,6 +182,17 @@ disabling anything.
 > **Lesson worth keeping:** a rule that can be silently bypassed is not a rule. That is why the
 > PR requirement stays enforced for the members whose work is assessed, and why the guards live
 > in executable tools (`tools/commit.sh`, `tools/check-lane.sh`) as well as in settings.
+
+> **Updated 22 Oct 2026 — the guards now run where they cannot be skipped.** `tools/commit.sh`
+> and `tools/check-lane.sh` are *local* tools: they refuse a bad commit only if the person runs
+> them. One member's branch showed the gap precisely — five subjects that are not Conventional
+> Commits, a personal author address, and no pull request for anything to notice it. So
+> **`tools/check-commits.sh`** now checks identity, message and lane across a branch's commits,
+> and the **`Repo checks`** CI job runs it on every push and every pull request. It reads its
+> rules from the **base** branch (`--rules-ref`: that branch's message pattern, its lane guard,
+> its allowlist and its `.mailmap`), so a pull request cannot relax the rule that judges it. The
+> one place an exception is allowed is `tools/commit-hygiene-allowlist.txt`, which names
+> individual commits with a written reason — a recorded exception, never a silent one.
 
 ```
 remote: error: GH006: Protected branch update failed for refs/heads/develop.
@@ -316,6 +338,25 @@ The script enforces the rules for you: it **refuses to run on `main` or `develop
 bash tools/new-branch.sh feat/F04-sm2-scheduling
 ```
 Creates a correctly-named branch from an up-to-date `develop` and pushes it with upstream tracking.
+
+### `tools/review-packet.sh`, everything a reviewer needs, on one screen
+
+```bash
+bash tools/review-packet.sh            # list the open pull requests
+bash tools/review-packet.sh 135        # the packet for one of them
+```
+
+**Why it exists.** `develop` requires one approving review, and the Sprints component is **10%,
+assessed per person** — so a review is at once the project's bottleneck and a member's cheapest
+legitimate piece of evidence. What stops reviews happening is not reluctance: it is that a
+**36-commit, 2,897-line pull request looks like an afternoon**. It is not. It is three questions and
+a diff, and this prints the three questions, the files where the risk actually is (biggest diffs
+first), the tests that are the proof, the CI result, and the exact commands — including
+`gh pr review`, because the last step is the one people stall on.
+
+**It is not a review.** An approval produced by this output and not by reading the diff is worse
+than no approval — it is the one thing on this project that cannot be undone. The tool removes the
+excuse, not the work.
 
 ---
 
