@@ -274,18 +274,21 @@ right-to-left Arabic proof is a built frame (139).
       deliverables/prototype/ the same day — at the root it is NOT covered by the
       `.gitignore` rule `deliverables/**/*.fig`, so it would have committed a
       1.8 MB binary to the repository)
-      **STALE AGAIN as of 28 Oct 2026.** The live file changed twice on that date. (1) Frame
-      `172_Checkout_ExamBoost` (390 x 980, taller than the 844 device) had its overflow set
-      to VERTICAL, so its bottom 136 px is reachable in the prototype viewer — the P5-12 fix.
-      (2) The design-system page was componentised: 0 -> 17 named COMPONENT nodes, converted
-      in place, with every position, size, child, fill, effect and variable binding preserved
-      — the P5-01 work. The committed .fig is therefore behind the live file. Re-export to
-      clear it. No screen, frame size, frame name or link changed, so P9-06, P9-07, P9-08,
-      P9-11 and P9-12 are unaffected. The two board figures in
-      deliverables/design-document/figures/ are deliberately left as the Design Document's
-      dated snapshot — a component draws its name on the canvas, so regenerating them would
-      only move the disagreement with the already-submitted PDF. See figma-audit.md section
-      "Phase 5 re-measurement".
+      **STALE 28 Oct 2026, and RE-EXPORTED THE SAME DAY — 1,785,516 bytes, written 28 Oct 15:00.**
+      The live file had changed twice that day: (1) frame `172_Checkout_ExamBoost` (390 x 980,
+      taller than the 844 device) had its overflow set to VERTICAL, so its bottom 136 px is
+      reachable in the prototype viewer — the P5-12 fix; and (2) the design-system page was
+      componentised, 0 -> 17 named COMPONENT nodes converted in place with every position,
+      size, child, fill, effect and variable binding preserved — the P5-01 work. **Both are in
+      the export above.** It landed in the repository ROOT again and was moved here on
+      28 Oct 2026: the same trap this section already records, and worth repeating because it
+      is now enforced — `tools/check-lane.sh` reports a root `StudyForge.fig` as **OUT OF LANE
+      for every member**, so it cannot be committed from there at all. No screen, frame size,
+      frame name or link changed, so P9-06, P9-07, P9-08, P9-11 and P9-12 are unaffected. The
+      two board figures in deliverables/design-document/figures/ are deliberately left as the
+      Design Document's dated snapshot — a component draws its name on the canvas, so
+      regenerating them would only move the disagreement with the already-submitted PDF. See
+      figma-audit.md section "Phase 5 re-measurement".
   [x] Export the 130 wireframes and 17 flow diagrams at 2x PNG into
       deliverables/design-document/mockups/figures/ (re-exported 24 Oct 2026 by
       script through the Figma MCP server: 154 PNGs in that folder, 1720 x 1920
