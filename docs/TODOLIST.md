@@ -87,7 +87,7 @@ Legend: `[ ]` open, `[x]` done.
 - [x] F12 admin: K06 taxonomy management and K09 broadcast composer (group K complete)
 - [x] Accessibility: VoiceOver pass on 8 screens (F04, F05, F06, F13, F15)
 - [x] Accessibility: Dynamic Type really scales to AX5; VoiceOver recorded on every product screen (F01-F17); Reduce Motion honoured where it animates; the one fill-hue-as-text contrast defect fixed
-- [x] Backend: `onUserCreate` claims trigger and `rollupDailyMetrics` implemented (typechecked)
+- [x] Backend: `onUserCreate` claims trigger, `createCharge` (with **server-enforced idempotency**), `tapWebhook` and `rollupDailyMetrics` implemented and typechecked — plus **`refundCharge`**, which closes F13's refund path
 - [x] Commit the VS Code tooling and `tools/run-ios.sh` (PR #46)
 - [x] Add this file, `docs/TODOLIST.md` (PR #48)
 - [x] Release `develop` to `main` (PRs #45, #47); `main` and `develop` level
@@ -153,8 +153,11 @@ Group K (admin content management) is now feature-complete.
 
 - [x] Add an `onUserCreate` Auth trigger that sets the `role` and `plan` custom claims at sign-up
 - [x] Implement `rollupDailyMetrics` (activity and quiz aggregation into `progress` and `topicMastery`)
+- [x] **Make the idempotency real rather than claimed** (28 Oct 2026). `createCharge` said *"a retried tap must not produce a second charge"*, but the key was only **sent** to Tap as a reference and **no code checked it** — so the comment described a property the implementation did not have, and a double-tap was the easiest way to take a student's money twice. Now the server looks the key up before calling Tap and returns the existing charge instead of creating a second one, with one nuance that matters: **only a LIVE charge (`INITIATED` or `CAPTURED`) blocks a retry**, because a `DECLINED` attempt has to stay retryable or a student whose card was refused once could never pay
+- [x] **Add `refundCharge` — the refund path F13's own flow lists** (28 Oct 2026). **Admin-only**, read from the custom claim (a refund is money leaving the business, so it is never self-serve). Full refund via Tap `POST /v2/refunds/`, then **one transaction** that marks the payment `refunded` (lowercase, because that is the literal the app's decoder matches), returns the subscription to `free`/`expired`, resets the `plan` claim and writes an `entitlement.revoked` audit entry — so the money and the access move together or not at all. **Two deliberate limits, recorded rather than hidden:** no `amount` is sent, because Tap's charge API takes decimal BHD while a refund amount is documented as a minor-unit integer and guessing is how a refund silently becomes 1000× or 1/1000×; and **no UI** — the client half is `Features/Subscription/`, which is M3's lane
+- [ ] **A payment rate limiter was deliberately NOT added, and the reason is worth keeping.** Beyond's implementation is an in-memory token bucket, which in a **serverless** function is close to useless: each invocation may be a different instance, so the bucket is not shared. Beyond's own comment concedes this (*"in production, replace with Redis"*). The honest version here is Firestore-backed like `AICostGovernor`, and its marginal value is low because **idempotency already prevents the failure that matters** (a double charge). Follow-on work, not a gap
 - [ ] Deploy prerequisites: Blaze plan, budget alert, spend cap, Identity Platform, Tap secrets (account action, human)
-- [ ] Deploy the four functions once Blaze is enabled, then point `.staging` at them
+- [ ] Deploy the **five** functions once Blaze is enabled, then point `.staging` at them
 - Note: `cd backend/functions && npx tsc --noEmit` passes; the functions are not deployed.
 
 ## 4. Design Document, 10%, due 22 Oct 2026 (work-queue C)
