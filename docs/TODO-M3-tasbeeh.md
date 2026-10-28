@@ -370,6 +370,32 @@ the project, and it is F13, your feature.
 > `Features/Groups/` and cannot be done honestly in the time left. **Option 2 is the fix that
 > cannot make the product dishonest.**
 
+> ### ⚠️ Status check, 28 Oct 2026 — R25 is still OPEN, and here is exactly what remains
+>
+> M3 shipped real work that day: `ios/StudyForge/StudyForgeTests/AICostGovernorResetTests.swift`
+> (PR #147 — `Repo checks` **and** `iOS build and test` both green), pinning the AI daily budget
+> reset to the **clock** rather than to the last request. Good work, and it is F13's — **but it is
+> not R25.** R25's own `Done when` is a grep, and it still fails:
+>
+> ```text
+> $ grep -rn 'includedMaterials\|includedGroupSpaces' ios/StudyForge/StudyForge/Features/
+> Features/Subscription/PaymentViewModel.swift:157
+> Features/Subscription/PaymentViewModel.swift:158
+> Features/Subscription/PlanCompareView.swift:45
+> Features/Subscription/PlanCompareView.swift:46
+> ```
+>
+> **Four lines, two files, still advertising two limits the app does not enforce.** Everything above
+> the table still stands: remove those four rows, add the acceptance test
+> (`PaywallHonestLimitsTests.swift` — asserting the `materials` and `groups` rows are **gone** while
+> the AI-allowance row **remains**), and R25 is closed. Under an hour, inside your lane, and still the
+> highest-scoring open risk on the register.
+>
+> **The two blockers that held it up are fixed**, in PR #148: `AICostGovernorTests.swift` is now in
+> M3's `TOUCH` list, and the rule that refused **every** member their own contribution log is
+> corrected. Both must land on `develop` before they take effect — that is the guard's bootstrap
+> property, not an oversight.
+
 **Planner determinism — non-negotiable.** `StudyPlanner` already has passing tests. NO
 unseeded randomness, and NO reading the machine's clock inside the scheduling maths. If
 the planner needs "now", it must be **injectable** so a test can pin it. Write the test at
