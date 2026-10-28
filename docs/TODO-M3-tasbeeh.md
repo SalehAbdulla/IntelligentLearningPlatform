@@ -65,13 +65,54 @@ quickest way to see what "done" looks like in this repository before you write y
 
 ### Then the part that actually carries your mark
 
-**Your lane has shipped nothing.** Measured 28 Oct 2026: **0 branches, 0 commits, 0 reviews**, and
-`research/sprints/sprint-1/tasbeeh-contribution.md` is still empty. The Sprints component is **10%,
-assessed per person**, and the VIVA (60%) has to be passed by every member — so a tidy repository with
-your name absent from it is the one outcome this file exists to prevent.
+**Measured 28 Oct 2026 from `git shortlog -sne origin/develop`:** you have **12 commits on
+`develop`** and **two merged pull requests** — #130 (F06, exam dates) and #133 (F07, student home).
+That is clean work: every subject is a Conventional Commit, **one file per commit**, and the messages
+say *what changed* rather than *that something changed*. It is the standard this repository asks for,
+and you are already meeting it.
+
+> **A correction to this file, and it matters.** An earlier version of this section said *"your lane
+> has shipped nothing — 0 branches, 0 commits, 0 reviews"*. **That was wrong**, and the way it was
+> wrong is worth knowing because an agent will make the same mistake: the measurement used
+> `git log --author=tasbeeh`, and **git's `--author` is case-sensitive**, so a lowercase pattern
+> matched none of your `Tasbeeh Saeed` commits. `git shortlog -sne` is the tool that cannot lie about
+> this, and it credits you with all twelve. If you ever measure contribution, use that one.
+
+**What is genuinely at zero is your review count** — and that is what the top of this file is about.
+`research/sprints/sprint-1/tasbeeh-contribution.md` is also still empty. The Sprints component is
+**10%, assessed per person**, and the VIVA (60%) has to be passed by every member.
 
 **Start with R25 in [§3](#3-my-open-todos-confirm-with-bash-toolstodossh)** — it is decided, it is
 under an hour, and it is inside your lane.
+
+### The commit rule, for your agent — one file, one message
+
+**One file per commit, with a subject that says what changed.** This is not a style preference: it is
+what makes a change reviewable, revertable, and attributable to a feature.
+
+```bash
+bash tools/commit.sh path/To/File.swift "feat(F06): never schedule a subject on or after its exam"
+```
+
+`tools/commit.sh` writes **one commit per file**, refuses a non-conventional subject, refuses
+`main`/`develop`, and scans for secrets. Several files in one run is fine — pass `<path> "<message>"`
+pairs, one pair per file, or use `--multi`. What is never fine is `git commit -am "update"`, or
+`git add .` followed by a single message: a commit carrying eight files cannot be reviewed, cannot be
+reverted, and names no feature.
+
+**CI enforces the same rules server-side** (`tools/check-commits.sh`, run on every push), and it reads
+the rules **from `develop`** — so no branch can relax them. A subject already pushed cannot be
+reworded without a force-push, which [doc 12 §5](12-GIT-WORKFLOW.md) forbids; the only other remedies
+are an allowlist entry with a written reason or a rewrite agreed with the team. **Get it right at the
+commit.**
+
+**Your own twelve are the model:** `4ca72a6 feat(F06): store per-course exam dates on the plan` is one
+file, one idea, and a subject that will still make sense in six months.
+
+> **One identity note, so your agent does not "fix" it:** your earlier commits are authored as
+> `202300549@student.polytechnic.bh` — two digits transposed. `.mailmap` maps that to your real ID
+> `202305409`, which is why `git shortlog` credits you with all twelve. **Do not rewrite those
+> commits.** New commits must use `202305409`, as the first table row above says.
 
 ---
 
