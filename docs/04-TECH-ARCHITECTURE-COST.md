@@ -214,6 +214,11 @@ User taps "Upgrade"
    → Tap → webhook → Cloud Function verifySignature() → validate amount + currency
    → Function writes subscriptions/{uid} = { plan, status, tapChargeId, periodEnd }
    → Function mirrors the plan into the Auth custom claim `plan`
+   → iOS calls Cloud Function  refundCharge(chargeId, reason)        ← ADMIN only, from the claim
+   → Function calls Tap  POST /v2/refunds  (FULL refund: no `amount` sent, so the charge API's
+     decimal-BHD and a refund's minor-unit integer cannot be confused for one another)
+   → Function revokes in ONE transaction: payments/{id} → `refunded`, subscriptions/{uid} →
+     `free` / `expired`, the `plan` claim back to `free`, and an `entitlement.revoked` audit entry
    → Client observes its own subscription doc and unlocks features
 ```
 
