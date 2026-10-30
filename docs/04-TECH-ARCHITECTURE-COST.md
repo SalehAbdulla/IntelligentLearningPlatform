@@ -160,7 +160,7 @@
 | Auth MAU | **50,000** | 40 demo users | - |
 | Cloud Messaging | **Unlimited** | - | - |
 | Remote Config | **No-cost** | - | - |
-| Firebase AI Logic (Gemini Developer API free tier) | Rate-limited per model (RPM / RPD / TPM); requires an API key created in AI Studio and enabled for the Firebase project | <100 generation calls / day after caching + tier-0 routing | - |
+| Firebase AI Logic (Gemini Developer API free tier) — **implemented as the Gemini Developer API called directly** | Rate-limited per model (RPM / RPD / TPM); needs an API key created in **Google AI Studio** — **free, no credit card**. ⚠️ **Corrected 28 Oct 2026:** this row said the key must be *"enabled for the Firebase project"*, which was true of the **planned** Firebase AI Logic route. The implementation calls the Gemini Developer API over `URLSession` (`Core/AI/GeminiCloudProvider.swift`), because the AI Logic SDK requires a `*.xcodeproj` edit that the lane guard forbids to **every** member including the owner — so **no Firebase project wiring is required** | <100 generation calls / day after caching + tier-0 routing | - |
 
 > ⚠️ **Two non-obvious constraints worth stating in the document, because they demonstrate real engineering diligence:**
 > 1. **Cloud Storage's no-cost quota applies only to buckets in `us-central1`, `us-west1` or `us-east1`.** Choosing a Bahrain-region bucket would look locally optimal but would drop us straight onto a billing plan. We choose `us-central1` and accept ~200 ms extra latency to stay free.
