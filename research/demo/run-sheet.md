@@ -165,3 +165,23 @@ One slide: the 3-tier AI router, the $0 cost model, the 4 roles, the security ru
 | 3 | The money shot (0:25–3:10) was protected | ☐ |
 | 4 | The total landed within 5:00 | ☐ |
 | 5 | Any step that failed is **written into [`regression-log.md`](regression-log.md)** | ☐ |
+
+---
+
+## Owner's tasks before the VIVA — the things only M1 can do
+
+**Recorded 28 Oct 2026, for the next session.** Everything here is either a human action or a review
+nobody else can give. Nothing in the *engineering* is blocked.
+
+| # | Task | Why it matters | Time |
+|---|---|---|---|
+| 1 | **Set `GEMINI_API_KEY`** — see the pre-flight section above. Free, from Google AI Studio, no card | Without it tier 1 reports `.unavailable` and every AI screen shows **"not available"**. The demo still runs, but the money shot is not the real thing | 5 min |
+| 2 | **Re-export `deliverables/prototype/StudyForge.fig`** (Figma → File → Save local copy) | The committed export is **8 components behind**: its canvas is dated **15:00**, and the component work landed from **15:19** | 2 min |
+| 3 | **Chase one review** on **#148** (the guard fix — M3 is blocked on it for her contribution log), then **#149** and **#150** | `develop` requires one approving review and M1 cannot review his own PRs. It is the only thing between here and a closed queue | 10 min |
+| 4 | **Book the §17.3 usability test — 5 participants + a SUS score** | **Two of the three** items the submission gate still reports as open (`dd-usability`, `p9-0304`), and the only one that needs other people. It cannot be compressed, so it sets the real deadline | 1–2 days |
+| 5 | **P5-16 — the 3-minute walkthrough recording** | The last Phase 5 item needing nothing but a screen recorder; the prototype is fully wired (320 reactions, 37 Smart Animate) | 30 min |
+| 6 | **Portal submit, then tick `p9-1819`** | The last gate item. The `prototype-v1` tag already exists | 30 min |
+| 7 | **Decide the demo seed** — the dashboard's empty state (recommended, and the better opening) or pre-populated plan/progress/decks | Recorded in the "Measured 28 Oct 2026" note above as a **decision**, not a defect | 5 min |
+
+**Not on this list, because it is not M1's:** R25 (M3's — four lines, two files, one test) and
+everything in `docs/TODO-M2`/`M4`/`M5`.
