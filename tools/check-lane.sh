@@ -82,6 +82,12 @@ case "$MEMBER" in
         "deliverables/"
         "tools/"
         "research/"
+        # The backend is the owner's, and only the owner's. docs/10 §4 assigns M1 the
+        # Firebase project and the rules skeleton in S0, and the security audit plus rules
+        # re-test in S5 — so it cannot be off limits to the one person the plan gives it to.
+        # It stays FORBIDDEN for M2–M5, who never need it: their work is in `ios/`, and the
+        # emulator means they can run and test everything locally without the project.
+        "backend/"
         ".github/"
         "CONTRIBUTING.md"
         "README.md"
@@ -121,6 +127,14 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Core/AI/AIRouter.swift"
         "ios/StudyForge/StudyForge/Core/AI/AIProvider.swift"
         "ios/StudyForge/StudyForge/Core/AI/OnDeviceProvider.swift"
+        # F15 retrieval + generation layer (docs/02 §5: M2 owns what the model is allowed to see).
+        # These were missing from every lane until 17 Oct 2026 — including LocalRetrievalService,
+        # which then broke the build on stable Xcode with nobody able to fix it legitimately.
+        "ios/StudyForge/StudyForge/Core/Coach/RetrievalService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/LocalRetrievalService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/Embedding.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/TextChunk.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/Citation.swift"
         "ios/StudyForge/StudyForge/Core/Admin/AIConfiguration.swift"
         "ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewViewModel.swift"
         "ios/StudyForge/StudyForge/Features/Flashcards/FlashcardReviewView.swift"
@@ -139,10 +153,19 @@ case "$MEMBER" in
         "ios/StudyForge/StudyForge/Features/Tutor/"
         "ios/StudyForge/StudyForgeTests/"
       ) ;;
-  M3) NAME="Tasbeeh Saeed"; ID=202300549; WHO=tasbeeh
+  M3) NAME="Tasbeeh Saeed"; ID=202305409; WHO=tasbeeh
       FEATURES="F06 F07 F13 F15"
       BRANCH_RE='^feat/F(06|07|13|15)-'
       TOUCH=(
+        # F15 planner + router integration (docs/02 §5: M3 owns what the student should do next).
+        # Missing from every lane until 17 Oct 2026, same as M2's half above.
+        "ios/StudyForge/StudyForge/Core/Coach/CoachPlanningService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/CoachService.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/CoachStore.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/CoachThread.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/FileCoachStore.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/InMemoryCoachStore.swift"
+        "ios/StudyForge/StudyForge/Core/Coach/AnswerFeedback.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlan.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlanner.swift"
         "ios/StudyForge/StudyForge/Core/Planning/StudyPlanStore.swift"
@@ -237,11 +260,13 @@ SHARED=(
   "ios/StudyForge/StudyForge/Resources/ar.lproj/Localizable.strings"
 )
 
-# Nobody touches these, ever. The owner's list is shorter: docs, deliverables, tools and the
-# repo-level files ARE the owner's lane (see OWNED_DIRS above), so only the project file and
-# the backend stay forbidden.
+# Nobody touches these, ever. The owner's list is shorter: docs, deliverables, tools, research,
+# backend and the repo-level files ARE the owner's lane (see OWNED_DIRS above), so only the
+# project file stays forbidden for the owner. `backend/` was forbidden to EVERYONE until
+# 18 Oct 2026, which contradicted docs/10 §4 — where M1 owns the Firebase project and the rules
+# in S0 and the security audit plus rules re-test in S5. It stays forbidden for M2–M5.
 if [[ "$OWNER_MODE" -eq 1 ]]; then
-  FORBIDDEN_RE='^(ios/StudyForge/StudyForge\.xcodeproj/|ios/StudyForge/StudyForge\.xcworkspace/|backend/)'
+  FORBIDDEN_RE='^(ios/StudyForge/StudyForge\.xcodeproj/|ios/StudyForge/StudyForge\.xcworkspace/)'
 else
   FORBIDDEN_RE='^(ios/StudyForge/StudyForge\.xcodeproj/|ios/StudyForge/StudyForge\.xcworkspace/|docs/|deliverables/|backend/|tools/|\.github/|README\.md$|\.mailmap$|\.gitignore$)'
 fi

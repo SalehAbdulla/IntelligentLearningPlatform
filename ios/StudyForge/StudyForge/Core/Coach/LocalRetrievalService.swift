@@ -64,23 +64,31 @@ actor LocalRetrievalService: RetrievalService {
 
         let queryVector = embedder.embed(trimmed)
 
-        return candidates
-            .map { entry in
-                RetrievedChunk(
-                    chunk: entry.chunk,
-                    score: queryVector.cosineSimilarity(to: entry.vector)
-                )
-            }
-            .filter { $0.isRelevant }
-            .sorted { left, right in
-                // Tie-break on reading order, so an unchanged library returns a stable answer
-                // rather than reshuffling on every keystroke.
-                left.score == right.score
-                    ? left.chunk.ordinal < right.chunk.ordinal
-                    : left.score > right.score
-            }
-            .prefix(topK)
-            .map { $0 }
+        // WHY THIS IS FOUR STATEMENTS AND NOT ONE CHAIN
+        // As a single chained expression — map → filter → sorted → prefix → map — the Swift
+        // type-checker cannot infer the result type in reasonable time on Xcode 26.x, and the
+        // build fails with "the compiler is unable to type-check this expression in reasonable
+        // time". It happens to compile on Xcode 27, which is a **preview** release, so the
+        // failure was invisible on the machine it was written on and only appeared on CI.
+        // Splitting the chain with explicit types builds on both. Do not re-chain it.
+        let scored: [RetrievedChunk] = candidates.map { entry in
+            RetrievedChunk(
+                chunk: entry.chunk,
+                score: queryVector.cosineSimilarity(to: entry.vector)
+            )
+        }
+
+        let relevant = scored.filter { $0.isRelevant }
+
+        let ranked = relevant.sorted { left, right in
+            // Tie-break on reading order, so an unchanged library returns a stable answer
+            // rather than reshuffling on every keystroke.
+            left.score == right.score
+                ? left.chunk.ordinal < right.chunk.ordinal
+                : left.score > right.score
+        }
+
+        return Array(ranked.prefix(topK))
     }
 
     // MARK: Beyond the frozen contract

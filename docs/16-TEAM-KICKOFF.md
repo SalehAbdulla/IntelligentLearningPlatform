@@ -50,6 +50,16 @@ bash tools/commit.sh --push <file> "feat(F06): capture per-course exam dates"
 gh pr create --base develop --fill                # the PR is your evidence
 ```
 
+**Then read the CI result before you move on:**
+
+```bash
+gh pr checks                                      # the build and the 808 tests, on macOS
+```
+
+**Xcode is macOS-only.** If you are on **Windows** you cannot build or test locally at all —
+**CI is your build machine**, and it is free. Do not report that something works unless
+`gh pr checks` says so. Full guide: [`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md).
+
 Then push **every day you work**. A single dump of commits on the last day reads as fabricated.
 
 ## Two rules that cost the team marks
@@ -67,7 +77,7 @@ Then push **every day you work**. A single dump of commits on the last day reads
 
 ## Everyone can push now
 
-**All five members hold write access as of 15 October 2026**, verified against the API — `mohdalmadhon`, `Tasbeeh37`, `shaahaadhani43-debug` and `FatemaGhareeb` all show `write`, and the pending-invitation list is **empty**. The blocker recorded as risk **R23** is closed.
+**All five members hold write access as of 16 October 2026**, verified against the API — `mohdalmadhon`, `Tasbeeh37`, `shaahaadhani43-debug` and `FatemaGhareeb` all show `write`, and the pending-invitation list is **empty**. The blocker recorded as risk **R23** is closed.
 
 **So nothing external is stopping anyone any more.** The remaining problem is not access, it is that the commit history is still almost entirely M1's, and that **cannot be fixed at the end** — a sprint's evidence has to exist throughout the sprint. The commit timestamps are the proof, and they are read.
 

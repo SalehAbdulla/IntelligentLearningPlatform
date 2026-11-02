@@ -13,6 +13,31 @@
 
 ---
 
+## ⚡ The four things that actually go wrong — read this before anything else
+
+**Every problem a member has hit so far has been one of these four.** They take ten minutes to get
+right, and they are what the Sprints mark — **10%, assessed individually** — is read from.
+
+| # | Do this | **Not** this | What goes wrong otherwise |
+|---|---|---|---|
+| **1** | `git config --local user.email "202304804@student.polytechnic.bh"` | your GitHub or personal email | A commit under an address that is not your student address is **invisible to `git shortlog`** — the work exists and counts for nobody |
+| **2** | `bash tools/new-branch.sh feat/F17-recall-space` | `git switch -c` by hand | The tool branches from **current `develop`** and refuses an invalid name. A hand-made branch was once **84 commits behind** `develop`, carried 32 unrelated merge commits, and had uppercase in its name that no tool would accept |
+| **3** | `bash tools/commit.sh <file> "feat(F17): …"` | `git commit -m "…"` | The tool refuses a non-conventional message, refuses `main`/`develop`, and scans for secrets. Messages like `configure view` and `updates` have been committed by hand instead, and none of them survive the rubric |
+| **4** | `gh pr create --base develop --fill` **the same day** | leaving it local and pushing later | **CI runs on every push to a feature branch now**, so a broken push goes red in ~11 minutes. A branch with **no PR** is invisible: one member's did not compile for hours and nobody knew |
+
+> **The one-line version:** *set your identity, branch with the tool, commit with the tool, open the
+> PR.* In that order, every time.
+
+> **And expect your PR to sit "blocked" until it has one approving review.** `develop` requires it
+> ([doc 12 §3.1](12-GIT-WORKFLOW.md)) and GitHub will not let you merge it yourself. **That is the
+> process working, not a rejection.** Post the link in the group chat and it gets reviewed — but plan
+> for the review to take a day, so a PR opened the night before a deadline will not be merged by it.
+
+> **You are the newest member, so this matters most for you:** your evidence cannot be created at the
+> end of the project. One real commit a week, under your own name, beats a sprint's worth in December.
+
+---
+
 ## 0.0 First, two minutes of setup — you cannot push until this is done
 
 **Your GitHub access is already in place.** Verified against the GitHub API on **14 Oct 2026**:
@@ -127,7 +152,7 @@ Exit 0 = safe to commit and push. Exit 1 = stop and fix.
 | **Handle** | M5 |
 | **Features** | **F16** Admin-Moderated Group Chat · **F17** Active Recall Space |
 | **Primary tester for** | **F01** (M1's auth) · **F05** (M2's quiz) · **F13** (M3's payments) |
-| **Figma frame suffix** | `Fatema_202304804` — frames **142–154**, groups **N** and **O** |
+| **Figma frames** | **None carry your name.** The F16/F17 frames — screens `142`–`154`, their dark variants and their wireframes — were drawn by **M1 (F16)** and **M3 (F17)** on 24 Oct 2026 and are named for them. You own both features; the frames are credited to whoever drew them |
 | **Team role** | Collaboration & Recall lead |
 
 You own **two** features, the rubric's minimum, and both are **net-new**: each brings its own
@@ -225,18 +250,49 @@ Rules, from [doc 12](12-GIT-WORKFLOW.md):
 
 ## 4. Verification commands — run these before you say "done"
 
+**Always these, on any machine** (they are Python and bash, so they work on Windows):
+
 ```bash
 bash tools/check-lane.sh M5            # lane is disjoint
 bash tools/todos.sh M5                 # your open count has dropped
 python3 tools/verify-docs.py           # docs still consistent
-python3 tools/check-strings.py         # only if you touched a .strings file
+python3 tools/check-strings.py         # only if you touched .strings or .stringsdict
+```
 
+### If you are on a Mac
+
+```bash
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' build
 
 xcodebuild -project ios/StudyForge/StudyForge.xcodeproj -scheme StudyForge \
   -destination 'platform=iOS Simulator,name=iPhone 17' test
 ```
+
+### If you are on Windows — **CI is your build machine**
+
+**Xcode is macOS-only, so `xcodebuild` cannot run on your machine at all.** Do not try to
+install it; there is no Windows version and no emulator that runs an iOS Simulator. Push your
+branch instead — CI builds and tests it on a real macOS runner, for free.
+
+```bash
+git push                         # CI starts automatically
+gh pr checks                     # THE VERDICT
+```
+
+The suite is **808 tests in 128 suites**, and your change should raise that number. If CI is red:
+
+```bash
+gh run view <run-id> --log-failed              # the failing steps
+gh run download <run-id> -n xcodebuild-log     # the raw log, when that is not enough
+```
+
+> **Never write "the build passes" unless `gh pr checks` says so.** Quote the CI result or say
+> that CI has not run yet. An AI agent will happily tell you something works because the code
+> looks right, and that is the one claim this project's evidence cannot afford.
+
+**Full guide for a Windows machine, written for your agent to read:**
+[`docs/18-WINDOWS-CONTRIBUTING.md`](18-WINDOWS-CONTRIBUTING.md).
 
 Tests use **Swift Testing** (`@Suite` / `@Test`), never XCTest. Follow the existing suites in
 `ios/StudyForge/StudyForgeTests/`.
@@ -251,7 +307,7 @@ Tests use **Swift Testing** (`@Suite` / `@Test`), never XCTest. Follow the exist
 | `research/testing/F01-fatema.md`, `F05-fatema.md`, `F13-fatema.md` | test logs. **You are the primary tester for F01, F05 and F13** — nobody tests a feature they developed. Record the exact steps you ran, the observed result, any defect found, and whether it is fixed. Finding a real defect beats a clean pass, but never invent one |
 | `research/reviews/*` | notes on the AI-generated code you reviewed and corrected |
 | `research/cheatsheets/fatema.md` | keep the quick-reference current for F16 and F17 |
-| The Figma file | frames **142–154** named `…_Fatema_202304804` (groups N and O) |
+| The Figma file | frames **142–154** (groups N and O) carry **M1's and M3's** names, not yours — you own the features, they drew the frames |
 
 `research/testing/` and `research/reviews/` may not exist yet — create them, and name files
 distinctly (e.g. `F01-fatema.md`) so nobody collides.

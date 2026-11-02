@@ -7,7 +7,7 @@ exist so the work can be checked without opening Figma.
 | File | Frame | What it proves |
 |---|---|---|
 | `dark-15-home-dashboard.png` | `DARK_15_Home_Dashboard_Student_Saleh_202300540` | The student home in dark mode: dark canvas, light text, dark glass cards, the orange due-cards call to action, the dark tab bar with the blue active item |
-| `dark-124-payment-processing.png` | `DARK_124_Payment_Processing_Tasbeeh_202300549` | The payment processing screen in dark mode: dark canvas, white body copy, dark glass note card |
+| `dark-124-payment-processing.png` | `DARK_124_Payment_Processing_Tasbeeh_202305409` | The payment processing screen in dark mode: dark canvas, white body copy, dark glass note card |
 
 **How they were produced.** Each dark variant was cloned from its light screen, given the
 `Dark` mode of the `Color` variable collection explicitly, and rendered with the Figma MCP

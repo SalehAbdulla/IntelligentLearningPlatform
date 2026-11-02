@@ -15,6 +15,9 @@ WHAT IT CHECKS
     4. Format placeholders match across languages. The dangerous one: `%d` in
        English and `%@` in Arabic is a runtime crash, not a visible typo.
     5. No empty values (an empty string renders as blank UI).
+    6. Plural rules in every .stringsdict: key parity across languages, and that Arabic
+       declares all six CLDR categories. A rule defining only `one`/`other` renders the
+       wrong grammar for 2, for 3-10 and for 11-99 — and nothing in the build says so.
 
 USAGE
     python3 tools/check-strings.py            # verify
@@ -23,6 +26,7 @@ USAGE
 
 from __future__ import annotations
 
+import plistlib
 import re
 import sys
 from pathlib import Path
@@ -82,6 +86,45 @@ def parse(path: Path) -> tuple[dict[str, str], list[str]]:
         )
 
     return entries, problems
+
+
+def parse_stringsdict(path: Path) -> tuple[dict[str, list[str]], list[str]]:
+    """Read a .stringsdict and return {key: [plural categories]} plus any problems.
+
+    A .stringsdict is a plist, so `plistlib` reads it — but only the *categories* matter
+    here. A key whose Arabic side defines `one`/`other` while Arabic needs six forms is a
+    real defect that no compiler will mention: the string simply renders with the wrong
+    grammar, which is exactly the failure this project's Arabic support exists to avoid.
+    """
+    problems: list[str] = []
+    categories: dict[str, list[str]] = {}
+
+    try:
+        with open(path, "rb") as handle:
+            plist = plistlib.load(handle)
+    except Exception as error:  # noqa: BLE001 - report, do not crash the gate
+        return {}, [f"{path.parent.stem}: Localizable.stringsdict does not parse: {error}"]
+
+    if not isinstance(plist, dict):
+        return {}, [f"{path.parent.stem}: Localizable.stringsdict is not a dictionary"]
+
+    for key, value in plist.items():
+        if not isinstance(value, dict):
+            problems.append(f"{path.parent.stem}: '{key}' is not a plural-rule dictionary")
+            continue
+        # The count variable is named by the format key, e.g. "%#@seconds@" -> "seconds".
+        found: list[str] = []
+        for spec in value.values():
+            if isinstance(spec, dict) and "NSStringFormatSpecTypeKey" in spec:
+                found = sorted(
+                    k for k in spec
+                    if k not in ("NSStringFormatSpecTypeKey", "NSStringFormatValueTypeKey")
+                )
+        if not found:
+            problems.append(f"{path.parent.stem}: '{key}' declares no plural categories")
+        categories[key] = found
+
+    return categories, problems
 
 
 def main() -> int:
@@ -160,6 +203,49 @@ def main() -> int:
                 empty += 1
                 problems.append(f"{language}: '{key}' has an empty value (renders blank UI)")
     print(f"   {empty} empty value(s)")
+
+    # ---- 6: plural rules (.stringsdict) ----------------------------------
+    # A .stringsdict is consulted in preference to .strings, so a key that exists in both is
+    # resolved by the plural rule. Nothing in the build validates it: a malformed plist is
+    # ignored, and a language missing a category renders the wrong grammar silently.
+    print()
+    print("5. plural rules (.stringsdict)")
+    dict_files = sorted(RESOURCES.glob("*.lproj/Localizable.stringsdict"))
+    if not dict_files:
+        print("   no .stringsdict files (nothing to check)")
+    else:
+        plural: dict[str, dict[str, list[str]]] = {}
+        for path in dict_files:
+            language = path.parent.stem
+            categories, file_problems = parse_stringsdict(path)
+            plural[language] = categories
+            problems.extend(file_problems)
+            print(f"   {language:<4} {len(categories):>3} plural key(s)")
+
+        # Key parity: a language with no rule for a key falls back to the flat .strings
+        # entry, which is correct English and wrong Arabic — so a missing key is a problem.
+        dict_reference = "en" if "en" in plural else sorted(plural)[0]
+        for language in sorted(plural):
+            if language == dict_reference:
+                continue
+            missing = sorted(set(plural[dict_reference]) - set(plural[language]))
+            if missing:
+                problems.append(
+                    f"{language}: no plural rule for {missing} - falls back to the flat string"
+                )
+
+        # Category coverage: Arabic needs six forms. A rule defining only one/other is the
+        # mistake this file was added to prevent.
+        ARABIC_MINIMUM = {"zero", "one", "two", "few", "many", "other"}
+        if "ar" in plural:
+            for key, cats in plural["ar"].items():
+                absent = sorted(ARABIC_MINIMUM - set(cats))
+                if absent:
+                    problems.append(
+                        f"ar: '{key}' is missing plural categor{'y' if len(absent) == 1 else 'ies'} "
+                        f"{absent} - Arabic needs all six, so this renders the wrong grammar"
+                    )
+        print(f"   {len(dict_files)} file(s) checked")
 
     if show_list:
         print()

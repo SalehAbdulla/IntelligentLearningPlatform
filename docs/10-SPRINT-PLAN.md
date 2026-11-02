@@ -90,7 +90,7 @@ Each cell names the work that member personally owns that sprint, plus the evide
 | **M2** Mohammed | **F05** quiz generation + attempts + `topicMastery` writes; **F11** tutor review queue | Two features merged, test logs |
 | **M3** Tasbeeh | **F06** adaptive re-planning + **F07** dashboard + weakness radar | Merged features, re-plan recording |
 | **M4** Shahad | **F08** shared folders; Figma P0 for groups F, G, I; usability-test plan; Design Document assembly support | Merged feature, frames, test plan, doc sections |
-| **M5** Fatema | **F17** Recall Space: cross-deck queue, learning steps, daily limits, session + tests; **F16** moderator model and the "cannot be removed" rules; Figma groups **N** and **O** | Two features merged, 13 frames named `Fatema_202304804`, test logs |
+| **M5** Fatema | **F17** Recall Space: cross-deck queue, learning steps, daily limits, session + tests; **F16** moderator model and the "cannot be removed" rules; Figma groups **N** and **O** | Two features merged, test logs; the F16/F17 frames were drawn by M1 and M3 |
 
 ### S3 · Collaboration & monetisation (2 Nov – 15 Nov), *Prototype due 12 Nov*
 

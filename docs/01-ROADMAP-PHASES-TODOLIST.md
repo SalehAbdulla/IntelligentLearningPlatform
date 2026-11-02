@@ -295,7 +295,7 @@ CONTINUOUS (10%)  Individual sprint contribution evidence
 - [ ] `P9-11` Accessibility audit on the prototype, contrast, touch targets, text sizes
 - [ ] `P9-12` Verify **dark mode** and **RTL Arabic** frames render correctly
 - [ ] `P9-13` Freeze the prototype; any further change requires a changelog entry
-- [ ] `P9-14` **Export the `.fig` file**
+- [ ] `P9-14` **Export the `.fig` file** — ✅ **done:** 8 Oct 2026, **re-exported 24 Oct 2026** (1,830,424 bytes, `exported_at 2026-10-23T23:01:26Z`), so the file on disk matches the shared link
 - [ ] `P9-15` Set Figma share permissions to *Anyone with the link can view* and verify in a private browser window
 - [ ] `P9-16` Create `deliverables/prototype/figma-link.txt` containing the shared URL + access notes
 - [ ] `P9-17` Assemble the package: **`.fig` file AND the link text document** (the rubric requires both)

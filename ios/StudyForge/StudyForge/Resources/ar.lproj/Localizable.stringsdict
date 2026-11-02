@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Plural rules for the verification resend countdown (A06) — Arabic.
+
+	  WHY ARABIC NEEDS SIX CATEGORIES AND ENGLISH NEEDS TWO
+	  Arabic distinguishes zero, one, two, few (3–10), many (11–99) and other. A countdown
+	  that only handled `one` and `other` would read wrongly for 2, for 3–10 and for 11–99 —
+	  which between them are almost every value the countdown ever shows. That is why this is
+	  a .stringsdict rather than a `count == 1 ?` branch in Swift.
+
+	  Category boundaries applied here (Arabic, CLDR):
+	    0        zero
+	    1        one
+	    2        two
+	    3–10     few
+	    11–99    many
+	    100+     other
+	-->
+	<key>auth.verify.resendIn</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@seconds@</string>
+		<key>seconds</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>يمكنك إعادة الإرسال الآن</string>
+			<key>one</key>
+			<string>يمكنك إعادة الإرسال بعد ثانية واحدة</string>
+			<key>two</key>
+			<string>يمكنك إعادة الإرسال بعد ثانيتين</string>
+			<key>few</key>
+			<string>يمكنك إعادة الإرسال بعد %d ثوانٍ</string>
+			<key>many</key>
+			<string>يمكنك إعادة الإرسال بعد %d ثانية</string>
+			<key>other</key>
+			<string>يمكنك إعادة الإرسال بعد %d ثانية</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

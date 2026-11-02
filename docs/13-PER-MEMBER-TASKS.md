@@ -58,7 +58,7 @@
 - [ ] Demo your own features at the sprint review.
 - [ ] Cheat sheet: `research/cheatsheets/mohammed.md`.
 
-## M3, Tasbeeh Saeed (`202300549`)
+## M3, Tasbeeh Saeed (`202305409`)
 
 **Develops:** F06 (study plan), F07 (progress), F13 (subscription and payments), F15 (co: planner and AI router).
 **Tests:** F02, F08, F10, F14.
@@ -94,7 +94,7 @@
 - [ ] Own the **spaced-repetition story**: be able to explain, out loud, how SM-2 computes the next interval and exactly where your Recall Space calls it. This is the F17 answer to the VIVA question *"what does this specific function do?"*.
 - [ ] Hand-write the parts that matter: the **due-today queue ordering** and the **daily-limit / learning-step state machine**.
 - [ ] Write and commit **test logs** for F01, F05, F13 in `research/testing/`.
-- [ ] Author Figma groups **N** and **O** (frames 142–154), each named `…_Fatema_202304804`.
+- [x] Figma groups **N** and **O** (frames 142–154) — **drawn by M1 and M3** on 24 Oct 2026 and named for them. Your part is the feature spec and the review, not the drawing.
 - [ ] Demo your own features at the sprint review.
 - [ ] Cheat sheet: `research/cheatsheets/fatema.md`.
 

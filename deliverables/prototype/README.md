@@ -5,7 +5,7 @@ shared URL, delivered in a text document.
 
 | # | File | Status |
 |---|---|---|
-| 1 | `StudyForge.fig` | ✅ **done**, 1.2 MB, exported 8 Oct 2026. Verified as a real Figma export (`canvas.fig`, `thumbnail.png`, `meta.json`). Excluded from git by `.gitignore` (`deliverables/**/*.fig`), so it is submitted through the portal only — **re-export it if the Figma file changes again**. |
+| 1 | `StudyForge.fig` | ✅ **done**, 1.8 MB, **re-exported 24 Oct 2026** (`meta.json` records `exported_at 2026-10-23T23:01:26Z`), replacing the 8 Oct copy that predated page 6, the cover fix and the 130-wireframe expansion. Verified as a real Figma export (`canvas.fig`, `thumbnail.png`, `meta.json`). **Committed since 24 Oct 2026** (1.8 MB), so it opens straight from a clone — the brief asks for the `.fig` file as well as the link document, and it is inside `deliverables/StudyForge-Submission.zip` too. **Re-export it if the Figma file changes again**, and commit the new export at that milestone. |
 | 2 | `figma-link.txt` | ✅ **done**, the text document: shared URL, access notes, the four end-to-end chains, and an accurate account of what is wired. |
 
 ## Current state of the prototype (verified against the live file)
@@ -25,8 +25,8 @@ shared URL, delivered in a text document.
 ## Before submitting
 
 1. **Share the link:** Figma → Share → *Anyone with the link* → *Can view*, then open it in a private browser window to confirm everything is visible without signing in.
-2. ~~Export the file~~ ✅ **done** — `deliverables/prototype/StudyForge.fig` (1.2 MB, 8 Oct 2026). Re-export if the Figma file changes again.
-3. **Export the figures:** 106 wireframes and 15 flow diagrams at 2× PNG into `deliverables/design-document/mockups/figures/` — see `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.16.
+2. ~~Export the file~~ ✅ **done** — `deliverables/prototype/StudyForge.fig` (1.8 MB, re-exported 24 Oct 2026). Re-export if the Figma file changes again.
+3. **Export the figures:** 130 wireframes and 17 flow diagrams at 2× PNG into `deliverables/design-document/mockups/figures/` — see `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md` §A.18.
 
 See `docs/01-ROADMAP-PHASES-TODOLIST.md` Phase 9 for the full checklist.
 

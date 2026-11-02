@@ -145,15 +145,35 @@ final class EmailVerificationViewModel {
             while true {
                 try? await Task.sleep(for: .seconds(1))
                 guard !Task.isCancelled, let self else { return }
-
-                if self.resendSecondsRemaining <= 1 {
-                    self.resendSecondsRemaining = 0
-                    return
-                }
-                self.resendSecondsRemaining -= 1
+                if self.tickCountdown() { return }
             }
         }
         cooldownTask.withLock { $0 = task }
+    }
+
+    /// Advances the countdown by one second, and reports whether it has now finished.
+    ///
+    /// The ticker above calls exactly this, so the countdown has **one** definition rather
+    /// than one in the loop and one in the test.
+    ///
+    /// WHY THIS IS A METHOD RATHER THAN CODE INSIDE THE TICKER
+    /// The test for this behaviour used to wait on wall-clock time — first a fixed 2500 ms
+    /// against a 2000 ms cooldown, then a 20 s poll for the condition. On a loaded CI runner
+    /// the second version failed with the countdown **still reading "2 seconds" after 66 s**:
+    /// the ticker's `@MainActor` continuation did not get a turn, so nothing ever decremented.
+    /// The same commit passed one CI run and failed another, which is the whole problem — a
+    /// test that waits for the scheduler to be kind is measuring the runner, not the countdown.
+    /// Driving this directly asserts the same logic and finishes in microseconds.
+    ///
+    /// - Returns: `true` when the countdown has reached zero, so the ticker can stop.
+    @discardableResult
+    func tickCountdown() -> Bool {
+        if resendSecondsRemaining <= 1 {
+            resendSecondsRemaining = 0
+            return true
+        }
+        resendSecondsRemaining -= 1
+        return false
     }
 
     deinit {

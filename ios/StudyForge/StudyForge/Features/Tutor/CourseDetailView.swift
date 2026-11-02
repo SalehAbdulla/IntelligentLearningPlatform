@@ -122,6 +122,31 @@ struct CourseDetailView: View {
             }
 
             shareGradebook
+            archiveRow
+        }
+    }
+
+    /// J02's archive action, on the screen a tutor is already looking at.
+    ///
+    /// WHY BOTH A SWIPE AND A ROW
+    /// --------------------------
+    /// The swipe on the dashboard's course card is the gesture docs/03 §J asks for, but a swipe
+    /// is invisible to VoiceOver and undiscoverable to anyone who has not been told it exists.
+    /// This is the same action, named in words, and it is the only caller of
+    /// `CourseDetailViewModel.setArchived` — which was written for J02 and, until this row
+    /// existed, was dead code.
+    @ViewBuilder
+    private var archiveRow: some View {
+        if viewModel.course != nil {
+            Button {
+                Task { await viewModel.setArchived(!viewModel.isArchived) }
+            } label: {
+                actionRow(
+                    viewModel.isArchived ? viewModel.unarchiveTitle : viewModel.archiveTitle,
+                    symbol: viewModel.isArchived ? "tray.and.arrow.up" : "archivebox"
+                )
+            }
+            .buttonStyle(.plain)
         }
     }
 

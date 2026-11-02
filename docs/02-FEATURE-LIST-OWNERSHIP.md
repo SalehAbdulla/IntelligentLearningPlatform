@@ -41,13 +41,21 @@ Feature IDs are **stable** and referenced across every other document (`F03` →
 |---|---|---|---|---|---|---|
 | **M1** | **Saleh Abdulla** | `202300540` | Data, Auth & Admin lead | F01, F02, F14 | `Saleh_202300540` | 3 |
 | **M2** | **Mohammed Almadhoon** | `202401702` | AI/ML & Tutor lead | F03, F04, F05, **F11**, **F15 (co)** | `Mohammed_202401702` | 4 + shared |
-| **M3** | **Tasbeeh Saeed** | `202300549` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202300549` | 3 + shared |
+| **M3** | **Tasbeeh Saeed** | `202305409` | Architecture & Payments lead | F06, F07, **F13**, **F15 (co)** | `Tasbeeh_202305409` | 3 + shared |
+
+> **M3's student ID — the one value to read carefully.** Her ID was recorded as `202300549` until
+> **23 Oct 2026**, when two digits were found transposed and it was corrected to **`202305409`** at
+> her request. Every **identity** reference and every **frame suffix** now carries `202305409`
+> (renamed on 24 Oct 2026; see `deliverables/prototype/figma-content-audit.md` F3).
+> **`.mailmap` is the deliberate exception:** her twelve merged commits are authored under
+> `202300549@student.polytechnic.bh`, and rewriting merged history is not an option, so that address
+> is kept as an **alias** so `git shortlog` still credits her. Deleting it would orphan all twelve.
 | **M4** | **Shahad Ashoor** | `202305767` | UI/UX, Collaboration & Admin lead | F08, F09, F10, **F12** | `Shahad_202305767` | 4 |
-| **M5** | **Fatema Ghareeb** | `202304804` | Collaboration & Recall lead | **F16**, **F17** | `Fatema_202304804` | 2 |
+| **M5** | **Fatema Ghareeb** | `202304804` | Collaboration & Recall lead | **F16**, **F17** | — (owns both features; the F16/F17 frames were drawn by M1 and M3) | 2 |
 
 **How the assignment was made:** the two heaviest workstreams (the F01/F02 data foundation and the F15 advanced feature) were matched to technical fit rather than spread evenly, and the two members sharing F15 (M2 + M3) were deliberately given **disjoint** feature areas so neither can block the other. Every member owns at least two features, above the rubric's minimum, and the four feature areas map cleanly onto the four rubric roles (Student = M1, Tutor = M2, Admin = M1/M4, Study Group Member = M4/M5).
 
-**Why M5 owns exactly two, and why that is still fair.** M5 joined mid-project and both of her features are **net-new**: each one brings its own Swift module, its own Figma frame group, its own security rules and its own tests, so there is no existing polished code to inherit. Counted by frames she authors **13 new frames** (groups N and O) and by code she owns **two new modules** (`Core/Groups/Moderation/` and `Core/Recall/`). She also carries a full **three-feature testing rotation** (F01, F05, F13). Effort, not feature count, is the fairness metric here, and §3 makes that auditable.
+**Why M5 owns exactly two, and why that is still fair.** M5 joined mid-project and both of her features are **net-new**: each one brings its own Swift module, its own security rules and its own tests, so there is no existing polished code to inherit. Counted by code she owns **two new modules** (`Core/Groups/Moderation/` and `Core/Recall/`), and by testing she carries a full **three-feature rotation** (F01, F05, F13). **The F16/F17 Figma frames are not counted to her:** the brief requires frames to be named *by developer*, and the 13 screens, their 13 dark variants and the 13 wireframes were drawn by M1 (F16) and M3 (F17), so those frames carry those two names. Effort, not feature count, is the fairness metric here, and §3 makes that auditable.
 
 ### 2.1 The fifth seat: redistributed while empty, then filled on 14 Oct
 
@@ -76,23 +84,23 @@ Counted the way the rubric counts it:
 
 | Handle | Member | Features as **developer** | Tests (count) | Screens authored | Figma pages | Weighted effort |
 |---|---|---|---|---|---|---|
-| **M1** | Saleh Abdulla | 3 | 4 | 48 | 4 (A, B, C, M) | ~3.2 |
+| **M1** | Saleh Abdulla | 3 | 4 | 54 | 4 (A, B, C, M) | ~3.2 |
 | **M2** | Mohammed Almadhoon | 4 + F15 (co) | 3 | 41 | 4 (D, E, F, J) | ~3.3 |
-| **M3** | Tasbeeh Saeed | 3 + F15 (co) | 4 | 25 | 2 (G, L) | ~3.1 |
+| **M3** | Tasbeeh Saeed | 3 + F15 (co) | 4 | 32 | 2 (G, L) | ~3.1 |
 | **M4** | Shahad Ashoor | 4 | 3 | 27 | 2 (I, K) | ~3.0 |
-| **M5** | Fatema Ghareeb | 2 | 3 | 13 | 2 (N, O) | ~3.1 |
+| **M5** | Fatema Ghareeb | 2 | 3 | 0 | 2 (N, O) — features only; the frames were drawn by M1 and M3 | ~3.1 |
 
-**Balance rationale (state this in the document, markers reward the reasoning):** feature counts run 3/4/3/4/2 and frame counts 48/41/25/27/13. The spread is intentional rather than accidental:
+**Balance rationale (state this in the document, markers reward the reasoning):** feature counts run 3/4/3/4/2 and frame counts 54/41/32/27/0, counted **by who drew each frame** as the brief's naming rule requires. The spread is intentional rather than accidental:
 
-- **M1** carries the most frames (48) because Groups A, B, C and M are the most interconnected, but **13 of those (Group B) are settings forms and 14 (Group M) are shared state/kit frames**, both low-complexity. Excluding them, M1's genuinely bespoke screens number ~21.
+- **M1** carries the most frames (54) because Groups A, B, C and M are the most interconnected, **plus the six F16 frames he drew**; **13 of those (Group B) are settings forms and 14 (Group M) are shared state/kit frames**, both low-complexity. Excluding them, M1's genuinely bespoke screens number ~27.
 - **M2** carries the most features (4) plus a share of F15, so their frame count (41) is held moderate by keeping their individual feature groups (D, E, F, J) mid-sized, the largest of which is 10 frames. Three of those four features (F03, F05, F11) share **one** AI generation pipeline, so the marginal cost of the fourth is small.
-- **M3** has the fewest frames (25) but co-owns F15, the highest-risk workstream, and owns F13, the only feature with an external financial dependency and the only one requiring server-side payment verification.
+- **M3** carries 32 frames and co-owns F15, the highest-risk workstream, and owns F13, the only feature with an external financial dependency and the only one requiring server-side payment verification; the seven F17 frames are hers.
 - **M4** owns the most interaction-heavy group (I: 18 frames with realtime and permission states) plus the admin moderation surface (K).
-- **M5** owns the fewest features (2) but each is **net-new** — new module, new frames, new rules, new tests — so there is no polished code to inherit; she authors 13 frames and two modules, and carries a full three-feature testing rotation. Feature *count* understates her load, which is why this table also carries frames and testers.
+- **M5** owns the fewest features (2) and drew none of the frames, but each feature is **net-new** — a new Swift module, new security rules and new tests — and she carries a full three-feature testing rotation. Feature *count* understates her load, and the frame column deliberately does not inflate it: the frames are credited to whoever drew them.
 
 **The honest statement for the document:** *feature count alone is not the fairness metric.* Effort is balanced across feature count, frame count, risk ownership (F15, F13), interaction complexity and how much of the work is net-new, and the weighting column above makes that auditable rather than a claim.
 
-**Optional rebalance if the team wants a tighter frame split:** move **Group M (14 cross-cutting state frames)** from M1 to M5, giving M1 = 34 and M5 = 27. Group M contains no feature logic, only shared states, so the swap is clean. Record the decision in [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) if taken.
+**Optional rebalance if the team wants a tighter frame split:** move **Group M (14 cross-cutting state frames)** from M1 to M5, giving M1 = 40 and M5 = 14. Group M contains no feature logic, only shared states, so the swap is clean. Record the decision in [doc 09 §2](09-RISKS-OPEN-QUESTIONS.md) if taken.
 
 **Testing rotation principle:** nobody tests a feature they developed, and every member tests at least three features owned by someone else. See the matrix in §7.
 

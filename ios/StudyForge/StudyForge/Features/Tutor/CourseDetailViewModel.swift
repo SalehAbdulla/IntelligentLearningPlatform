@@ -135,6 +135,7 @@ final class CourseDetailViewModel {
     var publishedHeading: String { L10n.tutorPublishedHeading.string }
     var publishedNone: String { L10n.tutorPublishedNone.string }
     var archiveTitle: String { L10n.tutorArchive.string }
+    var unarchiveTitle: String { L10n.tutorUnarchive.string }
     var reviewTitle: String { L10n.tutorReviewTitle.string }
     var announceTitle: String { L10n.tutorAnnounceTitle.string }
     var gradebookTitle: String { L10n.tutorGradebookTitle.string }

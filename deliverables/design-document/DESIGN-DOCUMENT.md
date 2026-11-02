@@ -17,13 +17,13 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 | **Tagline** | Turn any material into mastery. |
 | **Client brief** | Project Brief 2, Intelligent Learning Platform |
 | **Module** | IT8108, Bahrain Polytechnic, Year 3 |
-| **Team (5 members)** | Saleh Abdulla (202300540) · Mohammed Almadhoon (202401702) · Tasbeeh Saeed (202300549) · Shahad Ashoor (202305767) · Fatema Ghareeb (202304804) |
+| **Team (5 members)** | Saleh Abdulla (202300540) · Mohammed Almadhoon (202401702) · Tasbeeh Saeed (202305409) · Shahad Ashoor (202305767) · Fatema Ghareeb (202304804) |
 | **Tutors** | Haetham Alhaddad (Coordinator) · Ghassan AlShajjar |
 | **Platform** | iOS 26.0+ · SwiftUI · Swift 6 · Xcode 27 · Firebase (Spark, no-cost tier) |
 | **SDGs** | SDG 4 (Quality Education) · SDG 9 (Industry, Innovation & Infrastructure) · SDG 10 (Reduced Inequalities) |
 | **Design Document due** | 22 October 2026, 23:55 |
 | **Prototype (Figma) due** | 12 November 2026, 23:55 |
-| **Document version** | 1.2 (Gate 1 draft: figure and table lists, all figures except the two that need the app or a competitor's product captured) |
+| **Document version** | 1.3 (Gate 1 submission, 24 Oct 2026: figure and table lists complete; every figure exported except Figure 4.1, the competitor teardown screenshots, which are still to capture) |
 
 > The app name and logo appear in the header of every page and on the Figma cover, per the identity requirement.
 
@@ -31,6 +31,7 @@ Every section maps to a rubric area, see docs/08-RUBRIC-COVERAGE-MATRIX.md.
 
 List of figures · List of tables
 
+Template compliance map
 1. Executive summary
 2. Background research: the problem, who is affected, and why it matters
 3. Tutor interview: questions asked and summary of responses
@@ -70,12 +71,12 @@ commitment to the marker rather than a gate the script enforces.
 | 8.1 | The RAG pipeline: index, retrieve, ground, answer, adapt | [mockups/figures/PIPE_RAGPipeline_StudyForge.png](mockups/figures/PIPE_RAGPipeline_StudyForge.png) | ✅ exported |
 | 9.1 to 9.17 | The 17 per-feature flow diagrams (F01 to F17), one per feature | [mockups/figures/](mockups/figures/) `FLOW_F01` to `FLOW_F17` | ✅ all 17 exported |
 | 10.1 | The cross-cutting state set (loading, empty, error, offline, success) | [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png) | ✅ exported |
-| 10.2 to 10.107 | The 106 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_141` | ✅ exported |
+| 10.2 to 10.131 | The 130 low-fidelity wireframes in screen order, each with its numbered callouts and legend panel | [mockups/figures/](mockups/figures/) `LF_01` to `LF_179` | ✅ exported |
 | 11.1 | The global navigation map | [mockups/figures/02_NavigationMap_StudyForge.png](mockups/figures/02_NavigationMap_StudyForge.png) | ✅ exported |
 | 11.2 | The core learning loop, restated in the navigation context (same artwork as Figure 5.1) | [mockups/figures/LOOP_CoreLearningLoop_StudyForge.png](mockups/figures/LOOP_CoreLearningLoop_StudyForge.png) | ✅ exported |
 | 12.1 | The design system sheet: colour variables, type ramp, spacing, radius, elevation | [figures/01_DesignSystem_Saleh_202300540.png](figures/01_DesignSystem_Saleh_202300540.png) | ✅ exported |
 | 12.2 | The glass and depth reference: blur, hairline border, dual shadow, inner light edge | [figures/02_GlassAndDepth_Saleh_202300540.png](figures/02_GlassAndDepth_Saleh_202300540.png) | ✅ exported |
-| 13.1 | A provenance citation chip and confidence band on a generated quiz answer | ⬜ to capture from the app | ⬜ pending |
+| 13.1 | The provenance citation chip and its confidence band, on prototype screens 38 and 59 | [figures/13_Provenance_Citation_StudyForge.png](figures/13_Provenance_Citation_StudyForge.png) | ✅ exported |
 | 14.1 | The system architecture: app, backend, AI tiers | [mockups/figures/ARCH_SystemArchitecture_StudyForge.png](mockups/figures/ARCH_SystemArchitecture_StudyForge.png) | ✅ exported |
 | 14.2 | The AI router decision tree | [mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png](mockups/figures/ARCH_AIRouterDecisionTree_StudyForge.png) | ✅ exported |
 
@@ -104,10 +105,10 @@ per-screen figure index is §10.4.
 | 8.3 | The two protocols forming the interface between F15's halves |
 | 8.4 | The features F15 depends on, and what breaks in F15 if each changes |
 | 9.1 | Every feature expanded into its ordered sub-tasks and steps |
-| 10.1 | The 106 screens grouped by feature area, with the owning member |
+| 10.1 | The 123 screens grouped by feature area, with the owning member |
 | 10.2 | The labelled-element standard, worked example (student home) |
 | 10.3 | The screens that implement each feature, with a one-line purpose each |
-| 10.4 | The figure index for the 106 wireframes |
+| 10.4 | The figure index for the 130 wireframes |
 | 11.1 | The five-tab spine and what each tab holds per role |
 | 12.1 | The light-mode colour tokens with their measured contrast ratios |
 | 13.1 | The ten innovations, each with its problem, idea, feasibility and evidence |
@@ -122,13 +123,42 @@ numbered.
 
 ---
 
+## Template compliance map
+
+The IT8108 template fixes five sections and their sub-headings. This document is written as a
+fuller, rubric-mapped document, so this table states where each section the template asks for is
+answered. Nothing the template requires is missing; the additional sections are additions, which
+the template permits: *"You may amend it, but make sure to include all the sections shown in this
+template."*
+
+| Template section | Template sub-heading | Answered in |
+|---|---|---|
+| **Background Research** | Problem and Target Users | §2 Background research: the problem, who is affected, and why it matters, including the stakeholder map and the target users |
+| | App Purpose and Goals | §5 App purpose, goals, intended impact and success metrics; the SDG link is in §2.4 |
+| | Supporting Research | §2, the cited evidence for each claim, and §18 References |
+| | Competitive Edge | §4 Competitive analysis |
+| | Tutor Interview Summary | §3 Tutor interview: questions asked and summary of responses |
+| **Feature List** | User Roles | §6 User roles and personas |
+| | Feature Summary | §7 Feature list, whose first table is the 17-feature summary |
+| | Feature Details | §7 and §8 Advanced feature specification (F15, AI Study Companion) |
+| **Mockups** | Navigation Flow | §11 Navigation map; §9 Feature flows carries the per-feature flows |
+| | Feature and Screen mockups | §10 Low-fidelity mockups: the 123 designed screens and the 130 exported wireframes |
+| **Innovation** | the section itself | §13 Innovation |
+| **References** | the section itself | §18 References |
+
+The cover page of the submitted Word document reproduces the template's cover page: app logo, app
+name, module and semester, then Group ID, Section, Project Brief, Tutor and Submission Date, and
+the five-member Student ID and Name table.
+
+---
+
 ## 1. Executive summary
 
 University students accumulate large volumes of unstructured study material (lecture slides, PDFs, photographs of whiteboards) but have no systematic way to convert it into the active-recall practice that research shows produces durable learning. The default behaviour, rereading and highlighting, is among the least effective techniques available, yet it remains the most common.
 
 **StudyForge** turns any study material into summaries, flashcards, quizzes and a spaced-repetition plan, and closes the loop between them: **upload, generate, schedule, practise, measure, adapt**. It is an iPhone-first, bilingual (English and Arabic) application built on Apple's on-device intelligence where possible, so the core loop works offline and at no cloud cost, and every AI artefact carries a visible source citation.
 
-The design is documented end to end in this document: 4 user roles, 17 features, 119 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan, and the **119 built screens** are those drawn in Figma — all 17 features, including groups N and O for F16 and F17.)
+The design is documented end to end in this document: 4 user roles, 17 features, 123 designed screens, a bilingual design system, a 3-tier AI router, and a security model that keeps authorisation server-side. The system is built against a hard client constraint, **minimal cost**, and runs entirely inside free tiers. (The **154-frame** inventory in [doc 03](../../docs/03-SCREEN-INVENTORY.md) is the full plan, and the **123 built screens** are those drawn in Figma — all 17 features, including groups N and O for F16 and F17.)
 
 ## 2. Background research: the problem, who is affected, and why it matters
 
@@ -164,9 +194,9 @@ This is where the module's **SDG 10 (Reduced Inequalities)** alignment becomes c
 
 ### 2.3 Why now
 
-On-device language models shipped to consumer phones in the last platform cycle, which means grounded, private generation can run without a server bill. That changes the economics: a student app can summarise and generate cards on the device, at zero marginal cost, and only escalate to the cloud when a task genuinely needs more reasoning or multimodal input. StudyForge is designed around exactly that shift. Locally, Bahrain's push toward digital payments and infrastructure (Resolution No. 43) and the region's rapid adoption of mobile learning make this a well-timed context rather than a speculative one.
+On-device language models shipped to consumer phones in the last platform cycle, which means grounded, private generation can run without a server bill. That changes the economics: a student app can summarise and generate cards on the device, at zero marginal cost, and only escalate to the cloud when a task genuinely needs more reasoning or multimodal input. StudyForge is designed around exactly that shift. Locally, Bahrain's move toward digital payments is a matter of regulation rather than fashion: **Ministerial Resolution No. (43) of 2024** (Official Gazette No. 3753, 13 June 2024) requires commercial establishments to hold a dedicated business bank account and to process their payments through licensed financial institutions, and directs them to adopt electronic payment systems — the same licensed rails F13 builds on. Regionally, the GCC e-learning market reached **USD 7.7 billion in 2025 and is forecast to grow at 13.46% a year to 2034** (IMARC Group, *GCC E-Learning Market, 2026–2034*, published May 2026). Together, those make this a well-timed context rather than a speculative one.
 
-> **Note for the final export:** the market-context figures in this section should be refreshed against the cited reports immediately before submission, and any figure that cannot be verified should be removed rather than approximated. The learning-science findings above are stable and peer-reviewed.
+> **Note for the final export — carried out on 23 Oct 2026.** Every market-context figure in this section was re-checked against its cited source, and each is recorded with its source and retrieval date in [`research/dossier.md`](../../research/dossier.md) §2.1. **V1–V5 are all verified; nothing was removed and nothing is approximated.** Two of them carry an explicit caveat rather than a silent one — the penetration figure is **mobile lines**, not smartphones (V2), and the market-size figure is **GCC-wide**, not Bahrain-specific (V3). The learning-science findings above are stable and peer-reviewed.
 
 **Evidence base for this section.** Every claim above is traced to its source, each design consequence is recorded, and the market figures that are still unverified are listed, in [`research/dossier.md`](../../research/dossier.md) sections 1, 2 and 6. Section 4 of that file is the stage-by-stage competitor coverage behind the "one closed loop" claim.
 
@@ -382,15 +412,15 @@ Goal: keep content correct, safe and compliant, and answer any question about wh
 
 The brief requires a structured feature list with name, user role, main task, flow, developer and tester, using at least three roles, with each student developing at least two features and one approved advanced feature co-owned by one or two developers. The table below satisfies every clause.
 
-**Legend.** *Flow* is written as `trigger → step → … → outcome`. Developers and testers use the roster handles: **M1** Saleh Abdulla (202300540) · **M2** Mohammed Almadhoon (202401702) · **M3** Tasbeeh Saeed (202300549) · **M4** Shahad Ashoor (202305767). **Nobody tests a feature they developed.**
+**Legend.** *Flow* is written as `trigger → step → … → outcome`. Developers and testers use the roster handles: **M1** Saleh Abdulla (202300540) · **M2** Mohammed Almadhoon (202401702) · **M3** Tasbeeh Saeed (202305409) · **M4** Shahad Ashoor (202305767) · **M5** Fatema Ghareeb (202304804). **Nobody tests a feature they developed.**
 
 | ID | Feature | Role | Main task | Flow | Developer | Tester |
 |---|---|---|---|---|---|---|
-| F01 | Authentication & Role-Based Onboarding | All | Get a verified user onto the correct role-specific home screen | Launch → splash → onboarding (3) → sign up → verify email → profile wizard → role home | M1 | M4 |
+| F01 | Authentication & Role-Based Onboarding | All | Get a verified user onto the correct role-specific home screen | Launch → splash → onboarding (3) → sign up → verify email → profile wizard → role home | M1 | M5 |
 | F02 | Material Upload & Course Library | Student, Tutor | Turn a PDF, photo, scan or link into a searchable, tagged, offline-available library item | Pick source → on-device compress and OCR → upload → write metadata → appears in Library → open viewer | M1 | M3 |
 | F03 | AI Summary & Notes Generation | Student | Produce an accurate, cited summary of a chosen material | Open material → Generate sheet → length/style/language → grounded generation → TL;DR, key points, glossary → provenance chips → save | M2 | M1 |
 | F04 | Flashcard Generation & Spaced Repetition | Student | Convert material into reviewable cards and have them scheduled automatically | Configure → review and edit cards → review session → flip → rate Again/Hard/Good/Easy → SM-2 writes next due → summary | M2 | M4 |
-| F05 | Quiz Generation & Attempt Analytics | Student, Tutor | Test recall and expose weak topics | Configure → generate → answer with feedback → submit → scorecard → explanations → attempts feed `topicMastery` | M2 | M4 |
+| F05 | Quiz Generation & Attempt Analytics | Student, Tutor | Test recall and expose weak topics | Configure → generate → answer with feedback → submit → scorecard → explanations → attempts feed `topicMastery` | M2 | M5 |
 | F06 | Study Plan Scheduling & Adaptive Re-planning | Student | Get a realistic, exam-aware revision calendar that fixes itself | Wizard (subjects, availability, deadlines, intensity) → AI plan → calendar → reminders → missed session → offer re-plan → accept | M3 | M2 |
 | F07 | Progress Tracking & Analytics | Student, Tutor | See mastery, streaks and weak areas over time | Activity events recorded → nightly aggregation → dashboard (streak, mastery, time) → subject breakdown → weakness radar → export | M3 | M1 |
 | F08 | Shared Study Folders | Study Group Member | Share resources with a study group, with real permissions | Create folder → invite by code/link/picker → assign view, comment or edit → members add material → activity feed | M4 | M3 |
@@ -445,7 +475,7 @@ deliverables and the interface contract are in **§8.4**; the dependencies this 
 | F16 | Admin-Moderated Group Chat | Admin, Study Group Member | Talk to a study group inside a chat an admin moderates and is always present in | Open group chat → admin presence banner → post and read messages → moderator pins an announcement → hide, delete or flag any message with a reason → tombstone shown → action written to the audit log | M5 | M4 |
 | F17 | Active Recall Space (Anki-style spaced repetition) | Student | Review everything due across every deck in one place, the way Anki does | Recall Space home → due-today counts by card state → filter by deck or tag → session → flip → rate Again/Hard/Good/Easy with the next interval shown → learning steps graduate the card → summary → retention, heatmap and streak | M5 | M2 |
 
-**Workload balance:** every member owns at least two features (M1: 3, M2: 4 plus shared F15, M3: 3 plus shared F15, M4: 4, M5: 2), meeting the rubric minimum of two per student. M5's two are both **net-new** — a new module, 13 new frames, new rules and new tests each — and she also carries a three-feature testing rotation, so effort is balanced even though feature count is not; the full frames-and-testers view is in [doc 02 §3](../../docs/02-FEATURE-LIST-OWNERSHIP.md). **Advanced feature:** F15, co-owned by M2 and M3, whose feature areas are deliberately disjoint so neither can block the other.
+**Workload balance:** every member owns at least two features (M1: 3, M2: 4 plus shared F15, M3: 3 plus shared F15, M4: 4, M5: 2), meeting the rubric minimum of two per student. M5's two are both **net-new** — a new module, its own security rules and tests each — and she also carries a three-feature testing rotation (F01, F05 and F13, the primary testership of each, per [doc 02 §7](../../docs/02-FEATURE-LIST-OWNERSHIP.md)), so effort is balanced even though feature count is not; the 13 F16/F17 frames were drawn by M1 and M3 and are credited to them, not to her. The full frames-and-testers view is in [doc 02 §3](../../docs/02-FEATURE-LIST-OWNERSHIP.md). **Advanced feature:** F15, co-owned by M2 and M3, whose feature areas are deliberately disjoint so neither can block the other.
 
 **Sub-tasks and edge cases.** Each of the 17 features is expanded into an ordered sub-task list with explicit edge cases and error handling, and the Firestore collections it touches. These expansions are what the prototype's error and feedback states are built from. The full expansion is maintained in `docs/02-FEATURE-LIST-OWNERSHIP.md` §6 and is reproduced feature by feature alongside the mockups in §10.
 
@@ -537,7 +567,7 @@ F15 as self-contained.
 
 ## 9. Feature flows
 
-Each feature is broken into an ordered set of steps (the brief's "sub-tasks or individual steps"). These are the steps the prototype wires and the acceptance tests exercise. The 15 flow diagrams are drawn in Figma page `2 · Flow Overview` and reproduced as figures at export.
+Each feature is broken into an ordered set of steps (the brief's "sub-tasks or individual steps"). These are the steps the prototype wires and the acceptance tests exercise. The 17 flow diagrams are drawn in Figma page `2 · Flow Overview` and reproduced as figures at export.
 
 | Feature | Sub-tasks / steps |
 |---|---|
@@ -553,7 +583,7 @@ Each feature is broken into an ordered set of steps (the brief's "sub-tasks or i
 | F10 Bookmarks | 1 Bookmark from any screen, 2 choose or create a collection, 3 optional save offline, 4 item appears in the collection, 5 open later via deep link |
 | F11 Tutor Studio | 1 Create course, 2 build roster, 3 publish material, 4 AI content lands in the review queue, 5 approve, edit or reject with a reason, 6 cohort progress, 7 announcement, 8 gradebook export |
 | F12 Admin | 1 Admin home KPIs, 2 search users, 3 change role or suspend with a reason, 4 moderation queue, 5 resolve flagged reports, 6 manage taxonomy, 7 configure AI routing and quotas, 8 review the audit log |
-| F13 Payments | 1 Paywall, 2 select plan, 3 order summary in BHD with VAT, 4 choose method, 5 Tap card or BenefitPay, 6 processing, 7 server-side verification via webhook, 8 entitlement written, 9 receipt, 10 manage or cancel |
+| F13 Payments | 1 Paywall, 2 select plan, 3 order summary in BHD with VAT, 4 choose method, 5 simulated card or BenefitPay (no live provider is contacted), 6 processing, 7 simulated success or failure result, 8 demo entitlement written, 9 demo receipt, 10 manage or cancel |
 | F14 Notifications | 1 Server event or local schedule fires, 2 relevance and quiet-hours filter, 3 deliver FCM or local notification, 4 tap deep-links to the screen, 5 inbox history, 6 preferences respected |
 | F15 Companion | 1 Ask a question, 2 embed the query on-device, 3 retrieve top-k chunks, 4 build a grounded prompt, 5 router picks a tier, 6 streamed answer with citations, 7 tap citation to source, 8 adjust explanation level, 9 request a study path, 10 capture feedback |
 | F16 Moderated chat | 1 Open the group chat, 2 admin presence banner and shield badge render, 3 post and read messages, 4 moderator pins an announcement, 5 long-press a message, 6 choose hide/delete/pin/flag, 7 capture a reason, 8 tombstone replaces the body, 9 the action is written to the append-only audit log |
@@ -563,7 +593,7 @@ Each feature is broken into an ordered set of steps (the brief's "sub-tasks or i
 
 Every step above has at least one designed error or empty state, since the brief requires error and feedback states. Representative examples: F05, the timer expiring auto-submits; F04, rating a card then closing early saves partially; F08, an expired invite code shows a recovery action; F13, a declined card and a 3-D Secure timeout both resolve to a clear next step.
 
-**Figures 9.1 to 9.15, one flow diagram per feature.** Each diagram is drawn on Figma page `2 · Flow Overview`, named `FLOW_Fnn_…` with its owner, and exported at 2× into `deliverables/design-document/mockups/figures/`. Every diagram ends with the error or edge case the flow must survive, which is how the brief's error and feedback requirement is evidenced per feature.
+**Figures 9.1 to 9.17, one flow diagram per feature.** Each diagram is drawn on Figma page `2 · Flow Overview`, named `FLOW_Fnn_…` with its owner, and exported at 2× into `deliverables/design-document/mockups/figures/`. Every diagram ends with the error or edge case the flow must survive, which is how the brief's error and feedback requirement is evidenced per feature. `FLOW_F13` is titled *Subscription & Payments (Demo)* and ends by stating that the prototype involves **no real charges, no payment-provider handoff and no payment webhook** — the same limitation the wireframes and §16.1 carry.
 
 | Figure | Feature | Diagram file |
 |---|---|---|
@@ -582,14 +612,14 @@ Every step above has at least one designed error or empty state, since the brief
 | 9.13 | F13 Subscription and payments | [FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png](mockups/figures/FLOW_F13_Subscription_Payments_Tap_Tasbeeh.png) |
 | 9.14 | F14 Notifications and reminders | [FLOW_F14_Notifications_Reminders_Saleh.png](mockups/figures/FLOW_F14_Notifications_Reminders_Saleh.png) |
 | 9.15 | F15 AI study companion (advanced) | [FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png](mockups/figures/FLOW_F15_AI_Study_Companion_advanced_Mohammed_Tasbeeh.png) |
-| 9.16 | F16 Admin-moderated group chat | [FLOW_F16_Moderated_Group_Chat_Fatema.png](mockups/figures/FLOW_F16_Moderated_Group_Chat_Fatema.png) |
-| 9.17 | F17 Active recall space | [FLOW_F17_Active_Recall_Space_Fatema.png](mockups/figures/FLOW_F17_Active_Recall_Space_Fatema.png) |
+| 9.16 | F16 Admin-moderated group chat | [FLOW_F16_Moderated_Group_Chat_Saleh.png](mockups/figures/FLOW_F16_Moderated_Group_Chat_Saleh.png) |
+| 9.17 | F17 Active recall space | [FLOW_F17_Active_Recall_Space_Tasbeeh.png](mockups/figures/FLOW_F17_Active_Recall_Space_Tasbeeh.png) |
 
 ## 10. Low-fidelity mockups
 
 ### 10.1 Organisation and naming
 
-The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Fatema_202304804`. The file holds **119 frames** across the feature groups below, plus **106 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (123 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
+The prototype is built in a single Figma file with one **page per owner**, so authorship is visible at a glance. Every frame is named to the brief's rule, `NN_ScreenName_FirstName_StudentID`, for example `03_Onboarding_HowItWorks_Saleh_202300540` and `142_GroupChat_Moderator_Presence_Banner_Saleh_202300540`. The file holds **123 frames** across the feature groups below, plus **130 low-fidelity wireframes** on page `5 · Low-Fi Wireframes` and **17 per-feature flow diagrams** on page `2 · Flow Overview` (all 17 exported). The full per-screen inventory with descriptions lives in `docs/03-SCREEN-INVENTORY.md` and is attached at export as Appendix A. Every wireframe and every flow diagram is exported at 2× into `deliverables/design-document/mockups/figures/` (154 PNGs, plus the page headers and the navigation map) and is numbered in the List of figures and in §10.4.
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
@@ -604,24 +634,27 @@ The prototype is built in a single Figma file with one **page per owner**, so au
 | I | Collaboration | M4 | 81–86, 88–97 | 16 |
 | J | Tutor Content Studio | M2 | 99, 101–105 | 6 |
 | K | Admin Content Management | M4 | 109–112, 115 | 5 |
-| L | Subscription & Payments | M3 | 118, 120–122, 124–126 | 7 |
+| L | Subscription & Payments | M3 | 155–157, 172–179 | 11 |
 | M | System, States & Feedback | M1 | 128, 129, 132–134, 138, 139, 141 | 8 |
 | N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
 | O | Active Recall Space (F17) | M5 | 148–154 | 7 |
-| | **Total** | | | **119** |
+| | **Total** | | | **123** |
 
-*Table 10.1, the 119 screens grouped by feature area, with the owning member.*
+*Table 10.1, the 123 screens grouped by feature area, with the owning member.*
 
-**Groups N and O — built 15 October 2026.** The two features added with the fifth member are now drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**:
+**Group L, superseded 24 October 2026.** The seven first-cut F13 screens (`118`, `120`–`122`, `124`–`126`) were replaced by eleven subscription-state screens (`155`–`157`, `172`–`179`) as the feature was reworked around an explicitly **simulated** payment flow: study-to-unlock and trial activation, the Exam Boost one-time purchase, the Pro monthly checkout, the processing-then-failure state, and subscription management through to cancellation. The wireframes for the retired seven (`LF_118`, `LF_120`–`LF_122`, `LF_124`–`LF_126`) are **kept on page 5 as the design record of that first pass**, and the eleven current screens each have a wireframe of their own.
+
+
+**Groups N and O — built 15 October 2026.** The two features added with the fifth member are drawn and named to the brief's rule, taking page `3 · Screens` from **106 to 119 frames**, and then to **123** once group L was reworked. The frames carry the members who drew them (`Saleh_202300540` for F16, `Tasbeeh_202305409` for F17) while the **features** remain M5's:
 
 | Group | Area | Owner | Frames | Count |
 |---|---|---|---|---|
 | N | Admin-Moderated Group Chat (F16) | M5 | 142–147 | 6 |
 | O | Active Recall Space (F17) | M5 | 148–154 | 7 |
 
-**One consistency gap remains, and it is recorded rather than hidden.** The **106 low-fidelity wireframes have no N or O counterpart yet.** The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, so the 13 new screens should get low-fidelity wireframes too; until they do, groups N and O exist only as finished screens.
+**The low-fidelity gap is closed (24 October 2026).** Page `5 · Low-Fi Wireframes` now carries **130 wireframes**, so every built screen has a low-fidelity counterpart. The original 106 are joined by the **13 F16/F17 wireframes** (`LF_142`–`LF_147`, `LF_148`–`LF_154`) that the 15 October audit recorded as missing, and by the **11 F13 subscription-state wireframes** (`LF_155`–`LF_157`, `LF_172`–`LF_179`) drawn from the current prototype screens. The supervisor's answer at §3.3 (question 5) was explicit that **low-fidelity is what the mockup component expects**, which is why the 24 new screens were given low-fidelity counterparts rather than left as finished screens only. The two N and O rows above are therefore no longer a stated gap. Because the brief names every frame **by developer**, the whole F16/F17 Figma set — the 13 screens, their 13 dark variants and the 13 wireframes — carries `Saleh_202300540` for F16 and `Tasbeeh_202305409` for F17, the two members who drew it; M5 owns both features and her contribution is recorded where it lies, in the two Swift modules and her three-feature testing rotation.
 
-Frames per developer: **M1 Saleh 36 · M2 Mohammed 31 · M3 Tasbeeh 18 · M4 Shahad 21 · M5 Fatema 13.** The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
+Frames per developer: **M1 Saleh 42 · M2 Mohammed 31 · M3 Tasbeeh 29 · M4 Shahad 21 · M5 Fatema 0** — **123** in total. The split follows the brief's *named-by-developer* rule, so it counts who drew each frame rather than who owns the feature: M5 owns F16 and F17 and her contribution is their two Swift modules and her three-feature testing rotation, while the 13 F16/F17 frames were drawn by M1 (F16) and M3 (F17). The per-screen purpose-and-layout descriptions, the coverage audit against all 17 features and the state-coverage audit are in `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`.
 
 ### 10.2 The description standard (worked example)
 
@@ -678,9 +711,9 @@ The brief requires success, error and feedback states. A dedicated state set exi
 
 *Figure 10.1, the cross-cutting state set as built, exported from Figma page `4 · States & Prototype Wiring`: [figures/03_States_StudyForge.png](figures/03_States_StudyForge.png).*
 
-### 10.4 Figure index, the 106 wireframes
+### 10.4 Figure index, the 130 wireframes
 
-Figures 10.2 to 10.107 are the 106 wireframes, numbered in screen order. Each figure is the
+Figures 10.2 to 10.131 are the 130 wireframes, numbered in screen order. Each figure is the
 Figma frame for that screen, exported at 2×, and contains the greyscale wireframe with its
 numbered callout badges beside the legend panel that names every element and its function.
 The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
@@ -736,21 +769,21 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.48 | `57` | [LF_57_Quiz_Submit_Confirm_Mohammed_202401702.png](mockups/figures/LF_57_Quiz_Submit_Confirm_Mohammed_202401702.png) |
 | 10.49 | `58` | [LF_58_Quiz_Results_Scorecard_Mohammed_202401702.png](mockups/figures/LF_58_Quiz_Results_Scorecard_Mohammed_202401702.png) |
 | 10.50 | `59` | [LF_59_Quiz_Review_Answers_Explanations_Mohammed_202401702.png](mockups/figures/LF_59_Quiz_Review_Answers_Explanations_Mohammed_202401702.png) |
-| 10.51 | `60` | [LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549.png](mockups/figures/LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202300549.png) |
-| 10.52 | `61` | [LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202300549.png](mockups/figures/LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202300549.png) |
-| 10.53 | `62` | [LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549.png](mockups/figures/LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202300549.png) |
-| 10.54 | `63` | [LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549.png](mockups/figures/LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202300549.png) |
-| 10.55 | `64` | [LF_64_StudyPlan_Generating_Tasbeeh_202300549.png](mockups/figures/LF_64_StudyPlan_Generating_Tasbeeh_202300549.png) |
-| 10.56 | `65` | [LF_65_StudyPlan_Calendar_Week_Tasbeeh_202300549.png](mockups/figures/LF_65_StudyPlan_Calendar_Week_Tasbeeh_202300549.png) |
-| 10.57 | `68` | [LF_68_StudyPlan_Session_Detail_Tasbeeh_202300549.png](mockups/figures/LF_68_StudyPlan_Session_Detail_Tasbeeh_202300549.png) |
-| 10.58 | `69` | [LF_69_Progress_Dashboard_Tasbeeh_202300549.png](mockups/figures/LF_69_Progress_Dashboard_Tasbeeh_202300549.png) |
-| 10.59 | `70` | [LF_70_Progress_WeaknessRadar_Tasbeeh_202300549.png](mockups/figures/LF_70_Progress_WeaknessRadar_Tasbeeh_202300549.png) |
+| 10.51 | `60` | [LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202305409.png](mockups/figures/LF_60_StudyPlan_Wizard_Subjects_Tasbeeh_202305409.png) |
+| 10.52 | `61` | [LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202305409.png](mockups/figures/LF_61_StudyPlan_Wizard_Availability_Tasbeeh_202305409.png) |
+| 10.53 | `62` | [LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202305409.png](mockups/figures/LF_62_StudyPlan_Wizard_Deadlines_Tasbeeh_202305409.png) |
+| 10.54 | `63` | [LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202305409.png](mockups/figures/LF_63_StudyPlan_Wizard_Intensity_Tasbeeh_202305409.png) |
+| 10.55 | `64` | [LF_64_StudyPlan_Generating_Tasbeeh_202305409.png](mockups/figures/LF_64_StudyPlan_Generating_Tasbeeh_202305409.png) |
+| 10.56 | `65` | [LF_65_StudyPlan_Calendar_Week_Tasbeeh_202305409.png](mockups/figures/LF_65_StudyPlan_Calendar_Week_Tasbeeh_202305409.png) |
+| 10.57 | `68` | [LF_68_StudyPlan_Session_Detail_Tasbeeh_202305409.png](mockups/figures/LF_68_StudyPlan_Session_Detail_Tasbeeh_202305409.png) |
+| 10.58 | `69` | [LF_69_Progress_Dashboard_Tasbeeh_202305409.png](mockups/figures/LF_69_Progress_Dashboard_Tasbeeh_202305409.png) |
+| 10.59 | `70` | [LF_70_Progress_WeaknessRadar_Tasbeeh_202305409.png](mockups/figures/LF_70_Progress_WeaknessRadar_Tasbeeh_202305409.png) |
 | 10.60 | `73` | [LF_73_Coach_Home_Mohammed_202401702.png](mockups/figures/LF_73_Coach_Home_Mohammed_202401702.png) |
 | 10.61 | `74` | [LF_74_Coach_Chat_Conversation_Mohammed_202401702.png](mockups/figures/LF_74_Coach_Chat_Conversation_Mohammed_202401702.png) |
 | 10.62 | `75` | [LF_75_Coach_ExplainLevel_Toggle_Mohammed_202401702.png](mockups/figures/LF_75_Coach_ExplainLevel_Toggle_Mohammed_202401702.png) |
 | 10.63 | `76` | [LF_76_Coach_Citation_SourceSheet_Mohammed_202401702.png](mockups/figures/LF_76_Coach_Citation_SourceSheet_Mohammed_202401702.png) |
-| 10.64 | `77` | [LF_77_Coach_StudyPath_Recommended_Tasbeeh_202300549.png](mockups/figures/LF_77_Coach_StudyPath_Recommended_Tasbeeh_202300549.png) |
-| 10.65 | `78` | [LF_78_Coach_QuizMe_Voice_Tasbeeh_202300549.png](mockups/figures/LF_78_Coach_QuizMe_Voice_Tasbeeh_202300549.png) |
+| 10.64 | `77` | [LF_77_Coach_StudyPath_Recommended_Tasbeeh_202305409.png](mockups/figures/LF_77_Coach_StudyPath_Recommended_Tasbeeh_202305409.png) |
+| 10.65 | `78` | [LF_78_Coach_QuizMe_Voice_Tasbeeh_202305409.png](mockups/figures/LF_78_Coach_QuizMe_Voice_Tasbeeh_202305409.png) |
 | 10.66 | `81` | [LF_81_Folder_Shared_List_Shahad_202305767.png](mockups/figures/LF_81_Folder_Shared_List_Shahad_202305767.png) |
 | 10.67 | `82` | [LF_82_Folder_Detail_Shahad_202305767.png](mockups/figures/LF_82_Folder_Detail_Shahad_202305767.png) |
 | 10.68 | `83` | [LF_83_Folder_Create_Edit_Shahad_202305767.png](mockups/figures/LF_83_Folder_Create_Edit_Shahad_202305767.png) |
@@ -778,13 +811,13 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.90 | `111` | [LF_111_Admin_User_Detail_Shahad_202305767.png](mockups/figures/LF_111_Admin_User_Detail_Shahad_202305767.png) |
 | 10.91 | `112` | [LF_112_Admin_Moderation_Queue_Shahad_202305767.png](mockups/figures/LF_112_Admin_Moderation_Queue_Shahad_202305767.png) |
 | 10.92 | `115` | [LF_115_Admin_AIConfig_Settings_Shahad_202305767.png](mockups/figures/LF_115_Admin_AIConfig_Settings_Shahad_202305767.png) |
-| 10.93 | `118` | [LF_118_Paywall_Plans_Tasbeeh_202300549.png](mockups/figures/LF_118_Paywall_Plans_Tasbeeh_202300549.png) |
-| 10.94 | `120` | [LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202300549.png](mockups/figures/LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202300549.png) |
-| 10.95 | `121` | [LF_121_Payment_Method_Select_Tasbeeh_202300549.png](mockups/figures/LF_121_Payment_Method_Select_Tasbeeh_202300549.png) |
-| 10.96 | `122` | [LF_122_Payment_Card_Entry_Tasbeeh_202300549.png](mockups/figures/LF_122_Payment_Card_Entry_Tasbeeh_202300549.png) |
-| 10.97 | `124` | [LF_124_Payment_Processing_Tasbeeh_202300549.png](mockups/figures/LF_124_Payment_Processing_Tasbeeh_202300549.png) |
-| 10.98 | `125` | [LF_125_Payment_Success_Receipt_Tasbeeh_202300549.png](mockups/figures/LF_125_Payment_Success_Receipt_Tasbeeh_202300549.png) |
-| 10.99 | `126` | [LF_126_Payment_Failed_Retry_Tasbeeh_202300549.png](mockups/figures/LF_126_Payment_Failed_Retry_Tasbeeh_202300549.png) |
+| 10.93 | `118` | [LF_118_Paywall_Plans_Tasbeeh_202305409.png](mockups/figures/LF_118_Paywall_Plans_Tasbeeh_202305409.png) |
+| 10.94 | `120` | [LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202305409.png](mockups/figures/LF_120_Checkout_OrderSummary_BHD_Tasbeeh_202305409.png) |
+| 10.95 | `121` | [LF_121_Payment_Method_Select_Tasbeeh_202305409.png](mockups/figures/LF_121_Payment_Method_Select_Tasbeeh_202305409.png) |
+| 10.96 | `122` | [LF_122_Payment_Card_Entry_Tasbeeh_202305409.png](mockups/figures/LF_122_Payment_Card_Entry_Tasbeeh_202305409.png) |
+| 10.97 | `124` | [LF_124_Payment_Processing_Tasbeeh_202305409.png](mockups/figures/LF_124_Payment_Processing_Tasbeeh_202305409.png) |
+| 10.98 | `125` | [LF_125_Payment_Success_Receipt_Tasbeeh_202305409.png](mockups/figures/LF_125_Payment_Success_Receipt_Tasbeeh_202305409.png) |
+| 10.99 | `126` | [LF_126_Payment_Failed_Retry_Tasbeeh_202305409.png](mockups/figures/LF_126_Payment_Failed_Retry_Tasbeeh_202305409.png) |
 | 10.100 | `128` | [LF_128_Notifications_Inbox_Saleh_202300540.png](mockups/figures/LF_128_Notifications_Inbox_Saleh_202300540.png) |
 | 10.101 | `129` | [LF_129_Notification_Permission_Request_Saleh_202300540.png](mockups/figures/LF_129_Notification_Permission_Request_Saleh_202300540.png) |
 | 10.102 | `132` | [LF_132_Global_Search_Saleh_202300540.png](mockups/figures/LF_132_Global_Search_Saleh_202300540.png) |
@@ -793,8 +826,32 @@ The written half of Appendix A is `mockups/SCREEN-DESCRIPTIONS.md`.
 | 10.105 | `138` | [LF_138_Accessibility_LargeText_Example_Saleh_202300540.png](mockups/figures/LF_138_Accessibility_LargeText_Example_Saleh_202300540.png) |
 | 10.106 | `139` | [LF_139_RTL_Arabic_Example_Saleh_202300540.png](mockups/figures/LF_139_RTL_Arabic_Example_Saleh_202300540.png) |
 | 10.107 | `141` | [LF_141_Logout_Confirm_Saleh_202300540.png](mockups/figures/LF_141_Logout_Confirm_Saleh_202300540.png) |
+| 10.108 | `142` | [LF_142_GroupChat_Moderator_Presence_Banner_Saleh_202300540.png](mockups/figures/LF_142_GroupChat_Moderator_Presence_Banner_Saleh_202300540.png) |
+| 10.109 | `143` | [LF_143_GroupChat_Message_Moderation_Menu_Saleh_202300540.png](mockups/figures/LF_143_GroupChat_Message_Moderation_Menu_Saleh_202300540.png) |
+| 10.110 | `144` | [LF_144_GroupChat_Hidden_Message_Placeholder_Saleh_202300540.png](mockups/figures/LF_144_GroupChat_Hidden_Message_Placeholder_Saleh_202300540.png) |
+| 10.111 | `145` | [LF_145_GroupChat_Moderation_Reason_Sheet_Saleh_202300540.png](mockups/figures/LF_145_GroupChat_Moderation_Reason_Sheet_Saleh_202300540.png) |
+| 10.112 | `146` | [LF_146_GroupChat_SlowMode_Muted_Notice_Saleh_202300540.png](mockups/figures/LF_146_GroupChat_SlowMode_Muted_Notice_Saleh_202300540.png) |
+| 10.113 | `147` | [LF_147_GroupChat_Moderation_Audit_Entry_Saleh_202300540.png](mockups/figures/LF_147_GroupChat_Moderation_Audit_Entry_Saleh_202300540.png) |
+| 10.114 | `148` | [LF_148_RecallSpace_Home_DueToday_Tasbeeh_202305409.png](mockups/figures/LF_148_RecallSpace_Home_DueToday_Tasbeeh_202305409.png) |
+| 10.115 | `149` | [LF_149_RecallSpace_Session_Front_Tasbeeh_202305409.png](mockups/figures/LF_149_RecallSpace_Session_Front_Tasbeeh_202305409.png) |
+| 10.116 | `150` | [LF_150_RecallSpace_Session_Back_Rate_Tasbeeh_202305409.png](mockups/figures/LF_150_RecallSpace_Session_Back_Rate_Tasbeeh_202305409.png) |
+| 10.117 | `151` | [LF_151_RecallSpace_Daily_Limits_Tasbeeh_202305409.png](mockups/figures/LF_151_RecallSpace_Daily_Limits_Tasbeeh_202305409.png) |
+| 10.118 | `152` | [LF_152_RecallSpace_Stats_Tasbeeh_202305409.png](mockups/figures/LF_152_RecallSpace_Stats_Tasbeeh_202305409.png) |
+| 10.119 | `153` | [LF_153_RecallSpace_Filter_By_Deck_Tasbeeh_202305409.png](mockups/figures/LF_153_RecallSpace_Filter_By_Deck_Tasbeeh_202305409.png) |
+| 10.120 | `154` | [LF_154_RecallSpace_EmptyState_Tasbeeh_202305409.png](mockups/figures/LF_154_RecallSpace_EmptyState_Tasbeeh_202305409.png) |
+| 10.121 | `155` | [LF_155_StudyToUnlock_Milestones_Tasbeeh_202305409.png](mockups/figures/LF_155_StudyToUnlock_Milestones_Tasbeeh_202305409.png) |
+| 10.122 | `156` | [LF_156_StudyToUnlock_Completed_Tasbeeh_202305409.png](mockups/figures/LF_156_StudyToUnlock_Completed_Tasbeeh_202305409.png) |
+| 10.123 | `157` | [LF_157_Trial_Activated_Tasbeeh_202305409.png](mockups/figures/LF_157_Trial_Activated_Tasbeeh_202305409.png) |
+| 10.124 | `172` | [LF_172_Checkout_ExamBoost_Tasbeeh_202305409.png](mockups/figures/LF_172_Checkout_ExamBoost_Tasbeeh_202305409.png) |
+| 10.125 | `173` | [LF_173_Payment_Processing_Failed_Tasbeeh_202305409.png](mockups/figures/LF_173_Payment_Processing_Failed_Tasbeeh_202305409.png) |
+| 10.126 | `174` | [LF_174_Subscription_Manage_Monthly_Tasbeeh_202305409.png](mockups/figures/LF_174_Subscription_Manage_Monthly_Tasbeeh_202305409.png) |
+| 10.127 | `175` | [LF_175_Subscription_Manage_ExamBoost_Tasbeeh_202305409.png](mockups/figures/LF_175_Subscription_Manage_ExamBoost_Tasbeeh_202305409.png) |
+| 10.128 | `176` | [LF_176_Subscription_Manage_Trial_Tasbeeh_202305409.png](mockups/figures/LF_176_Subscription_Manage_Trial_Tasbeeh_202305409.png) |
+| 10.129 | `177` | [LF_177_Subscription_Cancel_Confirm_Tasbeeh_202305409.png](mockups/figures/LF_177_Subscription_Cancel_Confirm_Tasbeeh_202305409.png) |
+| 10.130 | `178` | [LF_178_Subscription_Cancelled_Tasbeeh_202305409.png](mockups/figures/LF_178_Subscription_Cancelled_Tasbeeh_202305409.png) |
+| 10.131 | `179` | [LF_179_Checkout_Pro_Tasbeeh_202305409.png](mockups/figures/LF_179_Checkout_Pro_Tasbeeh_202305409.png) |
 
-*Table 10.4, the figure index for the 106 wireframes, in screen order.*
+*Table 10.4, the figure index for the 130 wireframes, in screen order.*
 
 Two further exports are page furniture rather than figures and carry no number: `LF_00_PageHeader_StudyForge.png` (the header on the wireframe page) and `F00_FlowDiagrams_Header_StudyForge.png` (the header on the flow diagrams page).
 
@@ -890,7 +947,7 @@ Ten concrete, feasible, user-focused innovations, each stated as **Problem, Idea
 
 *Table 13.1, the ten innovations, each with its problem, idea, feasibility and evidence.*
 
-*Figure 13.1, a provenance citation chip and confidence band on a generated quiz answer. Status: ⬜ not yet captured; the component itself is built in the app (F03 and F05) and the same treatment is visible on the summary result screen `37` and the quiz review screen `59`.*
+*Figure 13.1, the provenance citation chip and its confidence band, captured from the two prototype screens that carry it: `38_Summary_Provenance_Citation` (the chip beside `Relevance 0.92`, the confidence band) and `59_Quiz_Review_Answers_Explanations` (the same chip on a generated quiz answer). The component is implemented in the app under F03 and F05; these captures are from the Figma prototype because the app's summary screen cannot be driven from the command line — there is no tap automation in this environment — and that limitation is stated here rather than glossed over.*
 
 ## 14. Technical architecture
 
@@ -957,7 +1014,7 @@ Accessibility is where SDG 10 becomes real, and where LO1 (UI and UX best practi
 
 ### 16.1 Apple Guideline 3.1.1 and payments
 
-Digital goods on the App Store must use Apple In-App Purchase. The client specifies a Bahrain gateway (Tap Payments). Rather than ignore the conflict, StudyForge abstracts payments behind a `PaymentGateway` protocol with two implementations, a Tap adapter and a `StoreKitGateway`. The prototype demonstrates the Tap sandbox flow; the production path is StoreKit. This turns a compliance problem into a documented architectural decision (LO3).
+Digital goods on the App Store must use Apple In-App Purchase. The client specifies a Bahrain gateway (Tap Payments). Rather than ignore the conflict, StudyForge abstracts payments behind a `PaymentGateway` protocol with two implementations, a Tap adapter and a `StoreKitGateway`. The prototype **simulates** the gateway end to end: no live provider is contacted, no card data leaves the device, and every payment screen says so in plain words (`FLOW_F13`, and the demo notices on the wireframes). The production path is StoreKit. This turns a compliance problem into a documented architectural decision (LO3).
 
 ### 16.2 Privacy and data protection
 
@@ -1028,7 +1085,7 @@ Cited in Harvard style.
 - W3C (2023) *Web Content Accessibility Guidelines (WCAG) 2.2*. Available at: https://www.w3.org/TR/WCAG22/ (Accessed: 1 October 2026).
 - Wozniak, P.A. and Gorzelanczyk, E.J. (1994) 'Optimization of repetition schedules in SuperMemo', *Acta Neurobiologiae Experimentalis*, 54(1), pp. 59-62.
 
-> **Verification note.** The learning-science references above are stable, peer-reviewed sources and are cited for their established findings. Any local market or regulatory figure used in §2 must be re-checked against its primary source immediately before submission; Bahrain's Resolution No. 43 on digital payments is cited as local context and its exact reference should be confirmed against the official gazette.
+> **Verification note.** The learning-science references above are stable, peer-reviewed sources and are cited for their established findings. **The local market and regulatory figures in §2 have been re-checked (23 Oct 2026):** Bahrain's Resolution No. 43 is **Ministerial Resolution No. (43) of 2024**, Minister of Industry and Commerce, published in the **Official Gazette No. 3753 of Thursday 13 June 2024**, and the payment rails F13 names are regulated under the **Central Bank of Bahrain Rulebook, Volume 5 (Specialised Licensees) — Payment Service Provider module** (version 5 February 2026). Every figure and its source is listed in [`research/dossier.md`](../../research/dossier.md) §2.1, with the retrieval date.
 
 **Where these references come from.** The compiled evidence base sits beside this document as
 [`research/dossier.md`](../../research/dossier.md): it carries the source behind every claim
@@ -1040,7 +1097,7 @@ upgraded on the way in from the dossier.
 
 ### Appendix A, screen inventory (labelled descriptions)
 
-The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` (**106** frames across groups A to M between them) and from `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`, which carries the purpose-and-layout description for every screen alongside the numbered element legend printed on Figma page 5. It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
+The complete per-screen inventory, with a purpose, labelled UI elements and element functions for every frame, is reproduced from `docs/03-SCREEN-INVENTORY.md` and from `deliverables/design-document/mockups/SCREEN-DESCRIPTIONS.md`, which carries the purpose-and-layout description for every screen alongside the numbered element legend printed on Figma page 5 — **130 wireframes across groups A to O**. It is attached to the exported PDF as the largest appendix; the worked example in §10.2 is the template it follows.
 
 ### Appendix B, full colour token tables
 
@@ -1086,7 +1143,7 @@ Each feature maps to its screens, the Firestore collections it touches, and the 
 ### Appendix D, prototype artefact
 
 - Figma file (view link): `https://www.figma.com/design/uzTHnydXGeZSmImS5k2cLv`
-- Prototype export: `deliverables/prototype/StudyForge.fig` (produced at Gate 2, 12 Nov 2026)
+- Prototype export: `deliverables/prototype/StudyForge.fig` (1.8 MB, re-exported from the Figma desktop app on 24 October 2026; `meta.json` records `exported_at 2026-10-23T23:01:26Z`, so it matches the shared link)
 - Both the link text document and the `.fig` file are submitted, as the brief requires both.
 
 ### Appendix E, AI tool use disclosure

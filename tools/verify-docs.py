@@ -9,8 +9,11 @@ FAIL = []
 # ─────────────────────────────────────────────────────────── 1. internal links
 # Only scan OUR markdown. Walking into node_modules or build output produces
 # hundreds of false positives from third-party READMEs.
+# "submission" is the assembled portal bundle: it holds COPIES of the documents
+# (DESIGN-DOCUMENT.md, SCREEN-DESCRIPTIONS.md) whose relative links only resolve
+# in their original location, so scanning the copies reports false breakages.
 SKIP_DIRS = {".git", "node_modules", ".agents", ".claude", ".build",
-             "DerivedData", "xcuserdata", ".firebase", "lib", "Pods"}
+             "DerivedData", "xcuserdata", ".firebase", "lib", "Pods", "submission"}
 
 
 def our_markdown():
@@ -115,9 +118,11 @@ if under:
 # ownership must agree between doc 02 (master table) and doc 03 (frame handles)
 GROUP_OWNER = {"A": "M1", "B": "M1", "C": "M1", "D": "M2", "E": "M2", "F": "M2",
                "G": "M3", "I": "M4", "J": "M2", "K": "M4", "L": "M3", "M": "M1",
-               "N": "M5", "O": "M5"}
+               "N": "M1", "O": "M3"}
 # group H is the co-owned advanced feature: its frames are tagged {M2}
-# groups N and O are M5's two features, F16 (moderated group chat) and F17 (active recall space)
+# groups N and O are M5's two features, F16 (moderated group chat) and F17 (active recall
+# space), but the brief requires frames to be named BY DEVELOPER, so the frames carry the
+# members who drew them: M1 for N, M3 for O. Feature ownership stays with M5 in doc 02.
 mismatch = []
 for grp_id, h in zip([r[0] for r in rows], handles):
     if not h:
