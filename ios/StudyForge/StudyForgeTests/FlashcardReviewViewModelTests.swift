@@ -151,4 +151,96 @@ struct FlashcardReviewViewModelTests {
         #expect(viewModel.intervalLabel(for: .good) == L10n.flashcardIntervalDays.string(1))
         #expect(viewModel.intervalLabel(for: .again) == L10n.flashcardIntervalAgain.string)
     }
+
+    @Test("Undo restores the card, the counters and the position")
+    func undoRestoresRating() async throws {
+        let store = InMemoryDeckStore()
+        try await store.add(deck(cards: [card(id: "c1"), card(id: "c2")]))
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1"), card(id: "c2")]), store: store)
+
+        await viewModel.rate(.good)
+        #expect(viewModel.canUndo)
+        await viewModel.undo()
+
+        #expect(viewModel.currentIndex == 0)
+        #expect(viewModel.reviewedCount == 0)
+        #expect(viewModel.correctCount == 0)
+        #expect(viewModel.isShowingAnswer)
+        #expect(viewModel.canUndo == false)
+        let saved = try await store.deck(id: "d1")
+        #expect(saved?.cards.first(where: { $0.id == "c1" })?.sr.interval == 0)
+    }
+
+    @Test("Undo after the last card reopens the session")
+    func undoFromSummary() async {
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1")]), store: InMemoryDeckStore())
+
+        await viewModel.rate(.again)
+        #expect(viewModel.phase == .summary)
+        await viewModel.undo()
+
+        #expect(viewModel.phase == .reviewing)
+        #expect(viewModel.againCount == 0)
+        #expect(viewModel.finishedAt == nil)
+    }
+
+    @Test("Flagging a card saves the flag on the deck")
+    func flagPersists() async throws {
+        let store = InMemoryDeckStore()
+        try await store.add(deck(cards: [card(id: "c1")]))
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1")]), store: store)
+
+        await viewModel.toggleFlag()
+        #expect(viewModel.isCurrentCardFlagged)
+        #expect(try await store.deck(id: "d1")?.cards.first?.isFlagged == true)
+
+        await viewModel.toggleFlag()
+        #expect(viewModel.isCurrentCardFlagged == false)
+    }
+
+    @Test("The summary breaks ratings down and counts Hard as recalled")
+    func ratingBreakdown() async {
+        let viewModel = FlashcardReviewViewModel(
+            deck: deck(cards: [card(id: "c1"), card(id: "c2"), card(id: "c3"), card(id: "c4")]),
+            store: InMemoryDeckStore()
+        )
+
+        await viewModel.rate(.again)
+        await viewModel.rate(.hard)
+        await viewModel.rate(.good)
+        await viewModel.rate(.easy)
+
+        #expect(viewModel.againCount == 1)
+        #expect(viewModel.hardCount == 1)
+        #expect(viewModel.goodCount == 1)
+        #expect(viewModel.easyCount == 1)
+        #expect(viewModel.correctCount == 2)
+        #expect(viewModel.accuracyPercent == 75)
+        #expect(viewModel.phase == .summary)
+        #expect(viewModel.finishedAt != nil)
+    }
+
+    @Test("A rating after the session ends is ignored")
+    func ratingAfterSummaryIsIgnored() async {
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1")]), store: InMemoryDeckStore())
+
+        await viewModel.rate(.good)
+        await viewModel.rate(.good)
+
+        #expect(viewModel.reviewedCount == 1)
+    }
+
+    @Test("A card written by hand shows no citation chip")
+    func manualCardHasNoCitation() {
+        let manual = Flashcard(
+            id: "m1",
+            front: "Question",
+            back: "Answer",
+            provenance: AIProvenance(materialId: "m", pageNumbers: [], confidence: .high),
+            aiDrafted: false
+        )
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [manual]), store: InMemoryDeckStore())
+
+        #expect(viewModel.citationLabel == nil)
+    }
 }
