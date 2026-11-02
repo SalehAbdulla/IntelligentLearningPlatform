@@ -167,6 +167,7 @@ struct FlashcardReviewView: View {
             VStack(spacing: Spacing.s2) {
                 statRow(viewModel.reviewedLabel, "\(viewModel.reviewedCount)")
                 statRow(viewModel.accuracyLabel, "\(viewModel.accuracyPercent)%")
+                statRow(viewModel.ratingTitle(.hard), "\(viewModel.hardCount)")
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(Spacing.s4)
