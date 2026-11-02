@@ -92,6 +92,20 @@ struct FlashcardReviewViewModelTests {
         #expect(rated?.sr.interval == 0)
     }
 
+    @Test("Hard increments hardCount and not correctCount")
+    func hardIsCountedSeparately() async {
+        let viewModel = FlashcardReviewViewModel(
+            deck: deck(cards: [card(id: "c1"), card(id: "c2")]),
+            store: InMemoryDeckStore()
+        )
+
+        await viewModel.rate(.hard)
+
+        #expect(viewModel.hardCount == 1)
+        #expect(viewModel.correctCount == 0)
+        #expect(viewModel.reviewedCount == 1)
+    }
+
     @Test("Accuracy is correct answers over answers given")
     func accuracy() async {
         let viewModel = FlashcardReviewViewModel(
