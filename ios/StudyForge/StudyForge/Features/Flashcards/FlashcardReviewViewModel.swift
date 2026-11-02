@@ -1,19 +1,11 @@
-//
-//  FlashcardReviewViewModel.swift
-//  StudyForge
-//
-//  Presentation logic for E05–E07 — a review session: flip a card, rate it, and let SM-2 write
-//  the next due date.
-//
-//  WHY "AGAIN" DOES NOT RE-QUEUE
-//  -----------------------------
-//  A lapsed card gets `interval = 0` and `dueAt = now` — it is immediately due again. So instead
-//  of re-queueing it within this pass, the session ends and "Keep going" starts a fresh pass over
-//  the cards that are due now, which includes every lapse. That is the SM-2 behaviour, and it
-//  keeps the progress counter honest ("7 of 20") rather than growing as cards lapse.
-//
-
 import Foundation
+
+private struct FlashcardRatingRecord: Equatable {
+    let index: Int
+    let cardID: String
+    let previous: SpacedRepetitionState
+    let rating: ReviewRating
+}
 
 @MainActor
 @Observable
@@ -33,28 +25,41 @@ final class FlashcardReviewViewModel {
     private(set) var reviewedCount = 0
     private(set) var correctCount = 0
     private(set) var hardCount = 0
+    private(set) var againCount = 0
+    private(set) var easyCount = 0
+    private(set) var isRating = false
     private(set) var error: AppError?
 
-    private var deck: Deck
+    private(set) var startedAt: Date
+    private(set) var finishedAt: Date?
+    private(set) var deck: Deck
+
+    private var lastRating: FlashcardRatingRecord?
     private let store: any DeckStore
 
-    init(deck: Deck, store: any DeckStore) {
+    init(deck: Deck, store: any DeckStore, now: Date = .now) {
         self.deck = deck
         self.store = store
-        let due = deck.cards.filter { $0.sr.isDue() }
+        let due = deck.cards.filter { $0.sr.isDue(now: now) }
         self.cards = due
         self.phase = due.isEmpty ? .empty : .reviewing
+        self.startedAt = now
     }
-
-    // MARK: Derived
 
     var currentCard: Flashcard? {
         cards.indices.contains(currentIndex) ? cards[currentIndex] : nil
     }
 
-    var progress: String { L10n.flashcardProgress.string(currentIndex + 1, cards.count) }
+    var progress: String { L10n.flashcardProgress.string(min(currentIndex + 1, cards.count), cards.count) }
 
-    /// 0…1. Zero when nothing has been answered, so the summary never divides by zero.
+    var progressLabel: String { FlashcardCopy.progress(min(currentIndex + 1, cards.count), cards.count) }
+
+    var progressFraction: Double {
+        cards.isEmpty ? 0 : Double(currentIndex) / Double(cards.count)
+    }
+
+    var goodCount: Int { correctCount - easyCount }
+
     var accuracy: Double {
         reviewedCount == 0 ? 0 : Double(correctCount + hardCount) / Double(reviewedCount)
     }
@@ -62,11 +67,21 @@ final class FlashcardReviewViewModel {
     var accuracyPercent: Int { Int((accuracy * 100).rounded()) }
 
     var citationLabel: String? {
-        guard let card = currentCard else { return nil }
+        guard let card = currentCard, card.aiDrafted else { return nil }
         return card.provenance.pageNumbers.isEmpty ? L10n.flashcardSource.string : card.provenance.citationLabel
     }
 
-    // MARK: Copy
+    var isCurrentCardFlagged: Bool { currentCard?.isFlagged ?? false }
+
+    var canUndo: Bool { lastRating != nil && !isRating && phase == .reviewing }
+
+    var hasUnfinishedProgress: Bool { phase == .reviewing && reviewedCount > 0 }
+
+    var dueNowCount: Int { deck.dueCount() }
+
+    var nextReviewDate: Date? { deck.nextDueDate() }
+
+    var sessionDuration: TimeInterval { (finishedAt ?? .now).timeIntervalSince(startedAt) }
 
     var title: String { L10n.flashcardReviewTitle.string }
     var tapToReveal: String { L10n.flashcardTapToReveal.string }
@@ -87,67 +102,124 @@ final class FlashcardReviewViewModel {
         }
     }
 
-    /// The interval a rating WOULD produce, shown under each button before the student commits.
     func intervalLabel(for rating: ReviewRating) -> String {
         guard let card = currentCard else { return "" }
         let next = SpacedRepetition.nextState(card.sr, rating: rating, now: .now)
         return Self.intervalLabel(days: next.interval)
     }
 
-    /// Formats a day interval as "<1m", "1d", "13d", "2mo", etc. — the copy the rating buttons show.
     static func intervalLabel(days: Int) -> String {
         if days <= 0 { return L10n.flashcardIntervalAgain.string }
         if days < 30 { return L10n.flashcardIntervalDays.string(days) }
         return L10n.flashcardIntervalMonths.string(days / 30)
     }
 
-    // MARK: Actions
-
     func reveal() {
+        guard currentCard != nil else { return }
         isShowingAnswer = true
     }
 
     func rate(_ rating: ReviewRating) async {
-        guard let card = currentCard else { return }
+        guard !isRating, phase == .reviewing, let card = currentCard else { return }
+        isRating = true
+        defer { isRating = false }
 
-        let next = SpacedRepetition.nextState(card.sr, rating: rating, now: .now)
-        if let index = deck.cards.firstIndex(where: { $0.id == card.id }) {
-            deck.cards[index].sr = next
-        }
-
-        reviewedCount += 1
-        switch rating {
-        case .again: break
-        case .hard: hardCount += 1
-        case .good, .easy: correctCount += 1
-        }
+        let now = Date.now
+        let next = SpacedRepetition.nextState(card.sr, rating: rating, now: now)
+        lastRating = FlashcardRatingRecord(index: currentIndex, cardID: card.id, previous: card.sr, rating: rating)
+        apply(next, toCard: card.id)
+        count(rating, by: 1)
 
         isShowingAnswer = false
         currentIndex += 1
-
-        // Persist after every rating, so "closed mid-session" keeps the progress it has already made.
-        deck.updatedAt = .now
-        do {
-            try await store.add(deck)
-        } catch {
-            self.error = AppError.from(error)
-        }
-
         if currentIndex >= cards.count {
+            finishedAt = now
             phase = .summary
         }
+
+        await persist()
     }
 
-    /// Starts a fresh pass over the cards that are due now (which includes every lapse).
+    func undo() async {
+        guard let entry = lastRating, !isRating else { return }
+        isRating = true
+        defer { isRating = false }
+
+        lastRating = nil
+        apply(entry.previous, toCard: entry.cardID)
+        count(entry.rating, by: -1)
+        currentIndex = entry.index
+        isShowingAnswer = true
+        finishedAt = nil
+        phase = .reviewing
+
+        await persist()
+    }
+
+    func toggleFlag() async {
+        guard let card = currentCard else { return }
+        var tags = card.tags
+        if let index = tags.firstIndex(of: FlashcardLimits.flagTag) {
+            tags.remove(at: index)
+        } else {
+            tags.append(FlashcardLimits.flagTag)
+        }
+        cards[currentIndex].tags = tags
+        if let index = deck.cards.firstIndex(where: { $0.id == card.id }) {
+            deck.cards[index].tags = tags
+        }
+        await persist()
+    }
+
     func keepGoing() {
-        let due = deck.cards.filter { $0.sr.isDue() }
+        let now = Date.now
+        let due = deck.cards.filter { $0.sr.isDue(now: now) }
         cards = due
         currentIndex = 0
         isShowingAnswer = false
         reviewedCount = 0
         correctCount = 0
         hardCount = 0
+        againCount = 0
+        easyCount = 0
+        lastRating = nil
         error = nil
+        startedAt = now
+        finishedAt = nil
         phase = due.isEmpty ? .empty : .reviewing
+    }
+
+    private func apply(_ state: SpacedRepetitionState, toCard id: String) {
+        if let index = deck.cards.firstIndex(where: { $0.id == id }) {
+            deck.cards[index].sr = state
+        }
+        if let index = cards.firstIndex(where: { $0.id == id }) {
+            cards[index].sr = state
+        }
+    }
+
+    private func count(_ rating: ReviewRating, by delta: Int) {
+        reviewedCount += delta
+        switch rating {
+        case .again:
+            againCount += delta
+        case .hard:
+            hardCount += delta
+        case .good:
+            correctCount += delta
+        case .easy:
+            correctCount += delta
+            easyCount += delta
+        }
+    }
+
+    private func persist() async {
+        deck.updatedAt = .now
+        do {
+            try await store.add(deck)
+            error = nil
+        } catch {
+            self.error = AppError.from(error)
+        }
     }
 }
