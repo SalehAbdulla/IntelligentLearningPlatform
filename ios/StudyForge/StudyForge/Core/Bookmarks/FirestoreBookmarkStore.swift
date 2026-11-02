@@ -6,10 +6,10 @@
 //  (`collections/{id}`, `bookmarks/{id}`, owner-only rules).
 //
 //  This file is built one commit at a time. This commit adds the actor
-//  shell, its properties, its initializer, the owner-uid helper, and the
-//  read methods (`bookmarks(for:)`, `all()`, `collection(id:)`). Protocol
-//  conformance to `BookmarkStore` and the write/delete methods (`add(_:)`,
-//  `delete(id:)`) are added in later commits.
+//  shell, its properties, its initializer, the owner-uid helper, the read
+//  methods (`bookmarks(for:)`, `all()`, `collection(id:)`), and the write
+//  methods (`add(_:)` and its `syncBookmarks` helper). Protocol conformance
+//  to `BookmarkStore` and `delete(id:)` are added in later commits.
 //
 //  WHY AN ACTOR
 //  ------------
@@ -39,12 +39,16 @@ import FirebaseFirestore
 /// A `BookmarkStore` backed by Firestore, built one method at a time.
 ///
 /// This commit declares the actor, its dependencies, its owner-uid helper,
-/// and the read methods. Protocol conformance and write/delete methods are
-/// added in later commits.
+/// the read methods, and the write methods. Protocol conformance and
+/// `delete(id:)` are added in later commits.
 actor FirestoreBookmarkStore {
 
     private let db = Firestore.firestore()
     private let auth: any AuthService
+
+    /// Firestore's hard cap on the operations in a single `WriteBatch`. The
+    /// bookmark reconciliation splits into batches of at most this many.
+    private static let batchLimit = 500
 
     init(auth: any AuthService) {
         self.auth = auth
@@ -134,6 +138,100 @@ actor FirestoreBookmarkStore {
             var result = collection
             result.bookmarks = try await bookmarks(for: id, ownerUid: ownerUid)
             return result
+        } catch {
+            throw BookmarkError.storageFailed
+        }
+    }
+
+    // MARK: Writes
+
+    /// Stores a collection, replacing any existing one with the same id, and
+    /// makes the bookmarks under it match `collection.bookmarks` exactly.
+    ///
+    /// The collection document is written first, then `syncBookmarks` reconciles
+    /// the bookmarks under it. Each Firestore write goes through a `WriteBatch`,
+    /// so a group of writes lands atomically rather than one document at a time.
+    ///
+    /// - Throws: `BookmarkError.storageFailed` if any Firestore write fails.
+    func add(_ collection: BookmarkCollection) async throws {
+        let ownerUid = try ownerUidOrThrow()
+        do {
+            // Rewrite the collection document in its own atomic batch.
+            let batch = db.batch()
+            batch.setData(
+                BookmarkFirestoreMapper.collectionDocument(collection, ownerUid: ownerUid),
+                forDocument: db.collection("collections").document(collection.id))
+            try await batch.commit()
+
+            // Reconcile the bookmarks under this collection.
+            try await syncBookmarks(
+                for: collection.id,
+                bookmarks: collection.bookmarks,
+                ownerUid: ownerUid)
+        } catch {
+            throw BookmarkError.storageFailed
+        }
+    }
+
+    /// Rewrites the bookmarks under `collectionId` to match `bookmarks` exactly:
+    /// writes or updates every bookmark in the array, and deletes any existing
+    /// bookmark document that is no longer present.
+    ///
+    /// A Firestore `WriteBatch` is capped at 500 operations, so the operations
+    /// are committed in chunks of at most `batchLimit`. Each chunk is atomic on
+    /// its own; a collection large enough to need more than one chunk is
+    /// unlikely, but the chunking keeps the code correct if it ever happens.
+    ///
+    /// - Throws: `BookmarkError.storageFailed` if any Firestore read or write fails.
+    private func syncBookmarks(
+        for collectionId: String,
+        bookmarks: [Bookmark],
+        ownerUid: String
+    ) async throws {
+        do {
+            // Which bookmarks already exist under this collection, so the ones
+            // no longer in the array can be deleted rather than left behind.
+            // Scoped by ownerUid as well as collectionId, so the reconciliation
+            // read can never see another student's bookmarks.
+            let existingSnapshot = try await db.collection("bookmarks")
+                .whereField("collectionId", isEqualTo: collectionId)
+                .whereField("ownerUid", isEqualTo: ownerUid)
+                .getDocuments()
+            let newIds = Set(bookmarks.map { $0.id })
+            let removed = existingSnapshot.documents.filter { !newIds.contains($0.documentID) }
+
+            var batch = db.batch()
+            var operations = 0
+
+            // Deletes first: a bookmark removed from the collection must not linger.
+            for document in removed {
+                if operations == Self.batchLimit {
+                    try await batch.commit()
+                    batch = db.batch()
+                    operations = 0
+                }
+                batch.deleteDocument(document.reference)
+                operations += 1
+            }
+
+            // Then writes: every bookmark currently in the collection.
+            for bookmark in bookmarks {
+                if operations == Self.batchLimit {
+                    try await batch.commit()
+                    batch = db.batch()
+                    operations = 0
+                }
+                batch.setData(
+                    BookmarkFirestoreMapper.bookmarkDocument(
+                        bookmark, collectionId: collectionId, ownerUid: ownerUid),
+                    forDocument: db.collection("bookmarks").document(bookmark.id))
+                operations += 1
+            }
+
+            // Commit whatever is left (an empty final batch is skipped).
+            if operations > 0 {
+                try await batch.commit()
+            }
         } catch {
             throw BookmarkError.storageFailed
         }
