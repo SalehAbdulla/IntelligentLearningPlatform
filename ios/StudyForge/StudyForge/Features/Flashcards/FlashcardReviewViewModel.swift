@@ -32,6 +32,7 @@ final class FlashcardReviewViewModel {
 
     private(set) var reviewedCount = 0
     private(set) var correctCount = 0
+    private(set) var hardCount = 0
     private(set) var error: AppError?
 
     private var deck: Deck
@@ -55,7 +56,7 @@ final class FlashcardReviewViewModel {
 
     /// 0…1. Zero when nothing has been answered, so the summary never divides by zero.
     var accuracy: Double {
-        reviewedCount == 0 ? 0 : Double(correctCount) / Double(reviewedCount)
+        reviewedCount == 0 ? 0 : Double(correctCount + hardCount) / Double(reviewedCount)
     }
 
     var accuracyPercent: Int { Int((accuracy * 100).rounded()) }
@@ -115,7 +116,11 @@ final class FlashcardReviewViewModel {
         }
 
         reviewedCount += 1
-        if rating != .again { correctCount += 1 }
+        switch rating {
+        case .again: break
+        case .hard: hardCount += 1
+        case .good, .easy: correctCount += 1
+        }
         // TODO(M2 · F04): Track "Hard" separately from "correct". In SM-2 a "Hard" grade is a
         // success, but it is not the same as "Good"/"Easy", so the session summary should show it
         // distinctly rather than folding it into correctCount.
@@ -146,6 +151,7 @@ final class FlashcardReviewViewModel {
         isShowingAnswer = false
         reviewedCount = 0
         correctCount = 0
+        hardCount = 0
         error = nil
         phase = due.isEmpty ? .empty : .reviewing
     }
