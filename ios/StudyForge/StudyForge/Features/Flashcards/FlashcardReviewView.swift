@@ -1,27 +1,23 @@
-//
-//  FlashcardReviewView.swift
-//  StudyForge
-//
-//  E05–E07 — the review session: front, reveal, rate, then a session summary. The view model
-//  explains why "Again" does not re-queue.
-//
-
 import SwiftUI
-
-// Accessibility: the card is one element (front or back) and acts as the reveal button, and each
-// rating button announces the interval it would set, so the four outcomes are distinguishable by ear.
 
 struct FlashcardReviewView: View {
 
     @State private var viewModel: FlashcardReviewViewModel
+    @State private var isConfirmingEnd = false
+
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let margin = Layout.screenMargin + Spacing.s3
 
     init(deck: Deck, store: any DeckStore) {
         _viewModel = State(initialValue: FlashcardReviewViewModel(deck: deck, store: store))
     }
 
     var body: some View {
-        NavigationStack {
+        ZStack {
+            SummaryBackdrop()
+
             Group {
                 switch viewModel.phase {
                 case .reviewing: reviewing
@@ -29,97 +25,202 @@ struct FlashcardReviewView: View {
                 case .empty: emptyState
                 }
             }
-            .background(ColorTokens.surface)
-            .navigationTitle(viewModel.title)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(L10n.commonClose.string) { dismiss() }
+            .frame(maxWidth: Layout.maxContentWidth)
+            .transition(.opacity)
+        }
+        .animation(Motion.respecting(Motion.standard, reduceMotion: reduceMotion), value: viewModel.phase)
+        .interactiveDismissDisabled(viewModel.hasUnfinishedProgress)
+        .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isShowingAnswer) { _, isShowing in isShowing }
+        .sensoryFeedback(.success, trigger: viewModel.phase) { _, phase in phase == .summary }
+        .confirmationDialog(
+            FlashcardCopy.endSessionTitle,
+            isPresented: $isConfirmingEnd,
+            titleVisibility: .visible
+        ) {
+            Button(FlashcardCopy.endSession) { dismiss() }
+            Button(FlashcardCopy.keepReviewing, role: .cancel) {}
+        } message: {
+            Text(FlashcardCopy.endSessionMessage(viewModel.reviewedCount))
+        }
+    }
+
+    private var reviewing: some View {
+        VStack(spacing: Spacing.s4) {
+            topBar
+
+            FlashcardProgressBar(fraction: viewModel.progressFraction)
+
+            if let error = viewModel.error {
+                SFErrorBanner(error: error, onRecover: nil)
+            }
+
+            if let card = viewModel.currentCard {
+                flipCard(card)
+                    .id(card.id)
+                    .transition(cardTransition)
+                    .padding(.top, Spacing.s4)
+            }
+
+            footer
+        }
+        .padding(.horizontal, margin)
+        .padding(.bottom, Spacing.s4)
+        .animation(Motion.respecting(Motion.standard, reduceMotion: reduceMotion), value: viewModel.currentIndex)
+    }
+
+    private var cardTransition: AnyTransition {
+        if reduceMotion {
+            return AnyTransition.opacity
+        }
+        return AnyTransition.asymmetric(
+            insertion: AnyTransition.move(edge: .trailing).combined(with: AnyTransition.opacity),
+            removal: AnyTransition.opacity
+        )
+    }
+
+    private var topBar: some View {
+        HStack {
+            Button {
+                if viewModel.hasUnfinishedProgress {
+                    isConfirmingEnd = true
+                } else {
+                    dismiss()
                 }
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.sfTitleS)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                    .frame(width: Layout.minTouchTarget, height: Layout.minTouchTarget)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(FlashcardCopy.close)
+
+            Spacer()
+
+            Text(viewModel.progressLabel)
+                .font(.sfFootnote.weight(.semibold))
+                .foregroundStyle(ColorTokens.textPrimary)
+                .monospacedDigit()
+
+            Spacer()
+
+            Button {
+                Task { await viewModel.toggleFlag() }
+            } label: {
+                Image(systemName: viewModel.isCurrentCardFlagged ? "flag.fill" : "flag")
+                    .font(.sfTitleS)
+                    .foregroundStyle(viewModel.isCurrentCardFlagged ? ColorTokens.warningText : ColorTokens.textSecondary)
+                    .frame(width: Layout.minTouchTarget, height: Layout.minTouchTarget)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(viewModel.isCurrentCardFlagged ? FlashcardCopy.unflag : FlashcardCopy.flag)
+        }
+        .padding(.top, Spacing.s2)
+    }
+
+    private func flipCard(_ card: Flashcard) -> some View {
+        let isShowing = viewModel.isShowingAnswer
+        let turns = isShowing && !reduceMotion
+
+        return ZStack {
+            face {
+                Text(card.front)
+                    .font(.sfTitleM)
+                    .foregroundStyle(ColorTokens.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.6)
+            }
+            .opacity(isShowing ? 0 : 1)
+
+            face {
+                backContent(card)
+            }
+            .opacity(isShowing ? 1 : 0)
+            .rotation3DEffect(.degrees(reduceMotion ? 0 : 180), axis: (x: 0, y: 1, z: 0))
+        }
+        .rotation3DEffect(.degrees(turns ? 180 : 0), axis: (x: 0, y: 1, z: 0), perspective: 0.6)
+        .animation(Motion.respecting(Motion.emphasis, reduceMotion: reduceMotion), value: isShowing)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if !isShowing { viewModel.reveal() }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(isShowing ? card.back : card.front)
+        .accessibilityHint(isShowing ? "" : FlashcardCopy.tapAnywhere)
+        .accessibilityAddTraits(isShowing ? [] : .isButton)
+    }
+
+    private func face<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        content()
+            .padding(Spacing.s8)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .summaryGlass(cornerRadius: 20, strong: true)
+            .shadow(color: Color.black.opacity(0.12), radius: 16, y: 12)
+    }
+
+    private func backContent(_ card: Flashcard) -> some View {
+        let answer = FlashcardAnswer(card.back)
+
+        return VStack(spacing: Spacing.s4) {
+            Text(answer.headline)
+                .font(answer.isShort ? Font.sfTitleL : Font.sfTitleS)
+                .foregroundStyle(ColorTokens.textPrimary)
+                .multilineTextAlignment(.center)
+                .minimumScaleFactor(0.6)
+
+            if let detail = answer.detail {
+                Text(detail)
+                    .font(.sfCallout)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.7)
+            }
+
+            if let citation = viewModel.citationLabel {
+                Text(FlashcardCopy.cite(citation))
+                    .font(.sfCaption.weight(.semibold))
+                    .foregroundStyle(ColorTokens.onAccent)
+                    .padding(.horizontal, Spacing.s4)
+                    .frame(minHeight: 26)
+                    .background(ColorTokens.success, in: .capsule)
             }
         }
     }
 
-    // MARK: Review
-
-    private var reviewing: some View {
-        VStack(spacing: Spacing.s6) {
-            ProgressView(value: Double(viewModel.currentIndex), total: Double(viewModel.cards.count))
-                .tint(ColorTokens.primary)
-
-            Text(viewModel.progress)
-                .font(.sfFootnote)
-                .foregroundStyle(ColorTokens.textSecondary)
-
-            Spacer(minLength: 0)
-
-            if let card = viewModel.currentCard {
-                cardView(card)
-            }
-
-            Spacer(minLength: 0)
-
-            if viewModel.isShowingAnswer {
-                ratingButtons
-            } else {
-                Text(viewModel.tapToReveal)
+    @ViewBuilder
+    private var footer: some View {
+        if viewModel.isShowingAnswer {
+            VStack(spacing: Spacing.s3) {
+                HStack(spacing: Spacing.s2) {
+                    ForEach(ReviewRating.allCases, id: \.self) { rating in
+                        ratingButton(rating)
+                    }
+                }
+                Text(FlashcardCopy.howWell)
                     .font(.sfFootnote)
                     .foregroundStyle(ColorTokens.textSecondary)
             }
-        }
-        .padding(Layout.screenMargin)
-        .frame(maxWidth: Layout.maxContentWidth)
-        .frame(maxWidth: .infinity)
-    }
-
-    private func cardView(_ card: Flashcard) -> some View {
-        VStack(alignment: .leading, spacing: Spacing.s4) {
-            Text(viewModel.isShowingAnswer ? card.back : card.front)
-                .font(.sfTitleM)
-                .foregroundStyle(ColorTokens.textPrimary)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-
-            if viewModel.isShowingAnswer, let citation = viewModel.citationLabel {
-                HStack(spacing: Spacing.s2) {
-                    Image(systemName: "quote.opening")
-                        .font(.sfCaption)
-                        .foregroundStyle(ColorTokens.primary)
-                        .accessibilityHidden(true)
-                    Text(citation)
-                        .font(.sfCaption)
-                        .foregroundStyle(ColorTokens.onPrimaryContainer)
-                        .padding(.horizontal, Spacing.s2)
-                        .padding(.vertical, Spacing.s1)
-                        .background(ColorTokens.primaryContainer, in: .capsule)
+            .transition(.opacity)
+        } else {
+            VStack(spacing: Spacing.s2) {
+                Text(FlashcardCopy.tapAnywhere)
+                    .font(.sfFootnote)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                if viewModel.canUndo {
+                    Button {
+                        Task { await viewModel.undo() }
+                    } label: {
+                        Label(FlashcardCopy.undo, systemImage: "arrow.uturn.backward")
+                            .font(.sfFootnote.weight(.semibold))
+                            .frame(minHeight: Layout.minTouchTarget)
+                    }
+                    .tint(ColorTokens.primary)
                 }
             }
-        }
-        .frame(maxWidth: .infinity, minHeight: Spacing.s12 * 4)
-        .padding(Spacing.s4)
-        .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.xl))
-        .overlay {
-            RoundedRectangle(cornerRadius: Radius.xl)
-                .strokeBorder(ColorTokens.outline, lineWidth: 1)
-        }
-        .contentShape(.rect)
-        .onTapGesture {
-            if !viewModel.isShowingAnswer { viewModel.reveal() }
-        }
-        // One element for the whole card, so the prompt and its citation are read together. While the
-        // answer is hidden the card is the reveal control, so it takes the button trait and says so.
-        .accessibilityElement(children: .combine)
-        .accessibilityHint(viewModel.isShowingAnswer ? "" : viewModel.tapToReveal)
-        .accessibilityAddTraits(viewModel.isShowingAnswer ? [] : .isButton)
-    }
-
-    private var ratingButtons: some View {
-        HStack(spacing: Spacing.s2) {
-            ratingButton(.again)
-            ratingButton(.hard)
-            ratingButton(.good)
-            ratingButton(.easy)
+            .frame(maxWidth: .infinity, minHeight: 76 + Spacing.s3 + Spacing.s5)
+            .transition(.opacity)
         }
     }
 
@@ -129,109 +230,178 @@ struct FlashcardReviewView: View {
         } label: {
             VStack(spacing: Spacing.s1) {
                 Text(viewModel.ratingTitle(rating))
-                    .font(.sfCaption)
-                    .foregroundStyle(ColorTokens.textPrimary)
+                    .font(.sfFootnote.weight(.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                 Text(viewModel.intervalLabel(for: rating))
-                    .font(.sfFootnote)
-                    .foregroundStyle(ColorTokens.textSecondary)
+                    .font(.sfCaption)
+                    .monospacedDigit()
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, Spacing.s3)
-            .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.m))
-            .overlay {
-                RoundedRectangle(cornerRadius: Radius.m)
-                    .strokeBorder(ColorTokens.outline, lineWidth: 1)
-            }
+            .foregroundStyle(rating.ink)
+            .frame(maxWidth: .infinity, minHeight: 76)
+            .background(rating.fill, in: .rect(cornerRadius: 14))
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        // The label is the rating, the value is the interval it would set: "Good, 3 days".
+        .disabled(viewModel.isRating)
         .accessibilityLabel(viewModel.ratingTitle(rating))
         .accessibilityValue(viewModel.intervalLabel(for: rating))
     }
 
-    // MARK: Summary
-
     private var summary: some View {
-        VStack(spacing: Spacing.s6) {
-            Spacer(minLength: 0)
-
-            Image(systemName: "checkmark.circle.fill")
-                .font(.sfDisplayL)
-                .foregroundStyle(ColorTokens.successText)
-                .accessibilityHidden(true)
-
-            Text(viewModel.sessionTitle)
-                .font(.sfTitleM)
-                .foregroundStyle(ColorTokens.textPrimary)
-
-            VStack(spacing: Spacing.s2) {
-                statRow(viewModel.reviewedLabel, "\(viewModel.reviewedCount)")
-                statRow(viewModel.accuracyLabel, "\(viewModel.accuracyPercent)%")
-                statRow(viewModel.ratingTitle(.hard), "\(viewModel.hardCount)")
+        let accuracy = "\(viewModel.accuracyPercent)%"
+        let nextText: String? = {
+            if viewModel.dueNowCount > 0 {
+                return FlashcardCopy.dueAgain(viewModel.dueNowCount)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(Spacing.s4)
-            .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.l))
+            if let next = viewModel.nextReviewDate {
+                return FlashcardCopy.nextReview(FlashcardText.dueLabel(next))
+            }
+            return nil
+        }()
 
-            SFPrimaryButton(title: viewModel.doneTitle) { dismiss() }
+        return ScrollView {
+            VStack(spacing: Spacing.s5) {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(ColorTokens.onAccent)
+                    .frame(width: 64, height: 64)
+                    .background(ColorTokens.success, in: .circle)
+                    .padding(.top, Spacing.s12 + Spacing.s10)
+                    .accessibilityHidden(true)
 
-            Button(viewModel.keepGoingTitle) { viewModel.keepGoing() }
-                .font(.sfBodyEmph)
-                .foregroundStyle(ColorTokens.primary)
-                .frame(minHeight: Layout.minTouchTarget)
+                Text(FlashcardCopy.sessionComplete)
+                    .font(.sfTitleM)
+                    .foregroundStyle(ColorTokens.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
-            Spacer(minLength: 0)
+                HStack(spacing: Spacing.s2) {
+                    statTile(viewModel.reviewedCount.formatted(), FlashcardCopy.reviewed)
+                    statTile(accuracy, FlashcardCopy.accuracy)
+                    statTile(FlashcardText.duration(viewModel.sessionDuration), FlashcardCopy.time)
+                }
+
+                Text(
+                    FlashcardCopy.breakdown(
+                        again: viewModel.againCount,
+                        hard: viewModel.hardCount,
+                        good: viewModel.goodCount,
+                        easy: viewModel.easyCount
+                    )
+                )
+                .font(.sfSubhead)
+                .foregroundStyle(ColorTokens.onPrimaryContainer)
+                .multilineTextAlignment(.center)
+                .padding(Spacing.s4)
+                .frame(maxWidth: .infinity, minHeight: 60)
+                .background(ColorTokens.primaryContainer, in: .rect(cornerRadius: Radius.m))
+
+                if let nextText {
+                    Text(nextText)
+                        .font(.sfFootnote)
+                        .foregroundStyle(ColorTokens.textSecondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                VStack(spacing: Spacing.s3) {
+                    if viewModel.dueNowCount > 0 {
+                        SFPrimaryButton(title: FlashcardCopy.keepGoing) {
+                            viewModel.keepGoing()
+                        }
+                        Button(FlashcardCopy.done) { dismiss() }
+                            .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
+                    } else {
+                        SFPrimaryButton(title: FlashcardCopy.done) { dismiss() }
+                    }
+                }
+                .padding(.top, Spacing.s4)
+            }
+            .padding(.horizontal, margin)
+            .padding(.bottom, Spacing.s6)
         }
-        .padding(Layout.screenMargin)
-        .frame(maxWidth: Layout.maxContentWidth)
-        .frame(maxWidth: .infinity)
     }
 
-    private func statRow(_ label: String, _ value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(.sfCallout)
-                .foregroundStyle(ColorTokens.textSecondary)
-            Spacer(minLength: Spacing.s2)
+    private func statTile(_ value: String, _ label: String) -> some View {
+        VStack(spacing: Spacing.s1) {
             Text(value)
-                .font(.sfBodyEmph)
+                .font(.sfTitleM.weight(.bold))
                 .foregroundStyle(ColorTokens.textPrimary)
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+            Text(label)
+                .font(.sfCaption)
+                .foregroundStyle(ColorTokens.textSecondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
         }
+        .frame(maxWidth: .infinity, minHeight: 74)
+        .summaryGlass()
         .accessibilityElement(children: .combine)
     }
-
-    // MARK: Empty
 
     private var emptyState: some View {
         VStack(spacing: Spacing.s4) {
             Spacer(minLength: 0)
-            Text(viewModel.emptyTitle)
+
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 44))
+                .foregroundStyle(ColorTokens.primary)
+                .accessibilityHidden(true)
+
+            Text(FlashcardCopy.nothingDueTitle)
                 .font(.sfTitleM)
                 .foregroundStyle(ColorTokens.textPrimary)
-            Text(viewModel.emptyBody)
+                .accessibilityAddTraits(.isHeader)
+
+            Text(viewModel.nextReviewDate.map { FlashcardCopy.nextReview(FlashcardText.dueLabel($0)) } ?? FlashcardCopy.nothingDueBody)
                 .font(.sfCallout)
                 .foregroundStyle(ColorTokens.textSecondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
-            SFPrimaryButton(title: L10n.commonDone.string) { dismiss() }
+
+            SFPrimaryButton(title: FlashcardCopy.done) { dismiss() }
+                .padding(.top, Spacing.s4)
+
             Spacer(minLength: 0)
         }
-        .padding(Layout.screenMargin)
-        .frame(maxWidth: Layout.maxContentWidth)
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal, margin)
     }
 }
-
-// MARK: - Previews
 
 #Preview("E05 Review") {
     FlashcardReviewView(
         deck: Deck(
             id: "preview",
-            title: "Normalisation",
+            title: "Trees & Graphs",
             cards: [
-                Flashcard(front: "What is 3NF?", back: "No transitive dependencies.",
-                          provenance: AIProvenance(materialId: "m", pageNumbers: [1], confidence: .high)),
+                Flashcard(
+                    front: "What is the time complexity of search in a balanced binary search tree?",
+                    back: "O(log n)\nEach comparison halves the remaining tree, so search is logarithmic in a balanced tree.",
+                    provenance: AIProvenance(materialId: "m", pageNumbers: [14], confidence: .high)
+                ),
+                Flashcard(
+                    front: "What is a leaf node?",
+                    back: "A node with no children.",
+                    provenance: AIProvenance(materialId: "m", pageNumbers: [12], confidence: .high)
+                )
+            ]
+        ),
+        store: InMemoryDeckStore()
+    )
+}
+
+#Preview("E09 Nothing due") {
+    FlashcardReviewView(
+        deck: Deck(
+            title: "Trees & Graphs",
+            cards: [
+                Flashcard(
+                    front: "What is a leaf node?",
+                    back: "A node with no children.",
+                    provenance: AIProvenance(materialId: "m", pageNumbers: [12], confidence: .high),
+                    sr: SpacedRepetitionState(interval: 6, dueAt: .now.addingTimeInterval(86_400), reps: 2)
+                )
             ]
         ),
         store: InMemoryDeckStore()
