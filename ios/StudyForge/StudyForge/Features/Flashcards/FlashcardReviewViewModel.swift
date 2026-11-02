@@ -121,11 +121,6 @@ final class FlashcardReviewViewModel {
         case .hard: hardCount += 1
         case .good, .easy: correctCount += 1
         }
-        // TODO(M2 · F04): Track "Hard" separately from "correct". In SM-2 a "Hard" grade is a
-        // success, but it is not the same as "Good"/"Easy", so the session summary should show it
-        // distinctly rather than folding it into correctCount.
-        // Done when: a hardCount is exposed, shown on the summary, and a test asserts "Hard"
-        // increments hardCount and not correctCount.
 
         isShowingAnswer = false
         currentIndex += 1
