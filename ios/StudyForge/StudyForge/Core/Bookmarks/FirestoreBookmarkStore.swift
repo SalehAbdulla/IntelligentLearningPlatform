@@ -5,11 +5,12 @@
 //  F10: a Firestore-backed BookmarkStore behind the existing protocol
 //  (`collections/{id}`, `bookmarks/{id}`, owner-only rules).
 //
-//  This file is built one commit at a time. This commit adds the actor
-//  shell, its properties, its initializer, the owner-uid helper, the read
-//  methods (`bookmarks(for:)`, `all()`, `collection(id:)`), and the write
-//  methods (`add(_:)` and its `syncBookmarks` helper). Protocol conformance
-//  to `BookmarkStore` and `delete(id:)` are added in later commits.
+//  This file is built one commit at a time. This commit adds the final method
+//  (`delete(id:)`) and declares conformance to `BookmarkStore`, completing the
+//  store. It already holds the actor shell, its properties, its initializer,
+//  the owner-uid helper, the read methods (`bookmarks(for:)`, `all()`,
+//  `collection(id:)`), and the write methods (`add(_:)` and its
+//  `syncBookmarks` helper).
 //
 //  WHY AN ACTOR
 //  ------------
@@ -25,23 +26,21 @@
 //  student can never read or write another student's collection or bookmark.
 //  If nobody is signed in, every call throws `BookmarkError.storageFailed`.
 //
-//  WHY NO PROTOCOL CONFORMANCE YET
-//  -------------------------------
+//  PROTOCOL CONFORMANCE
+//  --------------------
 //  `BookmarkStore` requires four methods (`all`, `collection(id:)`, `add(_:)`,
-//  `delete(id:)`). Declaring conformance before all four exist would not
-//  compile, and adding placeholder stubs would leave a half-implemented store
-//  in the history. Conformance is added only when all four methods exist.
+//  `delete(id:)`). All four now exist, so the actor declares conformance. The
+//  protocol itself was never modified: files outside this lane depend on it.
 //
 
 import Foundation
 import FirebaseFirestore
 
-/// A `BookmarkStore` backed by Firestore, built one method at a time.
+/// A `BookmarkStore` backed by Firestore.
 ///
-/// This commit declares the actor, its dependencies, its owner-uid helper,
-/// the read methods, and the write methods. Protocol conformance and
-/// `delete(id:)` are added in later commits.
-actor FirestoreBookmarkStore {
+/// Conforms to `BookmarkStore` (built one method at a time across commits), so
+/// `AppContainer` can select it wherever a `BookmarkStore` is expected.
+actor FirestoreBookmarkStore: BookmarkStore {
 
     private let db = Firestore.firestore()
     private let auth: any AuthService
@@ -232,6 +231,63 @@ actor FirestoreBookmarkStore {
             if operations > 0 {
                 try await batch.commit()
             }
+        } catch {
+            throw BookmarkError.storageFailed
+        }
+    }
+
+    // MARK: Delete
+
+    /// Removes a collection and every bookmark filed under it.
+    ///
+    /// Removing a collection that is already gone is not an error, so the
+    /// collection document is read first and the method returns quietly when it
+    /// does not exist. Reading first also keeps the owner-only delete rule
+    /// (`isOwner()` reads `resource.data.ownerUid`) satisfied, because the
+    /// delete is only issued for a document that is really there.
+    ///
+    /// The bookmarks and the collection document are removed in a `WriteBatch`
+    /// chunked to Firestore's 500-operation cap, so the collection is not left
+    /// half-deleted by a partial failure within a chunk.
+    ///
+    /// - Throws: `BookmarkError.storageFailed` if any Firestore read or write fails.
+    func delete(id: String) async throws {
+        let ownerUid = try ownerUidOrThrow()
+        do {
+            // A collection that is already gone is not an error.
+            let snapshot = try await db.collection("collections").document(id).getDocument()
+            guard snapshot.exists else { return }
+
+            // Every bookmark filed under this collection, scoped to the owner.
+            let bookmarks = try await db.collection("bookmarks")
+                .whereField("collectionId", isEqualTo: id)
+                .whereField("ownerUid", isEqualTo: ownerUid)
+                .getDocuments()
+
+            var batch = db.batch()
+            var operations = 0
+
+            // Delete the bookmarks first, so none outlives its collection.
+            for document in bookmarks.documents {
+                if operations == Self.batchLimit {
+                    try await batch.commit()
+                    batch = db.batch()
+                    operations = 0
+                }
+                batch.deleteDocument(document.reference)
+                operations += 1
+            }
+
+            // Then the collection document itself. Guard the batch limit again
+            // in case the bookmark deletes exactly filled the batch.
+            if operations == Self.batchLimit {
+                try await batch.commit()
+                batch = db.batch()
+                operations = 0
+            }
+            batch.deleteDocument(db.collection("collections").document(id))
+
+            try await batch.commit()
         } catch {
             throw BookmarkError.storageFailed
         }
