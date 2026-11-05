@@ -126,7 +126,8 @@ struct StudyPlanAvailabilityTests {
         let sessions = StudyPlanner.schedule(
             input(
                 blockedDays: [blocked],
-                examDates: [CourseExam(subject: "Maths", date: exam)]
+                examDates: [CourseExam(subject: "Maths", date: exam)],
+                weeklyHours: 2
             ),
             now: now
         )
