@@ -66,18 +66,34 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
 
     var intensity: StudyIntensity
 
+    /// Weekdays the student cannot study, in `Calendar` weekday numbering (1 = Sunday …
+    /// 7 = Saturday). Empty means "every day is available" — and, deliberately, also "this
+    /// plan was written before the field existed", exactly like `examDates` above, which is
+    /// what `init(from:)` guarantees. Canonicalised on the way in (unique, sorted, in range)
+    /// so the planner's iteration, a test's expectation and the stored JSON always agree.
+    var blockedDays: [Int]
+
     init(
         subjects: [String],
         weeklyHours: Int,
         deadline: Date? = nil,
         examDates: [CourseExam] = [],
-        intensity: StudyIntensity
+        intensity: StudyIntensity,
+        blockedDays: [Int] = []
     ) {
         self.subjects = subjects
         self.weeklyHours = weeklyHours
         self.deadline = deadline
         self.examDates = examDates
         self.intensity = intensity
+        self.blockedDays = Self.canonicalBlockedDays(blockedDays)
+    }
+
+    /// Sorted, unique and inside 1...7 — a `Set` would work for membership but its iteration
+    /// order is not guaranteed, and an unordered field would make two equal plans encode
+    /// differently. Canonicalising in ONE place (both inits) keeps every path honest.
+    private static func canonicalBlockedDays(_ days: [Int]) -> [Int] {
+        Array(Set(days.filter { (1...7).contains($0) })).sorted()
     }
 
     /// Decoded by hand, for one reason: a plan that is already on disk must still load.
@@ -97,12 +113,15 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
         self.deadline = try container.decodeIfPresent(Date.self, forKey: .deadline)
         self.examDates = try container.decodeIfPresent([CourseExam].self, forKey: .examDates) ?? []
         self.intensity = try container.decode(StudyIntensity.self, forKey: .intensity)
+        self.blockedDays = Self.canonicalBlockedDays(
+            try container.decodeIfPresent([Int].self, forKey: .blockedDays) ?? []
+        )
     }
 
     /// Declared rather than left to the compiler so the wire format is readable in one place
     /// here; a missing property would fail the build rather than fail silently at runtime.
     private enum CodingKeys: String, CodingKey {
-        case subjects, weeklyHours, deadline, examDates, intensity
+        case subjects, weeklyHours, deadline, examDates, intensity, blockedDays
     }
 }
 
