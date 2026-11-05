@@ -26,6 +26,14 @@
 //  land on or after the exam day. A subject with no exam keeps the ordinary horizon, so a plan
 //  with no exam dates lays out exactly as it did before this existed.
 //
+//  WHEN DAYS ARE BLOCKED (F06 · G02)
+//  ----------------------------------
+//  A blocked weekday removes its offset from the day list a subject may spread over, so a
+//  session never lands there. The list is computed from the same bounded loop — there is no
+//  search-for-another-day retry that could spin. With nothing blocked the list is `0..<span`
+//  in order, which is byte-for-byte the arithmetic above. All seven days blocked returns an
+//  empty schedule rather than quietly ignoring the student's restriction.
+//
 
 import Foundation
 
@@ -49,6 +57,14 @@ enum StudyPlanner {
         let subjectCount = input.subjects.count
         let subjectHorizons = horizons(for: input, days: days, baseDay: baseDay)
 
+        let blocked = Set(input.blockedDays)
+
+        // All seven weekdays blocked → nothing may be scheduled. One obvious `return []`, not
+        // an emergent property of the loop: the student's restriction is never quietly ignored.
+        // Membership, not a count: a set that CONTAINS every weekday 1...7 is the whole week
+        // off-limits, however the list was produced.
+        if (1...7).allSatisfy({ blocked.contains($0) }) { return [] }
+
         var sessions: [StudySession] = []
         sessions.reserveCapacity(sessionCount)
 
@@ -64,13 +80,36 @@ enum StudyPlanner {
             let occurrence = index / subjectCount
             let horizon = subjectHorizons[subject] ?? Horizon(span: days, lastDay: nil)
 
-            let day = occurrence % horizon.span
-            let slot = occurrence / horizon.span
+            // The offsets this subject may actually use: every day of its horizon when nothing
+            // is blocked (identical to the old `occurrence % span` arithmetic), minus blocked
+            // weekdays when something is. No legal day → skip this occurrence rather than place
+            // a session where the student said they cannot study; the loop stays bounded by
+            // `sessionCount`, so scarcity can never spin.
+            let allowed = allowedDayOffsets(
+                span: horizon.span, blocked: blocked, baseDay: baseDay, calendar: .current
+            )
+            guard !allowed.isEmpty else { continue }
+
+            let day = allowed[occurrence % allowed.count]
+            let slot = occurrence / allowed.count
 
             var date = Calendar.current
                 .date(byAdding: .day, value: day, to: baseDay)
                 .flatMap { Calendar.current.date(bySettingHour: 17, minute: slot * sessionMinutes, second: 0, of: $0) }
                 ?? now
+
+            // Stacking slots on scarce days runs the clock past midnight (or the `?? now`
+            // fallback fires), which would drop the session onto the NEXT day — with days
+            // blocked, possibly one the student ruled out. Pin the time back onto the allowed
+            // day it was computed for. Guarded on `blocked`, so a plan with no restrictions
+            // behaves byte-for-byte as it always has.
+            if !blocked.isEmpty {
+                let intendedDay = Calendar.current.date(byAdding: .day, value: day, to: baseDay)
+                let sessionDay = Calendar.current.startOfDay(for: date)
+                if let intendedDay, sessionDay != intendedDay {
+                    date = intendedDay.addingTimeInterval(date.timeIntervalSince(sessionDay))
+                }
+            }
 
             // Enough sessions at a short horizon runs the time-of-day past midnight, which would
             // drop the session onto the day AFTER its exam. Pull it back onto the last day the
@@ -135,5 +174,29 @@ enum StudyPlanner {
         }
 
         return result
+    }
+
+    // MARK: Blocked days (G02)
+
+    /// The day-offsets (0 = `baseDay`) that are not blocked, ascending.
+    ///
+    /// With nothing blocked this is `Array(0..<span)` — exactly the sequence the scheduler has
+    /// always indexed with `occurrence % span`, so an ordinary plan is unchanged. With days
+    /// blocked the offsets are filtered by their weekday; an offset whose date cannot be
+    /// computed is DROPPED rather than trusted, because scheduling onto a day we could not
+    /// verify is precisely the bypass this rule exists to prevent.
+    private static func allowedDayOffsets(
+        span: Int,
+        blocked: Set<Int>,
+        baseDay: Date,
+        calendar: Calendar
+    ) -> [Int] {
+        if blocked.isEmpty { return Array(0..<span) }
+        return (0..<span).filter { offset in
+            guard let day = calendar.date(byAdding: .day, value: offset, to: baseDay) else {
+                return false
+            }
+            return !blocked.contains(calendar.component(.weekday, from: day))
+        }
     }
 }
