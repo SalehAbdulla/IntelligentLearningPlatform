@@ -35,7 +35,10 @@ final class StudyPlanWizardViewModel {
 
     // Step 3 — deadline
     var hasDeadline = false
-    var deadline: Date = Calendar.current.date(byAdding: .day, value: 7, to: .now) ?? .now
+
+    /// The plan-level deadline. The default remains a week out — seeded in `init` from the
+    /// injected clock, so a pinned test sees the same default a student does.
+    var deadline: Date
 
     /// Per-course exam dates, keyed by subject.
     ///
@@ -54,8 +57,32 @@ final class StudyPlanWizardViewModel {
 
     private let store: any StudyPlanStore
 
-    init(store: any StudyPlanStore) {
+    /// The wizard's clock. Injected so a test can pin "today": the deadline rule is relative to the
+    /// start of the current local day, and a test that read the machine clock could only assert it
+    /// by luck (house rule — never assert on `Date.now`).
+    private let now: () -> Date
+
+    init(store: any StudyPlanStore, now: @escaping () -> Date = { .now }) {
         self.store = store
+        self.now = now
+        self.deadline = Calendar.current.date(byAdding: .day, value: 7, to: now()) ?? now()
+    }
+
+    // MARK: Deadline validation (docs/02 §6 edge case: "deadline in the past")
+
+    /// The earliest date the plan-level deadline may take: the start of today, local calendar.
+    var deadlineMinimum: Date {
+        Calendar.current.startOfDay(for: now())
+    }
+
+    /// Whether the deadline may reach the planner. With the deadline switched off there is nothing
+    /// to judge and the step is clear; with one, today counts — a "revise by tonight" deadline is
+    /// legal — and only a date before today's start is rejected. Without this rule the planner
+    /// silently compresses a past deadline into a one-day plan: `StudyPlanner` clamps a negative
+    /// horizon to `max(1, …)` days, so the student gets a schedule that quietly ignores the date
+    /// they entered rather than being told it is impossible.
+    var deadlineIsValid: Bool {
+        !hasDeadline || deadline >= deadlineMinimum
     }
 
     // MARK: Copy
@@ -87,7 +114,7 @@ final class StudyPlanWizardViewModel {
         switch step {
         case .subjects: !subjects.isEmpty
         case .availability: weeklyHours != nil
-        case .deadline: true
+        case .deadline: deadlineIsValid
         case .intensity: intensity != nil
         }
     }
@@ -142,7 +169,10 @@ final class StudyPlanWizardViewModel {
     }
 
     func generate() async {
-        guard !isSaving, let weeklyHours, let intensity, !subjects.isEmpty else { return }
+        // `deadlineIsValid` is re-checked here as well as in `canContinue`, so nothing that reaches
+        // the store can carry a deadline the wizard would not have let the student continue past —
+        // a caller that skips the deadline step cannot bypass the rule.
+        guard !isSaving, let weeklyHours, let intensity, !subjects.isEmpty, deadlineIsValid else { return }
         isSaving = true
         defer { isSaving = false }
 
