@@ -558,7 +558,7 @@ extension AppContainer {
             quizzes: FileQuizStore(),
             studyPlans: FileStudyPlanStore(),
             folders: FileFolderStore(),
-            bookmarks: FileBookmarkStore(),
+            bookmarks: FirestoreBookmarkStore(auth: auth),
             groups: FileGroupStore(),
             notifications: FileNotificationStore(),
             notificationAuthorizer: SystemNotificationAuthorizer(),
