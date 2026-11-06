@@ -195,7 +195,10 @@ extension StudyPlanReplanHistoryTests {
         let live = saved.sessions.filter { $0.status == .pending && $0.startedAt != nil }
         #expect(live.count == 1)
         let fresh = saved.sessions.filter { $0.status == .pending && $0.startedAt == nil }
-        #expect(fresh.count == 16 - 3 - 2 - 1, "target filled exactly — no lost sessions")
+        // Precomputed outside the macro: an arithmetic RHS inside #expect's expansion made the
+        // CI type-checker time out ("unable to type-check this expression in reasonable time").
+        let expectedFresh = 16 - 3 - 2 - 1
+        #expect(fresh.count == expectedFresh, "target filled exactly — no lost sessions")
     }
 
     /// #5 COLLISION REGRESSION: sessions 0 and 1 of the original plan occupy the SAME time slot
