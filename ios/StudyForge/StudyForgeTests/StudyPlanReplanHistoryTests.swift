@@ -78,11 +78,12 @@ struct StudyPlanReplanHistoryTests {
         return (vm, store)
     }
 
-    /// Half-open [start, start + minutes) intersection — independent copy of the production rule,
-    /// so the tests verify rather than echo the implementation.
+    /// Half-open [start, start + estimatedMinutes) intersection — independent copy of the
+    /// production rule (minutes converted to seconds for `Date` arithmetic), so the tests verify
+    /// rather than echo the implementation.
     private func collides(_ a: StudySession, _ b: StudySession) -> Bool {
-        let aEnd = a.scheduledAt.addingTimeInterval(TimeInterval(a.estimatedMinutes))
-        let bEnd = b.scheduledAt.addingTimeInterval(TimeInterval(b.estimatedMinutes))
+        let aEnd = a.scheduledAt.addingTimeInterval(TimeInterval(a.estimatedMinutes) * 60)
+        let bEnd = b.scheduledAt.addingTimeInterval(TimeInterval(b.estimatedMinutes) * 60)
         return a.scheduledAt < bEnd && b.scheduledAt < aEnd
     }
 }
@@ -375,9 +376,14 @@ extension StudyPlanReplanHistoryTests {
 
 extension StudyPlanReplanHistoryTests {
 
-    /// #10 F07 REGRESSION: Home progress (minutesThisWeek, itemsCompleted, streak, per-subject
-    /// breakdown) is derived from history only — a re-plan that preserves history must leave the
-    /// entire `ProgressSnapshot` unchanged.
+    /// #10 F07 REGRESSION: Home progress splits into HISTORY-derived fields (minutesThisWeek,
+    /// itemsCompleted, streak, per-subject completed counts and studied minutes — computed from
+    /// completed work) and one PLAN-DERIVED field: `SubjectProgress.totalSessions`, which
+    /// `ProgressCalculator.subjectProgress` documents as "how many sessions the plan gave a
+    /// subject". A history-preserving re-plan must leave every history-derived field identical;
+    /// unstarted sessions may legitimately redistribute between subjects, but no session may be
+    /// lost or created (G09's count invariant) and a subject can never show more completions
+    /// than it has sessions.
     @Test("Re-plan does not change Home progress metrics")
     func replanDoesNotChangeProgressMetrics() async throws {
         let input = makeInput()
@@ -396,7 +402,32 @@ extension StudyPlanReplanHistoryTests {
         let after = ProgressCalculator.snapshot(
             ProgressInput(materials: [], decks: [], quizzes: [], plan: saved, weeklyGoalHours: nil, now: t1)
         )
-        #expect(after == before, "entire snapshot identical — minutes, items, streak, subjects")
+
+        // History-derived fields: byte-identical before and after the re-plan.
+        #expect(after.masteryPercent == before.masteryPercent, "mastery comes from cards and quizzes")
+        #expect(after.streakDays == before.streakDays, "streak comes from activity history")
+        #expect(after.minutesThisWeek == before.minutesThisWeek, "weekly minutes come from completed work")
+        #expect(after.weeklyGoalHours == before.weeklyGoalHours, "the goal is profile data")
+        #expect(after.weeklyActivity == before.weeklyActivity, "daily activity comes from completed work")
+        #expect(after.topics == before.topics, "topic mastery comes from quiz history")
+        #expect(after.itemsCompleted == before.itemsCompleted, "history counter")
+        #expect(after.quizzesTaken == before.quizzesTaken, "history counter")
+        #expect(after.averageQuizScore == before.averageQuizScore, "history statistic")
+        #expect(after.cardsMastered == before.cardsMastered, "history counter")
+        #expect(after.cardsTotal == before.cardsTotal, "library size, not plan placement")
+
+        // Plan-derived shape: the same subjects with the same completed history; only the
+        // distribution of NOT-yet-started sessions across subjects may change.
+        #expect(after.subjects.map(\.subject) == before.subjects.map(\.subject), "same subject set")
+        #expect(after.subjects.map(\.completedSessions) == before.subjects.map(\.completedSessions),
+                "completed history per subject is protected")
+        #expect(after.subjects.map(\.minutesStudied) == before.subjects.map(\.minutesStudied),
+                "studied minutes per subject are protected")
+        let afterTotal = after.subjects.map(\.totalSessions).reduce(0, +)
+        let beforeTotal = before.subjects.map(\.totalSessions).reduce(0, +)
+        #expect(afterTotal == beforeTotal, "no session lost or created by the re-plan")
+        #expect(after.subjects.allSatisfy { $0.completedSessions <= $0.totalSessions },
+                "a subject can never show more completions than it has sessions")
     }
 
     /// #11 THE SECOND PASS, PROVEN: preserve sessions 1 and 3 — each shares its slot with another
