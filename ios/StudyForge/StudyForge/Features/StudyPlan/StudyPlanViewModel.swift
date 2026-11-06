@@ -270,11 +270,12 @@ final class StudyPlanViewModel {
         }
     }
 
-    /// True when two sessions' half-open [start, start + minutes) intervals intersect — a session
-    /// ends exactly where the next one may begin, so adjacency is allowed.
+    /// True when two sessions' half-open [start, start + estimatedMinutes) intervals intersect —
+    /// a session ends exactly where the next one may begin, so adjacency is allowed. Minutes are
+    /// converted to seconds for `Date` arithmetic.
     private func collides(_ a: StudySession, _ b: StudySession) -> Bool {
-        let aEnd = a.scheduledAt.addingTimeInterval(TimeInterval(a.estimatedMinutes))
-        let bEnd = b.scheduledAt.addingTimeInterval(TimeInterval(b.estimatedMinutes))
+        let aEnd = a.scheduledAt.addingTimeInterval(TimeInterval(a.estimatedMinutes) * 60)
+        let bEnd = b.scheduledAt.addingTimeInterval(TimeInterval(b.estimatedMinutes) * 60)
         return a.scheduledAt < bEnd && b.scheduledAt < aEnd
     }
 
