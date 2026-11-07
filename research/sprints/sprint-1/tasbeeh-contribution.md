@@ -28,10 +28,10 @@
 
 | Type | Link |
 |---|---|
-| Merged PRs I authored | |
-| Hand-written commits | `git log --author="Tasbeeh Saeed" --grep="hand:"` |
-| Review notes on AI-generated code | |
-| Test logs (F02, F08, F10, F14) | |
-| Emulator rules-test result | |
-| Sprint review recording | |
-| Figma frames named `Tasbeeh_202300549` | |
+| Merged PRs I authored | [#130](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/130) (F06 exam dates — implemented 18 Oct in S1; opened 20 Oct, merged 22 Oct in S2; merge `196bf0b`) |
+| Hand-written commits | None tagged `hand:` (`git log --all --author="Tasbeeh" --grep="hand:"` → empty) — outstanding against the S1-M3 goal |
+| Review notes on AI-generated code | — none in S1 (the five approvals of 28 Oct are S2 evidence, recorded in the [Sprint 2 log](../sprint-2/tasbeeh-contribution.md)) |
+| Test logs (F02, F08, F10, F14) | — **outstanding**: none produced in S1 (`research/testing/` holds only F03/F07/F09/F15, authored by M1) |
+| Emulator rules-test result | — outstanding (not produced in S1) |
+| Sprint review recording | — missing for S1 (no recording in `research/sprints/sprint-1/`) |
+| Figma frames named `Tasbeeh_202305409` | — none dated within S1; the frame set (`LF_77`, `LF_78`, `LF_148`–`LF_154`) is listed in the [Sprint 2 log](../sprint-2/tasbeeh-contribution.md) |
