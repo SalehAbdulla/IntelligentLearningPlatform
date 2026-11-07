@@ -207,8 +207,8 @@ struct StudySessionReminderSyncTests {
         session.scheduledAt.addingTimeInterval(-ReminderSyncingStudyPlanStore.reminderLead)
     }
 
-    private func pendingIDs(_ fixture: Fixture) async -> [String] {
-        await fixture.scheduler.pendingIdentifiers()
+    private func pendingIDs(_ fixture: Fixture) async throws -> [String] {
+        try await fixture.scheduler.pendingIdentifiers()
     }
 
     // MARK: 1–3 — scheduling basics
