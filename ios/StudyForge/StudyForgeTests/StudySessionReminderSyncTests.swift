@@ -486,7 +486,7 @@ struct StudySessionReminderSyncTests {
         do { try await store.add(plan([session(id: "s1", minutesFromNow: 120)])) }
         catch { didThrow = true }
         #expect(didThrow)
-        let ids = await scheduler.pendingIdentifiers()
+        let ids = try await scheduler.pendingIdentifiers()
         #expect(ids.isEmpty)
     }
 
