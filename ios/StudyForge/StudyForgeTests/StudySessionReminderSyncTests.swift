@@ -521,7 +521,7 @@ struct StudySessionReminderSyncTests {
     func preferenceChangeReconciles() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let initial = await pendingIDs(f)
+        let initial = try await pendingIDs(f)
         #expect(initial == ["reminder-s1"])
 
         var prefs = NotificationPreferences.default
