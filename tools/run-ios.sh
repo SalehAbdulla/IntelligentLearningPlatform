@@ -54,11 +54,18 @@ open -a "$DEVICE_HUB" 2>/dev/null || true
 
 # ── 3. build ──────────────────────────────────────────────────────────────
 step "Building $SCHEME"
+# Ad-hoc signed on purpose — do NOT add `CODE_SIGNING_ALLOWED=NO`.
+# That flag produced a bundle with no entitlements, so the Keychain was
+# unavailable and FirebaseAuth failed at sign-in with
+# `SecItemCopyMatching (-34018) A required entitlement is not present`
+# (the log line is `ERROR_KEYCHAIN_ERROR`, and the app shows the generic
+# "couldn't find an account"). The Simulator signs ad-hoc with no developer
+# identity required, and that is enough for the keychain, so signing stays ON.
 xcodebuild -project "$PROJECT" \
            -scheme "$SCHEME" \
            -configuration Debug \
            -destination "id=$UDID" \
-           build CODE_SIGNING_ALLOWED=NO
+           build
 
 # ── 4. install and launch ─────────────────────────────────────────────────
 step "Resolving the built product"
