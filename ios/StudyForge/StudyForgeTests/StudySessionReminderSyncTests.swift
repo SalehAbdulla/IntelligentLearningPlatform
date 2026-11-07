@@ -400,7 +400,7 @@ struct StudySessionReminderSyncTests {
     func grantedPermissionSchedules() async throws {
         let f = makeFixture(status: .granted)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])
         #expect(f.authorizer.promptCount == 0)
     }
