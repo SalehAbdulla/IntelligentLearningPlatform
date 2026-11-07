@@ -279,7 +279,7 @@ struct StudySessionReminderSyncTests {
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
         let moved = session(id: "s1", minutesFromNow: 120 + 24 * 60)   // the +1-day nudge
         try await f.store.add(plan([moved]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])
         #expect(f.scheduler.pendingRequests.count == 1)
         #expect(f.scheduler.pendingRequests.first?.fireAt == fire(moved))
