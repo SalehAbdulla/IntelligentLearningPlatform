@@ -448,7 +448,7 @@ struct StudySessionReminderSyncTests {
             session(id: "b1", minutesFromNow: 240),
             session(id: "b2", minutesFromNow: 300),
         ], id: "plan-b"))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-a1", "reminder-a2", "reminder-b1", "reminder-b2"])
     }
 
