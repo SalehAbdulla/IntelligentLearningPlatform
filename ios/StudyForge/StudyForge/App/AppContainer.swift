@@ -568,7 +568,7 @@ extension AppContainer {
                 reminderScheduler: SystemStudyReminderScheduler()
             ),
             folders: FileFolderStore(),
-            bookmarks: FileBookmarkStore(),
+            bookmarks: FirestoreBookmarkStore(auth: auth),
             groups: FileGroupStore(),
             notifications: sharedNotificationStore,
             notificationAuthorizer: sharedNotificationAuthorizer,

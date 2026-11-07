@@ -4,17 +4,13 @@
 //
 //  Where the student's bookmark collections are kept, and the seam that hides WHERE.
 //
-//  LOCAL-FIRST, LIKE EVERY OTHER STORE
-//  -----------------------------------
-//  A bookmark collection is, for now, a local record the student manages. docs/05 §2.5 already
-//  defines `collections/{id}` and `bookmarks/{id}` with owner-only rules, so this protocol is the
-//  seam a real sync swaps in behind — and until then the feature works with no Firebase project
-//  configured, which is the difference between a demonstrable bookmarks screen and an empty one.
-//
-// TODO(M4 · F10): Add a Firestore-backed `BookmarkStore` behind this protocol, matching
-// docs/05 §2.5 (`collections/{id}`, `bookmarks/{id}`, owner-only rules).
-// Done when: the implementation exists, `AppContainer` can select it, and a test proves a
-// collection round-trips through it.
+//  THE SEAM THE SCREENS ARE WRITTEN AGAINST
+//  ----------------------------------------
+//  docs/05 §2.5 defines `collections/{id}` and `bookmarks/{id}` with owner-only rules. Screens
+//  depend on this protocol rather than on a concrete store, so they are previewed and tested
+//  with `InMemoryBookmarkStore` and run unchanged against the store `AppContainer` selects,
+//  `FirestoreBookmarkStore`. `FileBookmarkStore` conforms to the same seam as an on-device
+//  alternative.
 //
 
 import Foundation
