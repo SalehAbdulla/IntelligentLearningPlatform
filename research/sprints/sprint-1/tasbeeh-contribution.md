@@ -14,8 +14,8 @@
 
 | Date | Feature / task ID | What I personally did | Evidence (commit / PR / file) | Hours | Blocker |
 |---|---|---|---|---|---|
-| | | | | | |
-| | | | | | |
+| 18 Oct | F06 | Per-course exam dates: plan model and store, planner never schedules a subject on or after its exam, wizard deadline-step capture, plus the storage and planner test suites | `4ca72a6` `9472e06` `e280843` `50335f6` `5c16fca` `8a420e3` `72e1f39` | 4 | |
+> **Sprint boundary ([doc 10 §3](../../../docs/10-SPRINT-PLAN.md)):** this log keeps only **S1 (5–18 Oct)** sessions. The rows originally drafted here for **20 Oct, 22–23 Oct and 28 Oct** fall inside **S2 (19 Oct – 1 Nov)** and are preserved — with their CI evidence completed — in the [Sprint 2 contribution log](../sprint-2/tasbeeh-contribution.md). PR #130 spans both sprints (implemented 18 Oct here; opened 20 Oct and merged 22 Oct there) and is counted **once** as a single feature deliverable.
 
 ## Sprint summary
 
