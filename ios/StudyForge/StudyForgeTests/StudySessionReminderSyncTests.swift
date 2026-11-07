@@ -318,7 +318,7 @@ struct StudySessionReminderSyncTests {
         let stored = try await f.inner.plan(id: "plan-1")
         #expect(stored == rewritten)                    // the decorator never mutates a plan
         #expect(stored?.sessions.first(where: { $0.id == "hist1" })?.status == .completed)
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-new1"])               // history is not pending ⇒ never scheduled
 
         // ACTUAL F07 metrics, not just plan equality: the dashboard's numbers are a
