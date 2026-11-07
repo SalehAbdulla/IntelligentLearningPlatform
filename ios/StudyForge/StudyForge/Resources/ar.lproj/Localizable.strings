@@ -446,6 +446,18 @@
 "plan.startNow"        = "ابدأ الآن";
 "plan.reschedule"      = "إعادة الجدولة";
 
+/* ── F06 تحذير التوفّر (docs/03 §G, G02) ─────────────────────────────────
+ * يظهر في خطوة التوفّر عندما لا يكفي الوقت المختار لكل الجلسات المطلوبة.
+ * مفتاحا المدة يقبلان نصًّا منسّقًا مسبقًا (`%@`)، فيجب أن يبقى `%@` كما هو. */
+"plan.availabilityInsufficient.title" = "الوقت الدراسي غير كافٍ";
+"plan.availabilityInsufficient.body"  = "لا يتّسع وقتك المتاح لكل الجلسات. عدّله أو تابع بخطة جزئية.";
+"plan.requestedDuration"   = "المطلوب: %@";
+"plan.schedulableDuration" = "المتاح للجدولة: %@";
+"plan.editAvailability"    = "تعديل الأوقات المتاحة";
+"plan.acceptPartialPlan"   = "قبول خطة جزئية";
+"plan.subjectNoSessions"   = "لا جلسات مجدولة لمادة %@";
+"plan.noSessionsSchedulable" = "لا يمكن جدولة أي جلسة في الوقت الذي اخترته";
+
 /* ── F07 التقدّم (docs/03 §G) ─────────────────────────────────────────── */
 "progress.title"          = "التقدّم";
 "progress.emptyTitle"     = "لا يوجد شيء لعرضه بعد";
