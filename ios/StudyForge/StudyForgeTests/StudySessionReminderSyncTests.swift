@@ -249,7 +249,7 @@ struct StudySessionReminderSyncTests {
         let before = try await pendingIDs(f)
         #expect(before == ["reminder-s1"])
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120, status: .completed)]))
-        let after = await pendingIDs(f)
+        let after = try await pendingIDs(f)
         #expect(after.isEmpty)
     }
 
