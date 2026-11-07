@@ -549,7 +549,7 @@ struct StudySessionReminderSyncTests {
 
         f.authorizer.setStatus(.denied)
         _ = try await f.store.all()
-        let denied = await pendingIDs(f)
+        let denied = try await pendingIDs(f)
         #expect(denied.isEmpty)
 
         f.authorizer.setStatus(.granted)
