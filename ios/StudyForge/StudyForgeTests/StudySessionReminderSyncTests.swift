@@ -258,7 +258,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120, status: .skipped)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
