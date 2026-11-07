@@ -121,7 +121,60 @@ struct StudyPlanWizardView: View {
                 options: [4, 8, 12, 16, 20],
                 title: { "\($0)" }
             )
+
+            // G02, part one: the days the student cannot study. The hours above say HOW MUCH
+            // time exists; these chips say WHERE it may not go. No new copy: weekday names come
+            // from the system's own localisation (the same `.formatted(.dateTime.weekday)`
+            // facility the progress bars use), and state is carried by icon, colour and strike
+            // rather than by words this key set does not have.
+            SFChipFlow(spacing: Spacing.s2, lineSpacing: Spacing.s2) {
+                ForEach(1...7, id: \.self) { weekday in
+                    weekdayChip(weekday)
+                }
+            }
         }
+    }
+
+    private func weekdayChip(_ weekday: Int) -> some View {
+        let isBlocked = viewModel.blockedDays.contains(weekday)
+        return Button { viewModel.toggleBlockedDay(weekday) } label: {
+            HStack(spacing: Spacing.s1) {
+                Text(weekdayLetter(weekday))
+                Image(systemName: isBlocked ? "xmark.circle.fill" : "circle")
+            }
+            .font(.sfCaption)
+            .foregroundStyle(isBlocked ? ColorTokens.error : ColorTokens.textSecondary)
+            .padding(.horizontal, Spacing.s3)
+            .padding(.vertical, Spacing.s2)
+            .frame(minHeight: Layout.minTouchTarget)
+            .background(
+                isBlocked ? ColorTokens.error.opacity(0.10) : ColorTokens.surfaceVariant,
+                in: .capsule
+            )
+            .strikethrough(isBlocked)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(weekdayName(weekday))
+        .accessibilityAddTraits(isBlocked ? .isSelected : [])
+    }
+
+    /// The weekday's letter in the system language — no project key exists for day names, and
+    /// the OS localises this for free (same facility as `ProgressDashboardView`'s bar labels).
+    private func weekdayLetter(_ weekday: Int) -> String {
+        weekdayDate(weekday).formatted(.dateTime.weekday(.narrow))
+    }
+
+    /// VoiceOver gets the full day name, also from the OS.
+    private func weekdayName(_ weekday: Int) -> String {
+        weekdayDate(weekday).formatted(.dateTime.weekday(.wide))
+    }
+
+    /// A date inside the current week carrying this weekday, for the name lookups above.
+    private func weekdayDate(_ weekday: Int) -> Date {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
+        components.weekday = weekday
+        return calendar.date(from: components) ?? Date()
     }
 
     // MARK: Deadline

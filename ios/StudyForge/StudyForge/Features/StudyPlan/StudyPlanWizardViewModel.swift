@@ -33,6 +33,12 @@ final class StudyPlanWizardViewModel {
     // Step 2 — availability
     var weeklyHours: Int? = 8
 
+    /// Weekdays the student cannot study — `Calendar` numbering, 1 = Sunday … 7 = Saturday.
+    /// Sorted and unique (`toggleBlockedDay` keeps it that way), matching `StudyPlanInput`'s
+    /// canonical form, so what the planner reads, what a test asserts and what disk holds is
+    /// always the same list.
+    private(set) var blockedDays: [Int] = []
+
     // Step 3 — deadline
     var hasDeadline = false
 
@@ -110,10 +116,20 @@ final class StudyPlanWizardViewModel {
 
     var isLastStep: Bool { step == .intensity }
 
+    // MARK: Availability
+
+    /// Whether at least one weekday remains studyable. docs/02 §6 lists "No availability
+    /// selected" as an edge case: a week with every day blocked has no time to schedule into,
+    /// so Continue stays disabled and `generate()` refuses — checked at both entry points so
+    /// skipping the step cannot bypass the rule.
+    var availabilityIsValid: Bool {
+        !(1...7).allSatisfy { blockedDays.contains($0) }
+    }
+
     var canContinue: Bool {
         switch step {
         case .subjects: !subjects.isEmpty
-        case .availability: weeklyHours != nil
+        case .availability: weeklyHours != nil && availabilityIsValid
         case .deadline: deadlineIsValid
         case .intensity: intensity != nil
         }
@@ -158,6 +174,18 @@ final class StudyPlanWizardViewModel {
         examDates[subject] = date
     }
 
+    /// Adds or removes one weekday from the blocked set. Range-guarded and kept sorted, so an
+    /// out-of-range tap is a no-op rather than a value the planner would have to interpret.
+    func toggleBlockedDay(_ weekday: Int) {
+        guard (1...7).contains(weekday) else { return }
+        if let index = blockedDays.firstIndex(of: weekday) {
+            blockedDays.remove(at: index)
+        } else {
+            blockedDays.append(weekday)
+            blockedDays.sort()
+        }
+    }
+
     func next() {
         guard let next = Step(rawValue: step.rawValue + 1) else { return }
         step = next
@@ -169,10 +197,13 @@ final class StudyPlanWizardViewModel {
     }
 
     func generate() async {
+        // `availabilityIsValid` is re-checked here as well as in `canContinue`, so nothing that
+        // reaches the store can carry a week with no studyable day — a caller that skips the
+        // availability step cannot bypass the rule.
         // `deadlineIsValid` is re-checked here as well as in `canContinue`, so nothing that reaches
         // the store can carry a deadline the wizard would not have let the student continue past —
         // a caller that skips the deadline step cannot bypass the rule.
-        guard !isSaving, let weeklyHours, let intensity, !subjects.isEmpty, deadlineIsValid else { return }
+        guard !isSaving, let weeklyHours, let intensity, !subjects.isEmpty, availabilityIsValid, deadlineIsValid else { return }
         isSaving = true
         defer { isSaving = false }
 
@@ -187,7 +218,8 @@ final class StudyPlanWizardViewModel {
             weeklyHours: weeklyHours,
             deadline: hasDeadline ? deadline : nil,
             examDates: courseExams,
-            intensity: intensity
+            intensity: intensity,
+            blockedDays: blockedDays
         )
         let plan = StudyPlan(input: input, sessions: StudyPlanner.schedule(input, now: .now))
 
