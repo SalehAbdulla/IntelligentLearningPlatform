@@ -554,7 +554,7 @@ struct StudySessionReminderSyncTests {
 
         f.authorizer.setStatus(.granted)
         _ = try await f.store.all()
-        let restored = await pendingIDs(f)
+        let restored = try await pendingIDs(f)
         #expect(restored == ["reminder-s1"])
     }
 
