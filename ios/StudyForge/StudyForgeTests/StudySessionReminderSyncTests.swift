@@ -355,7 +355,7 @@ struct StudySessionReminderSyncTests {
         prefs.studyReminders = false
         try await f.notifications.savePreferences(prefs)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
