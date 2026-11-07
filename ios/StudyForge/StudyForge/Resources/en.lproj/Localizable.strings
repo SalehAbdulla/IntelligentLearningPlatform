@@ -447,6 +447,19 @@
 "plan.startNow"        = "Start now";
 "plan.reschedule"      = "Reschedule";
 
+/* ── F06 availability warning (docs/03 §G, G02) ───────────────────────────
+ * Shown on the wizard's availability step when the selected time cannot fit
+ * every requested session. The two duration rows take a pre-formatted string
+ * (`%@`), so the caller decides the units; `%@` must stay `%@` in Arabic too. */
+"plan.availabilityInsufficient.title" = "Not enough study time";
+"plan.availabilityInsufficient.body"  = "Your availability doesn't fit every session. Edit it, or continue with a partial plan.";
+"plan.requestedDuration"   = "Requested: %@";
+"plan.schedulableDuration" = "Schedulable: %@";
+"plan.editAvailability"    = "Edit availability";
+"plan.acceptPartialPlan"   = "Accept partial plan";
+"plan.subjectNoSessions"   = "%@ has no scheduled sessions";
+"plan.noSessionsSchedulable" = "No sessions could be scheduled in the time you selected";
+
 /* ── F07 Progress (docs/03 §G, G10–G11) ───────────────────────────────── */
 "progress.title"          = "Progress";
 "progress.emptyTitle"     = "Nothing to show yet";
