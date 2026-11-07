@@ -160,7 +160,7 @@ declaratively. See [docs/00 §3](docs/00-MASTER-PLAN.md) and [backend/README.md]
 | Component | Weight | Status |
 |---|---|---|
 | Individual App | 10% | ✅ complete |
-| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: **F01 to F17** implemented; builds and passes **808 unit tests** |
+| iOS App Implementation & Demonstration | **60% (must pass)** | 🟨 in progress: **F01 to F17** implemented; builds and passes **886 unit tests** |
 | Sprints (individual) | 10% | ⚠️ **at risk, but no longer for access — and no longer for three of the four members:** all five hold write access (verified 16 Oct 2026), and re-measured **28 Oct 2026** from `git shortlog --all`, **M2 has 36 commits** (F03, **PR #135 open, CI green**), **M3 has 12** (F06 and F07 **merged** as #130/#133) and **M5 has 22** (F16/F17, 24–27 Oct, CI green, **no PR opened yet**). **M4 still has none** — no branch, no commits, no PR — and that is the whole of the remaining risk. Teammate evidence cannot be created at the end; it has to exist throughout the sprint, and the commit timestamps are what a marker reads |
 | Design Document | 10% | 🟨 in progress: draft assembled in `deliverables/design-document/`; **tutor interview done and transcribed** (13 Oct); **PDF rebuilt 24 Oct 2026** — 197 pages, 159 figures, a running header and `Page X of Y` on every page, and **the Word export the portal asks for** (`bash tools/build-docx.sh`, built in the university's own template, cover page and appendix included); **submission bundle assembled** in `deliverables/submission/`. `bash tools/check-submission.sh` clears **26 of its 29 items** and **the 3 open are human-only** — the **§17.3 usability test** (counted twice; the pack is ready in `research/usability/`) and **P9-18/19, the portal submission itself** (`prototype-v1` is tagged and pushed). Run the gate for the live list |
 | Prototype (Figma) | 10% | 🟨 in progress: **123 screens built** of a **154-frame inventory**, and **interactive** — **320 prototype connections** and **110 of 119 reachable, zero dead ends**, both as measured in the **15 Oct 2026** audit, with the screens added since not yet re-measured (see `deliverables/prototype/figma-link.txt` §9); **130 low-fidelity wireframes**, **all 17 flow diagrams** and **130 dark-mode variants**. F16/F17's 13 frames (groups N and O) were drawn and wired on 15 Oct 2026, and their low-fidelity wireframes followed on 24 Oct 2026 together with 11 more for the reworked F13 subscription states. See `deliverables/prototype/figma-link.txt` |
@@ -170,7 +170,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 **Verified locally** (Xcode 27.0, iPhone 17 simulator, iOS 27.0, UDID `08D34825-D798-4328-929A-18616BEA64CB`):
 
 - `xcodebuild ... build` → `** BUILD SUCCEEDED **`
-- `xcodebuild ... test` → `Test run with 808 tests in 128 suites passed`
+- `xcodebuild ... test` → `Test run with 886 tests in 136 suites passed`
 
 - ✅ Brief decoded, rubric extracted, easy-to-miss requirements identified
 - ✅ Local toolchain verified (Xcode 27.0 · iOS 26.5 & 27.0 simulators · Swift 6.4 · Figma.app · Node 24.15)
