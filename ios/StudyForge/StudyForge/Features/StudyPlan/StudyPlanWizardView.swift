@@ -196,6 +196,9 @@ struct StudyPlanWizardView: View {
                 DatePicker(
                     viewModel.deadlineHeading,
                     selection: $viewModel.deadline,
+                    // The picker cannot scroll before today; the view model enforces the same rule
+                    // on any path that never touches this control (see `deadlineIsValid`).
+                    in: viewModel.deadlineMinimum...,
                     displayedComponents: .date
                 )
                 .font(.sfBody)

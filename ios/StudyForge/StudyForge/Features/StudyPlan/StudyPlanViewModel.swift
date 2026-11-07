@@ -16,9 +16,28 @@ final class StudyPlanViewModel {
 
     private let store: any StudyPlanStore
 
-    init(store: any StudyPlanStore) {
+    /// The re-plan clock. Injected so tests can pin time instead of reading the machine clock —
+    /// the house rule: never assert on `Date.now` (CONTRIBUTING §7).
+    private let now: () -> Date
+
+    init(store: any StudyPlanStore, now: @escaping () -> Date = { .now }) {
         self.store = store
+        self.now = now
     }
+
+    // MARK: Re-plan outcome (G09)
+
+    /// What the most recent re-plan did.
+    ///
+    /// `insufficientCapacity` means NOTHING was saved: the plan on disk is byte-for-byte what it
+    /// was, and the view shows the existing error banner (`.server(reference:
+    /// "replan-insufficient-capacity")`) rather than a silently reduced schedule.
+    enum ReplanOutcome: Equatable {
+        case saved
+        case insufficientCapacity
+    }
+
+    private(set) var lastReplanOutcome: ReplanOutcome?
 
     // MARK: Derived
 
@@ -148,11 +167,116 @@ final class StudyPlanViewModel {
         await persist(plan)
     }
 
+    /// Re-plans the week WITHOUT erasing what the student already did (G09).
+    ///
+    /// HISTORY-FREE PLANS KEEP THE PRE-G09 CONTRACT (Option A): when the stored plan has nothing
+    /// to protect — no completed, no skipped, no in-progress session, only never-started
+    /// placeholders — the re-plan regenerates the WHOLE week from `StudyPlanner.schedule`, exactly
+    /// as every re-plan did before G09. There is no history to erase, so the preservation rules
+    /// below (written solely to protect history) do not apply, and a stale placeholder count is
+    /// corrected back to the planner's full schedule — one placeholder in, a whole week out. Pinned
+    /// by `replanRegenerates` (StudyPlanViewModelTests) and by test #13 of this change's suite.
+    ///
+    /// THREE GROUPS, ONE INVARIANT — plans that carry history:
+    /// - `completed` and `skipped` sessions are history — ids, times and statuses stay untouched;
+    /// - an in-progress session (`.pending` with `startedAt`) is the student's live state — kept too;
+    /// - only pending, NEVER-started sessions are re-placed, so the total count can neither grow
+    ///   nor shrink (`preserved + target == sessions.count`).
+    ///
+    /// WHY TWO PASSES AND AN EXACT-COUNT GUARD
+    /// `StudyPlanner.schedule` returns a pool sized from weeklyHours, and preserved sessions can sit
+    /// exactly where that pool wants to place new ones (two subjects share a slot; exam clamping
+    /// moves sessions off the plain grid). Pass 1 fills the target from a normal pool. If too many
+    /// candidates collide, ONE bounded second pass uses a pool sized `target + 2×preserved` — enough
+    /// for every app-generated schedule, deliberately NOT claimed as a proof for all inputs. If even
+    /// that cannot yield the exact target, nothing is saved: a reduced plan must never be written
+    /// silently. The student sees the app's existing error banner and the store keeps the original
+    /// plan; tapping "Try again" reloads it unchanged.
     func replan() async {
         guard var plan else { return }
-        plan.sessions = StudyPlanner.schedule(plan.input, now: .now)
-        plan.updatedAt = .now
+
+        let preserved = plan.sessions.filter { $0.status != .pending || $0.startedAt != nil }
+
+        // Option A (approved compatibility carve-out): no history anywhere → the pre-G09
+        // contract. Regenerate the entire week from a fresh planner run; nothing is "erased"
+        // because nothing here was ever done, and a stale placeholder count (one leftover
+        // session where the planner wants a full week) is corrected rather than preserved.
+        // Outcome follows the same rule as every other exit path: `.saved` is claimed only
+        // after the store accepted the write.
+        if preserved.isEmpty {
+            let clock = now()
+            plan.sessions = StudyPlanner.schedule(plan.input, now: clock)
+            plan.updatedAt = clock
+            lastReplanOutcome = nil
+            await persist(plan)
+            if case .loaded = state { lastReplanOutcome = .saved }
+            return
+        }
+
+        let target = plan.sessions.count - preserved.count
+
+        // Nothing left to re-place: the plan is all history (completed/skipped) or live
+        // (in-progress). Still save, exactly as re-plan always did, so the action has an effect.
+        if target == 0 {
+            plan.updatedAt = now()
+            // Success is only claimed once the store accepted the write: `persist` reports
+            // failures through state, so a stale `.saved` must never survive a rejected save.
+            lastReplanOutcome = nil
+            await persist(plan)
+            if case .loaded = state { lastReplanOutcome = .saved }
+            return
+        }
+
+        let clock = now()
+        var eligible = candidates(
+            from: StudyPlanner.schedule(plan.input, now: clock),
+            avoiding: preserved
+        )
+
+        if eligible.count < target {
+            // The single bounded second pass: size the pool for the worst observed collision
+            // pattern (each preserved session may claim up to two candidate slots).
+            let minutes = plan.input.intensity.sessionMinutes
+            let requiredPool = target + 2 * preserved.count
+            var expanded = plan.input
+            expanded.weeklyHours = (requiredPool * minutes + 59) / 60   // ceil to whole hours
+            eligible = candidates(
+                from: StudyPlanner.schedule(expanded, now: clock),
+                avoiding: preserved
+            )
+        }
+
+        guard eligible.count >= target else {
+            // Exact count unachievable → fail VISIBLY and save NOTHING. The store is not
+            // touched, so every original session, id, status, timestamp and `updatedAt`
+            // survive exactly as they were.
+            lastReplanOutcome = .insufficientCapacity
+            state = .failed(.server(reference: "replan-insufficient-capacity"))
+            return
+        }
+
+        plan.sessions = preserved + Array(eligible.prefix(target))
+        plan.updatedAt = clock
+        // Same rule as the no-op path above: `.saved` only after the store accepted the write.
+        lastReplanOutcome = nil
         await persist(plan)
+        if case .loaded = state { lastReplanOutcome = .saved }
+    }
+
+    /// Fresh candidates that do not collide with preserved history.
+    private func candidates(from fresh: [StudySession], avoiding preserved: [StudySession]) -> [StudySession] {
+        fresh.filter { candidate in
+            !preserved.contains { collides($0, candidate) }
+        }
+    }
+
+    /// True when two sessions' half-open [start, start + estimatedMinutes) intervals intersect —
+    /// a session ends exactly where the next one may begin, so adjacency is allowed. Minutes are
+    /// converted to seconds for `Date` arithmetic.
+    private func collides(_ a: StudySession, _ b: StudySession) -> Bool {
+        let aEnd = a.scheduledAt.addingTimeInterval(TimeInterval(a.estimatedMinutes) * 60)
+        let bEnd = b.scheduledAt.addingTimeInterval(TimeInterval(b.estimatedMinutes) * 60)
+        return a.scheduledAt < bEnd && b.scheduledAt < aEnd
     }
 
     private func setStatus(_ status: StudySessionStatus, for session: StudySession) async {
