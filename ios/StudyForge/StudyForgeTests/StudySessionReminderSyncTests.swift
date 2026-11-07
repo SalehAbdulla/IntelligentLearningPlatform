@@ -217,7 +217,7 @@ struct StudySessionReminderSyncTests {
     func futurePendingSessionSchedulesOnce() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])
         #expect(f.scheduler.pendingRequests.first?.title == "Databases")
     }
