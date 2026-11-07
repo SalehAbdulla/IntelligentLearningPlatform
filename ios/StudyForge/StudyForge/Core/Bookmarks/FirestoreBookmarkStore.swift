@@ -42,7 +42,13 @@ import FirebaseFirestore
 /// `AppContainer` can select it wherever a `BookmarkStore` is expected.
 actor FirestoreBookmarkStore: BookmarkStore {
 
-    private let db = Firestore.firestore()
+    // Created on first use, not in `init`. `Firestore.firestore()` requires a configured
+    // `FirebaseApp`, and the app deliberately skips `FirebaseApp.configure()` under tests
+    // (`FirebaseBootstrap.isRunningTests`). Touching Firestore from the initializer therefore
+    // threw `FIRIllegalStateException` and crashed the test host at launch, before any test
+    // could run. Deferring keeps `AppContainer.live` free of Firestore so the app launches,
+    // and the store only reaches for Firestore when a bookmark is actually read or written.
+    private var db: Firestore { Firestore.firestore() }
     private let auth: any AuthService
 
     /// Firestore's hard cap on the operations in a single `WriteBatch`. The
