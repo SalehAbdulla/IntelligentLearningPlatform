@@ -573,7 +573,7 @@ struct StudySessionReminderSyncTests {
         // the queue replenishes without duplicating anything.
         f.clock.now = fixedNow.addingTimeInterval(150 * 60)
         _ = try await f.store.all()
-        let later = await pendingIDs(f)
+        let later = try await pendingIDs(f)
         #expect(later.contains("reminder-s11"))
         #expect(later.contains("reminder-s12"))
         #expect(!later.contains("reminder-s1"))
