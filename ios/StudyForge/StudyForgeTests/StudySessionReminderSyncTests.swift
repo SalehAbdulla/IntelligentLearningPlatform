@@ -372,7 +372,7 @@ struct StudySessionReminderSyncTests {
         prefs.quietEndHour = (fireHour + 11) % 24
         try await f.notifications.savePreferences(prefs)
         try await f.store.add(plan([s]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
