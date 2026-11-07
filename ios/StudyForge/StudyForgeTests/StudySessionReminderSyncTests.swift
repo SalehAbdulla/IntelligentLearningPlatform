@@ -534,7 +534,7 @@ struct StudySessionReminderSyncTests {
         prefs.studyReminders = true
         try await f.notifications.savePreferences(prefs)
         _ = try await f.store.all()
-        let on = await pendingIDs(f)
+        let on = try await pendingIDs(f)
         #expect(on == ["reminder-s1"])
         // Quiet-hours edits ride the same preferences path (test 12 covers the
         // suppression rule itself).
