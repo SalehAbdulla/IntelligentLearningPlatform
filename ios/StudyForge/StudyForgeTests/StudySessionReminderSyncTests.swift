@@ -246,7 +246,7 @@ struct StudySessionReminderSyncTests {
     func completedSessionCancelsReminder() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let before = await pendingIDs(f)
+        let before = try await pendingIDs(f)
         #expect(before == ["reminder-s1"])
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120, status: .completed)]))
         let after = await pendingIDs(f)
