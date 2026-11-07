@@ -61,6 +61,14 @@ Tasbeeh Saeed <202305409@student.polytechnic.bh> <202305409@Student.polytechnic.
 #  M4 — Shahad Ashoor  (202305767)
 # ---------------------------------------------------------------------------
 Shahad Ashoor <202305767@student.polytechnic.bh>
+# Her first commits (PR #158, 7 Nov 2026) were made under a personal Gmail before her
+# team identity was set, so `git shortlog` read them as nobody and `check-commits.sh`
+# reported eight identity failures. Aliased rather than rewritten: a pushed commit cannot
+# be re-authored without a force-push (docs/12 §5), and — unlike the "address that was
+# never yours" case the mailmap cannot fix — the address *is* hers, so the alias restores
+# the attribution the student email would have given. She must still set her identity for
+# future commits: git config --local user.email "202305767@student.polytechnic.bh".
+Shahad Ashoor <202305767@student.polytechnic.bh> <shaahaad.hani43@gmail.com>
 
 # ---------------------------------------------------------------------------
 #  M5 — Fatema Ghareeb  (202304804)
