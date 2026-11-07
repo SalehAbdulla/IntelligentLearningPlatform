@@ -236,7 +236,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         // Starts in 10 minutes ⇒ the fire moment was 20 minutes ago: never scheduled.
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 10)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
