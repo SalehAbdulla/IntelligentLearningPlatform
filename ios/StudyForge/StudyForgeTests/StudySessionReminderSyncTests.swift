@@ -528,7 +528,7 @@ struct StudySessionReminderSyncTests {
         prefs.studyReminders = false
         try await f.notifications.savePreferences(prefs)
         _ = try await f.store.all()               // next read reconciles
-        let off = await pendingIDs(f)
+        let off = try await pendingIDs(f)
         #expect(off.isEmpty)
 
         prefs.studyReminders = true
