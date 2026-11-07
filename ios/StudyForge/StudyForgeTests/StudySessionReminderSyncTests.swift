@@ -207,8 +207,8 @@ struct StudySessionReminderSyncTests {
         session.scheduledAt.addingTimeInterval(-ReminderSyncingStudyPlanStore.reminderLead)
     }
 
-    private func pendingIDs(_ fixture: Fixture) async -> [String] {
-        await fixture.scheduler.pendingIdentifiers()
+    private func pendingIDs(_ fixture: Fixture) async throws -> [String] {
+        try await fixture.scheduler.pendingIdentifiers()
     }
 
     // MARK: 1–3 — scheduling basics
@@ -217,7 +217,7 @@ struct StudySessionReminderSyncTests {
     func futurePendingSessionSchedulesOnce() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])
         #expect(f.scheduler.pendingRequests.first?.title == "Databases")
     }
@@ -236,7 +236,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         // Starts in 10 minutes ⇒ the fire moment was 20 minutes ago: never scheduled.
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 10)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
@@ -246,10 +246,10 @@ struct StudySessionReminderSyncTests {
     func completedSessionCancelsReminder() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let before = await pendingIDs(f)
+        let before = try await pendingIDs(f)
         #expect(before == ["reminder-s1"])
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120, status: .completed)]))
-        let after = await pendingIDs(f)
+        let after = try await pendingIDs(f)
         #expect(after.isEmpty)
     }
 
@@ -258,7 +258,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120, status: .skipped)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
@@ -266,10 +266,10 @@ struct StudySessionReminderSyncTests {
     func startedSessionCancelsReminder() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let before = await pendingIDs(f)
+        let before = try await pendingIDs(f)
         #expect(before == ["reminder-s1"])
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120, started: true)]))
-        let after = await pendingIDs(f)
+        let after = try await pendingIDs(f)
         #expect(after.isEmpty)
     }
 
@@ -279,7 +279,7 @@ struct StudySessionReminderSyncTests {
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
         let moved = session(id: "s1", minutesFromNow: 120 + 24 * 60)   // the +1-day nudge
         try await f.store.add(plan([moved]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])
         #expect(f.scheduler.pendingRequests.count == 1)
         #expect(f.scheduler.pendingRequests.first?.fireAt == fire(moved))
@@ -297,7 +297,7 @@ struct StudySessionReminderSyncTests {
             session(id: "new1", minutesFromNow: 120),
             session(id: "new2", minutesFromNow: 180),
         ]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-new1", "reminder-new2"])
     }
 
@@ -318,7 +318,7 @@ struct StudySessionReminderSyncTests {
         let stored = try await f.inner.plan(id: "plan-1")
         #expect(stored == rewritten)                    // the decorator never mutates a plan
         #expect(stored?.sessions.first(where: { $0.id == "hist1" })?.status == .completed)
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-new1"])               // history is not pending ⇒ never scheduled
 
         // ACTUAL F07 metrics, not just plan equality: the dashboard's numbers are a
@@ -341,7 +341,7 @@ struct StudySessionReminderSyncTests {
         try await f.store.add(p)
         try await f.store.add(p)
         try await f.store.add(p)
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1", "reminder-s2", "reminder-s3"])
         #expect(f.scheduler.pendingRequests.count == 3)
     }
@@ -355,7 +355,7 @@ struct StudySessionReminderSyncTests {
         prefs.studyReminders = false
         try await f.notifications.savePreferences(prefs)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
@@ -372,7 +372,7 @@ struct StudySessionReminderSyncTests {
         prefs.quietEndHour = (fireHour + 11) % 24
         try await f.notifications.savePreferences(prefs)
         try await f.store.add(plan([s]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
@@ -382,7 +382,7 @@ struct StudySessionReminderSyncTests {
     func deniedPermissionCreatesNoRequests() async throws {
         let f = makeFixture(status: .denied)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
         #expect(f.authorizer.promptCount == 0)
     }
@@ -391,7 +391,7 @@ struct StudySessionReminderSyncTests {
     func notDeterminedPermissionDoesNotPrompt() async throws {
         let f = makeFixture(status: .notDetermined)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
         #expect(f.authorizer.promptCount == 0)
     }
@@ -400,7 +400,7 @@ struct StudySessionReminderSyncTests {
     func grantedPermissionSchedules() async throws {
         let f = makeFixture(status: .granted)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])
         #expect(f.authorizer.promptCount == 0)
     }
@@ -412,7 +412,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
         try await f.store.delete(id: "plan-1")
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids.isEmpty)
     }
 
@@ -430,7 +430,7 @@ struct StudySessionReminderSyncTests {
             id: "groupActivity-team", title: "t", body: "b", fireAt: fireAt
         ))
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(!ids.contains("reminder-stale"))        // obsolete F06 reminder: cancelled
         #expect(ids.contains("quizDue-weekly"))         // other types: untouched
         #expect(ids.contains("groupActivity-team"))
@@ -448,7 +448,7 @@ struct StudySessionReminderSyncTests {
             session(id: "b1", minutesFromNow: 240),
             session(id: "b2", minutesFromNow: 300),
         ], id: "plan-b"))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-a1", "reminder-a2", "reminder-b1", "reminder-b2"])
     }
 
@@ -486,7 +486,7 @@ struct StudySessionReminderSyncTests {
         do { try await store.add(plan([session(id: "s1", minutesFromNow: 120)])) }
         catch { didThrow = true }
         #expect(didThrow)
-        let ids = await scheduler.pendingIdentifiers()
+        let ids = try await scheduler.pendingIdentifiers()
         #expect(ids.isEmpty)
     }
 
@@ -513,7 +513,7 @@ struct StudySessionReminderSyncTests {
         )
         let plans = try await relaunched.all()
         #expect(plans.count == 1)
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])   // ghost cancelled; the dropped request restored
     }
 
@@ -521,20 +521,20 @@ struct StudySessionReminderSyncTests {
     func preferenceChangeReconciles() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let initial = await pendingIDs(f)
+        let initial = try await pendingIDs(f)
         #expect(initial == ["reminder-s1"])
 
         var prefs = NotificationPreferences.default
         prefs.studyReminders = false
         try await f.notifications.savePreferences(prefs)
         _ = try await f.store.all()               // next read reconciles
-        let off = await pendingIDs(f)
+        let off = try await pendingIDs(f)
         #expect(off.isEmpty)
 
         prefs.studyReminders = true
         try await f.notifications.savePreferences(prefs)
         _ = try await f.store.all()
-        let on = await pendingIDs(f)
+        let on = try await pendingIDs(f)
         #expect(on == ["reminder-s1"])
         // Quiet-hours edits ride the same preferences path (test 12 covers the
         // suppression rule itself).
@@ -544,17 +544,17 @@ struct StudySessionReminderSyncTests {
     func permissionChangeReconciles() async throws {
         let f = makeFixture(status: .granted)
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let before = await pendingIDs(f)
+        let before = try await pendingIDs(f)
         #expect(before == ["reminder-s1"])
 
         f.authorizer.setStatus(.denied)
         _ = try await f.store.all()
-        let denied = await pendingIDs(f)
+        let denied = try await pendingIDs(f)
         #expect(denied.isEmpty)
 
         f.authorizer.setStatus(.granted)
         _ = try await f.store.all()
-        let restored = await pendingIDs(f)
+        let restored = try await pendingIDs(f)
         #expect(restored == ["reminder-s1"])
     }
 
@@ -565,7 +565,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         let sessions = (1...12).map { session(id: "s\($0)", minutesFromNow: Double($0) * 60) }
         try await f.store.add(plan(sessions))
-        let initial = await pendingIDs(f)
+        let initial = try await pendingIDs(f)
         #expect(initial.count == ReminderSyncingStudyPlanStore.limit)   // 10, not 12
         #expect(!initial.contains("reminder-s11"))
 
@@ -573,7 +573,7 @@ struct StudySessionReminderSyncTests {
         // the queue replenishes without duplicating anything.
         f.clock.now = fixedNow.addingTimeInterval(150 * 60)
         _ = try await f.store.all()
-        let later = await pendingIDs(f)
+        let later = try await pendingIDs(f)
         #expect(later.contains("reminder-s11"))
         #expect(later.contains("reminder-s12"))
         #expect(!later.contains("reminder-s1"))
@@ -590,22 +590,22 @@ struct StudySessionReminderSyncTests {
 
         try await scheduler.schedule(a)
         try await scheduler.schedule(a)                        // replacement, not duplication
-        var ids = await scheduler.pendingIdentifiers()
+        var ids = try await scheduler.pendingIdentifiers()
         #expect(ids == ["reminder-a"])
 
         let past = StudyReminderRequest(
             id: "reminder-past", title: "t", body: "b", fireAt: fixedNow.addingTimeInterval(-1)
         )
         try await scheduler.schedule(past)                     // rejected: never in the past
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(!ids.contains("reminder-past"))
 
         try await scheduler.cancelPending(ids: ["reminder-missing"])   // unknown id: no-op
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(ids == ["reminder-a"])
 
         try await scheduler.cancelPending(ids: ["reminder-a"])
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(ids.isEmpty)
 
         // Delivery: once the fire time passes, the request leaves the pending set.
@@ -614,7 +614,7 @@ struct StudySessionReminderSyncTests {
         )
         try await scheduler.schedule(later)
         clock.now = fixedNow.addingTimeInterval(120)
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(ids.isEmpty)
     }
 
@@ -653,7 +653,7 @@ struct StudySessionReminderSyncTests {
 
         // Serialised + fresh-reading: the stale run goes first, the fresh run last,
         // so the stale desired set can never cancel plan-b's reminder.
-        let ids = await scheduler.pendingIdentifiers()
+        let ids = try await scheduler.pendingIdentifiers()
         #expect(ids == ["reminder-a1", "reminder-b1"])
         #expect(gate.capturedFirstSnapshot?.count == 1)   // the stale read really happened
     }
@@ -662,14 +662,14 @@ struct StudySessionReminderSyncTests {
     func clockRewindKeepsSinglePending() async throws {
         let f = makeFixture()
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let before = await pendingIDs(f)
+        let before = try await pendingIDs(f)
         #expect(before == ["reminder-s1"])
 
         // The clock moves backwards (manual change / NTP step): the reminder is
         // still future, still desired, and a re-sync replaces it 1:1.
         f.clock.now = fixedNow.addingTimeInterval(-300)
         _ = try await f.store.all()
-        let after = await pendingIDs(f)
+        let after = try await pendingIDs(f)
         #expect(after == ["reminder-s1"])
         #expect(f.scheduler.pendingRequests.count == 1)
     }
