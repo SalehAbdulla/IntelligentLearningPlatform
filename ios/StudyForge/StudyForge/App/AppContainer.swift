@@ -547,6 +547,11 @@ extension AppContainer {
         }
         #endif
 
+        // F06 session reminders: the production plan store is wrapped so every persisted
+        // change reconciles dated reminders; the F14 graph below is shared with the
+        // wrapper (one store/authorizer instance each — no duplicate services).
+        let sharedNotificationStore = FileNotificationStore()
+        let sharedNotificationAuthorizer = SystemNotificationAuthorizer()
         return AppContainer(
             environment: environment,
             firebaseSource: source,
@@ -556,12 +561,17 @@ extension AppContainer {
             summaries: FileSummaryStore(),
             decks: FileDeckStore(),
             quizzes: FileQuizStore(),
-            studyPlans: FileStudyPlanStore(),
+            studyPlans: ReminderSyncingStudyPlanStore(
+                inner: FileStudyPlanStore(),
+                notifications: sharedNotificationStore,
+                authorizer: sharedNotificationAuthorizer,
+                reminderScheduler: SystemStudyReminderScheduler()
+            ),
             folders: FileFolderStore(),
             bookmarks: FileBookmarkStore(),
             groups: FileGroupStore(),
-            notifications: FileNotificationStore(),
-            notificationAuthorizer: SystemNotificationAuthorizer(),
+            notifications: sharedNotificationStore,
+            notificationAuthorizer: sharedNotificationAuthorizer,
             notificationScheduler: SystemNotificationScheduler(),
             recentSearches: UserDefaultsRecentSearchStore(),
             aiConfigurations: FileAIConfigurationStore(),
