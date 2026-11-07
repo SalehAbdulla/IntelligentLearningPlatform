@@ -513,7 +513,7 @@ struct StudySessionReminderSyncTests {
         )
         let plans = try await relaunched.all()
         #expect(plans.count == 1)
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1"])   // ghost cancelled; the dropped request restored
     }
 
