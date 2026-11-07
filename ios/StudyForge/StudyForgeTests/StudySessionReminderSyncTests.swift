@@ -565,7 +565,7 @@ struct StudySessionReminderSyncTests {
         let f = makeFixture()
         let sessions = (1...12).map { session(id: "s\($0)", minutesFromNow: Double($0) * 60) }
         try await f.store.add(plan(sessions))
-        let initial = await pendingIDs(f)
+        let initial = try await pendingIDs(f)
         #expect(initial.count == ReminderSyncingStudyPlanStore.limit)   // 10, not 12
         #expect(!initial.contains("reminder-s11"))
 
