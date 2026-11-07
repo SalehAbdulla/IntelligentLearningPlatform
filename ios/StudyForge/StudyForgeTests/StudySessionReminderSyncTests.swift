@@ -601,7 +601,7 @@ struct StudySessionReminderSyncTests {
         #expect(!ids.contains("reminder-past"))
 
         try await scheduler.cancelPending(ids: ["reminder-missing"])   // unknown id: no-op
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(ids == ["reminder-a"])
 
         try await scheduler.cancelPending(ids: ["reminder-a"])
