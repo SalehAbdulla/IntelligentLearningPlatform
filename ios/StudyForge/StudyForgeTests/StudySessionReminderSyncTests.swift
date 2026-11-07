@@ -614,7 +614,7 @@ struct StudySessionReminderSyncTests {
         )
         try await scheduler.schedule(later)
         clock.now = fixedNow.addingTimeInterval(120)
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(ids.isEmpty)
     }
 
