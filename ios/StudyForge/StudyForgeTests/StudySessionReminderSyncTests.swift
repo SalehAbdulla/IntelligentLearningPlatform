@@ -597,7 +597,7 @@ struct StudySessionReminderSyncTests {
             id: "reminder-past", title: "t", body: "b", fireAt: fixedNow.addingTimeInterval(-1)
         )
         try await scheduler.schedule(past)                     // rejected: never in the past
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(!ids.contains("reminder-past"))
 
         try await scheduler.cancelPending(ids: ["reminder-missing"])   // unknown id: no-op
