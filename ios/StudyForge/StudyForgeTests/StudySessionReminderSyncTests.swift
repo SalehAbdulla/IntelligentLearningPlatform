@@ -590,7 +590,7 @@ struct StudySessionReminderSyncTests {
 
         try await scheduler.schedule(a)
         try await scheduler.schedule(a)                        // replacement, not duplication
-        var ids = await scheduler.pendingIdentifiers()
+        var ids = try await scheduler.pendingIdentifiers()
         #expect(ids == ["reminder-a"])
 
         let past = StudyReminderRequest(
