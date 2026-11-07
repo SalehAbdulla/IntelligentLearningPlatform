@@ -605,7 +605,7 @@ struct StudySessionReminderSyncTests {
         #expect(ids == ["reminder-a"])
 
         try await scheduler.cancelPending(ids: ["reminder-a"])
-        ids = await scheduler.pendingIdentifiers()
+        ids = try await scheduler.pendingIdentifiers()
         #expect(ids.isEmpty)
 
         // Delivery: once the fire time passes, the request leaves the pending set.
