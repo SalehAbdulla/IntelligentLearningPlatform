@@ -14,9 +14,42 @@
 |---|---|
 | **Build** | commit `________`, installed with `bash tools/run-device.sh` |
 | **Launch state** | `xcrun simctl launch <device> com.studyforge.app -seedDemo` — **verified 28 Oct 2026:** opens **signed in as the demo student with a finished profile**, so step 1 lands on the dashboard instead of the profile wizard. `-seedDemo` also seeds the library with `Material.samples`. **DEBUG only**, like every other hatch: a shipping build must never fabricate a session |
+| **AI tier 1** | `GEMINI_API_KEY` set in the scheme — **free, and required for the money shot** (see below) |
 | **Device** | |
 | **Rehearsal count** | ____ / 3 |
 | **Backup recording** | `________` (see [`backup-capture.md`](backup-capture.md)) |
+
+### Before you start — the AI key (5 minutes, and it is free)
+
+**Why it matters.** With no key, `GeminiCloudProvider.isConfigured` is false, tier 1 reports
+`.unavailable(.notImplemented)`, and every AI screen shows its **"not available"** state. That state is
+*designed* rather than broken — the app does not crash and tier 0 still works — but it is not the
+demo. The difference is whether the money shot is the real thing.
+
+**Where it comes from, and it costs nothing.** Google AI Studio → **Get API key**
+(`aistudio.google.com/apikey`). One click with a Google account: **no credit card, no billing setup.**
+[docs/04 §1](../../docs/04-TECH-ARCHITECTURE-COST.md) is built on exactly this — *"Zero-cost by
+default: every service sits inside a free tier"* — and the project's estimated total cost is **$0**.
+
+**How to set it.** Scheme → Run → Arguments → **Environment Variables**: `GEMINI_API_KEY = <key>`.
+Preferred over `Info.plist` because an Xcode scheme's user data is gitignored, so the key sits in no
+repository and in no diff. Two more nets: `tools/commit.sh` refuses any commit containing a
+key-shaped string, and GitGuardian runs on every push.
+
+**Two facts about the free tier, stated here rather than discovered on the day:**
+
+1. **Free-tier content is used to improve Google's products** — the paid tier's is not. Fine for a
+   demo with sample material; **do not run a real student's notes through it**, and do not let the
+   privacy screen imply otherwise.
+2. **Rate limits are per project**, and the daily quota resets at **midnight Pacific**. The app's own
+   `AICostGovernor` caps per-user daily generations long before that binds, so a demo cannot reach it.
+
+**And a correction worth knowing, because a marker may ask:** [docs/04 §5](../../docs/04-TECH-ARCHITECTURE-COST.md)
+describes the *planned* tier 1 as **Firebase AI Logic**, whose key must be "enabled for the Firebase
+project". The implementation went another way — the Firebase AI Logic SDK needs a `*.xcodeproj` edit,
+and the lane guard forbids that file to **every** member including the owner — so tier 1 calls the
+**Gemini Developer API directly over `URLSession`** (`Core/AI/GeminiCloudProvider.swift`). **Same key,
+same free tier, and no Firebase wiring needed.**
 
 ## The two rules
 
@@ -132,3 +165,23 @@ One slide: the 3-tier AI router, the $0 cost model, the 4 roles, the security ru
 | 3 | The money shot (0:25–3:10) was protected | ☐ |
 | 4 | The total landed within 5:00 | ☐ |
 | 5 | Any step that failed is **written into [`regression-log.md`](regression-log.md)** | ☐ |
+
+---
+
+## Owner's tasks before the VIVA — the things only M1 can do
+
+**Recorded 28 Oct 2026, for the next session.** Everything here is either a human action or a review
+nobody else can give. Nothing in the *engineering* is blocked.
+
+| # | Task | Why it matters | Time |
+|---|---|---|---|
+| 1 | **Set `GEMINI_API_KEY`** — see the pre-flight section above. Free, from Google AI Studio, no card | Without it tier 1 reports `.unavailable` and every AI screen shows **"not available"**. The demo still runs, but the money shot is not the real thing | 5 min |
+| 2 | **Re-export `deliverables/prototype/StudyForge.fig`** (Figma → File → Save local copy) | The committed export is **8 components behind**: its canvas is dated **15:00**, and the component work landed from **15:19** | 2 min |
+| 3 | **Chase one review** on **#148** (the guard fix — M3 is blocked on it for her contribution log), then **#149** and **#150** | `develop` requires one approving review and M1 cannot review his own PRs. It is the only thing between here and a closed queue | 10 min |
+| 4 | **Book the §17.3 usability test — 5 participants + a SUS score** | **Two of the three** items the submission gate still reports as open (`dd-usability`, `p9-0304`), and the only one that needs other people. It cannot be compressed, so it sets the real deadline | 1–2 days |
+| 5 | **P5-16 — the 3-minute walkthrough recording** | The last Phase 5 item needing nothing but a screen recorder; the prototype is fully wired (320 reactions, 37 Smart Animate) | 30 min |
+| 6 | **Portal submit, then tick `p9-1819`** | The last gate item. The `prototype-v1` tag already exists | 30 min |
+| 7 | **Decide the demo seed** — the dashboard's empty state (recommended, and the better opening) or pre-populated plan/progress/decks | Recorded in the "Measured 28 Oct 2026" note above as a **decision**, not a defect | 5 min |
+
+**Not on this list, because it is not M1's:** R25 (M3's — four lines, two files, one test) and
+everything in `docs/TODO-M2`/`M4`/`M5`.
