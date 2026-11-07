@@ -78,7 +78,7 @@ actor FirestoreBookmarkStore: BookmarkStore {
                 .getDocuments()
             var bookmarks: [Bookmark] = []
             for document in snapshot.documents {
-                guard let data = document.data() else { throw BookmarkError.storageFailed }
+                let data = document.data()
                 guard let bookmark = BookmarkFirestoreMapper.bookmark(from: data, id: document.documentID) else {
                     throw BookmarkError.storageFailed
                 }
@@ -106,7 +106,7 @@ actor FirestoreBookmarkStore: BookmarkStore {
                 .getDocuments()
             var collections: [BookmarkCollection] = []
             for document in snapshot.documents {
-                guard let data = document.data() else { throw BookmarkError.storageFailed }
+                let data = document.data()
                 guard let collection = BookmarkFirestoreMapper.collection(from: data, id: document.documentID)
                 else { throw BookmarkError.storageFailed }
                 collections.append(collection)
@@ -131,7 +131,7 @@ actor FirestoreBookmarkStore: BookmarkStore {
         do {
             let document = try await db.collection("collections").document(id).getDocument()
             guard document.exists else { return nil }
-            guard let data = document.data() else { throw BookmarkError.storageFailed }
+            let data = document.data()
             guard let collection = BookmarkFirestoreMapper.collection(from: data, id: document.documentID)
             else { throw BookmarkError.storageFailed }
             var result = collection
