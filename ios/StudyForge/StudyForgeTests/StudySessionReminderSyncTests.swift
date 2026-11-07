@@ -430,7 +430,7 @@ struct StudySessionReminderSyncTests {
             id: "groupActivity-team", title: "t", body: "b", fireAt: fireAt
         ))
         try await f.store.add(plan([session(id: "s1", minutesFromNow: 120)]))
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(!ids.contains("reminder-stale"))        // obsolete F06 reminder: cancelled
         #expect(ids.contains("quizDue-weekly"))         // other types: untouched
         #expect(ids.contains("groupActivity-team"))
