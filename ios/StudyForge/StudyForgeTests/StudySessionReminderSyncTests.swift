@@ -653,7 +653,7 @@ struct StudySessionReminderSyncTests {
 
         // Serialised + fresh-reading: the stale run goes first, the fresh run last,
         // so the stale desired set can never cancel plan-b's reminder.
-        let ids = await scheduler.pendingIdentifiers()
+        let ids = try await scheduler.pendingIdentifiers()
         #expect(ids == ["reminder-a1", "reminder-b1"])
         #expect(gate.capturedFirstSnapshot?.count == 1)   // the stale read really happened
     }
