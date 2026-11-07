@@ -131,7 +131,7 @@ actor FirestoreBookmarkStore: BookmarkStore {
         do {
             let document = try await db.collection("collections").document(id).getDocument()
             guard document.exists else { return nil }
-            let data = document.data()
+            guard let data = document.data() else { throw BookmarkError.storageFailed }
             guard let collection = BookmarkFirestoreMapper.collection(from: data, id: document.documentID)
             else { throw BookmarkError.storageFailed }
             var result = collection
