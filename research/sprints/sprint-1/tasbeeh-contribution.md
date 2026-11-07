@@ -19,10 +19,10 @@
 
 ## Sprint summary
 
-- **Tasks completed:**
-- **Tasks slipped (and why):**
-- **What I personally demoed at the review:**
-- **What I learned / what I'd do differently:**
+- **Tasks completed:** Ownership of F06, F07, F13 and F15 taken under my name (S1-M3, [doc 10 §4](../../../docs/10-SPRINT-PLAN.md) and the [S1 goal](goal.md)) — **ownership only for F15: no F15 implementation code was written in S1 or S2.** My F15 artefacts this period are the Figma frames named `Tasbeeh_202305409` (`LF_77`, `LF_78`), listed in the [Sprint 2 log](../sprint-2/tasbeeh-contribution.md); the F15 code scope remained untouched. In one S1 session on **18 Oct** the per-course exam-date feature was implemented end to end — plan model and store, planner never schedules a subject on or after its exam, wizard deadline-step capture, plus the storage and planner test suites — as 7 commits (`4ca72a6` `9472e06` `e280843` `50335f6` `5c16fca` `8a420e3` `72e1f39`, all 18 Oct, author `Tasbeeh Saeed`). PR [#130](https://github.com/SalehAbdulla/IntelligentLearningPlatform/pull/130), opened 20 Oct and merged 22 Oct, completes this work; those events fall in S2 and are recorded there (one feature, split by session date, **not counted twice**).
+- **Tasks slipped (and why):** PR #130's follow-up, review and merge slipped past S1's end into S2. The S1-M3 evidence items **not produced in S1**: the four tester logs (F02, F08, F10, F14), the emulator rules-test result, and any `hand:`-tagged planner/cost-governor commits (`git log --all --author="Tasbeeh" --grep="hand:"` is empty) — all outstanding as of this log. The S1 sprint artefacts `board.png`, `review.mp4` and `retro.md` are also absent from `research/sprints/sprint-1/` (group-level gap).
+- **What I personally demoed at the review:** — no dated S1 demo artefact exists in the repo; outstanding against the sprint DoD.
+- **What I learned / what I'd do differently:** — to be completed personally at the review (not evidenced here).
 
 ## Evidence index
 
