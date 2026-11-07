@@ -341,7 +341,7 @@ struct StudySessionReminderSyncTests {
         try await f.store.add(p)
         try await f.store.add(p)
         try await f.store.add(p)
-        let ids = await pendingIDs(f)
+        let ids = try await pendingIDs(f)
         #expect(ids == ["reminder-s1", "reminder-s2", "reminder-s3"])
         #expect(f.scheduler.pendingRequests.count == 3)
     }
