@@ -473,6 +473,19 @@ enum L10n: String, CaseIterable, Sendable {
     case planInProgress      = "plan.inProgress"
     case planStartNow        = "plan.startNow"
     case planReschedule      = "plan.reschedule"
+    // The availability warning shown on the wizard's availability step (F06) when the time the
+    // student selected cannot fit every requested session. Adding the keys is M1's lane
+    // (`Core/Localisation/` and `Resources/`); rendering them is M3's, in `Features/StudyPlan/`.
+    // `%@` on the two duration keys is a pre-formatted string, never an `Int` — `%d` would be a
+    // runtime crash, not a compile error (check-strings.py enforces the type match).
+    case planAvailabilityInsufficientTitle = "plan.availabilityInsufficient.title"
+    case planAvailabilityInsufficientBody  = "plan.availabilityInsufficient.body"
+    case planRequestedDuration   = "plan.requestedDuration"
+    case planSchedulableDuration = "plan.schedulableDuration"
+    case planEditAvailability    = "plan.editAvailability"
+    case planAcceptPartialPlan   = "plan.acceptPartialPlan"
+    case planSubjectNoSessions   = "plan.subjectNoSessions"
+    case planNoSessionsSchedulable = "plan.noSessionsSchedulable"
 
     // MARK: F07 Progress
     case progressTitle          = "progress.title"
