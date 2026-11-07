@@ -43,6 +43,11 @@
 //
 // IDEMPOTENT: re-running updates the claims of accounts that already exist and
 // leaves their password alone, so it is safe to run again after a claim change.
+// To also RESET their password — an account whose password has drifted from the
+// demo default, or one that `auth:import` left unreachable — add `--force-password`
+// (documented in full below, beside the flag). Without it a password that no longer
+// matches `DemoAccounts.password` in the app is NOT repaired by a re-run, and the
+// switcher then fails with "couldn't find an account with those details".
 
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
