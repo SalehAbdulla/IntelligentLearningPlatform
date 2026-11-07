@@ -669,7 +669,7 @@ struct StudySessionReminderSyncTests {
         // still future, still desired, and a re-sync replaces it 1:1.
         f.clock.now = fixedNow.addingTimeInterval(-300)
         _ = try await f.store.all()
-        let after = await pendingIDs(f)
+        let after = try await pendingIDs(f)
         #expect(after == ["reminder-s1"])
         #expect(f.scheduler.pendingRequests.count == 1)
     }
