@@ -72,3 +72,6 @@
 "summary.folder.error.name"        = "أعطِ المجلد اسمًا.";
 "summary.folder.unavailable"       = "سجّل الدخول لحفظ الملخصات في المجلدات.";
 "summary.timedOut"                 = "استغرق الإنشاء وقتًا طويلًا فتم إيقافه. حاول مرة أخرى أو اختر طولًا أقصر.";
+"summary.focus.placeholder"        = "مثال: دورانات AVL، التعقيد";
+"summary.style.bullets"            = "نقاط";
+"summary.style.cornell"            = "كورنيل";
