@@ -51,6 +51,21 @@ struct CourseExam: Equatable, Sendable, Codable {
     var date: Date
 }
 
+/// The geometry of the weekly availability grid (F06 Task 03, part two) — ONE place to change
+/// when the design changes. The approved design fixes a one-hour slot and a 06:00–24:00 daily
+/// window (docs/03 §G02's "days × time blocks"); every validity rule reads these three numbers,
+/// so tightening or widening the grid cannot drift between call sites.
+enum WeeklyAvailabilityGrid {
+    /// One selectable slot, in minutes. Minutes everywhere — never hours, never a `Date`.
+    static let slotMinutes = 60
+    /// First selectable minute of the day, inclusive (06:00).
+    static let dayStartMinute = 6 * 60
+    /// End of the last slot, exclusive (24:00): the slot starting at 23:00 ends at 24:00.
+    static let dayEndMinute = 24 * 60
+    /// How many slots one day offers: (1440 − 360) ÷ 60 = 18.
+    static var slotsPerDay: Int { (dayEndMinute - dayStartMinute) / slotMinutes }
+}
+
 /// What the student told the wizard. This is the reusable "recipe" a re-plan re-runs.
 struct StudyPlanInput: Equatable, Sendable, Codable {
     var subjects: [String]
