@@ -38,6 +38,32 @@ struct StudyPlanTimeBlockTests {
         TimeSlot(weekday: weekday, startMinute: startMinute)
     }
 
+    /// One session reduced to the fields the scheduler actually decides — everything except
+    /// the generated `id`. `StudySession` mints a fresh UUID on every schedule, so two
+    /// independently built schedules can never be `==` as whole sessions even when they say
+    /// exactly the same thing (the same reason `StudyPlannerTests` compares maps of these
+    /// fields rather than whole sessions).
+    private struct SessionShape: Equatable {
+        let subject: String
+        let estimatedMinutes: Int
+        let scheduledAt: Date
+        let status: StudySessionStatus
+        let startedAt: Date?
+    }
+
+    /// The ordered sequence of `SessionShape`s a schedule makes — its meaning, identity-free.
+    private func shape(_ sessions: [StudySession]) -> [SessionShape] {
+        sessions.map {
+            SessionShape(
+                subject: $0.subject,
+                estimatedMinutes: $0.estimatedMinutes,
+                scheduledAt: $0.scheduledAt,
+                status: $0.status,
+                startedAt: $0.startedAt
+            )
+        }
+    }
+
     // MARK: The grid's geometry
 
     @Test("A valid slot survives canonicalisation unchanged")
@@ -171,10 +197,16 @@ struct StudyPlanTimeBlockTests {
         #expect(withBlocks.weeklyHours == plain.weeklyHours, "weeklyHours stays the requested duration")
 
         // The planner does not read the new field yet, so the schedule it produces is the
-        // schedule it produced before this field existed — proven, not assumed.
+        // schedule it produced before this field existed — proven, not assumed. Every
+        // scheduler-relevant field is compared in order; only the generated `id` is excluded,
+        // because a fresh UUID per session makes whole-session equality impossible by design.
+        let scheduled = StudyPlanner.schedule(withBlocks, now: pinnedNow)
+        let baseline = StudyPlanner.schedule(plain, now: pinnedNow)
+
+        #expect(scheduled.count == baseline.count, "the same number of sessions")
         #expect(
-            StudyPlanner.schedule(withBlocks, now: pinnedNow)
-                == StudyPlanner.schedule(plain, now: pinnedNow)
+            shape(scheduled) == shape(baseline),
+            "every scheduling field matches; only the generated id is excluded"
         )
     }
 }
