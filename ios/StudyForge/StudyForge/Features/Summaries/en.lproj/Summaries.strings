@@ -72,3 +72,6 @@
 "summary.folder.error.name"        = "Give the folder a name.";
 "summary.folder.unavailable"       = "Sign in to save summaries into folders.";
 "summary.timedOut"                 = "Generation took too long, so it was stopped. Try again, or pick a shorter length.";
+"summary.focus.placeholder"        = "e.g. AVL rotations, complexity";
+"summary.style.bullets"            = "Bullets";
+"summary.style.cornell"            = "Cornell";
