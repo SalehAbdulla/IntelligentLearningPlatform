@@ -17,6 +17,9 @@ import Testing
 @Suite("Weekly time blocks (F06 Task 03, part two)")
 struct StudyPlanTimeBlockTests {
 
+    /// Only the planner-equality test needs a clock; it is pinned, never `Date.now`.
+    private let pinnedNow = Date(timeIntervalSince1970: 1_773_000_000)
+
     private func input(
         timeBlocks: [TimeSlot] = [],
         blockedDays: [Int] = [],
@@ -153,5 +156,25 @@ struct StudyPlanTimeBlockTests {
         #expect(decoded.input.timeBlocks.isEmpty, "a missing key means 'nothing selected'")
         #expect(decoded.input.blockedDays == [2], "existing fields decode exactly as before")
         #expect(decoded.input.weeklyHours == 12)
+    }
+
+    @Test("Adding timeBlocks changes neither blockedDays, weeklyHours nor the planner's output")
+    func existingBehaviourIsUntouched() {
+        let plain = input(blockedDays: [5], weeklyHours: 8)
+        let withBlocks = input(
+            timeBlocks: [block(1, 360), block(2, 420)],
+            blockedDays: [5],
+            weeklyHours: 8
+        )
+
+        #expect(withBlocks.blockedDays == plain.blockedDays, "blockedDays is not reinterpreted")
+        #expect(withBlocks.weeklyHours == plain.weeklyHours, "weeklyHours stays the requested duration")
+
+        // The planner does not read the new field yet, so the schedule it produces is the
+        // schedule it produced before this field existed — proven, not assumed.
+        #expect(
+            StudyPlanner.schedule(withBlocks, now: pinnedNow)
+                == StudyPlanner.schedule(plain, now: pinnedNow)
+        )
     }
 }
