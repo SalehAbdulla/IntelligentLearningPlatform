@@ -102,10 +102,18 @@ struct L10nTests {
         // `onboarding` did when the pager landed. Growing this is a deliberate edit rather than
         // an implicit consequence of adding a key, so one typo in an area name cannot slip into
         // the catalogue unnoticed.
+        // `appearance` and `discard` joined with the M3 native-polish work: Rule A put a
+        // three-way appearance preference in Settings, and Rule D introduced one discard
+        // vocabulary shared by every screen that can lose work. Both are app-level concepts
+        // with no screen to hang off, so their own area is the honest placement — filing them
+        // under `notification.` (where `settingsTitle` lives) or `common.` would hide what they
+        // are. Growing this list remains a deliberate edit rather than an implicit consequence
+        // of adding a key.
         let knownAreas: Set<String> = [
             "common", "auth", "session", "home", "onboarding", "profile", "library", "material",
             "import", "summary", "deck", "flashcard", "quiz", "plan", "progress", "folder",
             "bookmark", "group", "notification", "search", "admin", "subscription", "tutor", "coach",
+            "appearance", "discard",
         ]
 
         for key in L10n.allCases {
