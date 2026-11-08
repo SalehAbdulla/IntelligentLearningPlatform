@@ -66,6 +66,26 @@ enum WeeklyAvailabilityGrid {
     static var slotsPerDay: Int { (dayEndMinute - dayStartMinute) / slotMinutes }
 }
 
+/// One selectable cell of the weekly grid: a weekday and the minute the slot starts.
+///
+/// WHY MINUTES AND NOT A `Date`
+/// -----------------------------
+/// A slot is recurring weekly geometry, not an instant — a `Date` would pin it to one calendar
+/// week and drag a time zone into equality. `weekday` uses the SAME `Calendar` numbering as
+/// `StudyPlanInput.blockedDays` (1 = Sunday … 7 = Saturday), so one convention serves both
+/// fields and no conversion table exists to get wrong. Duration is derived from the grid
+/// configuration rather than stored, so a slot cannot claim a length the grid does not have.
+struct TimeSlot: Equatable, Hashable, Sendable, Codable {
+    /// `Calendar` weekday, 1 = Sunday … 7 = Saturday — identical to `blockedDays`.
+    var weekday: Int
+    /// Minutes from midnight when the slot starts. Always inside the grid window and aligned
+    /// to `WeeklyAvailabilityGrid.slotMinutes`; `StudyPlanInput` enforces both on the way in,
+    /// the same way `blockedDays` is canonicalised.
+    var startMinute: Int
+    /// The slot's length in minutes, from the central configuration (never stored).
+    var durationMinutes: Int { WeeklyAvailabilityGrid.slotMinutes }
+}
+
 /// What the student told the wizard. This is the reusable "recipe" a re-plan re-runs.
 struct StudyPlanInput: Equatable, Sendable, Codable {
     var subjects: [String]
