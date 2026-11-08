@@ -49,6 +49,14 @@ struct RootView: View {
     /// account with no profile — return to the home screen instead of looping.
     @State private var hasCompletedProfileSetup = false
 
+    /// The persisted appearance preference. `@AppStorage` returns the declared default when the
+    /// key has never been written, so a first install is DARK regardless of the device setting
+    /// (Rule A) without any migration or "first run" flag.
+    ///
+    /// Applied once, below, at the root — so every branch (splash, onboarding, auth, profile
+    /// setup, signed-in home) inherits it instead of each screen opting in.
+    @AppStorage(AppAppearance.storageKey) private var appearance: AppAppearance = AppAppearance.default
+
     init(container: AppContainer) {
         self.container = container
         _hasCompletedOnboarding = State(initialValue: container.onboarding.hasCompletedOnboarding)
@@ -159,6 +167,9 @@ struct RootView: View {
         .animation(Motion.respecting(Motion.quick, reduceMotion: reduceMotion), value: branch)
         .environment(container)
         .tint(ColorTokens.primary)
+        // Rule A. `AppAppearance.system` maps to `nil` here, which is how SwiftUI is told to
+        // follow the device — so the three-way setting needs no runtime branch of its own.
+        .preferredColorScheme(appearance.colorScheme)
     }
 
     /// Which branch should be showing. Derived rather than stored, so there is exactly one

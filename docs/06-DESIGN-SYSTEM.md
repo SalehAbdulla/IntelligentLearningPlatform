@@ -31,6 +31,7 @@ Contrast ratios below are computed against the WCAG 2.2 relative-luminance formu
 | `onError` | `#FFFFFF` | Label on filled buttons and the loading spinner. **Named `onError` but used on `primary`, not on `error`** — see [docs/09 R24](../docs/09-RISKS-OPEN-QUESTIONS.md) | 5.8:1 on `primary` | ✅ AA |
 | `surface` | `#FFFFFF` | Base background | - | - |
 | `surfaceVariant` | `#F8FAFC` | Cards, grouped sections | - | - |
+| `surfaceElevated` | `#FFFFFF` | Inputs, popovers, nested cards. Light-mode elevation is white-on-grey plus the outline, not a shadow | - | - |
 | `outline` | `#E2E8F0` | Dividers, input borders | - | - |
 | `textPrimary` | `#0F172A` | Headings, body | **17.9:1** | ✅ AAA |
 | `textSecondary` | `#475569` | Supporting copy | 7.6:1 | ✅ AAA |
@@ -52,21 +53,34 @@ The decorative backdrop glows are restricted to one cool family (blue `#0062CC` 
 
 **Dark mode**
 
-| Token | Hex | Contrast on `#0B1220` | WCAG |
+> **Dark is the DEFAULT appearance** (Rule A, `AppAppearance.default == .dark`), so this table
+> — not the light one — describes the primary canvas. Surfaces were re-pointed from the navy
+> family (`#0B1220`/`#131C2E`/`#263149`) to **true-black neutrals** so that elevation is
+> carried by surface colour alone, with no shadow or glow. The light column is unchanged.
+> Every ratio below was **re-measured against `#000000`** on 8 Nov 2026; text on a darker
+> background scores higher than it did on navy, which is why several verdicts improved.
+
+| Token | Hex | Contrast on `#000000` | WCAG |
 |---|---|---|---|
-| `surface` | `#0B1220` | - | - |
-| `surfaceVariant` | `#131C2E` | - | - |
-| `outline` | `#263149` | - | - |
-| `primary` | `#0A84FF` | 5.1:1 | ✅ AA |
+| `surface` | `#000000` | - | - |
+| `surfaceVariant` | `#1C1C1E` | - | - |
+| `surfaceElevated` | `#2C2C2E` | - | - |
+| `outline` | `#38383A` | 1.8:1 | separator only, never text |
+| `primary` | `#0A84FF` | 5.8:1 | ✅ AA |
 | `accent` | `#FB923C` | fill only | - |
-| `textPrimary` | `#F1F5F9` | 16.9:1 | ✅ AAA |
-| `textSecondary` | `#CBD5E1` | 11.2:1 | ✅ AAA |
-| `success` | `#34D399` | 8.6:1 | ✅ AA |
-| `secondaryText` | `#5EEAD4` | 12.7:1 | ✅ AAA |
-| `accentText` | `#FDBA74` | 11.1:1 | ✅ AAA |
-| `warningText` | `#FCD34D` | 13.0:1 | ✅ AAA |
-| `error` | `#F87171` | 6.7:1 | ✅ AA |
-| `onError` | `#FFFFFF` | 3.6:1 on `primary` | ⚠️ **large text only** |
+| `textPrimary` | `#F1F5F9` | 19.2:1 | ✅ AAA |
+| `textSecondary` | `#CBD5E1` | 14.1:1 | ✅ AAA |
+| `textTertiary` | `#64748B` | 4.4:1 | ⚠️ disabled/decorative only |
+| `success` | `#34D399` | 10.9:1 | ✅ AAA |
+| `secondaryText` | `#5EEAD4` | 14.2:1 | ✅ AAA |
+| `accentText` | `#FDBA74` | 12.5:1 | ✅ AAA |
+| `warningText` | `#FCD34D` | 14.6:1 | ✅ AAA |
+| `error` | `#F87171` | 7.6:1 | ✅ AAA |
+| `onError` | `#FFFFFF` | 3.7:1 on `primary` | ⚠️ **large text only** |
+
+Body text on a card rather than on the background: `textSecondary` on `surfaceVariant`
+measures **11.5:1** and `textPrimary` on `surfaceElevated` measures **12.7:1**, so both
+grouped-row and input placements clear AA comfortably.
 
 **Subject colour coding** (used by course tags, calendar blocks, radar axes, 8 hues, all AA against both surfaces when used as fills with `onAccent` labels): blue, teal, rose, amber, mint, cyan, lime, slate. Deliberately excludes violet and pink, so a stack of course tags still cannot assemble itself into an AI-looking gradient.
 

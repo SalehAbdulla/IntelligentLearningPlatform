@@ -30,8 +30,29 @@ struct SettingsView: View {
 
     @State private var isSigningOut = false
 
+    /// Rule A. The same `UserDefaults` key `RootView` reads, so the picker and the root scheme
+    /// can never disagree — and the change lands immediately, on every screen at once.
+    @AppStorage(AppAppearance.storageKey) private var appearance: AppAppearance = AppAppearance.default
+
     var body: some View {
         List {
+            // Rule A — the only row in Settings that changes the app in place rather than
+            // leading somewhere, which is why it is first and why it carries a footer
+            // explaining the default.
+            Section {
+                Picker(selection: $appearance) {
+                    ForEach(AppAppearance.allCases) { option in
+                        Label(option.displayName, systemImage: option.symbolName)
+                            .tag(option)
+                    }
+                } label: {
+                    Label(L10n.appearanceTitle.string, systemImage: "circle.lefthalf.filled")
+                }
+                .pickerStyle(.menu)
+            } footer: {
+                Text(L10n.appearanceFooter.string)
+            }
+
             Section(L10n.notificationSettingsAccount.string) {
                 NavigationLink {
                     ProfileView(container: container)

@@ -87,10 +87,26 @@ enum ColorTokens {
     static let onError            = Color(hex: 0xFFFFFF)
 
     // MARK: Surfaces
+    //
+    // THE DARK COLUMN IS THE DEFAULT APPEARANCE (AppAppearance.default == .dark), so these
+    // are the primary design surfaces rather than a fallback. They are TRUE-BLACK NEUTRALS,
+    // which is how elevation is expressed without shadows or glows (docs/06 §1.1):
+    //
+    //   surface         #000000  the app background
+    //   surfaceVariant  #1C1C1E  cards, grouped rows, sheets
+    //   surfaceElevated #2C2C2E  inputs, popovers, a card layered on a card
+    //   outline         #38383A  the hairline divider — a separator, never text
+    //
+    // The light column is UNCHANGED on purpose. It is already contrast-verified in docs/06
+    // and light mode is not the default; re-pointing it is a separate, reviewable change.
+    // The two appearances reach the same intent by different means: in light mode the
+    // background is white and a card is distinguished by its variant fill plus outline.
 
-    static let surface            = Color(light: 0xFFFFFF, dark: 0x0B1220)
-    static let surfaceVariant     = Color(light: 0xF8FAFC, dark: 0x131C2E)
-    static let outline            = Color(light: 0xE2E8F0, dark: 0x263149)
+    static let surface            = Color(light: 0xFFFFFF, dark: 0x000000)
+    static let surfaceVariant     = Color(light: 0xF8FAFC, dark: 0x1C1C1E)
+    /// A surface raised above `surfaceVariant` — text inputs, popovers, nested cards.
+    static let surfaceElevated    = Color(light: 0xFFFFFF, dark: 0x2C2C2E)
+    static let outline            = Color(light: 0xE2E8F0, dark: 0x38383A)
 
     // MARK: Text
 

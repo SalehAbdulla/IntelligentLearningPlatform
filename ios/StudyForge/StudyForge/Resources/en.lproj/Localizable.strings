@@ -585,6 +585,21 @@
 
 /* ── F14 Notifications & reminders (docs/03 §M/B, M01–M02, B08–B09) ────── */
 "notification.inboxTitle"        = "Notifications";
+/* ── Appearance ─────────────────────────────────────────────────────────── */
+
+"appearance.title"           = "Appearance";
+"appearance.dark"            = "Dark";
+"appearance.light"           = "Light";
+"appearance.system"          = "System";
+"appearance.footer"          = "StudyForge opens in dark mode. Choose System to follow your device setting.";
+
+/* ── Discard guard ──────────────────────────────────────────────────────── */
+
+"discard.title"              = "Discard changes?";
+"discard.message"            = "Your progress on this screen will be lost.";
+"discard.confirm"            = "Discard";
+"discard.keepEditing"        = "Keep editing";
+
 "notification.settingsTitle"     = "Settings";
 "notification.settingsAccount"   = "Account";
 "notification.emptyTitle"        = "Nothing new";

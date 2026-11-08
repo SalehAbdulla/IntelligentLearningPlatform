@@ -612,6 +612,21 @@ enum L10n: String, CaseIterable, Sendable {
 
     // MARK: F14 Notifications & reminders
     case notificationInboxTitle        = "notification.inboxTitle"
+    // MARK: Appearance (Rule A — dark is the base appearance and the default)
+
+    case appearanceTitle               = "appearance.title"
+    case appearanceDark                = "appearance.dark"
+    case appearanceLight               = "appearance.light"
+    case appearanceSystem              = "appearance.system"
+    case appearanceFooter              = "appearance.footer"
+
+    // MARK: Discard guard (Rule D — one vocabulary for losing work)
+
+    case discardTitle                  = "discard.title"
+    case discardMessage                = "discard.message"
+    case discardConfirm                = "discard.confirm"
+    case discardKeepEditing            = "discard.keepEditing"
+
     case notificationSettingsTitle     = "notification.settingsTitle"
     case notificationSettingsAccount    = "notification.settingsAccount"
     case notificationEmptyTitle        = "notification.emptyTitle"
