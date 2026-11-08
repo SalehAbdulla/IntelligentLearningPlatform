@@ -36,7 +36,7 @@ struct SFErrorBanner: View {
             } icon: {
                 Image(systemName: "exclamationmark.triangle.fill")
             }
-            .foregroundStyle(ColorTokens.error)
+            .foregroundStyle(ColorTokens.errorText)
 
             Text(error.message)
                 .font(.sfCallout)

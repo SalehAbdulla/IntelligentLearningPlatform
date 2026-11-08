@@ -71,7 +71,7 @@ struct SFFieldFeedback: View {
             } icon: {
                 Image(systemName: "exclamationmark.circle.fill")
             }
-            .foregroundStyle(ColorTokens.error)
+            .foregroundStyle(ColorTokens.errorText)
             // Colour is not the only signal — the icon and the text carry the meaning,
             // which matters at WCAG 1.4.1 for anyone with a colour-vision deficiency.
             //

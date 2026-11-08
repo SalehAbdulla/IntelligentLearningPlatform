@@ -122,7 +122,9 @@ struct GroupListView: View {
             if viewModel.isLive(group) {
                 Text(viewModel.liveNowTitle)
                     .font(.sfCaption)
-                    .foregroundStyle(ColorTokens.onError)
+                    // onDanger, not onError: dark mode reverses this label to near-black
+                    // because white on the bright red measures 2.8:1 (Rule B).
+                    .foregroundStyle(ColorTokens.onDanger)
                     .padding(.horizontal, Spacing.s2)
                     .padding(.vertical, Spacing.s1)
                     .background(ColorTokens.error, in: .capsule)

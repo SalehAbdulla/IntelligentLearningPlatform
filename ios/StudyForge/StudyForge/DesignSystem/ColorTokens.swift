@@ -50,6 +50,12 @@ enum ColorTokens {
     /// is used as text in 26 places, and Apple's #007AFF (4.0:1 on white) and #0071E3
     /// (4.02:1 on the tint) are both too light for that. Dark mode keeps Apple's #0A84FF.
     static let primary            = Color(light: 0x0062CC, dark: 0x0A84FF)
+    /// The fill behind a white label. **Deliberately not `primary`.** Apple's dark-mode blue
+    /// `#0A84FF` puts white text at only 3.65:1, which fails AA for a 17 pt button label; filled
+    /// buttons therefore use this deeper blue in BOTH appearances, where `onError` measures
+    /// 5.80:1. `primary` stays what it was for text, links, tints and the tab bar, where on the
+    /// dark background it measures 5.80:1. Same fill/text split as `accent`/`accentText`.
+    static let primaryFill        = Color(light: 0x0062CC, dark: 0x0062CC)
     static let primaryContainer   = Color(light: 0xE1F0FF, dark: 0x0B2B4A)
     /// 8.79:1 on `primaryContainer` in light mode, 10.11:1 in dark. AAA both ways.
     static let onPrimaryContainer = Color(light: 0x00427A, dark: 0xB9DCFF)
@@ -84,7 +90,17 @@ enum ColorTokens {
     /// the glass stat card). Use this, never `warning`, for amber-coloured text.
     static let warningText        = Color(light: 0xB45309, dark: 0xFCD34D)
     static let error              = Color(light: 0xDC2626, dark: 0xF87171)
+    /// Error as **text**. `error` itself measures only 4.16:1 on the 10 % error tint the banner
+    /// draws in light mode — under AA for 17 pt — so error *text* uses this darker red:
+    /// 6.5:1 on `surface`, 5.6:1 on the banner tint, 6.2:1 on `surfaceVariant`. Completes the
+    /// pattern the palette already had for `success`, `accent`, `secondary` and `warning`.
+    static let errorText          = Color(light: 0xB91C1C, dark: 0xF87171)
+    /// White — the label colour on `primaryFill`.
     static let onError            = Color(hex: 0xFFFFFF)
+    /// The label colour on an `error` **fill**. White on the bright dark-mode red is only
+    /// 2.8:1, so dark mode reverses it to near-black (6.5:1); light mode keeps white (4.8:1).
+    /// Used by a filled destructive button and by error badges, never on `primary`.
+    static let onDanger           = Color(light: 0xFFFFFF, dark: 0x0F172A)
 
     // MARK: Surfaces
     //

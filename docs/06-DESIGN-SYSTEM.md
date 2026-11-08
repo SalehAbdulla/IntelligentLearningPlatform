@@ -28,7 +28,10 @@ Contrast ratios below are computed against the WCAG 2.2 relative-luminance formu
 | `warningText` | `#B45309` | Amber **text** (quota, at-risk stats) | 5.0:1 | ✅ AA |
 | `warning` | `#F59E0B` | Quota warnings, low-confidence flags | 2.2:1 | ⚠️ fill only |
 | `error` | `#DC2626` | Destructive actions, incorrect answers | 4.8:1 | ✅ AA |
-| `onError` | `#FFFFFF` | Label on filled buttons and the loading spinner. **Named `onError` but used on `primary`, not on `error`** — see [docs/09 R24](../docs/09-RISKS-OPEN-QUESTIONS.md) | 5.8:1 on `primary` | ✅ AA |
+| `onError` | `#FFFFFF` | Label on `primaryFill` buttons and the loading spinner. **Not used on `error`** — a filled destructive surface uses `onDanger` | 5.8:1 on `primaryFill` | ✅ AA |
+| `primaryFill` | `#0062CC` | The fill behind a white label (primary buttons). Separate from `primary`, which is a *text* colour | 5.8:1 with `onError` | ✅ AA |
+| `errorText` | `#B91C1C` | Error **text**: field feedback, banner title. `error` itself is only 4.16:1 on the banner's own 10 % tint | 6.5:1 | ✅ AA |
+| `onDanger` | `#FFFFFF` | Label on an `error` **fill**: filled destructive button, error badges | 4.8:1 on `error` | ✅ AA |
 | `surface` | `#FFFFFF` | Base background | - | - |
 | `surfaceVariant` | `#F8FAFC` | Cards, grouped sections | - | - |
 | `surfaceElevated` | `#FFFFFF` | Inputs, popovers, nested cards. Light-mode elevation is white-on-grey plus the outline, not a shadow | - | - |
@@ -76,7 +79,10 @@ The decorative backdrop glows are restricted to one cool family (blue `#0062CC` 
 | `accentText` | `#FDBA74` | 12.5:1 | ✅ AAA |
 | `warningText` | `#FCD34D` | 14.6:1 | ✅ AAA |
 | `error` | `#F87171` | 7.6:1 | ✅ AAA |
-| `onError` | `#FFFFFF` | 3.7:1 on `primary` | ⚠️ **large text only** |
+| `onError` | `#FFFFFF` | 5.8:1 on `primaryFill` | ✅ AA |
+| `primaryFill` | `#0062CC` | 5.8:1 with `onError`. Apple's `#0A84FF` was rejected as a button fill because white on it is 3.65:1 | ✅ AA |
+| `errorText` | `#F87171` | 7.6:1 (6.4:1 on the banner's own tint) | ✅ AAA |
+| `onDanger` | `#0F172A` | 6.5:1 on `error` — white on the bright dark-mode red is only 2.8:1 | ✅ AA |
 
 Body text on a card rather than on the background: `textSecondary` on `surfaceVariant`
 measures **11.5:1** and `textPrimary` on `surfaceElevated` measures **12.7:1**, so both

@@ -98,7 +98,7 @@ struct SFPasswordField: View {
                 } icon: {
                     Image(systemName: "exclamationmark.circle.fill")
                 }
-                .foregroundStyle(ColorTokens.error)
+                .foregroundStyle(ColorTokens.errorText)
                 .accessibilityHidden(true)
             } else if let hint {
                 Text(hint)

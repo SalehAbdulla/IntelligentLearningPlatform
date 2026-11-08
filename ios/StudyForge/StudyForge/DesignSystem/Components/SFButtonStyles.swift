@@ -87,8 +87,8 @@ struct SFPrimaryButtonStyle: ButtonStyle {
     /// Loading dims the fill rather than removing it, so the control does not flash back to the
     /// background colour between the tap and the spinner.
     private var fill: Color {
-        if isLoading { return ColorTokens.primary.opacity(0.70) }
-        return isEnabled ? ColorTokens.primary : ColorTokens.primary.opacity(0.40)
+        if isLoading { return ColorTokens.primaryFill.opacity(0.70) }
+        return isEnabled ? ColorTokens.primaryFill : ColorTokens.primaryFill.opacity(0.40)
     }
 }
 
@@ -163,7 +163,7 @@ struct SFDestructiveButtonStyle: ButtonStyle {
             .font(.sfBodyEmph)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
-            .foregroundStyle(filled ? ColorTokens.onError : tint)
+            .foregroundStyle(filled ? ColorTokens.onDanger : tint)
             .frame(maxWidth: .infinity)
             .padding(.horizontal, SFButtonMetrics.horizontalPadding)
             .frame(minHeight: SFButtonMetrics.minHeight)
