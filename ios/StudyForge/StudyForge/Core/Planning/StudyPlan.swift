@@ -108,13 +108,23 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
     /// so the planner's iteration, a test's expectation and the stored JSON always agree.
     var blockedDays: [Int]
 
+    /// Cells of the weekly availability grid the student tapped (F06 Task 03, part two).
+    /// Empty means "no slot selected yet" — and, deliberately, also "this plan was written
+    /// before the field existed", exactly like `blockedDays` above: a legacy plan decodes to
+    /// an empty grid and is never silently given or robbed of time. Canonicalised on the way
+    /// in (valid, unique, sorted) by `canonicalTimeBlocks`. It does NOT reinterpret
+    /// `weeklyHours` (still the requested study duration) or `blockedDays` (still whole days
+    /// off the week).
+    var timeBlocks: [TimeSlot]
+
     init(
         subjects: [String],
         weeklyHours: Int,
         deadline: Date? = nil,
         examDates: [CourseExam] = [],
         intensity: StudyIntensity,
-        blockedDays: [Int] = []
+        blockedDays: [Int] = [],
+        timeBlocks: [TimeSlot] = []
     ) {
         self.subjects = subjects
         self.weeklyHours = weeklyHours
@@ -122,6 +132,7 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
         self.examDates = examDates
         self.intensity = intensity
         self.blockedDays = Self.canonicalBlockedDays(blockedDays)
+        self.timeBlocks = Self.canonicalTimeBlocks(timeBlocks)
     }
 
     /// Sorted, unique and inside 1...7 — a `Set` would work for membership but its iteration
@@ -129,6 +140,25 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
     /// differently. Canonicalising in ONE place (both inits) keeps every path honest.
     private static func canonicalBlockedDays(_ days: [Int]) -> [Int] {
         Array(Set(days.filter { (1...7).contains($0) })).sorted()
+    }
+
+    /// The grid's canonical form — the same contract as `canonicalBlockedDays` above, so the
+    /// wizard's taps, a test's expectation and the stored JSON always agree. Invalid values are
+    /// DROPPED rather than stored: a weekday outside 1...7, a start outside the 06:00–24:00
+    /// window, or a start that is not on a slot boundary can never reach the scheduler as a
+    /// slot the grid does not actually offer. Duplicates collapse (the grid is a set of cells),
+    /// and the sort — weekday first, then minute — is total and stable.
+    private static func canonicalTimeBlocks(_ blocks: [TimeSlot]) -> [TimeSlot] {
+        Array(Set(blocks.filter { block in
+            (1...7).contains(block.weekday)
+                && block.startMinute >= WeeklyAvailabilityGrid.dayStartMinute
+                && block.startMinute + WeeklyAvailabilityGrid.slotMinutes
+                    <= WeeklyAvailabilityGrid.dayEndMinute
+                && (block.startMinute - WeeklyAvailabilityGrid.dayStartMinute)
+                    % WeeklyAvailabilityGrid.slotMinutes == 0
+        })).sorted {
+            $0.weekday != $1.weekday ? $0.weekday < $1.weekday : $0.startMinute < $1.startMinute
+        }
     }
 
     /// Decoded by hand, for one reason: a plan that is already on disk must still load.
@@ -151,12 +181,15 @@ struct StudyPlanInput: Equatable, Sendable, Codable {
         self.blockedDays = Self.canonicalBlockedDays(
             try container.decodeIfPresent([Int].self, forKey: .blockedDays) ?? []
         )
+        self.timeBlocks = Self.canonicalTimeBlocks(
+            try container.decodeIfPresent([TimeSlot].self, forKey: .timeBlocks) ?? []
+        )
     }
 
     /// Declared rather than left to the compiler so the wire format is readable in one place
     /// here; a missing property would fail the build rather than fail silently at runtime.
     private enum CodingKeys: String, CodingKey {
-        case subjects, weeklyHours, deadline, examDates, intensity, blockedDays
+        case subjects, weeklyHours, deadline, examDates, intensity, blockedDays, timeBlocks
     }
 }
 
