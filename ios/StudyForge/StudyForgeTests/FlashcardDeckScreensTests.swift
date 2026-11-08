@@ -213,7 +213,7 @@ struct FlashcardDeckScreensTests {
         let soon = now.addingTimeInterval(3_600)
         let later = now.addingTimeInterval(86_400)
         let deck = Deck(title: "Deck", cards: [
-            card(id: "due"),
+            card(id: "due", sr: SpacedRepetitionState(interval: 0, dueAt: now.addingTimeInterval(-60), reps: 0, lapses: 1)),
             card(id: "later", sr: SpacedRepetitionState(interval: 1, dueAt: later, reps: 1)),
             card(id: "soon", sr: SpacedRepetitionState(interval: 1, dueAt: soon, reps: 1))
         ])
