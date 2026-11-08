@@ -76,4 +76,11 @@ struct StudyPlanTimeBlockTests {
 
         #expect(kept == [block(2, 360)])
     }
+
+    @Test("Start times that are not on a slot boundary are dropped")
+    func misalignedStartsAreDropped() {
+        let kept = input(timeBlocks: [block(1, 390), block(1, 450), block(1, 420)]).timeBlocks
+
+        #expect(kept == [block(1, 420)], "half-past the grid is not a slot")
+    }
 }
