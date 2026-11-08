@@ -131,9 +131,9 @@ extension SummaryLength {
 extension SummaryStyle {
     var optionTitle: String {
         switch self {
-        case .bullets: L10n.summaryStyleBullets.string
+        case .bullets: SummaryCopy.styleBullets
         case .narrative: L10n.summaryStyleNarrative.string
-        case .cornell: L10n.summaryStyleCornell.string
+        case .cornell: SummaryCopy.styleCornell
         }
     }
 }
