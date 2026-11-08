@@ -67,4 +67,13 @@ struct StudyPlanTimeBlockTests {
 
         #expect(kept == [block(4, 540)], "only the in-range weekday survives")
     }
+
+    @Test("Starts outside the 06:00–24:00 window are dropped")
+    func timesOutsideWindowAreDropped() {
+        // 300 = 05:00 (too early); 1440 = 24:00 (nothing may START at the exclusive end);
+        // 1400 would run past 24:00. 360 is the legal control.
+        let kept = input(timeBlocks: [block(2, 300), block(2, 1440), block(2, 1400), block(2, 360)]).timeBlocks
+
+        #expect(kept == [block(2, 360)])
+    }
 }
