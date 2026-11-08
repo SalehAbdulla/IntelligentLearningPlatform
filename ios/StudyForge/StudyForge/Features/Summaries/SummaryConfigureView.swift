@@ -122,7 +122,7 @@ struct SummaryConfigureView: View {
             TextField(
                 "",
                 text: $viewModel.focusTopics,
-                prompt: Text(L10n.summaryFocusPlaceholder.string).foregroundStyle(ColorTokens.textTertiary)
+                prompt: Text(SummaryCopy.focusPlaceholder).foregroundStyle(ColorTokens.textTertiary)
             )
             .font(.sfCallout)
             .foregroundStyle(ColorTokens.textPrimary)
