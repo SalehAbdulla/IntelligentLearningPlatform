@@ -69,9 +69,16 @@ struct SignedInHomeView: View {
 
                     quickActions
 
+                    // Diagnostics, not product. This read-out exists to answer "which role and
+                    // plan did the ID token actually grant?" when claims are misconfigured — a
+                    // developer question. On a student's home screen it reads as an debug panel
+                    // and shows them an internal vocabulary (Rule C). DEBUG-only from here;
+                    // the release build routes on the same session without displaying it.
+                    #if DEBUG
                     if let session {
                         capabilitiesCard(for: session)
                     }
+                    #endif
 
                     progressLink
                     foldersLink
@@ -233,8 +240,9 @@ struct SignedInHomeView: View {
         .accessibilityElement(children: .combine)
     }
 
-    // MARK: Capabilities
+    // MARK: Capabilities (DEBUG only)
 
+    #if DEBUG
     private func capabilitiesCard(for session: UserSession) -> some View {
         // Rendered from the resolved session, which comes from the ID token's claims. If
         // this ever disagrees with the Firestore document, the CLAIMS are authoritative —
@@ -256,6 +264,7 @@ struct SignedInHomeView: View {
         .padding(Spacing.s4)
         .background(ColorTokens.surfaceVariant, in: .rect(cornerRadius: Radius.l))
     }
+    #endif
 
     // MARK: Due-cards badge (B05)
 
@@ -585,6 +594,7 @@ struct SignedInHomeView: View {
         }
     }
 
+    #if DEBUG
     private func capabilityRow(_ label: String, _ value: String) -> some View {
         HStack {
             Text(label)
@@ -599,6 +609,7 @@ struct SignedInHomeView: View {
         .accessibilityLabel(label)
         .accessibilityValue(value)
     }
+    #endif
 
     // MARK: Development surfaces (DEBUG only — these strings are deliberately not
     // localised: they are developer tools and never ship to a user.)

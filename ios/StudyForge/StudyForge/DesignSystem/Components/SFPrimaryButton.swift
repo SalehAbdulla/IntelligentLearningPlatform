@@ -37,31 +37,15 @@ struct SFPrimaryButton: View {
     private var isInteractive: Bool { isEnabled && !isLoading }
 
     var body: some View {
+        // The appearance lives in `SFPrimaryButtonStyle` so this View and a `Button` that
+        // applies the style directly (a NavigationLink label, a dialog action) cannot drift
+        // apart — same fill, same 50 pt height, same pressed feedback. What this wrapper adds
+        // is the asynchronous behaviour: a busy state that blocks the second tap, and one
+        // accessibility label that reports it.
         Button(action: action) {
-            ZStack {
-                // The label stays in the layout while loading so the button does not
-                // change height mid-request — a small jump that reads as a glitch.
-                Text(title)
-                    .font(.sfBodyEmph)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .opacity(isLoading ? 0 : 1)
-
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .tint(ColorTokens.onError)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, Spacing.s4)
-            .frame(minHeight: Layout.minTouchTarget)
-            .foregroundStyle(ColorTokens.onError)
-            .background(
-                isInteractive ? ColorTokens.primary : ColorTokens.primary.opacity(0.45),
-                in: .rect(cornerRadius: Radius.m)
-            )
+            Text(title)
         }
+        .buttonStyle(SFPrimaryButtonStyle(isLoading: isLoading))
         .disabled(!isInteractive)
         // One element, one label — the spinner is decorative once the label carries the
         // meaning.
