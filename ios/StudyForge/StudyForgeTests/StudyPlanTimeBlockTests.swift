@@ -60,4 +60,11 @@ struct StudyPlanTimeBlockTests {
         #expect(lastStart + WeeklyAvailabilityGrid.slotMinutes == WeeklyAvailabilityGrid.dayEndMinute)
         #expect(input(timeBlocks: [block(7, lastStart)]).timeBlocks == [block(7, lastStart)])
     }
+
+    @Test("A weekday outside 1...7 is dropped, never stored")
+    func invalidWeekdayIsDropped() {
+        let kept = input(timeBlocks: [block(0, 360), block(8, 420), block(-2, 480), block(4, 540)]).timeBlocks
+
+        #expect(kept == [block(4, 540)], "only the in-range weekday survives")
+    }
 }
