@@ -83,4 +83,30 @@ struct StudyPlanTimeBlockTests {
 
         #expect(kept == [block(1, 420)], "half-past the grid is not a slot")
     }
+
+    // MARK: Canonical form
+
+    @Test("Duplicate slots collapse to one")
+    func duplicatesCollapse() {
+        let kept = input(timeBlocks: [block(5, 720), block(5, 720), block(5, 720)]).timeBlocks
+
+        #expect(kept == [block(5, 720)])
+    }
+
+    @Test("Ordering is stable: weekday first, then start minute, whatever the input order")
+    func orderingIsStable() {
+        let shuffled = [block(7, 1380), block(1, 360), block(1, 1380), block(1, 420)]
+
+        #expect(
+            input(timeBlocks: shuffled).timeBlocks
+                == [block(1, 360), block(1, 420), block(1, 1380), block(7, 1380)]
+        )
+    }
+
+    @Test("Several non-contiguous slots on one day are all kept")
+    func multipleNonContiguousSlotsPerDay() {
+        let kept = input(timeBlocks: [block(6, 360), block(6, 600), block(6, 480)]).timeBlocks
+
+        #expect(kept == [block(6, 360), block(6, 480), block(6, 600)], "gaps are legal; order still canonical")
+    }
 }
