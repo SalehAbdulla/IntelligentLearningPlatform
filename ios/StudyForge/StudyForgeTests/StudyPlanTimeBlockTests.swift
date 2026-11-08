@@ -127,4 +127,31 @@ struct StudyPlanTimeBlockTests {
         #expect(decoded.blockedDays == [3, 6], "the new field does not disturb the old ones")
         #expect(decoded.weeklyHours == 12)
     }
+
+    @Test("A plan written before time blocks existed still decodes")
+    func legacyPlanWithoutTimeBlocksStillDecodes() throws {
+        // Exactly the shape this app wrote before the grid: no `timeBlocks` key anywhere,
+        // but `blockedDays` already present — the two generations must not collide.
+        let legacy = """
+        {
+          "id" : "p2",
+          "input" : {
+            "subjects" : ["Maths"],
+            "weeklyHours" : 12,
+            "deadline" : 4000000000,
+            "intensity" : "balanced",
+            "blockedDays" : [2]
+          },
+          "sessions" : [],
+          "createdAt" : 1000000,
+          "updatedAt" : 1000000
+        }
+        """
+
+        let decoded = try JSONDecoder().decode(StudyPlan.self, from: Data(legacy.utf8))
+
+        #expect(decoded.input.timeBlocks.isEmpty, "a missing key means 'nothing selected'")
+        #expect(decoded.input.blockedDays == [2], "existing fields decode exactly as before")
+        #expect(decoded.input.weeklyHours == 12)
+    }
 }
