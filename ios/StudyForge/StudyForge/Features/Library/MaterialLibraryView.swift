@@ -115,7 +115,7 @@ struct MaterialLibraryView: View {
             )
         }
         .sheet(item: $cardsMaterial) { material in
-            FlashcardGenerateView(
+            FlashcardGenerateScreen(
                 initialMaterial: material,
                 materialStore: store,
                 deckStore: deckStore,
