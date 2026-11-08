@@ -109,4 +109,22 @@ struct StudyPlanTimeBlockTests {
 
         #expect(kept == [block(6, 360), block(6, 480), block(6, 600)], "gaps are legal; order still canonical")
     }
+
+    // MARK: Wire format and the fields that came before
+
+    @Test("timeBlocks survive an encode/decode round trip")
+    func codableRoundTrip() throws {
+        let original = input(
+            timeBlocks: [block(1, 360), block(4, 1380)],
+            blockedDays: [3, 6],
+            weeklyHours: 12
+        )
+
+        let data = try JSONEncoder().encode(original)
+        let decoded = try JSONDecoder().decode(StudyPlanInput.self, from: data)
+
+        #expect(decoded == original, "the grid is exactly what was written")
+        #expect(decoded.blockedDays == [3, 6], "the new field does not disturb the old ones")
+        #expect(decoded.weeklyHours == 12)
+    }
 }
