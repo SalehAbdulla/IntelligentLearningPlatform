@@ -44,4 +44,20 @@ struct StudyPlanTimeBlockTests {
         #expect(kept == [block(3, 6 * 60)])
         #expect(kept.first?.durationMinutes == WeeklyAvailabilityGrid.slotMinutes)
     }
+
+    @Test("The first allowed slot starts at 06:00 and a day offers 18 slots")
+    func firstAllowedSlotIsSixAm() {
+        #expect(WeeklyAvailabilityGrid.dayStartMinute == 6 * 60)
+        #expect(WeeklyAvailabilityGrid.slotsPerDay == 18)
+        #expect(input(timeBlocks: [block(1, WeeklyAvailabilityGrid.dayStartMinute)]).timeBlocks.count == 1)
+    }
+
+    @Test("The last allowed slot starts at 23:00 and ends at 24:00")
+    func lastAllowedSlotEndsAtMidnight() {
+        let lastStart = WeeklyAvailabilityGrid.dayEndMinute - WeeklyAvailabilityGrid.slotMinutes
+
+        #expect(lastStart == 23 * 60, "the final slot starts at 23:00")
+        #expect(lastStart + WeeklyAvailabilityGrid.slotMinutes == WeeklyAvailabilityGrid.dayEndMinute)
+        #expect(input(timeBlocks: [block(7, lastStart)]).timeBlocks == [block(7, lastStart)])
+    }
 }
