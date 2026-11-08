@@ -1,0 +1,88 @@
+name: iOS build & test
+
+# VERIFIES EVERY BATCH. Rule G / batch plan step 6.
+#
+# This is the only place the SwiftUI code is actually compiled and the 700+ test suite actually
+# runs, because the primary development machine for this work is Windows and has no Xcode.
+# A batch that is not green here is not verified — a grep is not a build.
+#
+# The runner image and Xcode version are the two things that can break this without touching the
+# code. `macos-15` ships Xcode 16.x; this project targets iOS 26.0 and is built with Xcode 27.
+# If no current runner image carries Xcode 27 yet, the FIRST step below fails loudly and prints
+# every available Xcode instead of a confusing "unsupported platform" error further down. Pick
+# the image and version from that output and update `DEVELOPER_DIR` here.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build + test (iOS Simulator)
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Report available Xcode versions
+        run: |
+          ls -d /Applications/Xcode*.app 2>/dev/null || true
+          xcodebuild -version || true
+
+      - name: Select Xcode
+        run: |
+          # Prefer Xcode 27 (the version the project is authored in); fall back to the newest
+          # installed so the job still reports something useful on an older image.
+          if [ -d /Applications/Xcode_27.app ]; then
+            sudo xcode-select -s /Applications/Xcode_27.app
+          elif [ -d /Applications/Xcode_26.app ]; then
+            sudo xcode-select -s /Applications/Xcode_26.app
+          fi
+          xcodebuild -version
+
+      - name: List available simulators
+        run: xcrun simctl list devices available
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project ios/StudyForge/StudyForge.xcodeproj \
+            -scheme StudyForge \
+            -destination 'generic/platform=iOS Simulator' \
+            -resultBundlePath build/Build.xcresult \
+            build CODE_SIGNING_ALLOWED=NO
+
+      - name: Test
+        run: |
+          set -o pipefail
+          # The simulator name must exist on the runner image. `iPhone 17` is what the project
+          # documents; if the image is older, change this to a device from the list printed above.
+          xcodebuild \
+            -project ios/StudyForge/StudyForge.xcodeproj \
+            -scheme StudyForge \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -resultBundlePath build/Test.xcresult \
+            test CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload result bundles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult
+          path: build/*.xcresult
+          if-no-files-found: ignore
+
+      - name: Token parity (design system vs docs/06)
+        if: always()
+        run: bash tools/check-tokens.sh
+
+      - name: String catalogue parity (en vs ar)
+        if: always()
+        run: python3 tools/check-strings.py
