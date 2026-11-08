@@ -13,6 +13,9 @@ enum SummaryCopy {
     static var configureTitle: String { text("summary.configure.title") }
     static var focusOptionalLabel: String { text("summary.focus.optionalLabel") }
     static var focusHint: String { text("summary.focus.hint") }
+    static var focusPlaceholder: String { text("summary.focus.placeholder") }
+    static var styleBullets: String { text("summary.style.bullets") }
+    static var styleCornell: String { text("summary.style.cornell") }
     static var tldr: String { text("summary.tldr") }
     static func allowance(remaining: Int, limit: Int) -> String { format("summary.allowance", remaining, limit) }
 
