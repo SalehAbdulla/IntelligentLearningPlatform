@@ -47,7 +47,7 @@ struct SummaryResultView: View {
                     } label: {
                         Text(summary.source.chipTitle)
                             .font(.sfCaption.weight(.semibold))
-                            .foregroundStyle(ColorTokens.onError)
+                            .foregroundStyle(ColorTokens.onAccent)
                             .padding(.horizontal, Spacing.s3)
                             .frame(minWidth: 100, minHeight: 26)
                             .background(ColorTokens.success, in: .capsule)
@@ -132,7 +132,7 @@ struct SummaryResultView: View {
         }
         .sheet(isPresented: $isMakingCards) {
             if let container {
-                FlashcardGenerateView(
+                FlashcardGenerateScreen(
                     initialMaterial: viewModel.material,
                     materialStore: container.materials,
                     deckStore: container.decks,
