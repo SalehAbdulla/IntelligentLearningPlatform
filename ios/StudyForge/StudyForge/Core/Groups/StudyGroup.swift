@@ -28,13 +28,11 @@ struct GroupMember: Identifiable, Equatable, Sendable, Codable {
     var name: String
     var isOwner: Bool
 
-    /// Whether the member is currently present. Drives I10's presence dots. Local-first, this is
-    /// whatever the last known state is — a real presence feed arrives with the backend.
-    //
-    // TODO(M4 · F09): Add a presence seam (a `PresenceProvider` protocol) so member presence
-    // comes from a live source instead of the last known value.
-    // Done when: the provider is injected, a fake provider updates presence in a test, and the
-    // UI reflects it.
+    /// Whether the member was last recorded as present — the STORED value, not the screens' answer.
+    ///
+    /// This is still what creating a group and joining one write, and what the local store persists.
+    /// What changed is who READS it: I10's dots and I08's per-row count now come from an injected
+    /// `PresenceProvider`, whose default implementation reads this flag until a realtime feed replaces it.
     var isOnline: Bool
 
     init(id: String = UUID().uuidString, name: String, isOwner: Bool = false, isOnline: Bool = false) {
