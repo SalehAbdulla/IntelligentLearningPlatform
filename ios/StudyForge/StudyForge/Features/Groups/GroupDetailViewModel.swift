@@ -162,7 +162,7 @@ final class GroupDetailViewModel {
         // Wake the observation this one replaces: finishing its interrupt ends the child that was
         // waiting on it, and cancelling the group is what stops the reader.
         presenceInterrupt?.finish()
-        let (interrupt, interrupted) = AsyncStream<Void>.makeStream()
+        let (interrupted, interrupt) = AsyncStream<Void>.makeStream()
         presenceInterrupt = interrupt
 
         // On the way out — finished, replaced or cancelled — this observation drops the handle it put
