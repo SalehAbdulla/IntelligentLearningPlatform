@@ -60,6 +60,14 @@ struct LiveQuizPlayer: Identifiable, Equatable, Sendable {
     /// skill is never consulted.
     var skill: Double
 
+    /// Whether this player has dropped out of the session — the state I13 shows while a classmate
+    /// reconnects.
+    ///
+    /// A stored flag rather than anything derived, because nothing in this simulation can produce a
+    /// disconnect on its own: there is no socket to lose. `disconnect(playerId:)` below is what sets it,
+    /// and the reconnect path this file's header marks as still open is what will clear it.
+    var isDisconnected: Bool
+
     init(
         id: String = UUID().uuidString,
         name: String,
@@ -67,7 +75,8 @@ struct LiveQuizPlayer: Identifiable, Equatable, Sendable {
         isReady: Bool = false,
         score: Int = 0,
         hasAnswered: Bool = false,
-        skill: Double = 0.6
+        skill: Double = 0.6,
+        isDisconnected: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -76,6 +85,7 @@ struct LiveQuizPlayer: Identifiable, Equatable, Sendable {
         self.score = score
         self.hasAnswered = hasAnswered
         self.skill = skill
+        self.isDisconnected = isDisconnected
     }
 }
 
@@ -180,5 +190,21 @@ struct LiveQuizSession: Equatable, Sendable {
             )
         }
         .sorted { $0.topic < $1.topic }
+    }
+
+    // MARK: Connection state
+
+    /// Marks one participant as disconnected, leaving every other part of the session untouched.
+    ///
+    /// An id nobody carries is ignored rather than treated as a failure: a screen can hold an id for a
+    /// player who is no longer in the roster, and that is not something the caller can act on. The guard
+    /// also means a wrong id cannot touch anyone else — `firstIndex` finds one match, or none.
+    ///
+    /// Deliberately narrow. It sets `isDisconnected` and nothing else: not the score, not the answered
+    /// flags, not the phase, not the current question and not the clock — so a disconnect cannot move the
+    /// leaderboard or the timer. Re-deriving a reconnecting player's state is a separate path.
+    mutating func disconnect(playerId: String) {
+        guard let index = players.firstIndex(where: { $0.id == playerId }) else { return }
+        players[index].isDisconnected = true
     }
 }
