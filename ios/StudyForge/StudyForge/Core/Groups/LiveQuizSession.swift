@@ -207,4 +207,39 @@ struct LiveQuizSession: Equatable, Sendable {
         guard let index = players.firstIndex(where: { $0.id == playerId }) else { return }
         players[index].isDisconnected = true
     }
+
+    /// Re-derives a reconnecting player's state from the session's own record, without restarting it.
+    ///
+    /// The score is COUNTED, not adjusted: every point this session has awarded is written down as an
+    /// answer record, so a player who answered three questions correctly has three correct records and the
+    /// count is the number their running total had already reached. No second formula is introduced —
+    /// `LiveQuizViewModel` awards a point exactly when it appends an `isCorrect` answer, and the same is
+    /// true of the simulated players — so deriving from those records reproduces the score rather than
+    /// approximating it.
+    ///
+    /// `hasAnswered` is re-derived the same way, and only for the question actually in play: records from
+    /// earlier questions stay in `answers` after `advance()`, so it is the question ID that keeps this
+    /// honest. (Unique question IDs are already a precondition of this file — `topicScores` builds a
+    /// dictionary keyed by them.)
+    ///
+    /// Nothing else moves. The phase, the current question, the clock, the selected option and the
+    /// recorded answers are all left exactly as they were, so a reconnect can neither skip a question nor
+    /// move the leaderboard, whose own ordering rule (score, then me, then name) is untouched.
+    ///
+    /// - Parameter playerId: the player who rejoined. An id nobody carries is ignored, as in `disconnect`.
+    mutating func resync(playerId: String) {
+        guard let index = players.firstIndex(where: { $0.id == playerId }) else { return }
+
+        players[index].score = answers.filter { $0.playerId == playerId && $0.isCorrect }.count
+
+        // Only derivable while a question is in play; with none, the flag is left alone rather than
+        // guessed at.
+        if let question = currentQuestion {
+            players[index].hasAnswered = answers.contains {
+                $0.playerId == playerId && $0.questionId == question.id
+            }
+        }
+
+        players[index].isDisconnected = false
+    }
 }
