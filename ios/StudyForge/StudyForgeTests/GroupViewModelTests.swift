@@ -490,6 +490,93 @@ struct LiveQuizViewModelTests {
         viewModel.start()
         #expect(viewModel.session == nil, "nothing to start without a quiz")
     }
+
+    // MARK: Disconnect and resync
+
+    @Test("A reconnect restores the score and leaves the session exactly as it was")
+    func resyncRestoresTheScore() async throws {
+        let viewModel = await model(seeded: [quiz()])
+        viewModel.start()
+
+        // One RIGHT answer and one WRONG one, then on to the third question without answering it. That
+        // gives the score something to be counted from (both kinds of record) and leaves `hasAnswered`
+        // false on a question that HAS answered siblings — which is only correct if the derivation reads
+        // the current question's record rather than any record at all.
+        viewModel.answer(0)
+        viewModel.advance()
+        viewModel.answer(1)
+        viewModel.advance()
+
+        let before = try #require(viewModel.session)
+        let myId = before.myPlayerId
+        let scoreBefore = try #require(before.myPlayer).score
+        let leaderboardBefore = before.leaderboard.map(\.id)
+        let answersBefore = before.answers
+
+        #expect(before.players.count >= 2, "the fixture really has a second player to compete with")
+        #expect(scoreBefore == 1, "one right answer of the two attempted")
+        #expect(before.myPlayer?.hasAnswered == false, "nothing has been answered on this question yet")
+
+        viewModel.playerDisconnected(playerId: myId)
+
+        #expect(viewModel.session?.myPlayer?.isDisconnected == true, "the player is marked as gone")
+        #expect(viewModel.session?.myPlayer?.score == scoreBefore, "a disconnect does not touch the score")
+
+        viewModel.playerRejoined(playerId: myId)
+
+        let after = try #require(viewModel.session)
+        #expect(after.myPlayer?.isDisconnected == false, "present again")
+        #expect(
+            after.myPlayer?.score == scoreBefore,
+            "the same score — re-derived, not reset, not doubled"
+        )
+        #expect(
+            after.myPlayer?.hasAnswered == false,
+            "no record for THIS question, so nothing carries over from the earlier ones"
+        )
+        #expect(after.leaderboard.map(\.id) == leaderboardBefore, "the order did not move")
+        #expect(after.answers == answersBefore, "the recorded answers are untouched")
+        #expect(after.phase == before.phase)
+        #expect(after.currentIndex == before.currentIndex)
+        #expect(after.secondsRemaining == before.secondsRemaining)
+        #expect(after == before, "and the session is the very value it was before the disconnect")
+    }
+
+    @Test("A player reconnecting mid-question keeps the answer they gave")
+    func resyncMidQuestionKeepsTheAnswer() async throws {
+        let viewModel = await model(seeded: [quiz()])
+        viewModel.start()
+        viewModel.answer(0)
+
+        let before = try #require(viewModel.session)
+        #expect(before.myPlayer?.hasAnswered == true)
+        #expect(before.phase == .revealed)
+
+        viewModel.playerDisconnected(playerId: before.myPlayerId)
+        viewModel.playerRejoined(playerId: before.myPlayerId)
+
+        let after = try #require(viewModel.session)
+        #expect(after.myPlayer?.isDisconnected == false)
+        #expect(after.myPlayer?.hasAnswered == true, "this is the question's own record being re-read")
+        #expect(after.selectedOption == before.selectedOption, "a revealed answer stays revealed")
+        #expect(after == before, "the session is exactly as it was")
+    }
+
+    @Test("An unknown player id is a no-op for both calls")
+    func disconnectAndRejoinIgnoreAnUnknownPlayer() async throws {
+        let viewModel = await model(seeded: [quiz()])
+        viewModel.start()
+        viewModel.answer(1)
+
+        let before = try #require(viewModel.session)
+
+        viewModel.playerDisconnected(playerId: "nobody-in-this-session")
+        viewModel.playerRejoined(playerId: "nobody-in-this-session")
+
+        // The whole session is compared, because "no-op" has to mean every field — not merely the one an
+        // unknown id could never have matched.
+        #expect(viewModel.session == before)
+    }
 }
 
 // MARK: - Test doubles
