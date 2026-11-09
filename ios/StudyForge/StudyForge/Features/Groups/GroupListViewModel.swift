@@ -11,6 +11,13 @@
 //  belongs behind the store seam beside every other write. `GroupStore.group(withInviteCode:)` is
 //  that seam, and it is also exactly the call a server-side code index replaces.
 //
+//  WHERE THE PER-GROUP ONLINE COUNT COMES FROM
+//  -------------------------------------------
+//  Each row's "3 online" is read from an injected `PresenceProvider`, not from the `isOnline` flags
+//  the list happened to load with — the same seam the board uses. The provider is asked once per load,
+//  for every group at a time: I08 shows them all at once, and one subscription per row would be one
+//  watcher per row, which is why the live watch lives on the board instead.
+//
 
 import Foundation
 
@@ -33,8 +40,20 @@ final class GroupListViewModel {
 
     private let store: any GroupStore
 
-    init(store: any GroupStore) {
+    /// Where each row's online count comes from. Optional at the call site and defaulted from the store
+    /// below, so an existing call site keeps the behaviour it had and a test — or a future realtime
+    /// source — passes its own.
+    private let presence: any PresenceProvider
+
+    /// The ids the provider last reported online, per group id. Empty until a load has read them, which
+    /// renders as "0 online" — the same thing an all-offline group renders as.
+    private(set) var onlineMemberIdsByGroup: [String: Set<String>] = [:]
+
+    init(store: any GroupStore, presence: (any PresenceProvider)? = nil) {
         self.store = store
+        // Resolved HERE rather than as a default argument, because a default value cannot reference
+        // another parameter — and the store is the only thing the default provider needs.
+        self.presence = presence ?? StoredPresenceProvider(store: store)
     }
 
     // MARK: Derived
@@ -66,9 +85,14 @@ final class GroupListViewModel {
         L10n.groupMemberCount.string(group.members.count)
     }
 
-    /// "3 online" — I08's presence summary.
+    /// "3 online" — I08's presence summary, counted from what the provider last reported rather than
+    /// from the flags the group was loaded with.
+    ///
+    /// Counted against the members the row is showing, so the number can never exceed the member count
+    /// beside it — a provider that still lists someone who has left cannot inflate it.
     func onlineCount(_ group: StudyGroup) -> String {
-        L10n.groupPresenceOnline.string(group.members.filter(\.isOnline).count)
+        let ids = onlineMemberIdsByGroup[group.id] ?? []
+        return L10n.groupPresenceOnline.string(group.members.filter { ids.contains($0.id) }.count)
     }
 
     /// I08's "live now" badge.
@@ -95,10 +119,30 @@ final class GroupListViewModel {
         state = .loading
         do {
             let groups = try await store.all()
+            // Presence is read BEFORE the list is published, so the counts are right on the first
+            // render instead of correcting themselves a moment later.
+            await refreshPresence(for: groups)
             state = groups.isEmpty ? .empty : .loaded(groups)
         } catch {
             state = .failed(AppError.from(error))
         }
+    }
+
+    /// Reads the provider's snapshot for every group just loaded, replacing what was known before.
+    ///
+    /// A snapshot per group rather than a subscription, because this screen lists all of them at once:
+    /// a stream per row would be a watcher per row with no screen to show them on. Asking the provider
+    /// is not polling — it happens exactly once per load, and a load happens when the list appears and
+    /// after the three actions that change its contents.
+    ///
+    /// Nothing here throws or sets `error`: a presence read that fails answers with an empty set, so a
+    /// group with no answer simply counts nobody online — the list itself is unaffected.
+    private func refreshPresence(for groups: [StudyGroup]) async {
+        var onlineIds: [String: Set<String>] = [:]
+        for group in groups {
+            onlineIds[group.id] = await presence.onlineMemberIds(in: group.id)
+        }
+        onlineMemberIdsByGroup = onlineIds
     }
 
     /// Creates a group owned by `ownerName`, who is the first member and the host of its quizzes.
