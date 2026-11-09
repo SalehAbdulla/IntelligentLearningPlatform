@@ -5,6 +5,12 @@
 //  I10 — `90_GroupSpace_Detail_Board_{M4}` (docs/03 §I, P0). The shared board: pinned resources, the
 //  member list with presence, and the way into the chat (I11) and the live quiz (I12–I14).
 //
+//  WHERE PRESENCE COMES FROM
+//  -------------------------
+//  The dots and the online count are read from the view model, which asks an injected
+//  `PresenceProvider` — so a live source can replace the stored flag without this screen changing. The
+//  watch is started in the board's single `.task`, beside loading, so it is cancelled with the screen.
+//
 
 import SwiftUI
 
@@ -54,7 +60,12 @@ struct GroupDetailView: View {
         .background(ColorTokens.surface)
         .navigationTitle(viewModel.group?.name ?? "")
         .navigationBarTitleDisplayMode(.inline)
-        .task { await viewModel.load() }
+        // ONE task for both, deliberately: the presence watch has to be cancelled with the screen, so
+        // it belongs to the same lifecycle as loading rather than to a second, parallel modifier.
+        .task {
+            await viewModel.load()
+            await viewModel.observePresence()
+        }
         .sheet(isPresented: $isPinning) { pinSheet }
         .sheet(isPresented: $isStartingQuiz) {
             LiveQuizView(
@@ -68,7 +79,7 @@ struct GroupDetailView: View {
     private func content(_ group: StudyGroup) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.s6) {
-                Text("\(viewModel.memberCountTitle(group.members.count)) · \(viewModel.onlineTitle(group.members.filter(\.isOnline).count))")
+                Text("\(viewModel.memberCountTitle(group.members.count)) · \(viewModel.onlineTitle(viewModel.onlineCount))")
                     .font(.sfFootnote)
                     .foregroundStyle(ColorTokens.textSecondary)
 
@@ -203,9 +214,11 @@ struct GroupDetailView: View {
 
     private func memberRow(_ member: GroupMember) -> some View {
         HStack(spacing: Spacing.s3) {
-            // A presence dot, which is the only thing the row needs beyond the name.
+            // A presence dot. The view model answers — not the flag the group happened to load with —
+            // so the provider is the single source, and the dot is the only thing the row needs beyond
+            // the name.
             Circle()
-                .fill(member.isOnline ? ColorTokens.success : ColorTokens.textTertiary)
+                .fill(viewModel.isOnline(member) ? ColorTokens.success : ColorTokens.textTertiary)
                 .frame(width: Spacing.s2, height: Spacing.s2)
                 .accessibilityHidden(true)
 

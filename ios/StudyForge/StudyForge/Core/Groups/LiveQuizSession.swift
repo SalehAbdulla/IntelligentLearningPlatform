@@ -13,11 +13,6 @@
 //  same every run and the tests can assert on them; a random simulation would look livelier and be
 //  untestable.
 //
-// TODO(M4 · F09): Add a reconnect/resync path. When a player is shown as disconnected and
-// rejoins, re-derive their state deterministically instead of restarting the session.
-// Done when: a `resync()` re-reads the answers and leaderboard, and a test drives a
-// disconnect then reconnect and asserts the same scores.
-//
 //  WHY THE SESSION IS NOT PERSISTED
 //  --------------------------------
 //  A live quiz is a moment, not a record. Its questions come from a `Quiz` the student already saved
@@ -60,6 +55,14 @@ struct LiveQuizPlayer: Identifiable, Equatable, Sendable {
     /// skill is never consulted.
     var skill: Double
 
+    /// Whether this player has dropped out of the session — the state I13 shows while a classmate
+    /// reconnects.
+    ///
+    /// A stored flag rather than anything derived, because nothing in this simulation can produce a
+    /// disconnect on its own: there is no socket to lose. `disconnect(playerId:)` below is what sets it,
+    /// and the reconnect path this file's header marks as still open is what will clear it.
+    var isDisconnected: Bool
+
     init(
         id: String = UUID().uuidString,
         name: String,
@@ -67,7 +70,8 @@ struct LiveQuizPlayer: Identifiable, Equatable, Sendable {
         isReady: Bool = false,
         score: Int = 0,
         hasAnswered: Bool = false,
-        skill: Double = 0.6
+        skill: Double = 0.6,
+        isDisconnected: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -76,6 +80,7 @@ struct LiveQuizPlayer: Identifiable, Equatable, Sendable {
         self.score = score
         self.hasAnswered = hasAnswered
         self.skill = skill
+        self.isDisconnected = isDisconnected
     }
 }
 
@@ -180,5 +185,56 @@ struct LiveQuizSession: Equatable, Sendable {
             )
         }
         .sorted { $0.topic < $1.topic }
+    }
+
+    // MARK: Connection state
+
+    /// Marks one participant as disconnected, leaving every other part of the session untouched.
+    ///
+    /// An id nobody carries is ignored rather than treated as a failure: a screen can hold an id for a
+    /// player who is no longer in the roster, and that is not something the caller can act on. The guard
+    /// also means a wrong id cannot touch anyone else — `firstIndex` finds one match, or none.
+    ///
+    /// Deliberately narrow. It sets `isDisconnected` and nothing else: not the score, not the answered
+    /// flags, not the phase, not the current question and not the clock — so a disconnect cannot move the
+    /// leaderboard or the timer. Re-deriving a reconnecting player's state is a separate path.
+    mutating func disconnect(playerId: String) {
+        guard let index = players.firstIndex(where: { $0.id == playerId }) else { return }
+        players[index].isDisconnected = true
+    }
+
+    /// Re-derives a reconnecting player's state from the session's own record, without restarting it.
+    ///
+    /// The score is COUNTED, not adjusted: every point this session has awarded is written down as an
+    /// answer record, so a player who answered three questions correctly has three correct records and the
+    /// count is the number their running total had already reached. No second formula is introduced —
+    /// `LiveQuizViewModel` awards a point exactly when it appends an `isCorrect` answer, and the same is
+    /// true of the simulated players — so deriving from those records reproduces the score rather than
+    /// approximating it.
+    ///
+    /// `hasAnswered` is re-derived the same way, and only for the question actually in play: records from
+    /// earlier questions stay in `answers` after `advance()`, so it is the question ID that keeps this
+    /// honest. (Unique question IDs are already a precondition of this file — `topicScores` builds a
+    /// dictionary keyed by them.)
+    ///
+    /// Nothing else moves. The phase, the current question, the clock, the selected option and the
+    /// recorded answers are all left exactly as they were, so a reconnect can neither skip a question nor
+    /// move the leaderboard, whose own ordering rule (score, then me, then name) is untouched.
+    ///
+    /// - Parameter playerId: the player who rejoined. An id nobody carries is ignored, as in `disconnect`.
+    mutating func resync(playerId: String) {
+        guard let index = players.firstIndex(where: { $0.id == playerId }) else { return }
+
+        players[index].score = answers.filter { $0.playerId == playerId && $0.isCorrect }.count
+
+        // Only derivable while a question is in play; with none, the flag is left alone rather than
+        // guessed at.
+        if let question = currentQuestion {
+            players[index].hasAnswered = answers.contains {
+                $0.playerId == playerId && $0.questionId == question.id
+            }
+        }
+
+        players[index].isDisconnected = false
     }
 }

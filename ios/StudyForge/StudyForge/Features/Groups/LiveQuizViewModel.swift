@@ -215,6 +215,31 @@ final class LiveQuizViewModel {
 
     func toggleReview() { isReviewing.toggle() }
 
+    // MARK: Connection
+
+    /// Marks a participant as disconnected on the screen's session.
+    ///
+    /// A forwarder, not a trigger: nothing here invents a network event, a timer or an automatic
+    /// reconnect, so the caller — a test now, a real socket later — is what decides that a player has
+    /// dropped out. The session is copied, changed and written back exactly as every other mutation in
+    /// this view model is, so the change is published to the view.
+    func playerDisconnected(playerId: String) {
+        guard var session else { return }
+        session.disconnect(playerId: playerId)
+        self.session = session
+    }
+
+    /// Brings a reconnecting player back: marked present again, with their score and progress re-derived
+    /// from the session's own record rather than reset.
+    ///
+    /// The work is in `LiveQuizSession.resync(playerId:)`, which re-reads the recorded answers — this
+    /// method only carries the result into the observable state, like its counterpart above.
+    func playerRejoined(playerId: String) {
+        guard var session else { return }
+        session.resync(playerId: playerId)
+        self.session = session
+    }
+
     // MARK: Simulation
 
     private func makePlayers() -> [LiveQuizPlayer] {
