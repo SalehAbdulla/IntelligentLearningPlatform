@@ -5,6 +5,13 @@
 //  I08 + I09 — `88_GroupSpace_List_{M4}` and `89_GroupSpace_JoinByCode_{M4}` (docs/03 §I, P0). The
 //  student's group revision spaces, with a create sheet and a join-by-code sheet.
 //
+//  WHERE PRESENCE COMES FROM
+//  -------------------------
+//  The provider is injected here and owned by the view model, which is where each row's count is read
+//  (`GroupListViewModel.onlineCount(_:)`). This screen WATCHES nothing: a list of groups has no single
+//  stream to follow, so the counts are refreshed by `load()` instead — the same reason the live watch
+//  lives on the board, where one group is on screen.
+//
 
 import SwiftUI
 
@@ -22,12 +29,21 @@ struct GroupListView: View {
     private let quizzes: any QuizStore
     private let me: String
 
-    init(store: any GroupStore, materials: any MaterialStore, quizzes: any QuizStore, me: String) {
+    /// The provider is optional and defaulted so every existing call site — `SignedInHomeView`'s
+    /// included — keeps compiling unchanged: without one, the view model builds
+    /// `StoredPresenceProvider(store:)` from the store it is already given.
+    init(
+        store: any GroupStore,
+        materials: any MaterialStore,
+        quizzes: any QuizStore,
+        me: String,
+        presence: (any PresenceProvider)? = nil
+    ) {
         self.store = store
         self.materials = materials
         self.quizzes = quizzes
         self.me = me
-        _viewModel = State(initialValue: GroupListViewModel(store: store))
+        _viewModel = State(initialValue: GroupListViewModel(store: store, presence: presence))
     }
 
     var body: some View {
