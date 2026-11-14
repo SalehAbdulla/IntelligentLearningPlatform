@@ -160,15 +160,15 @@ var isModerationAvailable: Bool { moderator != nil }
     /// The only way a view should read a message's text: reading `message.text` directly renders a
     /// body the room has removed. Without a moderation context this is the text unchanged, which is
     /// what I11 shows today.
-   func visibleBody(of message: GroupMessage) -> String? {
+  func visibleBody(of message: GroupMessage) -> String? {
     guard let moderation else {
-        // Fail closed: do not expose message text if moderation
-        // is configured but its history has not loaded.
-        return moderator == nil ? message.text : nil
+        // Keep the chat readable when moderation history is unavailable.
+        return message.text
     }
 
     return moderation.visibleBody(of: message)
 }
+
 
     /// Whether a message is hidden, so the row can draw a tombstone instead of a bubble.
     func isHidden(_ message: GroupMessage) -> Bool {
