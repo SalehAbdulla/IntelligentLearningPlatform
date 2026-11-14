@@ -106,6 +106,13 @@ final class RecallSessionViewModel {
 
     private(set) var error: AppError?
 
+    /// Decks whose last write failed, so the learner can retry exactly the writes that did not land.
+    ///
+    /// Empty means every answer given in this sitting is on disk. The answer itself is never rolled
+    /// back — the learner did answer, and taking the card back would punish them for a storage
+    /// fault — so a retry is a second attempt at the same write, not a re-answer.
+    private(set) var unsavedDeckIds: Set<String> = []
+
     /// Card id to zero-based learning step, for the cards still inside the steps.
     ///
     /// Held here and nowhere else: F17 never writes learning state onto `Flashcard` and never
@@ -452,16 +459,33 @@ final class RecallSessionViewModel {
         decks[deckIndex].updatedAt = instant
     }
 
+    /// Retries every write that failed, and clears the error only when all of them have landed.
+    ///
+    /// Idempotent: `DeckStore.add` overwrites the deck, so retrying a write that actually succeeded
+    /// cannot duplicate anything. The learner's answer is still in the in-memory deck — nothing was
+    /// rolled back — so this retry is what turns "answered but not saved" back into "saved".
+    func retryFailedSaves() async {
+        // `unsavedDeckIds` is a value type, so the loop iterates a copy while `persist` edits the
+        // property; removing an id mid-iteration cannot skip another one.
+        for deckId in unsavedDeckIds {
+            await persist(deckId: deckId)
+        }
+    }
+
     /// Writes the deck after every rating, so closing mid-sitting keeps the answers already given.
     ///
     /// The store is the local file, so this holds offline. A failure is surfaced rather than
-    /// swallowed: the answer stays (the learner did answer it), but it is honestly not saved, which
-    /// means the card is simply asked again next time rather than silently marked as learned.
+    /// swallowed: the answer stays (the learner did answer it), the deck is remembered as unsaved so
+    /// `retryFailedSaves()` can try again, and the error clears only once nothing is unsaved — a
+    /// banner that vanished after a different deck saved would misreport what is on disk.
     private func persist(deckId: String) async {
         guard let deck = decks.first(where: { $0.id == deckId }) else { return }
         do {
             try await store.add(deck)
+            unsavedDeckIds.remove(deckId)
+            if unsavedDeckIds.isEmpty { error = nil }
         } catch {
+            unsavedDeckIds.insert(deckId)
             self.error = AppError.from(error)
         }
     }
