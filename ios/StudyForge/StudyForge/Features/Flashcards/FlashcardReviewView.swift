@@ -4,6 +4,7 @@ struct FlashcardReviewView: View {
 
     @State private var viewModel: FlashcardReviewViewModel
     @State private var isConfirmingEnd = false
+    @State private var offline = OfflineMonitor()
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -37,6 +38,8 @@ struct FlashcardReviewView: View {
         .interactiveDismissDisabled(viewModel.hasUnfinishedProgress)
         .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isShowingAnswer) { _, isShowing in isShowing }
         .sensoryFeedback(.success, trigger: viewModel.phase) { _, phase in phase == .summary }
+        .task { offline.start() }
+        .onDisappear { offline.stop() }
         .confirmationDialog(
             FlashcardCopy.endSessionTitle,
             isPresented: $isConfirmingEnd,
@@ -369,6 +372,10 @@ struct FlashcardReviewView: View {
         VStack(spacing: Spacing.s4) {
             Spacer(minLength: 0)
 
+            if offline.isOffline {
+                offlineNote
+            }
+
             VStack(spacing: Spacing.s3) {
                 Image(systemName: "checkmark.seal.fill")
                     .font(.system(size: 44))
@@ -408,6 +415,29 @@ struct FlashcardReviewView: View {
             Spacer(minLength: 0)
         }
         .padding(.horizontal, margin)
+    }
+
+    private var offlineNote: some View {
+        HStack(alignment: .top, spacing: Spacing.s3) {
+            Image(systemName: "wifi.slash")
+                .font(.sfSubhead)
+                .foregroundStyle(ColorTokens.warningText)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: Spacing.s1) {
+                Text(FlashcardCopy.offlineTitle)
+                    .font(.sfSubhead.weight(.semibold))
+                    .foregroundStyle(ColorTokens.textPrimary)
+                Text(FlashcardCopy.offlineBody(FlashcardText.relative(viewModel.lastSavedAt)))
+                    .font(.sfFootnote)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(Spacing.s4)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(ColorTokens.warning.opacity(0.14), in: .rect(cornerRadius: Radius.m))
+        .accessibilityElement(children: .combine)
     }
 
     private var emptyBody: String {

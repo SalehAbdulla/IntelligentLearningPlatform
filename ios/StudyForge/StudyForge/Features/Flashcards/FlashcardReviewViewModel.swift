@@ -104,6 +104,7 @@ final class FlashcardReviewViewModel {
     var isStudyingAhead: Bool { mode == .ahead }
     var canStudyAhead: Bool { !deck.cards.isEmpty }
     var totalCards: Int { deck.cards.count }
+    var lastSavedAt: Date { deck.updatedAt }
     var canUndo: Bool { lastRating != nil && !isRating && phase == .reviewing }
 
     var hasUnfinishedProgress: Bool { phase == .reviewing && reviewedCount > 0 }
