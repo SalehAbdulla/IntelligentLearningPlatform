@@ -101,6 +101,7 @@ final class FlashcardReviewViewModel {
 
     var isCurrentCardFlagged: Bool { currentCard?.isFlagged ?? false }
 
+    var presentation: FlashcardPresentation? { currentCard.map(FlashcardPresentation.init) }
     var isStudyingAhead: Bool { mode == .ahead }
     var canStudyAhead: Bool { !deck.cards.isEmpty }
     var totalCards: Int { deck.cards.count }

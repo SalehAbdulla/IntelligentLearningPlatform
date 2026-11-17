@@ -141,19 +141,30 @@ struct FlashcardReviewView: View {
     private func flipCard(_ card: Flashcard) -> some View {
         let isShowing = viewModel.isShowingAnswer
         let turns = isShowing && !reduceMotion
+        let presentation = FlashcardPresentation(card)
 
         return ZStack {
             face {
-                Text(card.front)
-                    .font(.sfTitleM)
-                    .foregroundStyle(ColorTokens.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .minimumScaleFactor(0.6)
+                VStack(spacing: Spacing.s4) {
+                    if presentation.isReversed {
+                        Label(FlashcardCopy.reversed, systemImage: "arrow.left.arrow.right")
+                            .font(.sfCaption.weight(.semibold))
+                            .foregroundStyle(ColorTokens.onPrimaryContainer)
+                            .padding(.horizontal, Spacing.s3)
+                            .frame(minHeight: 24)
+                            .background(ColorTokens.primaryContainer, in: .capsule)
+                    }
+                    Text(presentation.prompt)
+                        .font(.sfTitleM)
+                        .foregroundStyle(ColorTokens.textPrimary)
+                        .multilineTextAlignment(.center)
+                        .minimumScaleFactor(0.6)
+                }
             }
             .opacity(isShowing ? 0 : 1)
 
             face {
-                backContent(card)
+                backContent(presentation)
             }
             .opacity(isShowing ? 1 : 0)
             .rotation3DEffect(.degrees(reduceMotion ? 0 : 180), axis: (x: 0, y: 1, z: 0))
@@ -165,7 +176,7 @@ struct FlashcardReviewView: View {
             if !isShowing { viewModel.reveal() }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(isShowing ? card.back : card.front)
+        .accessibilityLabel(isShowing ? presentation.answer : presentation.prompt)
         .accessibilityHint(isShowing ? "" : FlashcardCopy.tapAnywhere)
         .accessibilityAddTraits(isShowing ? [] : .isButton)
     }
@@ -178,8 +189,8 @@ struct FlashcardReviewView: View {
             .shadow(color: Color.black.opacity(0.12), radius: 16, y: 12)
     }
 
-    private func backContent(_ card: Flashcard) -> some View {
-        let answer = FlashcardAnswer(card.back)
+    private func backContent(_ presentation: FlashcardPresentation) -> some View {
+        let answer = FlashcardAnswer(presentation.answer)
 
         return VStack(spacing: Spacing.s4) {
             Text(answer.headline)
