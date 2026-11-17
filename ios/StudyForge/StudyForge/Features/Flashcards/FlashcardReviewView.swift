@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct FlashcardReviewView: View {
 
@@ -15,9 +16,16 @@ struct FlashcardReviewView: View {
         deck: Deck,
         store: any DeckStore,
         log: any FlashcardReviewLog = FileFlashcardReviewLog.shared,
+        images: any FlashcardImageStore = FileFlashcardImageStore.shared,
         mode: FlashcardReviewViewModel.Mode = .due
     ) {
-        _viewModel = State(initialValue: FlashcardReviewViewModel(deck: deck, store: store, log: log, mode: mode))
+        _viewModel = State(initialValue: FlashcardReviewViewModel(
+            deck: deck,
+            store: store,
+            log: log,
+            images: images,
+            mode: mode
+        ))
     }
 
     var body: some View {
@@ -39,6 +47,7 @@ struct FlashcardReviewView: View {
         .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isShowingAnswer) { _, isShowing in isShowing }
         .sensoryFeedback(.success, trigger: viewModel.phase) { _, phase in phase == .summary }
         .task { offline.start() }
+        .task(id: viewModel.currentCard?.id) { await viewModel.loadImage() }
         .onDisappear { offline.stop() }
         .confirmationDialog(
             FlashcardCopy.endSessionTitle,
@@ -153,6 +162,14 @@ struct FlashcardReviewView: View {
                             .padding(.horizontal, Spacing.s3)
                             .frame(minHeight: 24)
                             .background(ColorTokens.primaryContainer, in: .capsule)
+                    }
+                    if let data = viewModel.currentImage, let image = UIImage(data: data) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 180)
+                            .clipShape(RoundedRectangle(cornerRadius: Radius.m, style: .continuous))
+                            .accessibilityLabel(FlashcardCopy.cardImage)
                     }
                     Text(presentation.prompt)
                         .font(.sfTitleM)

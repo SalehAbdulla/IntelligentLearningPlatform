@@ -43,21 +43,25 @@ final class FlashcardReviewViewModel {
     private(set) var deck: Deck
     private(set) var streakDays = 0
     private(set) var mode: Mode
+    private(set) var currentImage: Data?
 
     private var lastRating: FlashcardRatingRecord?
     private let store: any DeckStore
     private let log: any FlashcardReviewLog
+    private let images: any FlashcardImageStore
 
     init(
         deck: Deck,
         store: any DeckStore,
         log: any FlashcardReviewLog = InMemoryFlashcardReviewLog(),
+        images: any FlashcardImageStore = InMemoryFlashcardImageStore(),
         mode: Mode = .due,
         now: Date = .now
     ) {
         self.deck = deck
         self.store = store
         self.log = log
+        self.images = images
         self.mode = mode
         let queue = Self.queue(for: deck, mode: mode, now: now)
         self.cards = queue
@@ -145,6 +149,16 @@ final class FlashcardReviewViewModel {
         if days <= 0 { return L10n.flashcardIntervalAgain.string }
         if days < 30 { return L10n.flashcardIntervalDays.string(days) }
         return L10n.flashcardIntervalMonths.string(days / 30)
+    }
+
+    func loadImage() async {
+        guard let card = currentCard else {
+            currentImage = nil
+            return
+        }
+        let data = await images.image(for: card.id)
+        guard currentCard?.id == card.id else { return }
+        currentImage = data
     }
 
     func reveal() {
