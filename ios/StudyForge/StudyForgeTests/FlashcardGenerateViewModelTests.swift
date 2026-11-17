@@ -277,4 +277,52 @@ struct FlashcardGenerateViewModelTests {
 
         #expect(viewModel.generateButtonTitle == FlashcardCopy.generateCount(30))
     }
+
+    private func model(style: LearningStyle) -> FlashcardGenerateViewModel {
+        let source = material()
+        return FlashcardGenerateViewModel(
+            initialMaterial: source,
+            materialStore: InMemoryMaterialStore(seededWith: [source]),
+            deckStore: InMemoryDeckStore(),
+            router: AIRouter(
+                providers: [.firebaseAI: MockProvider(tier: .firebaseAI, latency: .zero)],
+                governor: AICostGovernor()
+            ),
+            learningStyle: style
+        )
+    }
+
+    @Test("Each learning style suggests its own card type")
+    func learningStyleSuggestsCardType() {
+        #expect(FlashcardGenerateViewModel.suggestedCardType(for: .visual) == .qa)
+        #expect(FlashcardGenerateViewModel.suggestedCardType(for: .kinesthetic) == .qa)
+        #expect(FlashcardGenerateViewModel.suggestedCardType(for: .verbal) == .reversible)
+        #expect(FlashcardGenerateViewModel.suggestedCardType(for: .readWrite) == .cloze)
+    }
+
+    @Test("The configure step starts on the suggested card type")
+    func configureStartsOnSuggestion() {
+        let viewModel = model(style: .readWrite)
+        #expect(viewModel.cardType == .cloze)
+        #expect(viewModel.isUsingSuggestedCardType)
+
+        viewModel.cardType = .qa
+
+        #expect(!viewModel.isUsingSuggestedCardType)
+    }
+
+    @Test("Discarding the drafts and generating again gives a fresh set")
+    func regenerateGivesFreshCards() async {
+        let viewModel = model(material: material())
+        await viewModel.generate()
+        let first = Set(viewModel.cards.map(\.id))
+        viewModel.removeCard(id: viewModel.cards[0].id)
+
+        viewModel.discardCards()
+        #expect(viewModel.phase == .configuring)
+        await viewModel.generate()
+
+        #expect(viewModel.cards.count == 20)
+        #expect(first.isDisjoint(with: viewModel.cards.map(\.id)))
+    }
 }
