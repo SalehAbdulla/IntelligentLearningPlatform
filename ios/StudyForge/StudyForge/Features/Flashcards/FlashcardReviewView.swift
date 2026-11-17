@@ -45,6 +45,7 @@ struct FlashcardReviewView: View {
         .animation(Motion.respecting(Motion.standard, reduceMotion: reduceMotion), value: viewModel.phase)
         .interactiveDismissDisabled(viewModel.hasUnfinishedProgress)
         .sensoryFeedback(.impact(weight: .light), trigger: viewModel.isShowingAnswer) { _, isShowing in isShowing }
+        .sensoryFeedback(.selection, trigger: viewModel.reviewedCount) { old, new in new > old }
         .sensoryFeedback(.success, trigger: viewModel.phase) { _, phase in phase == .summary }
         .task { offline.start() }
         .task(id: viewModel.currentCard?.id) { await viewModel.loadImage() }
