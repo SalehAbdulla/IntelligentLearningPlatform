@@ -130,6 +130,35 @@ enum FlashcardCopy {
 
     static func todayAt(_ time: String) -> String { format("flashcards.date.today", time) }
     static func tomorrowAt(_ time: String) -> String { format("flashcards.date.tomorrow", time) }
+    static func streak(_ days: Int) -> String {
+        days == 1 ? text("flashcards.summary.streakOne") : format("flashcards.summary.streak", days)
+    }
+    static func reviewedAll(_ count: Int) -> String {
+        count == 1 ? text("flashcards.empty.reviewedAllOne") : format("flashcards.empty.reviewedAll", count)
+    }
+    static var studyAheadAnyway: String { text("flashcards.empty.studyAhead") }
+    static var backToDecks: String { text("flashcards.empty.backToDecks") }
+    static var offlineTitle: String { text("flashcards.empty.offlineTitle") }
+    static func offlineBody(_ when: String) -> String { format("flashcards.empty.offlineBody", when) }
+    static var studyingAhead: String { text("flashcards.review.ahead") }
+    static var reversed: String { text("flashcards.review.reversed") }
+    static var cardImage: String { text("flashcards.review.image") }
+    static var studyAhead: String { text("flashcards.deck.studyAhead") }
+    static var tags: String { text("flashcards.editor.tags") }
+    static var tagPlaceholder: String { text("flashcards.editor.tagPlaceholder") }
+    static var addTag: String { text("flashcards.editor.addTag") }
+    static func removeTag(_ tag: String) -> String { format("flashcards.editor.removeTag", tag) }
+    static func tagsFooter(_ limit: Int) -> String { format("flashcards.editor.tagsFooter", limit) }
+    static var deck: String { text("flashcards.editor.deck") }
+    static var image: String { text("flashcards.editor.image") }
+    static var attachImage: String { text("flashcards.editor.attachImage") }
+    static var replaceImage: String { text("flashcards.editor.replaceImage") }
+    static var removeImage: String { text("flashcards.editor.removeImage") }
+    static var imageFailed: String { text("flashcards.editor.imageFailed") }
+    static var regenerate: String { text("flashcards.draft.regenerate") }
+    static var regenerateTitle: String { text("flashcards.draft.regenerateTitle") }
+    static var regenerateMessage: String { text("flashcards.draft.regenerateMessage") }
+    static var styleHint: String { text("flashcards.generate.styleHint") }
     static func seconds(_ value: Int) -> String { format("flashcards.duration.seconds", value) }
     static func minutes(_ value: Int) -> String { format("flashcards.duration.minutes", value) }
 }
