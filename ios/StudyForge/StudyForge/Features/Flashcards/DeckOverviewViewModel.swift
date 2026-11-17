@@ -10,14 +10,21 @@ final class DeckOverviewViewModel {
     private(set) var isDeleted = false
     private(set) var isWorking = false
     private(set) var error: AppError?
+    private(set) var allDecks: [Deck] = []
 
     let deckId: String
 
     private let store: any DeckStore
+    private let images: any FlashcardImageStore
 
-    init(deckId: String, store: any DeckStore) {
+    init(
+        deckId: String,
+        store: any DeckStore,
+        images: any FlashcardImageStore = FileFlashcardImageStore.shared
+    ) {
         self.deckId = deckId
         self.store = store
+        self.images = images
     }
 
     var cards: [Flashcard] { deck?.cards ?? [] }
@@ -42,11 +49,79 @@ final class DeckOverviewViewModel {
                 deck = nil
                 isMissing = true
             }
+            allDecks = try await store.all()
             error = nil
         } catch {
             self.error = AppError.from(error)
         }
         hasLoaded = true
+    }
+
+    func image(for cardId: String) async -> Data? {
+        await images.image(for: cardId)
+    }
+
+    func apply(_ edit: FlashcardEdit, toCard id: String) async {
+        guard var current = deck,
+              let index = current.cards.firstIndex(where: { $0.id == id }),
+              !FlashcardText.isBlank(edit.front), !FlashcardText.isBlank(edit.back) else { return }
+        var card = current.cards[index]
+        card.front = FlashcardText.cleaned(edit.front, limit: FlashcardLimits.frontMaxCharacters)
+        card.back = FlashcardText.cleaned(edit.back, limit: FlashcardLimits.backMaxCharacters)
+        card.tags = FlashcardTags.merged(edit.tags, keepingFlagFrom: card.tags)
+        await applyImage(edit, toCard: id)
+        if let target = edit.deckId, target != deckId {
+            await move(card, from: current, to: target)
+            return
+        }
+        current.cards[index] = card
+        await persist(current)
+    }
+
+    func addCard(_ edit: FlashcardEdit) async {
+        guard var current = deck, !FlashcardText.isBlank(edit.front), !FlashcardText.isBlank(edit.back) else { return }
+        let card = Flashcard(
+            front: FlashcardText.cleaned(edit.front, limit: FlashcardLimits.frontMaxCharacters),
+            back: FlashcardText.cleaned(edit.back, limit: FlashcardLimits.backMaxCharacters),
+            tags: FlashcardTags.merged(edit.tags, keepingFlagFrom: []),
+            provenance: AIProvenance(materialId: current.materialId ?? current.id, pageNumbers: [], confidence: .high),
+            aiDrafted: false
+        )
+        await applyImage(edit, toCard: card.id)
+        current.cards.append(card)
+        await persist(current)
+    }
+
+    private func applyImage(_ edit: FlashcardEdit, toCard id: String) async {
+        if let data = edit.imageData {
+            do {
+                try await images.save(data, for: id)
+            } catch {
+                self.error = AppError.from(error)
+            }
+        } else if edit.removesImage {
+            await images.remove(for: id)
+        }
+    }
+
+    private func move(_ card: Flashcard, from source: Deck, to targetId: String) async {
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            guard var target = try await store.deck(id: targetId) else { return }
+            var source = source
+            source.cards.removeAll { $0.id == card.id }
+            source.updatedAt = .now
+            target.cards.append(card)
+            target.updatedAt = .now
+            try await store.add(target)
+            try await store.add(source)
+            deck = source
+            allDecks = try await store.all()
+            error = nil
+        } catch {
+            self.error = AppError.from(error)
+        }
     }
 
     func rename(to title: String) async {
