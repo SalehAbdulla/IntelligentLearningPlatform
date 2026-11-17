@@ -1,4 +1,6 @@
+import PhotosUI
 import SwiftUI
+import UIKit
 
 struct FlashcardEditorSheet: View {
 
@@ -12,6 +14,10 @@ struct FlashcardEditorSheet: View {
     @State private var back: String
     @State private var tags: [String]
     @State private var deckId: String?
+    @State private var imageData: Data?
+    @State private var removesImage = false
+    @State private var photoItem: PhotosPickerItem?
+    @State private var imageFailed = false
     @State private var newTag = ""
     @State private var isConfirmingDelete = false
     @State private var isConfirmingDiscard = false
@@ -22,6 +28,8 @@ struct FlashcardEditorSheet: View {
     private let showsTags: Bool
     private let decks: [Deck]
     private let originalDeckId: String?
+    private let originalImage: Data?
+    private let allowsImage: Bool
 
     init(
         title: String,
@@ -30,6 +38,8 @@ struct FlashcardEditorSheet: View {
         tags: [String]? = nil,
         decks: [Deck] = [],
         deckId: String? = nil,
+        image: Data? = nil,
+        allowsImage: Bool = false,
         onSubmit: @escaping (FlashcardEdit) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
@@ -44,6 +54,9 @@ struct FlashcardEditorSheet: View {
         self.decks = decks
         self.originalDeckId = deckId
         _deckId = State(initialValue: deckId)
+        self.originalImage = image
+        self.allowsImage = allowsImage
+        _imageData = State(initialValue: image)
         _front = State(initialValue: front)
         _back = State(initialValue: back)
         _tags = State(initialValue: visibleTags)
@@ -71,7 +84,7 @@ struct FlashcardEditorSheet: View {
     }
 
     private var hasChanges: Bool {
-        front != originalFront || back != originalBack || tags != originalTags || deckId != originalDeckId
+        front != originalFront || back != originalBack || tags != originalTags || deckId != originalDeckId || imageData != originalImage
     }
 
     var body: some View {
@@ -107,6 +120,10 @@ struct FlashcardEditorSheet: View {
 
                 if showsTags {
                     tagsSection
+                }
+
+                if allowsImage {
+                    imageSection
                 }
 
                 if decks.count > 1, deckId != nil {
@@ -211,6 +228,51 @@ struct FlashcardEditorSheet: View {
         }
     }
 
+    private var imageSection: some View {
+        Section {
+            if let imageData, let preview = UIImage(data: imageData) {
+                Image(uiImage: preview)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: 180)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.m, style: .continuous))
+                    .accessibilityLabel(FlashcardCopy.cardImage)
+            }
+            PhotosPicker(selection: $photoItem, matching: .images) {
+                Label(imageData == nil ? FlashcardCopy.attachImage : FlashcardCopy.replaceImage, systemImage: "photo")
+            }
+            if imageData != nil {
+                Button(FlashcardCopy.removeImage, role: .destructive) {
+                    imageData = nil
+                    removesImage = originalImage != nil
+                    photoItem = nil
+                }
+            }
+            if imageFailed {
+                Label(FlashcardCopy.imageFailed, systemImage: "exclamationmark.triangle.fill")
+                    .font(.sfFootnote)
+                    .foregroundStyle(ColorTokens.error)
+            }
+        } header: {
+            Text(FlashcardCopy.image)
+        }
+        .onChange(of: photoItem) {
+            guard let item = photoItem else { return }
+            Task { await load(item) }
+        }
+    }
+
+    private func load(_ item: PhotosPickerItem) async {
+        let raw = try? await item.loadTransferable(type: Data.self)
+        guard let raw, let prepared = FlashcardImagePreparer.prepared(raw) else {
+            imageFailed = true
+            return
+        }
+        imageFailed = false
+        imageData = prepared
+        removesImage = false
+    }
+
     private func tagChip(_ tag: String) -> some View {
         Button {
             tags.removeAll { $0 == tag }
@@ -247,7 +309,9 @@ struct FlashcardEditorSheet: View {
                 front: FlashcardText.cleaned(front, limit: FlashcardLimits.frontMaxCharacters),
                 back: FlashcardText.cleaned(back, limit: FlashcardLimits.backMaxCharacters),
                 tags: finalTags,
-                deckId: deckId
+                deckId: deckId,
+                imageData: imageData == originalImage ? nil : imageData,
+                removesImage: removesImage && imageData == nil
             )
         )
         dismiss()
@@ -262,6 +326,7 @@ struct FlashcardEditorSheet: View {
         tags: ["trees", "basics"],
         decks: [Deck(id: "a", title: "Trees & Graphs"), Deck(id: "b", title: "Algorithms")],
         deckId: "a",
+        allowsImage: true,
         onSubmit: { _ in },
         onDelete: {}
     )
