@@ -232,12 +232,19 @@ struct FlashcardGenerateScreen: View {
                     optionTitle: { $0.levelTitle }
                 )
 
-                SummaryOptionPicker(
-                    title: FlashcardCopy.typeLabel,
-                    options: CardType.allCases,
-                    selection: typeBinding,
-                    optionTitle: { $0.shortTitle }
-                )
+                VStack(alignment: .leading, spacing: Spacing.s2) {
+                    SummaryOptionPicker(
+                        title: FlashcardCopy.typeLabel,
+                        options: CardType.allCases,
+                        selection: typeBinding,
+                        optionTitle: { $0.shortTitle }
+                    )
+                    if viewModel.isUsingSuggestedCardType {
+                        Label(FlashcardCopy.styleHint, systemImage: "sparkles")
+                            .font(.sfFootnote)
+                            .foregroundStyle(ColorTokens.textSecondary)
+                    }
+                }
 
                 rangeField
 
