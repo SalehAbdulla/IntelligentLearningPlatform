@@ -7,6 +7,8 @@ struct DecksHomeView: View {
     @State private var studyDeck: Deck?
     @State private var deckToDelete: Deck?
 
+    @Environment(AppContainer.self) private var container: AppContainer?
+
     private let materialStore: any MaterialStore
     private let deckStore: any DeckStore
     private let router: AIRouter
@@ -37,6 +39,7 @@ struct DecksHomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.s3) {
                     header
+                    quizzesChip
                     content
                 }
                 .padding(.horizontal, margin)
@@ -102,6 +105,35 @@ struct DecksHomeView: View {
         }
         .padding(.top, Spacing.s4)
         .padding(.bottom, Spacing.s3)
+    }
+
+    @ViewBuilder
+    private var quizzesChip: some View {
+        if let container {
+            NavigationLink {
+                QuizzesHomeView(
+                    materialStore: materialStore,
+                    quizStore: container.quizzes,
+                    router: router,
+                    plans: container.studyPlans
+                )
+            } label: {
+                HStack(spacing: Spacing.s1) {
+                    Label(QuizCopy.quizzesEntry, systemImage: "checklist")
+                    Image(systemName: "chevron.forward")
+                        .font(.sfCaption.weight(.semibold))
+                        .accessibilityHidden(true)
+                }
+                .font(.sfFootnote.weight(.semibold))
+                .foregroundStyle(ColorTokens.primary)
+                .padding(.horizontal, Spacing.s3)
+                .frame(minHeight: 32)
+                .background(ColorTokens.primary.opacity(0.12), in: .capsule)
+                .frame(minHeight: Layout.minTouchTarget)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     @ViewBuilder
