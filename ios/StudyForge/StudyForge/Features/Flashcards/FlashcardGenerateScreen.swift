@@ -5,6 +5,7 @@ struct FlashcardGenerateScreen: View {
     private enum DiscardIntent {
         case close
         case restart
+        case regenerate
     }
 
     @State private var viewModel: FlashcardGenerateViewModel
@@ -79,19 +80,21 @@ struct FlashcardGenerateScreen: View {
             FlashcardReviewView(deck: deck, store: deckStore)
         }
         .confirmationDialog(
-            FlashcardCopy.discardCardsTitle,
+            discardIntent == .regenerate ? FlashcardCopy.regenerateTitle : FlashcardCopy.discardCardsTitle,
             isPresented: $isConfirmingDiscard,
             titleVisibility: .visible
         ) {
-            Button(FlashcardCopy.discard, role: .destructive) {
+            Button(discardIntent == .regenerate ? FlashcardCopy.regenerate : FlashcardCopy.discard, role: .destructive) {
                 viewModel.discardCards()
-                if discardIntent == .close {
-                    dismiss()
+                switch discardIntent {
+                case .close: dismiss()
+                case .regenerate: startGeneration()
+                case .restart: break
                 }
             }
             Button(FlashcardCopy.keepEditing, role: .cancel) {}
         } message: {
-            Text(FlashcardCopy.discardCardsMessage)
+            Text(discardIntent == .regenerate ? FlashcardCopy.regenerateMessage : FlashcardCopy.discardCardsMessage)
         }
     }
 
@@ -452,11 +455,18 @@ struct FlashcardGenerateScreen: View {
                     action: { Task { await viewModel.saveDeck() } },
                     loadingTitle: viewModel.savingDeckTitle
                 )
-                Button(FlashcardCopy.startOver) {
-                    discardIntent = .restart
-                    isConfirmingDiscard = true
+                HStack(spacing: Spacing.s2) {
+                    Button(FlashcardCopy.regenerate) {
+                        discardIntent = .regenerate
+                        isConfirmingDiscard = true
+                    }
+                    .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
+                    Button(FlashcardCopy.startOver) {
+                        discardIntent = .restart
+                        isConfirmingDiscard = true
+                    }
+                    .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
                 }
-                .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
                 .disabled(viewModel.isSaving)
             }
             .padding(.horizontal, margin)
