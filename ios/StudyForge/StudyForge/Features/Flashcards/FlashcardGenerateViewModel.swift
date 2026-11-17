@@ -56,8 +56,20 @@ final class FlashcardGenerateViewModel {
         self.selectedMaterial = initialMaterial
         self.startedWithMaterial = initialMaterial != nil
         self.lastPage = Self.pageCount(of: initialMaterial)
+        self.cardType = Self.suggestedCardType(for: learningStyle)
         self.engine = predictedEngine
     }
+
+    static func suggestedCardType(for style: LearningStyle) -> CardType {
+        switch style {
+        case .visual, .kinesthetic: .qa
+        case .verbal: .reversible
+        case .readWrite: .cloze
+        }
+    }
+
+    var suggestedCardType: CardType { Self.suggestedCardType(for: learningStyle) }
+    var isUsingSuggestedCardType: Bool { cardType == suggestedCardType }
 
     var phase: Phase {
         if savedDeck != nil { return .saved }
