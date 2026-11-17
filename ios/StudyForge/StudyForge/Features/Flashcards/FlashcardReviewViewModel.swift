@@ -18,6 +18,13 @@ final class FlashcardReviewViewModel {
         case empty
     }
 
+    enum Mode: Equatable {
+        case due
+        case ahead
+    }
+
+    static let aheadLimit = 20
+
     private(set) var cards: [Flashcard]
     private(set) var currentIndex = 0
     private(set) var isShowingAnswer = false
@@ -35,6 +42,7 @@ final class FlashcardReviewViewModel {
     private(set) var finishedAt: Date?
     private(set) var deck: Deck
     private(set) var streakDays = 0
+    private(set) var mode: Mode
 
     private var lastRating: FlashcardRatingRecord?
     private let store: any DeckStore
@@ -44,15 +52,26 @@ final class FlashcardReviewViewModel {
         deck: Deck,
         store: any DeckStore,
         log: any FlashcardReviewLog = InMemoryFlashcardReviewLog(),
+        mode: Mode = .due,
         now: Date = .now
     ) {
         self.deck = deck
         self.store = store
         self.log = log
-        let due = deck.cards.filter { $0.sr.isDue(now: now) }
-        self.cards = due
-        self.phase = due.isEmpty ? .empty : .reviewing
+        self.mode = mode
+        let queue = Self.queue(for: deck, mode: mode, now: now)
+        self.cards = queue
+        self.phase = queue.isEmpty ? .empty : .reviewing
         self.startedAt = now
+    }
+
+    static func queue(for deck: Deck, mode: Mode, now: Date = .now) -> [Flashcard] {
+        switch mode {
+        case .due:
+            return deck.cards.filter { $0.sr.isDue(now: now) }
+        case .ahead:
+            return Array(deck.cards.sorted { $0.sr.dueAt < $1.sr.dueAt }.prefix(aheadLimit))
+        }
     }
 
     var currentCard: Flashcard? {
@@ -82,6 +101,9 @@ final class FlashcardReviewViewModel {
 
     var isCurrentCardFlagged: Bool { currentCard?.isFlagged ?? false }
 
+    var isStudyingAhead: Bool { mode == .ahead }
+    var canStudyAhead: Bool { !deck.cards.isEmpty }
+    var totalCards: Int { deck.cards.count }
     var canUndo: Bool { lastRating != nil && !isRating && phase == .reviewing }
 
     var hasUnfinishedProgress: Bool { phase == .reviewing && reviewedCount > 0 }
@@ -209,9 +231,19 @@ final class FlashcardReviewViewModel {
     }
 
     func keepGoing() {
-        let now = Date.now
-        let due = deck.cards.filter { $0.sr.isDue(now: now) }
-        cards = due
+        mode = .due
+        restart(now: .now)
+    }
+
+    func studyAhead() {
+        guard canStudyAhead else { return }
+        mode = .ahead
+        restart(now: .now)
+    }
+
+    private func restart(now: Date) {
+        let queue = Self.queue(for: deck, mode: mode, now: now)
+        cards = queue
         currentIndex = 0
         isShowingAnswer = false
         reviewedCount = 0
@@ -223,7 +255,7 @@ final class FlashcardReviewViewModel {
         error = nil
         startedAt = now
         finishedAt = nil
-        phase = due.isEmpty ? .empty : .reviewing
+        phase = queue.isEmpty ? .empty : .reviewing
     }
 
     private func apply(_ state: SpacedRepetitionState, toCard id: String) {
