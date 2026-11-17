@@ -10,8 +10,12 @@ struct FlashcardReviewView: View {
 
     private let margin = Layout.screenMargin + Spacing.s3
 
-    init(deck: Deck, store: any DeckStore) {
-        _viewModel = State(initialValue: FlashcardReviewViewModel(deck: deck, store: store))
+    init(
+        deck: Deck,
+        store: any DeckStore,
+        log: any FlashcardReviewLog = FileFlashcardReviewLog.shared
+    ) {
+        _viewModel = State(initialValue: FlashcardReviewViewModel(deck: deck, store: store, log: log))
     }
 
     var body: some View {
@@ -295,6 +299,16 @@ struct FlashcardReviewView: View {
                 .padding(Spacing.s4)
                 .frame(maxWidth: .infinity, minHeight: 60)
                 .background(ColorTokens.primaryContainer, in: .rect(cornerRadius: Radius.m))
+
+                if viewModel.streakDays > 0 {
+                    Label(FlashcardCopy.streak(viewModel.streakDays), systemImage: "flame.fill")
+                        .font(.sfSubhead.weight(.semibold))
+                        .foregroundStyle(ColorTokens.warningText)
+                        .padding(.horizontal, Spacing.s4)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .summaryGlass()
+                        .accessibilityElement(children: .combine)
+                }
 
                 if let nextText {
                     Text(nextText)
