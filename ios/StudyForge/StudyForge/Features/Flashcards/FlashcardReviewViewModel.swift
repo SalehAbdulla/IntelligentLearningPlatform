@@ -177,6 +177,11 @@ final class FlashcardReviewViewModel {
         phase = .reviewing
 
         await persist()
+        do {
+            try await log.remove(id: entry.entryID)
+        } catch {
+            self.error = AppError.from(error)
+        }
     }
 
     func toggleFlag() async {
