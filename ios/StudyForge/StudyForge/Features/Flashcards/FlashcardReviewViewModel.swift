@@ -5,6 +5,7 @@ private struct FlashcardRatingRecord: Equatable {
     let cardID: String
     let previous: SpacedRepetitionState
     let rating: ReviewRating
+    let entryID: String
 }
 
 @MainActor
@@ -36,10 +37,17 @@ final class FlashcardReviewViewModel {
 
     private var lastRating: FlashcardRatingRecord?
     private let store: any DeckStore
+    private let log: any FlashcardReviewLog
 
-    init(deck: Deck, store: any DeckStore, now: Date = .now) {
+    init(
+        deck: Deck,
+        store: any DeckStore,
+        log: any FlashcardReviewLog = InMemoryFlashcardReviewLog(),
+        now: Date = .now
+    ) {
         self.deck = deck
         self.store = store
+        self.log = log
         let due = deck.cards.filter { $0.sr.isDue(now: now) }
         self.cards = due
         self.phase = due.isEmpty ? .empty : .reviewing
@@ -126,7 +134,21 @@ final class FlashcardReviewViewModel {
 
         let now = Date.now
         let next = SpacedRepetition.nextState(card.sr, rating: rating, now: now)
-        lastRating = FlashcardRatingRecord(index: currentIndex, cardID: card.id, previous: card.sr, rating: rating)
+        let entry = FlashcardReviewEntry(
+            deckId: deck.id,
+            cardId: card.id,
+            rating: rating,
+            intervalDays: next.interval,
+            tags: card.tags.filter { $0 != FlashcardLimits.flagTag },
+            reviewedAt: now
+        )
+        lastRating = FlashcardRatingRecord(
+            index: currentIndex,
+            cardID: card.id,
+            previous: card.sr,
+            rating: rating,
+            entryID: entry.id
+        )
         apply(next, toCard: card.id)
         count(rating, by: 1)
 
@@ -138,6 +160,7 @@ final class FlashcardReviewViewModel {
         }
 
         await persist()
+        await record(entry)
     }
 
     func undo() async {
@@ -210,6 +233,14 @@ final class FlashcardReviewViewModel {
         case .easy:
             correctCount += delta
             easyCount += delta
+        }
+    }
+
+    private func record(_ entry: FlashcardReviewEntry) async {
+        do {
+            try await log.append(entry)
+        } catch {
+            self.error = AppError.from(error)
         }
     }
 
