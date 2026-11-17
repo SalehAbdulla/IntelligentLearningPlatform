@@ -303,4 +303,53 @@ struct FlashcardReviewViewModelTests {
         #expect(viewModel.reviewedCount == 1)
         #expect(viewModel.error != nil)
     }
+
+    private func futureCard(id: String, inDays days: Double) -> Flashcard {
+        Flashcard(
+            id: id,
+            front: "Question \(id)",
+            back: "Answer \(id)",
+            provenance: AIProvenance(materialId: "m", pageNumbers: [], confidence: .high),
+            sr: SpacedRepetitionState(interval: 6, dueAt: .now.addingTimeInterval(86_400 * days), reps: 2)
+        )
+    }
+
+    @Test("Studying ahead turns the empty state into a session over the soonest cards")
+    func studyAheadStartsSession() {
+        let later = futureCard(id: "later", inDays: 9)
+        let sooner = futureCard(id: "sooner", inDays: 2)
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [later, sooner]), store: InMemoryDeckStore())
+        #expect(viewModel.phase == .empty)
+        #expect(viewModel.canStudyAhead)
+
+        viewModel.studyAhead()
+
+        #expect(viewModel.phase == .reviewing)
+        #expect(viewModel.isStudyingAhead)
+        #expect(viewModel.cards.map(\.id) == ["sooner", "later"])
+    }
+
+    @Test("A study-ahead session is capped at the ahead limit")
+    func studyAheadIsCapped() {
+        let many = (0..<(FlashcardReviewViewModel.aheadLimit + 5)).map { futureCard(id: "c\($0)", inDays: Double($0 + 1)) }
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: many), store: InMemoryDeckStore(), mode: .ahead)
+        #expect(viewModel.cards.count == FlashcardReviewViewModel.aheadLimit)
+    }
+
+    @Test("An empty deck cannot study ahead")
+    func emptyDeckCannotStudyAhead() {
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: []), store: InMemoryDeckStore())
+        viewModel.studyAhead()
+        #expect(viewModel.phase == .empty)
+        #expect(!viewModel.canStudyAhead)
+    }
+
+    @Test("Keep going after studying ahead goes back to due cards only")
+    func keepGoingReturnsToDue() async {
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [futureCard(id: "f", inDays: 3)]), store: InMemoryDeckStore(), mode: .ahead)
+        await viewModel.rate(.good)
+        viewModel.keepGoing()
+        #expect(!viewModel.isStudyingAhead)
+        #expect(viewModel.phase == .empty)
+    }
 }

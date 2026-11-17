@@ -252,4 +252,26 @@ struct FlashcardDeckScreensTests {
         #expect(FlashcardDifficulty.levels == [.recall, .mixed, .understanding])
         #expect(FlashcardDifficulty.levels.count == FlashcardDifficulty.allCases.count)
     }
+
+    @Test("The deck overview offers study ahead only when nothing is due")
+    func overviewStudyAhead() async {
+        let store = InMemoryDeckStore(seededWith: [
+            Deck(id: "later", title: "Later", cards: [card(id: "l1", sr: scheduled(days: 4))]),
+            Deck(id: "now", title: "Now", cards: [card(id: "n1")]),
+            Deck(id: "empty", title: "Empty")
+        ])
+        let later = DeckOverviewViewModel(deckId: "later", store: store)
+        let now = DeckOverviewViewModel(deckId: "now", store: store)
+        let empty = DeckOverviewViewModel(deckId: "empty", store: store)
+
+        await later.load()
+        await now.load()
+        await empty.load()
+
+        #expect(later.canStudyAhead)
+        #expect(!later.canStudy)
+        #expect(!now.canStudyAhead)
+        #expect(now.canStudy)
+        #expect(!empty.canStudyAhead)
+    }
 }
