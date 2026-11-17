@@ -243,4 +243,64 @@ struct FlashcardReviewViewModelTests {
 
         #expect(viewModel.citationLabel == nil)
     }
+
+    @Test("Every rating is written to the review log with its next interval")
+    func ratingIsLogged() async throws {
+        let log = InMemoryFlashcardReviewLog()
+        var tagged = card(id: "c1")
+        tagged.tags = ["avl", FlashcardLimits.flagTag]
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [tagged, card(id: "c2")]), store: InMemoryDeckStore(), log: log)
+
+        await viewModel.rate(.good)
+
+        let entries = try await log.entries()
+        #expect(entries.count == 1)
+        #expect(entries.first?.cardId == "c1")
+        #expect(entries.first?.deckId == "d1")
+        #expect(entries.first?.rating == .good)
+        #expect(entries.first?.intervalDays == 1)
+        #expect(entries.first?.tags == ["avl"])
+    }
+
+    @Test("Undoing a rating removes it from the review log")
+    func undoRemovesLogEntry() async throws {
+        let log = InMemoryFlashcardReviewLog()
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1"), card(id: "c2")]), store: InMemoryDeckStore(), log: log)
+
+        await viewModel.rate(.hard)
+        await viewModel.undo()
+
+        #expect(try await log.entries().isEmpty)
+        #expect(viewModel.reviewedCount == 0)
+    }
+
+    @Test("Finishing a session loads the streak from the log")
+    func summaryLoadsStreak() async {
+        let yesterday = FlashcardReviewEntry(
+            deckId: "d1",
+            cardId: "old",
+            rating: .good,
+            intervalDays: 1,
+            reviewedAt: .now.addingTimeInterval(-86_400)
+        )
+        let log = InMemoryFlashcardReviewLog(seededWith: [yesterday])
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1")]), store: InMemoryDeckStore(), log: log)
+
+        await viewModel.rate(.easy)
+
+        #expect(viewModel.phase == .summary)
+        #expect(viewModel.streakDays == 2)
+    }
+
+    @Test("A log that cannot be written surfaces an error but keeps the rating")
+    func logFailureKeepsRating() async {
+        let log = InMemoryFlashcardReviewLog()
+        await log.forceFailure(.storageFailed)
+        let viewModel = FlashcardReviewViewModel(deck: deck(cards: [card(id: "c1"), card(id: "c2")]), store: InMemoryDeckStore(), log: log)
+
+        await viewModel.rate(.good)
+
+        #expect(viewModel.reviewedCount == 1)
+        #expect(viewModel.error != nil)
+    }
 }
