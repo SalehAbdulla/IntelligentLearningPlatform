@@ -4,6 +4,7 @@ struct DeckOverviewView: View {
 
     @State private var viewModel: DeckOverviewViewModel
     @State private var isStudying = false
+    @State private var studyMode: FlashcardReviewViewModel.Mode = .due
     @State private var editorTarget: FlashcardEditorTarget?
     @State private var isRenaming = false
     @State private var renameText = ""
@@ -33,7 +34,7 @@ struct DeckOverviewView: View {
         }
         .fullScreenCover(isPresented: $isStudying, onDismiss: reload) {
             if let deck = viewModel.deck {
-                FlashcardReviewView(deck: deck, store: store)
+                FlashcardReviewView(deck: deck, store: store, mode: studyMode)
             }
         }
         .sheet(item: $editorTarget) { target in
@@ -115,7 +116,15 @@ struct DeckOverviewView: View {
 
                 VStack(spacing: Spacing.s2) {
                     SFPrimaryButton(title: L10n.deckStudyNow.string, isEnabled: viewModel.canStudy) {
+                        studyMode = .due
                         isStudying = true
+                    }
+                    if viewModel.canStudyAhead {
+                        Button(FlashcardCopy.studyAhead) {
+                            studyMode = .ahead
+                            isStudying = true
+                        }
+                        .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
                     }
                     if let caughtUp = viewModel.caughtUpText {
                         Label(caughtUp, systemImage: "checkmark.circle.fill")

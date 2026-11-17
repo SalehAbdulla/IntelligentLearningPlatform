@@ -26,6 +26,7 @@ final class DeckOverviewViewModel {
     var learningCount: Int { deck?.learningCount ?? 0 }
     var masteredCount: Int { deck?.masteredCount ?? 0 }
     var canStudy: Bool { dueCount > 0 }
+    var canStudyAhead: Bool { !cards.isEmpty && dueCount == 0 }
 
     var caughtUpText: String? {
         guard let deck, !deck.cards.isEmpty, dueCount == 0, let next = deck.nextDueDate() else { return nil }
