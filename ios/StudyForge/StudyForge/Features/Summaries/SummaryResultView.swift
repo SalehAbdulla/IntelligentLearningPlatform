@@ -15,6 +15,7 @@ struct SummaryResultView: View {
     @State private var isEditing = false
     @State private var isConfirmingDiscard = false
     @State private var isMakingCards = false
+    @State private var isMakingQuiz = false
     @State private var isShowingCardsUnavailable = false
     @State private var isPickingFolder = false
     @State private var isShowingFolderUnavailable = false
@@ -83,6 +84,8 @@ struct SummaryResultView: View {
                 actions
                     .padding(.top, Spacing.s2)
 
+                quizAction
+
                 if viewModel.isSaved {
                     HStack(spacing: Spacing.s3) {
                         Label(L10n.summarySavedTitle.string, systemImage: "checkmark.circle.fill")
@@ -137,6 +140,18 @@ struct SummaryResultView: View {
                     materialStore: container.materials,
                     deckStore: container.decks,
                     router: router,
+                    learningStyle: learningStyle
+                )
+            }
+        }
+        .sheet(isPresented: $isMakingQuiz) {
+            if let container {
+                QuizBuilderScreen(
+                    initialMaterial: viewModel.material,
+                    materialStore: container.materials,
+                    quizStore: container.quizzes,
+                    router: router,
+                    plans: container.studyPlans,
                     learningStyle: learningStyle
                 )
             }
@@ -295,6 +310,18 @@ struct SummaryResultView: View {
             }
             .buttonStyle(SummaryActionButtonStyle(isPrimary: true))
             .accessibilityLabel(L10n.libraryMakeCards.string)
+        }
+    }
+
+    @ViewBuilder
+    private var quizAction: some View {
+        if container != nil {
+            Button {
+                isMakingQuiz = true
+            } label: {
+                Label(QuizCopy.quizMe, systemImage: "checklist")
+            }
+            .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
         }
     }
 
