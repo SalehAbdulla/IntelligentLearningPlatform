@@ -6,6 +6,7 @@ struct DeckOverviewView: View {
     @State private var isStudying = false
     @State private var studyMode: FlashcardReviewViewModel.Mode = .due
     @State private var editorTarget: FlashcardEditorTarget?
+    @State private var editorImage: Data?
     @State private var isRenaming = false
     @State private var renameText = ""
     @State private var isConfirmingDelete = false
@@ -190,7 +191,10 @@ struct DeckOverviewView: View {
         let mastery = CardMastery(card.sr)
 
         return Button {
-            editorTarget = .edit(card)
+            Task {
+                editorImage = await viewModel.image(for: card.id)
+                editorTarget = .edit(card)
+            }
         } label: {
             HStack(spacing: Spacing.s3) {
                 Circle()
@@ -232,6 +236,7 @@ struct DeckOverviewView: View {
                 Label(FlashcardCopy.renameDeck, systemImage: "pencil")
             }
             Button {
+                editorImage = nil
                 editorTarget = .create
             } label: {
                 Label(FlashcardCopy.addCard, systemImage: "plus")
@@ -258,8 +263,13 @@ struct DeckOverviewView: View {
                 title: FlashcardCopy.editCard,
                 front: card.front,
                 back: card.back,
-                onSave: { front, back in
-                    Task { await viewModel.updateCard(id: card.id, front: front, back: back) }
+                tags: card.tags,
+                decks: viewModel.allDecks,
+                deckId: viewModel.deckId,
+                image: editorImage,
+                allowsImage: true,
+                onSubmit: { edit in
+                    Task { await viewModel.apply(edit, toCard: card.id) }
                 },
                 onDelete: {
                     Task { await viewModel.deleteCard(id: card.id) }
@@ -270,8 +280,10 @@ struct DeckOverviewView: View {
                 title: FlashcardCopy.newCard,
                 front: "",
                 back: "",
-                onSave: { front, back in
-                    Task { await viewModel.addCard(front: front, back: back) }
+                tags: [],
+                allowsImage: true,
+                onSubmit: { edit in
+                    Task { await viewModel.addCard(edit) }
                 }
             )
         }
