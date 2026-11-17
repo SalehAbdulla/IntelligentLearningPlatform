@@ -95,6 +95,8 @@ struct QuizRequest: Sendable {
     let context: AIGenerationContext
     let questionCount: Int
     let questionType: QuizQuestionType
+    var difficulty: QuizDifficulty = .medium
+    var focusTopics: [String] = []
 }
 
 struct StudyPathRequest: Sendable {
