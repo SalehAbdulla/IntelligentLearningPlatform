@@ -34,6 +34,7 @@ final class FlashcardReviewViewModel {
     private(set) var startedAt: Date
     private(set) var finishedAt: Date?
     private(set) var deck: Deck
+    private(set) var streakDays = 0
 
     private var lastRating: FlashcardRatingRecord?
     private let store: any DeckStore
@@ -161,6 +162,14 @@ final class FlashcardReviewViewModel {
 
         await persist()
         await record(entry)
+        if phase == .summary {
+            await refreshStreak(now: now)
+        }
+    }
+
+    func refreshStreak(now: Date = .now) async {
+        let entries = (try? await log.entries()) ?? []
+        streakDays = FlashcardReviewStats.streak(entries, now: now)
     }
 
     func undo() async {
