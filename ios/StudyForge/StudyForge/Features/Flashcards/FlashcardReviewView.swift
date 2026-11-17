@@ -13,9 +13,10 @@ struct FlashcardReviewView: View {
     init(
         deck: Deck,
         store: any DeckStore,
-        log: any FlashcardReviewLog = FileFlashcardReviewLog.shared
+        log: any FlashcardReviewLog = FileFlashcardReviewLog.shared,
+        mode: FlashcardReviewViewModel.Mode = .due
     ) {
-        _viewModel = State(initialValue: FlashcardReviewViewModel(deck: deck, store: store, log: log))
+        _viewModel = State(initialValue: FlashcardReviewViewModel(deck: deck, store: store, log: log, mode: mode))
     }
 
     var body: some View {
@@ -102,10 +103,20 @@ struct FlashcardReviewView: View {
 
             Spacer()
 
-            Text(viewModel.progressLabel)
-                .font(.sfFootnote.weight(.semibold))
-                .foregroundStyle(ColorTokens.textPrimary)
-                .monospacedDigit()
+            VStack(spacing: Spacing.s1) {
+                Text(viewModel.progressLabel)
+                    .font(.sfFootnote.weight(.semibold))
+                    .foregroundStyle(ColorTokens.textPrimary)
+                    .monospacedDigit()
+                if viewModel.isStudyingAhead {
+                    Text(FlashcardCopy.studyingAhead)
+                        .font(.sfCaption.weight(.semibold))
+                        .foregroundStyle(ColorTokens.onPrimaryContainer)
+                        .padding(.horizontal, Spacing.s2)
+                        .frame(minHeight: 20)
+                        .background(ColorTokens.primaryContainer, in: .capsule)
+                }
+            }
 
             Spacer()
 
@@ -358,28 +369,56 @@ struct FlashcardReviewView: View {
         VStack(spacing: Spacing.s4) {
             Spacer(minLength: 0)
 
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 44))
-                .foregroundStyle(ColorTokens.primary)
-                .accessibilityHidden(true)
+            VStack(spacing: Spacing.s3) {
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(ColorTokens.primary)
+                    .accessibilityHidden(true)
 
-            Text(FlashcardCopy.nothingDueTitle)
-                .font(.sfTitleM)
-                .foregroundStyle(ColorTokens.textPrimary)
-                .accessibilityAddTraits(.isHeader)
+                Text(FlashcardCopy.nothingDueTitle)
+                    .font(.sfTitleM)
+                    .foregroundStyle(ColorTokens.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .accessibilityAddTraits(.isHeader)
 
-            Text(viewModel.nextReviewDate.map { FlashcardCopy.nextReview(FlashcardText.dueLabel($0)) } ?? FlashcardCopy.nothingDueBody)
-                .font(.sfCallout)
-                .foregroundStyle(ColorTokens.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+                Text(emptyBody)
+                    .font(.sfCallout)
+                    .foregroundStyle(ColorTokens.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.vertical, Spacing.s8)
+            .padding(.horizontal, Spacing.s5)
+            .frame(maxWidth: .infinity)
+            .summaryGlass(cornerRadius: 20, strong: true)
 
-            SFPrimaryButton(title: FlashcardCopy.done) { dismiss() }
-                .padding(.top, Spacing.s4)
+            VStack(spacing: Spacing.s3) {
+                if viewModel.canStudyAhead {
+                    SFPrimaryButton(title: FlashcardCopy.studyAheadAnyway) {
+                        viewModel.studyAhead()
+                    }
+                    Button(FlashcardCopy.backToDecks) { dismiss() }
+                        .buttonStyle(SummarySecondaryButtonStyle(outlined: true))
+                } else {
+                    SFPrimaryButton(title: FlashcardCopy.backToDecks) { dismiss() }
+                }
+            }
+            .padding(.top, Spacing.s4)
 
             Spacer(minLength: 0)
         }
         .padding(.horizontal, margin)
+    }
+
+    private var emptyBody: String {
+        var lines: [String] = []
+        if viewModel.totalCards > 0 {
+            lines.append(FlashcardCopy.reviewedAll(viewModel.totalCards))
+        }
+        if let next = viewModel.nextReviewDate {
+            lines.append(FlashcardCopy.nextReview(FlashcardText.dueLabel(next)))
+        }
+        return lines.isEmpty ? FlashcardCopy.nothingDueBody : lines.joined(separator: "\n")
     }
 }
 
