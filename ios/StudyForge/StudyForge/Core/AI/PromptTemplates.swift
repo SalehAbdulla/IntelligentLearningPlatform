@@ -127,14 +127,20 @@ enum PromptTemplates {
         let typeGuidance = switch request.questionType {
         case .multipleChoice: "All questions are multiple choice with exactly four options."
         case .trueFalse: "All questions are true/false, expressed as two options: \"True\" and \"False\"."
-        case .shortAnswer: "All questions are short answer with four plausible options."
+        case .shortAnswer: "All questions are short answer. Put the model answer, in eight words or fewer, as the correct option and fill the other three options with plausible wrong answers."
         case .mixed: "Mix multiple choice and application questions."
         }
+
+        let focusGuidance = request.focusTopics.isEmpty
+            ? "Cover the material evenly."
+            : "Concentrate on these topics where the material covers them: \(request.focusTopics.joined(separator: ", "))."
 
         return """
         Create exactly \(request.questionCount) quiz questions from the material below.
 
         \(typeGuidance)
+        \(request.difficulty.promptGuidance)
+        \(focusGuidance)
         Exactly one option must be correct. The explanation must justify the answer using the material.
         Set the topic to a short label such as "third normal form" — it is used to build a revision weakness map.
 
