@@ -3,18 +3,43 @@ import SwiftUI
 struct FlashcardEditorSheet: View {
 
     let title: String
-    let onSave: (String, String) -> Void
+    let onSubmit: (FlashcardEdit) -> Void
     let onDelete: (() -> Void)?
 
     @Environment(\.dismiss) private var dismiss
 
     @State private var front: String
     @State private var back: String
+    @State private var tags: [String]
+    @State private var newTag = ""
     @State private var isConfirmingDelete = false
     @State private var isConfirmingDiscard = false
 
     private let originalFront: String
     private let originalBack: String
+    private let originalTags: [String]
+    private let showsTags: Bool
+
+    init(
+        title: String,
+        front: String,
+        back: String,
+        tags: [String]? = nil,
+        onSubmit: @escaping (FlashcardEdit) -> Void,
+        onDelete: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.onSubmit = onSubmit
+        self.onDelete = onDelete
+        self.originalFront = front
+        self.originalBack = back
+        let visibleTags = FlashcardTags.visible(tags ?? [])
+        self.originalTags = visibleTags
+        self.showsTags = tags != nil
+        _front = State(initialValue: front)
+        _back = State(initialValue: back)
+        _tags = State(initialValue: visibleTags)
+    }
 
     init(
         title: String,
@@ -23,13 +48,14 @@ struct FlashcardEditorSheet: View {
         onSave: @escaping (String, String) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
-        self.title = title
-        self.onSave = onSave
-        self.onDelete = onDelete
-        self.originalFront = front
-        self.originalBack = back
-        _front = State(initialValue: front)
-        _back = State(initialValue: back)
+        self.init(
+            title: title,
+            front: front,
+            back: back,
+            tags: nil,
+            onSubmit: { edit in onSave(edit.front, edit.back) },
+            onDelete: onDelete
+        )
     }
 
     private var isValid: Bool {
@@ -37,7 +63,7 @@ struct FlashcardEditorSheet: View {
     }
 
     private var hasChanges: Bool {
-        front != originalFront || back != originalBack
+        front != originalFront || back != originalBack || tags != originalTags
     }
 
     var body: some View {
@@ -69,6 +95,10 @@ struct FlashcardEditorSheet: View {
                 } footer: {
                     Text(FlashcardCopy.characters(back.count, FlashcardLimits.backMaxCharacters))
                         .monospacedDigit()
+                }
+
+                if showsTags {
+                    tagsSection
                 }
 
                 if hasChanges && !isValid {
@@ -113,11 +143,7 @@ struct FlashcardEditorSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(FlashcardCopy.save) {
-                        onSave(
-                            FlashcardText.cleaned(front, limit: FlashcardLimits.frontMaxCharacters),
-                            FlashcardText.cleaned(back, limit: FlashcardLimits.backMaxCharacters)
-                        )
-                        dismiss()
+                        submit()
                     }
                     .disabled(!isValid || !hasChanges)
                 }
@@ -133,6 +159,78 @@ struct FlashcardEditorSheet: View {
         }
         .interactiveDismissDisabled(hasChanges)
     }
+
+    private var tagsSection: some View {
+        Section {
+            if !tags.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: Spacing.s2) {
+                        ForEach(tags, id: \.self) { tag in
+                            tagChip(tag)
+                        }
+                    }
+                    .padding(.vertical, Spacing.s1)
+                }
+            }
+            HStack(spacing: Spacing.s2) {
+                TextField(FlashcardCopy.tagPlaceholder, text: $newTag)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .submitLabel(.done)
+                    .onSubmit(addTag)
+                Button(FlashcardCopy.addTag, systemImage: "plus.circle.fill", action: addTag)
+                    .labelStyle(.iconOnly)
+                    .font(.sfTitleS)
+                    .frame(minWidth: Layout.minTouchTarget, minHeight: Layout.minTouchTarget)
+                    .disabled(FlashcardTags.normalized(newTag) == nil || tags.count >= FlashcardTags.maxCount)
+            }
+        } header: {
+            Text(FlashcardCopy.tags)
+        } footer: {
+            Text(FlashcardCopy.tagsFooter(FlashcardTags.maxCount))
+        }
+    }
+
+    private func tagChip(_ tag: String) -> some View {
+        Button {
+            tags.removeAll { $0 == tag }
+        } label: {
+            HStack(spacing: Spacing.s1) {
+                Text(verbatim: "#\(tag)")
+                Image(systemName: "xmark")
+                    .font(.sfCaption.weight(.bold))
+            }
+            .font(.sfFootnote.weight(.semibold))
+            .foregroundStyle(ColorTokens.onAccent)
+            .padding(.horizontal, Spacing.s3)
+            .frame(minHeight: 32)
+            .background(ColorTokens.success, in: .capsule)
+            .frame(minHeight: Layout.minTouchTarget)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(FlashcardCopy.removeTag(tag))
+    }
+
+    private func addTag() {
+        let updated = FlashcardTags.adding(newTag, to: tags)
+        if updated != tags {
+            tags = updated
+        }
+        newTag = ""
+    }
+
+    private func submit() {
+        let finalTags = FlashcardText.isBlank(newTag) ? tags : FlashcardTags.adding(newTag, to: tags)
+        onSubmit(
+            FlashcardEdit(
+                front: FlashcardText.cleaned(front, limit: FlashcardLimits.frontMaxCharacters),
+                back: FlashcardText.cleaned(back, limit: FlashcardLimits.backMaxCharacters),
+                tags: finalTags
+            )
+        )
+        dismiss()
+    }
 }
 
 #Preview("E08 Edit card") {
@@ -140,7 +238,8 @@ struct FlashcardEditorSheet: View {
         title: FlashcardCopy.editCard,
         front: "What is a leaf node?",
         back: "A node with no children.",
-        onSave: { _, _ in },
+        tags: ["trees", "basics"],
+        onSubmit: { _ in },
         onDelete: {}
     )
 }
