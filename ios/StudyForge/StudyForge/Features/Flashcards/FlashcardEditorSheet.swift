@@ -11,6 +11,7 @@ struct FlashcardEditorSheet: View {
     @State private var front: String
     @State private var back: String
     @State private var tags: [String]
+    @State private var deckId: String?
     @State private var newTag = ""
     @State private var isConfirmingDelete = false
     @State private var isConfirmingDiscard = false
@@ -19,12 +20,16 @@ struct FlashcardEditorSheet: View {
     private let originalBack: String
     private let originalTags: [String]
     private let showsTags: Bool
+    private let decks: [Deck]
+    private let originalDeckId: String?
 
     init(
         title: String,
         front: String,
         back: String,
         tags: [String]? = nil,
+        decks: [Deck] = [],
+        deckId: String? = nil,
         onSubmit: @escaping (FlashcardEdit) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
@@ -36,6 +41,9 @@ struct FlashcardEditorSheet: View {
         let visibleTags = FlashcardTags.visible(tags ?? [])
         self.originalTags = visibleTags
         self.showsTags = tags != nil
+        self.decks = decks
+        self.originalDeckId = deckId
+        _deckId = State(initialValue: deckId)
         _front = State(initialValue: front)
         _back = State(initialValue: back)
         _tags = State(initialValue: visibleTags)
@@ -63,7 +71,7 @@ struct FlashcardEditorSheet: View {
     }
 
     private var hasChanges: Bool {
-        front != originalFront || back != originalBack || tags != originalTags
+        front != originalFront || back != originalBack || tags != originalTags || deckId != originalDeckId
     }
 
     var body: some View {
@@ -99,6 +107,18 @@ struct FlashcardEditorSheet: View {
 
                 if showsTags {
                     tagsSection
+                }
+
+                if decks.count > 1, deckId != nil {
+                    Section {
+                        Picker(FlashcardCopy.deck, selection: $deckId) {
+                            ForEach(decks) { deck in
+                                Text(deck.title).tag(Optional(deck.id))
+                            }
+                        }
+                    } header: {
+                        Text(FlashcardCopy.deck)
+                    }
                 }
 
                 if hasChanges && !isValid {
@@ -226,7 +246,8 @@ struct FlashcardEditorSheet: View {
             FlashcardEdit(
                 front: FlashcardText.cleaned(front, limit: FlashcardLimits.frontMaxCharacters),
                 back: FlashcardText.cleaned(back, limit: FlashcardLimits.backMaxCharacters),
-                tags: finalTags
+                tags: finalTags,
+                deckId: deckId
             )
         )
         dismiss()
@@ -239,6 +260,8 @@ struct FlashcardEditorSheet: View {
         front: "What is a leaf node?",
         back: "A node with no children.",
         tags: ["trees", "basics"],
+        decks: [Deck(id: "a", title: "Trees & Graphs"), Deck(id: "b", title: "Algorithms")],
+        deckId: "a",
         onSubmit: { _ in },
         onDelete: {}
     )
