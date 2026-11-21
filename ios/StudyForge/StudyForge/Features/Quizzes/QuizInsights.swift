@@ -131,8 +131,8 @@ struct QuizResult: Equatable {
     var weakestTopic: QuizTopicResult? { QuizInsights.weakestTopic(topics) }
 
     var weakQuestions: [QuizQuestion] {
-        let weak = Set(topics.filter(\.isWeak).map(\.topic))
-        return questions.filter { weak.contains($0.topic) }
+        let weakTopics = Set(topics.filter(\.isWeak).map(\.topic))
+        return questions.filter { weakTopics.contains($0.topic) }
     }
 
     var missedTopics: [String] {
