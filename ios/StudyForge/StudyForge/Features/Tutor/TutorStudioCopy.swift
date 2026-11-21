@@ -111,6 +111,25 @@ enum TutorStudioCopy {
     static var previewLabel: String { text("studio.gradebook.preview") }
     static var noRows: String { text("studio.gradebook.noRows") }
     static var gradebookNote: String { text("studio.gradebook.note") }
+    static var nothingToAdd: String { text("studio.student.nothingToAdd") }
+    static var myCoursesTitle: String { text("studio.student.coursesTitle") }
+    static var joinTitle: String { text("studio.student.joinTitle") }
+    static var joinPlaceholder: String { text("studio.student.joinPlaceholder") }
+    static var joinButton: String { text("studio.student.joinButton") }
+    static var joinFooter: String { text("studio.student.joinFooter") }
+    static var myCoursesEmpty: String { text("studio.student.coursesEmpty") }
+    static var awaitingApproval: String { text("studio.student.awaiting") }
+    static var courseNothingYet: String { text("studio.student.nothingYet") }
+    static var pendingBody: String { text("studio.student.pendingBody") }
+    static var fromYourTutor: String { text("studio.student.fromTutor") }
+    static var announcementsTitle: String { text("studio.student.announcements") }
+    static var materialsTitle: String { text("studio.student.materials") }
+    static var materialUnavailable: String { text("studio.student.materialUnavailable") }
+    static var studyContentTitle: String { text("studio.student.studyContent") }
+    static var approvedByTutor: String { text("studio.student.approved") }
+    static var read: String { text("studio.student.read") }
+    static var addedDeck: String { text("studio.student.addedDeck") }
+    static var shareCode: String { text("studio.hub.shareCode") }
 
     static func archiveMessage(_ title: String) -> String { format("studio.home.archiveMessage", title) }
     static func courseTitle(_ code: String, _ name: String) -> String { format("studio.course.title", code, name) }
@@ -145,6 +164,20 @@ enum TutorStudioCopy {
     static func gradebookTitle(_ course: String) -> String { format("studio.gradebook.title", course) }
     static func exportButton(_ format: String) -> String { format("studio.gradebook.export", format) }
     static func shareFile(_ name: String) -> String { format("studio.gradebook.share", name) }
+    static func joinNotFound(_ code: String) -> String { format("studio.student.joinNotFound", code) }
+    static func joinArchived(_ code: String) -> String { format("studio.student.joinArchived", code) }
+    static func joinAlready(_ code: String) -> String { format("studio.student.joinAlready", code) }
+    static func joinPending(_ code: String) -> String { format("studio.student.joinPending", code) }
+    static func joinDone(_ code: String) -> String { format("studio.student.joinDone", code) }
+    static func courseDeckTitle(_ title: String) -> String { format("studio.student.deckTitle", title) }
+    static func addedToDecks(_ count: Int) -> String { format("studio.student.addedToDecks", count) }
+    static func courseQuizTitle(_ title: String) -> String { format("studio.student.quizTitle", title) }
+    static func liveMaterials(_ count: Int) -> String { format("studio.student.liveMaterials", count) }
+    static func upcomingMaterials(_ count: Int) -> String { format("studio.student.upcoming", count) }
+    static func addDeck(_ count: Int) -> String { format("studio.student.addDeck", count) }
+    static func takeQuiz(_ count: Int) -> String { format("studio.student.takeQuiz", count) }
+    static func joinCodeLabel(_ code: String) -> String { format("studio.hub.joinCode", code) }
+    static func joinShareText(_ name: String, _ code: String) -> String { format("studio.hub.joinShare", name, code) }
 
     static func filterTitle(_ filter: TutorRosterFilter, count: Int) -> String {
         let title = text("studio.filter.\(filter.rawValue)")
