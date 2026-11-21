@@ -13,11 +13,18 @@ final class TutorStudioHomeViewModel {
 
     let uid: String
     private let store: any CourseStore
+    private let directory: any CourseDirectory
     private let clock: () -> Date
 
-    init(uid: String, store: any CourseStore, clock: @escaping () -> Date = { .now }) {
+    init(
+        uid: String,
+        store: any CourseStore,
+        directory: any CourseDirectory = InMemoryCourseDirectory(),
+        clock: @escaping () -> Date = { .now }
+    ) {
         self.uid = uid
         self.store = store
+        self.directory = directory
         self.clock = clock
     }
 
@@ -66,6 +73,7 @@ final class TutorStudioHomeViewModel {
             enrollments = roster
             pendingReviewCount = pending
             error = nil
+            try? await directory.register(loaded)
         } catch {
             self.error = AppError.from(error)
         }

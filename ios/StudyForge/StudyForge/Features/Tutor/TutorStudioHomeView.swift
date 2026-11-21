@@ -12,7 +12,8 @@ struct TutorStudioHomeView: View {
         self.container = container
         _viewModel = State(initialValue: TutorStudioHomeViewModel(
             uid: container.session?.id ?? "",
-            store: container.courses
+            store: container.courses,
+            directory: FileCourseDirectory.shared
         ))
     }
 
