@@ -132,6 +132,20 @@ struct TutorCourseHubView: View {
                 .font(.sfTitleM)
                 .foregroundStyle(ColorTokens.textPrimary)
                 .accessibilityAddTraits(.isHeader)
+            if !course.code.isEmpty {
+                HStack(spacing: Spacing.s2) {
+                    Label(TutorStudioCopy.joinCodeLabel(course.code), systemImage: "key")
+                        .font(.sfFootnote.weight(.semibold))
+                        .foregroundStyle(ColorTokens.textSecondary)
+                        .textSelection(.enabled)
+                    Spacer(minLength: 0)
+                    ShareLink(item: TutorStudioCopy.joinShareText(course.name, course.code)) {
+                        Label(TutorStudioCopy.shareCode, systemImage: "square.and.arrow.up")
+                            .font(.sfFootnote.weight(.semibold))
+                    }
+                    .frame(minHeight: Layout.minTouchTarget)
+                }
+            }
             HStack(spacing: Spacing.s2) {
                 TutorKPITile(value: cohort.students.formatted(), label: TutorStudioCopy.kpiStudents)
                 TutorKPITile(value: TutorStudioCopy.percent(cohort.averageMastery), label: TutorStudioCopy.kpiMastery)
